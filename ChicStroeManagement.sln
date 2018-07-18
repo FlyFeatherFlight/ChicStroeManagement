@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagement", "ChicStroeManagement\ChicStroeManagement.csproj", "{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagementBS", "ChicStroeManagementBS\ChicStroeManagementBS.csproj", "{0C82D78B-FA49-4A99-8B7C-0671D0738855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagementBS.Tests", "ChicStroeManagementBS.Tests\ChicStroeManagementBS.Tests.csproj", "{EA23FCA0-5D0A-4BBD-904E-7727DE9BE8B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C82D78B-FA49-4A99-8B7C-0671D0738855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C82D78B-FA49-4A99-8B7C-0671D0738855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C82D78B-FA49-4A99-8B7C-0671D0738855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C82D78B-FA49-4A99-8B7C-0671D0738855}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA23FCA0-5D0A-4BBD-904E-7727DE9BE8B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA23FCA0-5D0A-4BBD-904E-7727DE9BE8B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA23FCA0-5D0A-4BBD-904E-7727DE9BE8B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA23FCA0-5D0A-4BBD-904E-7727DE9BE8B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
