@@ -1,0 +1,34 @@
+﻿
+
+
+
+@{
+    ViewBag.Title = "CHIC门店管理登录页面";
+}
+
+<div class="jumbotron">
+    <h1>CHIC</h1>
+    <p class="lead">
+        蒐羅各種美好雜貨，<br />
+        充滿個性的雜貨舖子選擇你所愛
+    </p>
+    <p>Chic Casa 奇可家居</p>
+    <p><a href="" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<form class="form-inline" role="form" action="@Url.Action("Login") " method="post">
+    <p>请登陆系统：<br /><p>
+        <div class="form-group">
+            <label for="userName" class="sr-only"> 用户名</label>
+            <input name="userName" type="text" class="form-control" placeholder="请填写用户名" />
+        </div>
+        <div class="form-group">
+            <label for="password" class="sr-only"> 密码</label>
+            <input name="password" class="form-control" type="password" placeholder="请填写密码" />
+        </div>
+
+        <input id="Submit1" type="submit" value="登录" />
+
+        <div style="color:#ff0000"> @ViewBag.ErrorMessage</div>
+
+    </form>

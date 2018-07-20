@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ChicStoreManagement.BLL;
+using ChicStoreManagement.Entity;
 using System.Web.Mvc;
+using System.Web.Security;
+using ChicStroeManagement.CustomAttributes;
 
 namespace ChicStroeManagement.Controllers
 {
-    public class HomeController : Controller
+     [BasicAuthAttribute]
+    public class HomeController: Controller
     {
+
         public ActionResult Index()
         {
             return View();
         }
+
 
         public ActionResult About()
         {
@@ -20,11 +23,14 @@ namespace ChicStroeManagement.Controllers
             return View();
         }
 
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
             return View();
         }
+
+
     }
 }
