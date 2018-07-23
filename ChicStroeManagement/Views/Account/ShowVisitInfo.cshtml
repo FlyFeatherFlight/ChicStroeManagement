@@ -1,0 +1,42 @@
+﻿@using System.Data
+@{
+    ViewBag.Title = "ShowVisitInfo";
+}
+
+<table class="table table-striped">
+    <caption>
+        店员回访信息
+    </caption>
+    <thead>
+        <tr>
+            <td>销售雇员</td>
+            <td>客户名</td>
+            <td>回访时间</td>
+            <td>回访方式</td>
+            <td>状态</td>
+            <td>店长确认</td>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            var dt = (DataTable)ViewData["TestData"];
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                <tr>
+
+                    <td>@dt.Rows[i][0].ToString()</td>
+                    <td>@dt.Rows[i][1].ToString()</td>
+                    <td>@dt.Rows[i][2].ToString()</td>
+                    <td>@dt.Rows[i][3].ToString()</td>
+                    <td>@dt.Rows[i][4].ToString()</td>
+                    <td>
+                      @dt.Rows[i][5].ToString()
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+

@@ -10,22 +10,31 @@
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     
     <script src="~/Scripts/jquery.cookie.js"></script>
-    <script language="javascript" type="text/javascript">
+    @*<script language="javascript" type="text/javascript">
         $(function () {
+   
+    var getCookie = function (name) {
+      var arr;
+      var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if (arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+      else
+        return null;
+    };
             //$('#login').hide();
-            if ($.cookie('Name')) {
+            if (getCookie(".userinfo")) {
 
-                $('#login').hide();
-                $('#signUp').hide();
+            
+                //$('#signUp').hide();
                 $('#logOut').show();
             }
             else {
                 $('#logOut').hide();
-                $('#login').show();
-                $('#signUp').show();
+
+                //$('#signUp').show();
             }
         })
-    </script>
+    </script>*@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
@@ -47,8 +56,8 @@
 
                 <ul class="nav navbar-nav right">
 
-                    <li id="login">@Html.ActionLink("登录", "SignIn", "Account")</li>
-                    <li id="signUp">@Html.ActionLink("注册", "SignUp", "Account")</li>
+                    @*<li id="login">@Html.ActionLink("登录", "SignIn", "Account")</li>*@
+                    @*<li id="signUp">@Html.ActionLink("注册", "SignUp", "Account")</li>*@
 
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "Account")</li>
                 </ul>

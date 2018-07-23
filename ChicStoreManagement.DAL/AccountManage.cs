@@ -16,7 +16,7 @@ namespace ChicStoreManagement.DAL
 
         /// <summary>
 
-        /// 获取用户信息
+        /// 获取店员信息
 
         /// </summary>
 
@@ -69,6 +69,11 @@ namespace ChicStoreManagement.DAL
 
     internal class SqlHelper
     {
+        /// <summary>
+        /// 数据库查询
+        /// </summary>
+        /// <param name="sqlStr"></param>
+        /// <returns></returns>
         internal static SqlDataReader ExecReader(string sqlStr)
         {
             throw new NotImplementedException();

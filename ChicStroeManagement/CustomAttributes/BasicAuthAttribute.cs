@@ -26,11 +26,11 @@ namespace ChicStroeManagement.CustomAttributes
             {
 
                 var user = filterContext.HttpContext.User;
+                
+            if (user == null || !user.Identity.IsAuthenticated)
 
-                if (user == null || !user.Identity.IsAuthenticated)
-
-                {
-
+             {
+                
                 filterContext.Result = new HttpUnauthorizedResult();
 
             }
