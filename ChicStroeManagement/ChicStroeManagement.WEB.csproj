@@ -160,7 +160,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerTrackLogController.cs" />
+    <Compile Include="Controllers\DesignSchemeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\ManagerExamineController.cs" />
     <Compile Include="CustomAttributes\BasicAuthAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -170,22 +175,34 @@
     <Compile Include="ViewModel\VisitInfoModelList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\bann.jpg" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\banner1.jpg" />
+    <Content Include="images\tick.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -196,7 +213,11 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.vide.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="video\1.jpg" />
+    <Content Include="video\1.mp4" />
+    <Content Include="video\1.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -214,13 +235,25 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\SignIn.cshtml" />
-    <Content Include="Views\Account\ManagerAction.cshtml" />
-    <Content Include="Views\Account\ShowVisitInfo.cshtml" />
+    <Content Include="Views\Manager\ManagerAction.cshtml" />
+    <Content Include="Views\Customer\ShowVisitInfo.cshtml" />
+    <Content Include="Views\Account\Viewtest.cshtml" />
+    <Content Include="Views\Customer\CustomerIndex.cshtml" />
+    <Content Include="Views\Customer\AddCustomerView.cshtml" />
+    <Content Include="Views\Customer\EditCustomerView.cshtml" />
+    <Content Include="Views\CustomerTrackLog\TrackLogIndex.cshtml" />
+    <Content Include="Views\CustomerTrackLog\AddTrackLogView.cshtml" />
+    <Content Include="Views\CustomerTrackLog\EditTrackLogView.cshtml" />
+    <Content Include="Views\DesignScheme\DesignSchemeIndex.cshtml" />
+    <Content Include="Views\DesignScheme\AddDesignView.cshtml" />
+    <Content Include="Views\DesignScheme\ApplyDesignView.cshtml" />
+    <Content Include="Views\DesignScheme\AddDesignTrackLogView.cshtml" />
+    <Content Include="Views\ManagerExamine\Index.cshtml" />
+    <Content Include="Views\Manager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Customer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -243,6 +276,18 @@
     <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement.IBLL\ChicStoreManagement.IBLL.csproj">
+      <Project>{6e2839a4-6ef0-4eb4-8f42-9bcf760e4a41}</Project>
+      <Name>ChicStoreManagement.IBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement\ChicStoreManagement.Common.csproj">
+      <Project>{f90ce3c0-6991-45b0-92a8-6649bd2cf5dd}</Project>
+      <Name>ChicStoreManagement.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStroeManagement.IOC.csproj">
+      <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
+      <Name>ChicStroeManagement.IOC</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

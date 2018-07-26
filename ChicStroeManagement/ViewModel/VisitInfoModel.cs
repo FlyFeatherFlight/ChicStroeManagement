@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -10,6 +11,7 @@ namespace ChicStroeManagement.ViewModel
     /// </summary>
     public class VisitInfoModel
     {
+        DataTable dt = new DataTable("test");
         public VisitInfoModel()
         {
 

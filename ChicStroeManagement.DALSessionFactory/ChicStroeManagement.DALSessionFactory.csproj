@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}</ProjectGuid>
+    <ProjectGuid>{84C5662D-01E3-48AC-98C5-E48E1E00A117}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChicStoreManagement.BLL</RootNamespace>
-    <AssemblyName>ChicStoreManagement.BLL</AssemblyName>
+    <RootNamespace>ChicStroeManagement.DALSessionFactory</RootNamespace>
+    <AssemblyName>ChicStroeManagement.DALSessionFactory</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,29 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountManageBll.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChicStoreManagement.DAL\ChicStoreManagement.DAL.csproj">
+      <Project>{f6313ee4-e778-4ff5-a12b-c73b09d0665d}</Project>
+      <Name>ChicStoreManagement.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStoreManagement.IBLL\ChicStoreManagement.IBLL.csproj">
-      <Project>{6e2839a4-6ef0-4eb4-8f42-9bcf760e4a41}</Project>
-      <Name>ChicStoreManagement.IBLL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChicStoreManagement.IDAL\ChicStoreManagement.IDAL.csproj">
       <Project>{8d795d95-4b37-4dfb-8b3f-5ebf887d940a}</Project>
       <Name>ChicStoreManagement.IDAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChicStoreManagement\ChicStoreManagement.Common.csproj">
-      <Project>{f90ce3c0-6991-45b0-92a8-6649bd2cf5dd}</Project>
-      <Name>ChicStoreManagement.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.DALSessionFactory\ChicStroeManagement.DALSessionFactory.csproj">
-      <Project>{84c5662d-01e3-48ac-98c5-e48e1e00a117}</Project>
-      <Name>ChicStroeManagement.DALSessionFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

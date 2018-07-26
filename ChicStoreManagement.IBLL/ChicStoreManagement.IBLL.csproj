@@ -48,6 +48,10 @@
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement.IDAL\ChicStoreManagement.IDAL.csproj">
+      <Project>{8d795d95-4b37-4dfb-8b3f-5ebf887d940a}</Project>
+      <Name>ChicStoreManagement.IDAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

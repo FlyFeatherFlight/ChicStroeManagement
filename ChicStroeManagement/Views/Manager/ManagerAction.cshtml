@@ -1,4 +1,4 @@
-﻿@Model System.Data.DataTable;
+﻿
 @{
 
 
@@ -37,7 +37,7 @@ function setValue()
 
             </thead>
             <tbody>
-                @{
+                @*@{
 
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
@@ -58,10 +58,10 @@ function setValue()
                                     <option id="2">情况不符合</option>
                                     <option id="3">6</option>
                                 </select>*@
-                            </td>
-                        </tr>
-                    }
-                }
+                            @*</td>
+                        </tr>*@
+                    @*}
+                }*@
 
             </tbody>
         </table>

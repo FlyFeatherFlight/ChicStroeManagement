@@ -16,12 +16,11 @@ namespace ChicStroeManagement.Controllers
     public class AccountController : Controller
     {
 
-        DataTable dt = new DataTable("test");
+     
 
         public AccountController()
         {
-             MakeData();
-            
+           
 
         }
 
@@ -37,6 +36,17 @@ namespace ChicStroeManagement.Controllers
             ViewBag.Message = "Your contact page.";
             return View();
         }
+
+
+
+
+        public ActionResult Viewtest()
+        {
+            return View();
+        }
+
+        
+
 
         /// <summary>
         /// 登录操作
@@ -86,55 +96,8 @@ namespace ChicStroeManagement.Controllers
         }
 
 
-        public ActionResult ManagerAction() {
-            
-            
-            return View(dt);
-        }
-
-        [HttpPost]
-        public ActionResult ChangeVisitInfo(List<string> AccountName,List<string> CustomerName,List<string> StartTime,List<string> VisitWay, List<string> VisitResult,List<string> ManagerTips) {
-
-            for (int i=0;i<AccountName.Count;i++) {
-                VisitInfoModel vim = new VisitInfoModel();
-                vim.AccountName = AccountName[i];
-                vim.CustomerName = CustomerName[i];
-                vim.StartTime = DateTime.Parse( StartTime[i].ToString());
-                vim.VisitWay = VisitWay[i];
-                vim.VisitResult = VisitResult[i];
-                vim.ManagerTips = ManagerTips[i];
-            }
-            return RedirectToAction("Index", "Home");
-        }
-
-        public bool VisitInfoAdd(VisitInfoModel vim) {
-            dt = new DataTable();
-            dt.Clear();
-            dt.Rows.Add(vim);
-            return true;
-        }
-        public ActionResult ShowVisitInfo()
-        {
-            ViewData["TestData"] = dt;
-            return View();
-
-        }
-        public DataTable MakeData() {
-            
-            dt.Columns.Add("1", typeof(String));
-            dt.Columns.Add("2", typeof(String));
-            dt.Columns.Add("3", typeof(String));
-            dt.Columns.Add("4", typeof(String));
-            dt.Columns.Add("5", typeof(String));
-            dt.Columns.Add("6", typeof(String));
-            dt.Rows.Add("1", "2", "3", "4", "5", "6");
-            dt.Rows.Add("1", "2", "3", "4", "5", "6");
-            dt.Rows.Add("1", "2", "3", "4", "5", "6");
-            dt.Rows.Add("1", "2", "3", "4", "5", "6");
-            dt.Rows.Add("1", "2", "3", "4", "5", "6");
-            return dt;
-
-        }
+       
+   
     }
 
 
