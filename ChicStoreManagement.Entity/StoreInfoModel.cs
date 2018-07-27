@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChicStoreManagement.Entity
+namespace ChicStoreManagement.Model
+
 {
 
     /// <summary>
@@ -198,5 +199,4 @@ namespace ChicStoreManagement.Entity
 }
 
 
-    }
-}
+

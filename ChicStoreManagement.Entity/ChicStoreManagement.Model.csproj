@@ -7,8 +7,8 @@
     <ProjectGuid>{73609868-20E3-4042-B1E2-0A77CB59B01A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChicStoreManagement.Entity</RootNamespace>
-    <AssemblyName>ChicStoreManagement.Entity</AssemblyName>
+    <RootNamespace>ChicStoreManagement.Model</RootNamespace>
+    <AssemblyName>ChicStoreManagement.Model</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -55,10 +55,6 @@
     <Compile Include="StoreEmploeeModel.cs" />
     <Compile Include="StoreInfoModel.cs" />
     <Compile Include="StoreJobTitleModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

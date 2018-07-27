@@ -1,4 +1,4 @@
-﻿using ChicStoreManagement.Entity;
+﻿using ChicStoreManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

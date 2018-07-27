@@ -1,5 +1,5 @@
 ﻿using ChicStoreManagement.BLL;
-using ChicStoreManagement.Entity;
+using ChicStoreManagement.Model;
 using ChicStroeManagement.CustomAttributes;
 using ChicStroeManagement.ViewModel;
 using System;

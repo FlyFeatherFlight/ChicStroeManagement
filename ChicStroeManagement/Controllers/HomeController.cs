@@ -1,5 +1,5 @@
 ﻿using ChicStoreManagement.BLL;
-using ChicStoreManagement.Entity;
+using ChicStoreManagement.Model;
 using System.Web.Mvc;
 using System.Web.Security;
 using ChicStroeManagement.CustomAttributes;
