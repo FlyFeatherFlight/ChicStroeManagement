@@ -16,24 +16,22 @@ namespace ChicStroeManagement.CustomAttributes
             public void OnAuthentication(AuthenticationContext filterContext)
 
             {
+            var user = filterContext.HttpContext.User;
+            var name = filterContext.HttpContext.User.Identity.Name;
+            if (user == null || !user.Identity.IsAuthenticated)
+
+            {
+
+                filterContext.Result = new HttpUnauthorizedResult();
 
             }
+        }
 
 
 
             public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
 
             {
-
-                var user = filterContext.HttpContext.User;
-                
-            if (user == null || !user.Identity.IsAuthenticated)
-
-             {
-                
-                filterContext.Result = new HttpUnauthorizedResult();
-
-            }
 
             }
 

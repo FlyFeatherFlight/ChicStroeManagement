@@ -26,7 +26,7 @@ namespace ChicStroeManagement.Controllers
         /// 客户追踪日志审查
         /// </summary>
         /// <returns></returns>
-        public ActionResult CustomerTrackLogExamine() {
+        public ActionResult CustomerTrackLogExamineView() {
             return View();
         }
 
@@ -34,7 +34,7 @@ namespace ChicStroeManagement.Controllers
         /// 设计跟踪日志审查
         /// </summary>
         /// <returns></returns>
-        public ActionResult DesignTrackLogExamine()
+        public ActionResult DesignTrackLogExamineView()
         {
             return View();
         }
@@ -42,7 +42,7 @@ namespace ChicStroeManagement.Controllers
         /// 诚意/意向客户确认
         /// </summary>
         /// <returns></returns>
-        public ActionResult SincerityCustomerConfirm() {
+        public ActionResult SincerityCustomerConfirmView() {
 
             return View();
 

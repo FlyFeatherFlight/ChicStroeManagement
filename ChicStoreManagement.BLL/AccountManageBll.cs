@@ -28,7 +28,8 @@ namespace ChicStoreManagement.BLL
 
              {
 
-                new AccountEntity("Jarvis","ABC123"),
+                new AccountEntity("Manager","Manager123"),
+                new AccountEntity("employee","employee123"),
 
                 new AccountEntity("admin","admin123")
 

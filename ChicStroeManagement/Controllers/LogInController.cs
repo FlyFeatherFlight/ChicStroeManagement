@@ -13,12 +13,12 @@ using System.Web.Security;
 namespace ChicStroeManagement.Controllers
 {
 
-    public class AccountController : Controller
+    public class LogInController : Controller
     {
 
      
 
-        public AccountController()
+        public LogInController()
         {
            
 
