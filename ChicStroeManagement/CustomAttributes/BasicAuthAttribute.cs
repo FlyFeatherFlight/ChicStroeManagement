@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Filters;
 using System.Web.Security;
 
-namespace ChicStroeManagement.CustomAttributes
+namespace ChicStoreManagement.CustomAttributes
 {
 
         public class BasicAuthAttribute : ActionFilterAttribute, IAuthenticationFilter

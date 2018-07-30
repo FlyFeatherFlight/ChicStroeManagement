@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ChicStroeManagement.Controllers
+namespace ChicStoreManagement.Controllers
 {
     public class CustomerController : Controller
     {

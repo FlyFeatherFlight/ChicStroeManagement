@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 
-namespace ChicStroeManagement.ViewModel
+namespace ChicStoreManagement.ViewModel
 {
     /// <summary>
     /// 访问实体类

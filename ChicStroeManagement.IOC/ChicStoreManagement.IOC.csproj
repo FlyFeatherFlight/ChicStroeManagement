@@ -7,8 +7,8 @@
     <ProjectGuid>{E5FC6EC6-3823-45CC-87BC-22F70021170B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChicStroeManagement.IOC</RootNamespace>
-    <AssemblyName>ChicStroeManagement.IOC</AssemblyName>
+    <RootNamespace>ChicStoreManagement.IOC</RootNamespace>
+    <AssemblyName>ChicStoreManagement.IOC</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

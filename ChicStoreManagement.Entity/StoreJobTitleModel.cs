@@ -18,7 +18,7 @@ namespace ChicStoreManagement.Model
             /// ID
             /// </summary>		
             private int _id;
-            public int ID
+            public virtual int ID
             {
                 get { return _id; }
                 set { _id = value; }
@@ -27,7 +27,7 @@ namespace ChicStoreManagement.Model
             /// 职务
             /// </summary>		
             private string _JobTitle;
-            public string JobTitle
+            public virtual string JobTitle
         {
                 get { return _JobTitle; }
                 set { _JobTitle = value; }

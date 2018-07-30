@@ -1,7 +1,7 @@
 ﻿using Spring.Context;
 using Spring.Context.Support;
 
-namespace ChicStroeManagement.IOC
+namespace ChicStoreManagement.IOC
 {
     public  class SpringHelper
     {

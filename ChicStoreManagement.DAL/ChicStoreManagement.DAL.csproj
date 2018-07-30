@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountManage.cs" />
+    <Compile Include="NHibernateHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreEmployeesDAL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
@@ -52,9 +60,9 @@
       <Project>{8d795d95-4b37-4dfb-8b3f-5ebf887d940a}</Project>
       <Name>ChicStoreManagement.IDAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStroeManagement.IOC.csproj">
+    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj">
       <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
-      <Name>ChicStroeManagement.IOC</Name>
+      <Name>ChicStoreManagement.IOC</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

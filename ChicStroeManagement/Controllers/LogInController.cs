@@ -1,7 +1,7 @@
 ﻿using ChicStoreManagement.BLL;
 using ChicStoreManagement.Model;
-using ChicStroeManagement.CustomAttributes;
-using ChicStroeManagement.ViewModel;
+using ChicStoreManagement.CustomAttributes;
+using ChicStoreManagement.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace ChicStroeManagement.Controllers
+namespace ChicStoreManagement.Controllers
 {
 
     public class LogInController : Controller

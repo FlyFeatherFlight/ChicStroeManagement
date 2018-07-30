@@ -18,7 +18,7 @@ namespace ChicStoreManagement.Model
         /// ID
         /// </summary>		
         private int _id;
-        public int ID
+        public virtual int ID
         {
             get { return _id; }
             set { _id = value; }
@@ -27,7 +27,7 @@ namespace ChicStoreManagement.Model
         /// 品牌ID
         /// </summary>		
         private int _brandId;
-        public int BrandID
+        public virtual int BrandID
         {
             get { return _brandId; }
             set { _brandId = value; }
@@ -36,7 +36,7 @@ namespace ChicStoreManagement.Model
         /// 编号
         /// </summary>		
         private string _serialNumber;
-        public string SerialNumber
+        public virtual string SerialNumber
         {
             get { return _serialNumber; }
             set { _serialNumber = value; }
@@ -45,7 +45,7 @@ namespace ChicStoreManagement.Model
         /// 名称
         /// </summary>		
         private string _storeName;
-        public string Name
+        public virtual string Name
         {
             get { return _storeName; }
             set { _storeName = value; }
@@ -54,7 +54,7 @@ namespace ChicStoreManagement.Model
         /// 地址
         /// </summary>		
         private string _storeAddress;
-        public string address
+        public virtual string address
         {
             get { return _storeAddress; }
             set { _storeAddress = value; }
@@ -63,7 +63,7 @@ namespace ChicStoreManagement.Model
         /// 商场
         /// </summary>		
         private string _market;
-        public string Market
+        public virtual string Market
         {
             get { return _market; }
             set { _market = value; }
@@ -72,7 +72,7 @@ namespace ChicStoreManagement.Model
         /// 地区ID
         /// </summary>		
         private int _districtId;
-        public int DistrictID
+        public virtual int DistrictID
         {
             get { return _districtId; }
             set { _districtId = value; }
@@ -81,7 +81,7 @@ namespace ChicStoreManagement.Model
         /// 负责人
         /// </summary>		
         private string _principal;
-        public string Principal
+        public virtual string Principal
         {
             get { return _principal; }
             set { _principal = value; }
@@ -90,7 +90,7 @@ namespace ChicStoreManagement.Model
         /// 负责人电话
         /// </summary>		
         private string _principalPhone;
-        public string PrincipalPhone
+        public virtual string PrincipalPhone
         {
             get { return _principalPhone; }
             set { _principalPhone = value; }
@@ -99,7 +99,7 @@ namespace ChicStoreManagement.Model
         /// 联系人
         /// </summary>		
         private string _linkman;
-        public string Linkman
+        public virtual string Linkman
         {
             get { return _linkman; }
             set { _linkman = value; }
@@ -108,7 +108,7 @@ namespace ChicStoreManagement.Model
         /// 联系人电话
         /// </summary>		
         private string _linkmanPhone;
-        public string LinkmanPhone
+        public virtual string LinkmanPhone
         {
             get { return _linkmanPhone; }
             set { _linkmanPhone = value; }
@@ -117,7 +117,7 @@ namespace ChicStoreManagement.Model
         /// 收货人
         /// </summary>		
         private string _consignee;
-        public string Consignee
+        public virtual string Consignee
         {
             get { return _consignee; }
             set { _consignee = value; }
@@ -126,7 +126,7 @@ namespace ChicStoreManagement.Model
         /// 收货地址
         /// </summary>		
         private string _receivingAddress;
-        public string ReceivingAddress
+        public virtual string ReceivingAddress
         {
             get { return _receivingAddress; }
             set { _receivingAddress = value; }
@@ -135,7 +135,7 @@ namespace ChicStoreManagement.Model
         /// 收货人电话
         /// </summary>		
         private string _consigneePhone;
-        public string ConsigneePhone
+        public virtual string ConsigneePhone
         {
             get { return _consigneePhone; }
             set { _consigneePhone = value; }
@@ -143,17 +143,17 @@ namespace ChicStoreManagement.Model
         /// <summary>
         /// 使用面积
         /// </summary>		
-        private int _使用面积;
-        public int 使用面积
+        private int _area;
+        public virtual int Area
         {
-            get { return _使用面积; }
-            set { _使用面积 = value; }
+            get { return _area; }
+            set { _area = value; }
         }
         /// <summary>
         /// 等级
         /// </summary>		
         private string _level;
-        public string Level
+        public virtual string Level
         {
             get { return _level; }
             set { _level = value; }
@@ -162,7 +162,7 @@ namespace ChicStoreManagement.Model
         /// 停用标志
         /// </summary>		
         private bool _stopFlg;
-        public bool StopFlg
+        public virtual bool StopFlg
         {
             get { return _stopFlg; }
             set { _stopFlg = value; }
@@ -171,7 +171,7 @@ namespace ChicStoreManagement.Model
         /// 制单人
         /// </summary>		
         private int _documentMaker;
-        public int DocumentMaker
+        public virtual int DocumentMaker
         {
             get { return _documentMaker; }
             set { _documentMaker = value; }
@@ -180,7 +180,7 @@ namespace ChicStoreManagement.Model
         /// 制单日期
         /// </summary>		
         private DateTime _documentData;
-        public DateTime DocumentData
+        public virtual DateTime DocumentData
         {
             get { return _documentData; }
             set { _documentData = value; }
@@ -189,7 +189,7 @@ namespace ChicStoreManagement.Model
         /// 密码
         /// </summary>		
         private string _password;
-        public string Password
+        public virtual string Password
         {
             get { return _password; }
             set { _password = value; }

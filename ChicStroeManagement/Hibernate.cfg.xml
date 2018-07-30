@@ -14,7 +14,9 @@ for your own use before compile tests in VisualStudio.
       Server=47.98.38.206;database=chic;uid=chensaihua;pwd=csh#123456
     </property>
     <!--NHibernate方言（Dialect）的类名 - 可以让NHibernate使用某些特定的数据库平台的特性-->
-    <property name="dialect">NHibernate.Dialect.MsSql2008Dialect</property>
+    <property name="dialect">NHibernate.Dialect.MsSql2012Dialect</property>
+    <!--在控制台显示SQL-->
+    <property name="show_sql">true</property>
     <!--指定映射文档中所在程序集-->
     <mapping  assembly="ChicStoreManagement.Model"/>
   </session-factory>

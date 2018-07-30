@@ -16,7 +16,7 @@ namespace ChicStoreManagement.Model
         /// ID
         /// </summary>		
         private int _id;
-        public int ID
+        public virtual int ID
         {
             get { return _id; }
             set { _id = value; }
@@ -25,7 +25,7 @@ namespace ChicStoreManagement.Model
         /// 店铺ID
         /// </summary>		
         private int _storeId;
-        public int StoreID
+        public virtual int StoreID
         {
             get { return _storeId; }
             set { _storeId = value; }
@@ -34,7 +34,7 @@ namespace ChicStoreManagement.Model
         /// 编号
         /// </summary>		
         private string _serialNumber;
-        public string SerialNumber
+        public virtual string SerialNumber
         {
             get { return _serialNumber; }
             set { _serialNumber = value; }
@@ -43,7 +43,7 @@ namespace ChicStoreManagement.Model
         /// 姓名
         /// </summary>		
         private string _name;
-        public string Name
+        public virtual string Name
         {
             get { return _name; }
             set { _name = value; }
@@ -52,7 +52,7 @@ namespace ChicStoreManagement.Model
         /// 性别
         /// </summary>		
         private string _gender;
-        public string Gender
+        public virtual string Gender
         {
             get { return _gender; }
             set { _gender = value; }
@@ -61,7 +61,7 @@ namespace ChicStoreManagement.Model
         /// 职务ID
         /// </summary>		
         private int _jobId;
-        public int JobID
+        public virtual int JobID
         {
             get { return _jobId; }
             set { _jobId = value; }
@@ -70,7 +70,7 @@ namespace ChicStoreManagement.Model
         /// 联系方式
         /// </summary>		
         private string _contactWay;
-        public string ContactWay
+        public virtual string ContactWay
         {
             get { return _contactWay; }
             set { _contactWay = value; }
@@ -79,7 +79,7 @@ namespace ChicStoreManagement.Model
         /// 停用标志
         /// </summary>		
         private bool _stopFlg;
-        public bool StopFlg
+        public virtual bool StopFlg
         {
             get { return _stopFlg; }
             set { _stopFlg = value; }
@@ -88,7 +88,7 @@ namespace ChicStoreManagement.Model
         /// 制单人
         /// </summary>		
         private int _documentMaker;
-        public int DocumentMaker
+        public virtual int DocumentMaker
         {
             get { return _documentMaker; }
             set { _documentMaker = value; }
@@ -97,7 +97,7 @@ namespace ChicStoreManagement.Model
         /// 制单日期
         /// </summary>		
         private DateTime _documentData;
-        public DateTime DocumentData
+        public virtual DateTime DocumentData
         {
             get { return _documentData; }
             set { _documentData = value; }
@@ -106,7 +106,7 @@ namespace ChicStoreManagement.Model
         /// 密码
         /// </summary>		
         private string _password;
-        public string Password
+        public virtual string Password
         {
             get { return _password; }
             set { _password = value; }

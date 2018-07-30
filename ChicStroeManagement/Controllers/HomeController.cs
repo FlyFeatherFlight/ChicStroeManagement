@@ -2,9 +2,9 @@
 using ChicStoreManagement.Model;
 using System.Web.Mvc;
 using System.Web.Security;
-using ChicStroeManagement.CustomAttributes;
+using ChicStoreManagement.CustomAttributes;
 
-namespace ChicStroeManagement.Controllers
+namespace ChicStoreManagement.Controllers
 {
      [BasicAuthAttribute]
     public class HomeController: Controller

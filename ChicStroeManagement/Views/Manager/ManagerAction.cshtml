@@ -1,71 +1,93 @@
 ﻿
+@model IEnumerable<ChicStoreManagement.Model.StoreEmploeeModel>
 @{
-
-
-    ViewBag.Title = "ManagerAction";
-
+    ViewBag.Title = "Index";
 }
+<h2>Index</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StoreID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JobID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactWay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StopFlg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentMaker)
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentData)
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        
+        </th>
+        
+       
+        <th style="width:180px;"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StoreID)
+        </td>
 
-<script type="text/javascript">
-function setValue()
-{
-    var x = document.getElementById("Select1")
-    var s=x.options[x.selectedIndex].value
-    alert(s)
-    document.getElementById("pp").innerHTML = s
- }
-</script>
-   
-
-<div>
-
-    <form action="@Url.Action("ChangeVisitInfo")" class="form-group" method="post">
-          @{var dt = Model; }
-        <table class="table table-striped">
-            <caption>
-                店员回访信息
-            </caption>
-            <thead>
-                <tr>
-                    <td>销售雇员</td>
-                    <td>客户名</td>
-                    <td>回访时间</td>
-                    <td>回访方式</td>
-                    <td>状态</td>
-                    <td>店长确认</td>
-                </tr>
-
-            </thead>
-            <tbody>
-                @*@{
-
-                    for (int i = 0; i < dt.Rows.Count; i++)
-                    {
-                        <tr>
-
-                            <td name="AccountName">@dt.Rows[i][0].ToString()</td>
-                            <td name="CustomerName">@dt.Rows[i][1].ToString()</td>
-                            <td name="StartTime">@dt.Rows[i][2].ToString()</td>
-                            <td name="VisitWay">@dt.Rows[i][3].ToString()</td>
-                            <td name="VisitResult">@dt.Rows[i][4].ToString()</td>
-
-                            <td >
-
-                             <a>   <input id="Text1" type="text" name="ManagerTips" value="@dt.Rows[i][5].ToString()" /></a>
-
-                                @*<select id="selectid" onchange="setValue()">
-                                    <option id="1">情况属实</option>
-                                    <option id="2">情况不符合</option>
-                                    <option id="3">6</option>
-                                </select>*@
-                            @*</td>
-                        </tr>*@
-                    @*}
-                }*@
-
-            </tbody>
-        </table>
-        <input id="Submit1" type="submit" value="提交" />
-    </form>
-</div>
-
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SerialNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JobID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactWay)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StopFlg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DocumentMaker)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DocumentData)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+    }
+</table>

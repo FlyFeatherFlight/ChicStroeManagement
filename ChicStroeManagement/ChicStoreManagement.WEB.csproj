@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChicStroeManagement</RootNamespace>
-    <AssemblyName>ChicStroeManagement</AssemblyName>
+    <RootNamespace>ChicStoreManagement</RootNamespace>
+    <AssemblyName>ChicStoreManagement</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -193,6 +193,7 @@
     <Content Include="images\tick.png" />
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -293,9 +294,9 @@
       <Project>{f90ce3c0-6991-45b0-92a8-6649bd2cf5dd}</Project>
       <Name>ChicStoreManagement.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStroeManagement.IOC.csproj">
+    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj">
       <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
-      <Name>ChicStroeManagement.IOC</Name>
+      <Name>ChicStoreManagement.IOC</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

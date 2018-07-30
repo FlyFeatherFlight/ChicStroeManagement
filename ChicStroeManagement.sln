@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagement.WEB", "ChicStroeManagement\ChicStroeManagement.WEB.csproj", "{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.WEB", "ChicStroeManagement\ChicStoreManagement.WEB.csproj", "{5A1B2671-7CAE-45AD-9471-49BF0B0D260C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.DAL", "ChicStoreManagement.DAL\ChicStoreManagement.DAL.csproj", "{F6313EE4-E778-4FF5-A12B-C73B09D0665D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.BLL", "ChicStoreManagement.BLL\ChicStoreManagement.BLL.csproj", "{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.Model", "ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj", "{73609868-20E3-4042-B1E2-0A77CB59B01A}"
 EndProject
@@ -25,9 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.IDAL", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.IBLL", "ChicStoreManagement.IBLL\ChicStoreManagement.IBLL.csproj", "{6E2839A4-6EF0-4EB4-8F42-9BCF760E4A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagement.DALSessionFactory", "ChicStroeManagement.DALSessionFactory\ChicStroeManagement.DALSessionFactory.csproj", "{84C5662D-01E3-48AC-98C5-E48E1E00A117}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.DALSessionFactory", "ChicStroeManagement.DALSessionFactory\ChicStoreManagement.DALSessionFactory.csproj", "{84C5662D-01E3-48AC-98C5-E48E1E00A117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStroeManagement.IOC", "ChicStroeManagement.IOC\ChicStroeManagement.IOC.csproj", "{E5FC6EC6-3823-45CC-87BC-22F70021170B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.IOC", "ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj", "{E5FC6EC6-3823-45CC-87BC-22F70021170B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChicStoreManagement.BLL", "ChicStoreManagement.BLL\ChicStoreManagement.BLL.csproj", "{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +43,6 @@ Global
 		{F6313EE4-E778-4FF5-A12B-C73B09D0665D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6313EE4-E778-4FF5-A12B-C73B09D0665D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6313EE4-E778-4FF5-A12B-C73B09D0665D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73609868-20E3-4042-B1E2-0A77CB59B01A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{73609868-20E3-4042-B1E2-0A77CB59B01A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73609868-20E3-4042-B1E2-0A77CB59B01A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -71,6 +67,10 @@ Global
 		{E5FC6EC6-3823-45CC-87BC-22F70021170B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5FC6EC6-3823-45CC-87BC-22F70021170B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5FC6EC6-3823-45CC-87BC-22F70021170B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,13 +78,13 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5A1B2671-7CAE-45AD-9471-49BF0B0D260C} = {AF0226DF-8C72-4120-B683-07AA4E63E229}
 		{F6313EE4-E778-4FF5-A12B-C73B09D0665D} = {9FB91DEC-4FB1-40E1-B1DF-74A9BFCEE513}
-		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F} = {4B0B7872-AA4D-4D02-81D5-95C2272D889C}
 		{73609868-20E3-4042-B1E2-0A77CB59B01A} = {D89CEE23-C4A5-4B45-A22D-3F4FBD4B2477}
 		{F90CE3C0-6991-45B0-92A8-6649BD2CF5DD} = {D89CEE23-C4A5-4B45-A22D-3F4FBD4B2477}
 		{8D795D95-4B37-4DFB-8B3F-5EBF887D940A} = {9FB91DEC-4FB1-40E1-B1DF-74A9BFCEE513}
 		{6E2839A4-6EF0-4EB4-8F42-9BCF760E4A41} = {4B0B7872-AA4D-4D02-81D5-95C2272D889C}
 		{84C5662D-01E3-48AC-98C5-E48E1E00A117} = {9FB91DEC-4FB1-40E1-B1DF-74A9BFCEE513}
 		{E5FC6EC6-3823-45CC-87BC-22F70021170B} = {D89CEE23-C4A5-4B45-A22D-3F4FBD4B2477}
+		{3DBEE590-7A1B-4665-BD12-6F28382E0F4F} = {4B0B7872-AA4D-4D02-81D5-95C2272D889C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3BB62CA3-4954-4353-831E-BCCDBF1D19A4}
