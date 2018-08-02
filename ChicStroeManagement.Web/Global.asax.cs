@@ -12,6 +12,10 @@ namespace ChicStoreManagement
     {
         protected void Application_Start()
         {
+
+            MvcHandler.DisableMvcResponseHeader = true; //隐藏ASP.NET MVC版本
+
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

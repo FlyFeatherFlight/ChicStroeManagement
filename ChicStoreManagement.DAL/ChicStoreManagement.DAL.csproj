@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -37,7 +40,9 @@
       <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,23 +52,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountManage.cs" />
-    <Compile Include="NHibernateHelper.cs" />
+    <Compile Include="BaseRepository.cs" />
+    <Compile Include="DalFactory.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DalFactory.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DbContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoreEmployeesDAL.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
-      <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
-      <Name>ChicStoreManagement.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChicStoreManagement.IDAL\ChicStoreManagement.IDAL.csproj">
       <Project>{8d795d95-4b37-4dfb-8b3f-5ebf887d940a}</Project>
       <Name>ChicStoreManagement.IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement.Model\ChicStoreManagement.Model.csproj">
+      <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
+      <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj">
       <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
       <Name>ChicStoreManagement.IOC</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DalFactory.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DalFactory.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

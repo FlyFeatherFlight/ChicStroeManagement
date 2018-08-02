@@ -1,93 +1,115 @@
-﻿
-@model IEnumerable<ChicStoreManagement.Model.StoreEmploeeModel>
+﻿@model ChicStoreManagement.Model.销售_店铺员工档案
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "人员";
 }
-<h2>Index</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StoreID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.JobID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ContactWay)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StopFlg)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DocumentMaker)
-        <th>
-            @Html.DisplayNameFor(model => model.DocumentData)
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        
-        </th>
-        
-       
-        <th style="width:180px;"></th>
-    </tr>
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StoreID)
-        </td>
+@using ChicStoreManagement.BLL;
 
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SerialNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.JobID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ContactWay)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StopFlg)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocumentMaker)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocumentData)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
-        </td>
-        
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-    }
+
+
+<div id="DivBrowerUser" class="easyui-dialog" style="width: 700px; height: 240px;
+    padding: 10px 20px" closed="true" resizable="true" modal="true" buttons="#dlg-buttons">
+    <table id="tblBrower" class="table tab-content" >
+        <thead class="usertablerow2">
+            <tr>
+                <td class="_width">
+                    姓名：
+                </td>
+               
+                <td class="width0">
+                    职务ID：
+                </td>
+                
+                <td class="_width">
+                    性别：
+                </td>
+                
+
+
+                <td>
+                    编号：
+                </td>
+                
+                <td>
+                    联系方式：
+                </td>
+                
+                <td></td>
+
+
+                <td>
+                    创建人：
+                </td>
+                
+                <td>
+                    制单日期：
+                </td>
+               
+                <td>
+                    制单人：
+                </td>
+                
+
+
+                <td>
+                    角色：
+                </td>
+            </tr>
+            </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span id="v_Name"></span>
+                </td>
+    
+           
+                <td class="time">
+                    <span id="v_Jobid"></span>
+                </td>
+            
+           
+                <td class="width2">
+                    <span id="v_Gender"></span>
+                </td>
+           
+           
+                <td>
+                    <span id="v_SerNumber"></span>
+                </td>
+           
+           
+                <td>
+                    <span id="v_ContactWay"></span>
+                </td>
+           
+            
+                <td>
+                    <span id="v_StopFlag"></span>
+                </td>
+           
+                <td>
+                    <span id="v_CreateTime"></span>
+                </td>
+
+                   <td>
+                 <span id="v_CreateUser"></span>
+                  </td>
+            </tr>
+           
+            
+        </tbody>
 </table>
+</div>
+<!-------------------------创建和修改层---------------------------------->
+<div id="myWin">
+</div>
+
+    <script type="text/javascript" language="javascript">
+        $.ajax({
+            url: "Manager/getData",
+            type: "GET",
+            data: "json",
+        }, function (data) {
+            $("v_Name").text(data.姓名);
+
+        }
+    </script>

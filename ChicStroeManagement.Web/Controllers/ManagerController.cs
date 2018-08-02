@@ -6,13 +6,15 @@ using System.Web;
 using System.Web.Mvc;
 using ChicStoreManagement.BLL;
 using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
+using ChicStoreManagement.Model.ViewModel;
 
 namespace ChicStoreManagement.Controllers
 {
     public class ManagerController : Controller
     {
 
-        IStoreEmployeesBLL storeEmployeeBLL = new StoreEmployeeBLL(); 
+       
         // GET: Manager
         /// <summary>
         /// 本月交易情况
@@ -27,15 +29,33 @@ namespace ChicStoreManagement.Controllers
         /// 当前员工信息
         /// </summary>
         /// <returns></returns>
+        
         public ActionResult ManagerAction()
         {
-            var result=storeEmployeeBLL.GetAll(c=>1==1);
-            
-            return View(result);
+           
+            return View();
 
             
         }
+        public JsonResult getData() {
+            StoreEmployeeBLL storeEmployeeBLL = new StoreEmployeeBLL();
+            var rows = storeEmployeeBLL.GetAll("销售_店铺员工档案");
+          
+            if (rows.Any())
+            {
 
+                //是否可以省
+                return Json(new
+                {
+                    total = rows.Count(),
+                    rows = rows.OrderBy(o => o.ID)
+                }, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+            return null ;
+                }
 
         #region  目标管理
         public ActionResult StoreGoalView() {

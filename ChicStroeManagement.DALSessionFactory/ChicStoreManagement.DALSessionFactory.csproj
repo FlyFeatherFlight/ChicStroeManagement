@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -37,7 +40,9 @@
       <HintPath>..\..\..\BaiduNetdiskDownload\MVC\Chapter07\Chapter07\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBSession.cs" />
+    <Compile Include="DbSession2.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbSession.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DBSessionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,17 +65,22 @@
       <Project>{f6313ee4-e778-4ff5-a12b-c73b09d0665d}</Project>
       <Name>ChicStoreManagement.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
-      <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
-      <Name>ChicStoreManagement.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChicStoreManagement.IDAL\ChicStoreManagement.IDAL.csproj">
       <Project>{8d795d95-4b37-4dfb-8b3f-5ebf887d940a}</Project>
       <Name>ChicStoreManagement.IDAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DbSession.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DbSession2.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

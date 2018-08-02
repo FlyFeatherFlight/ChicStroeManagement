@@ -1,47 +1,38 @@
-﻿using ChicStoreManagement.DAL;
-using ChicStoreManagement.IBLL;
-using ChicStoreManagement.IDAL;
+﻿using ChicStoreManagement.IBLL;
 using ChicStoreManagement.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChicStoreManagement.BLL
 {
-   
-       public class StoreEmployeeBLL : IStoreEmployeesBLL
+    public partial class StoreEmployeeBLL : BaseService<销售_店铺员工档案>,IStoreEmployeesBLL
+
+    {
+
+        public bool UpdateUser(销售_店铺员工档案 storeEmploee)
         {
-            private IStoreEmployeesDAL storeEmployeesDAL = new StoreEmployeesDAL();
-            public bool AddUser(StoreEmploeeModel storeEmploee)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool DelUser(StoreEmploeeModel storeEmploee)
-            {
-                throw new NotImplementedException();
-            }
-
-            //根据条件获取的员工信息
-            public List<StoreEmploeeModel> GetAll(Expression<Func<StoreEmploeeModel, bool>> where)
-            {
-                return storeEmployeesDAL.GetAll(where);
-
-            }
-
-            public StoreEmploeeModel SelOne(string id)
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool UpdateUser(StoreEmploeeModel storeEmploee)
-            {
-                throw new NotImplementedException();
-            }
+            throw new NotImplementedException();
         }
+
+        public bool AddUser(销售_店铺员工档案 storeEmploee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DelUser(销售_店铺员工档案 storeEmploee)
+        {
+            throw new NotImplementedException();
+        }
+       
+        public 销售_店铺员工档案 GetById(int id)
+        {
+            return null;
+        }
+
+        public IQueryable<销售_店铺员工档案> GetAll(string entity)
+        {
+            return this.GetCurrentDbSession.I销售_店铺员工档案Repository.LoadEntitiesAll(entity);
+        } 
     }
-
-
+}
+ 

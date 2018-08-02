@@ -33,6 +33,12 @@
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,16 +57,62 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountEntity.cs" />
+    <Compile Include="MetadataModel\销售_店铺员工档案.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StoreEmploeeModel.cs" />
-    <Compile Include="StoreInfoModel.cs" />
-    <Compile Include="StoreJobTitleModel.cs" />
+    <Compile Include="SearchParam\OrderByExt.cs" />
+    <Compile Include="StoreEmploees.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoreEmploees.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreEmploees.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoreEmploees.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StoreEmploees.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StoreEmploees.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\Easyui.cs" />
+    <Compile Include="销售_店铺员工档案.cs">
+      <DependentUpon>StoreEmploees.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_店铺档案.cs">
+      <DependentUpon>StoreEmploees.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_职务.cs">
+      <DependentUpon>StoreEmploees.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mappings\StoreEmploeeModel.hbm.xml" />
+    <EntityDeploy Include="StoreEmploees.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>StoreEmploees.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <None Include="StoreEmploees.edmx.diagram">
+      <DependentUpon>StoreEmploees.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="StoreEmploees.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StoreEmploees.Context.cs</LastGenOutput>
+      <DependentUpon>StoreEmploees.edmx</DependentUpon>
+    </Content>
+    <Content Include="StoreEmploees.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>StoreEmploees.edmx</DependentUpon>
+      <LastGenOutput>StoreEmploees.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

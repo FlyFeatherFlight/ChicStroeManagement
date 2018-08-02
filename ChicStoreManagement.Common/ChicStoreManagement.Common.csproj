@@ -7,8 +7,8 @@
     <ProjectGuid>{F90CE3C0-6991-45B0-92A8-6649BD2CF5DD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChicStoreManagement</RootNamespace>
-    <AssemblyName>ChicStoreManagement</AssemblyName>
+    <RootNamespace>ChicStoreManagement.Common</RootNamespace>
+    <AssemblyName>ChicStoreManagement.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,12 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ChicStoreManagement.Entity\ChicStoreManagement.Model.csproj">
-      <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
-      <Name>ChicStoreManagement.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

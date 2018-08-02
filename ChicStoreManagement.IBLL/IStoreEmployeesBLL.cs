@@ -11,20 +11,20 @@ namespace ChicStoreManagement.IBLL
     public interface IStoreEmployeesBLL
     {
         //获取所有的员工信息
-        List<StoreEmploeeModel> GetAll(Expression<Func<StoreEmploeeModel, bool>> where);
+        IQueryable<销售_店铺员工档案> GetAll(string entity);
 
         ///更新员工信息
-        bool UpdateUser(StoreEmploeeModel storeEmploee);
+        bool UpdateUser(销售_店铺员工档案 storeEmploee);
 
         ///添加员工信息
-        bool AddUser(StoreEmploeeModel storeEmploee);
+        bool AddUser(销售_店铺员工档案 storeEmploee);
 
         ///删除员工信息
-        bool DelUser(StoreEmploeeModel storeEmploee);
+        bool DelUser(销售_店铺员工档案 storeEmploee);
 
         ///使用唯一的标识查询实体集
         ///</summary>
         ///<param name="id">标识</param>
-        StoreEmploeeModel SelOne(string id);
+        销售_店铺员工档案 GetById(int id);
     }
 }
