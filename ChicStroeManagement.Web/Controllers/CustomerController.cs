@@ -61,11 +61,11 @@ namespace ChicStoreManagement.Controllers
 
         //    return true;
         //}
-        //public ActionResult ShowVisitInfo()
-        //{
+        public ActionResult ShowVisitInfo()
+        {
 
-        //    return View();
+            return View();
 
-        //}
+        }
     }
 }

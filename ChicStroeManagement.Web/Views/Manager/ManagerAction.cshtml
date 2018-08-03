@@ -8,108 +8,149 @@
 
 <div id="DivBrowerUser" class="easyui-dialog" style="width: 700px; height: 240px;
     padding: 10px 20px" closed="true" resizable="true" modal="true" buttons="#dlg-buttons">
-    <table id="tblBrower" class="table tab-content" >
+    <table id="tblBrower" class="table tab-content">
         <thead class="usertablerow2">
             <tr>
                 <td class="_width">
                     姓名：
                 </td>
-               
+
                 <td class="width0">
                     职务ID：
                 </td>
-                
+
                 <td class="_width">
                     性别：
                 </td>
-                
+
 
 
                 <td>
                     编号：
                 </td>
-                
+
                 <td>
                     联系方式：
                 </td>
-                
+
                 <td></td>
 
 
                 <td>
                     创建人：
                 </td>
-                
+
                 <td>
                     制单日期：
                 </td>
-               
+
                 <td>
                     制单人：
                 </td>
-                
+
 
 
                 <td>
                     角色：
                 </td>
             </tr>
-            </thead>
+        </thead>
         <tbody>
             <tr>
                 <td>
                     <span id="v_Name"></span>
                 </td>
-    
-           
+
+
                 <td class="time">
                     <span id="v_Jobid"></span>
                 </td>
-            
-           
+
+
                 <td class="width2">
                     <span id="v_Gender"></span>
                 </td>
-           
-           
+
+
                 <td>
                     <span id="v_SerNumber"></span>
                 </td>
-           
-           
+
+
                 <td>
                     <span id="v_ContactWay"></span>
                 </td>
-           
-            
+
+
                 <td>
                     <span id="v_StopFlag"></span>
                 </td>
-           
+
                 <td>
                     <span id="v_CreateTime"></span>
                 </td>
 
-                   <td>
-                 <span id="v_CreateUser"></span>
-                  </td>
+                <td>
+                    <span id="v_CreateUser"></span>
+                </td>
             </tr>
-           
-            
+
+
         </tbody>
-</table>
+    </table>
 </div>
 <!-------------------------创建和修改层---------------------------------->
-<div id="myWin">
+
+
+
+<p>
+    <a href="javascript:void(0)" onclick="javascript:getJsonData();">GetJsonData1</a><br />
+
+    <a href="javascript:void(0)" onclick="javascript: getJsonDataByPost();">GetJsonData2</a><br />
+
+</p>
+
+<div id="dataDiv">
+
+    暂无数据
+
 </div>
 
-    <script type="text/javascript" language="javascript">
-        $.ajax({
-            url: "Manager/getData",
-            type: "GET",
-            data: "json",
-        }, function (data) {
-            $("v_Name").text(data.姓名);
+@Scripts.Render("~/bundles/jquery")
 
-        }
-    </script>
+<h2>json示例项目View</h2>
+<script type="text/javascript" language="javascript">
+
+    function getJsonData() {
+
+        var str = "";
+
+        $.getJSON("/Manager/getData",null, function (data) {
+
+            var tt = "";
+
+            $.each(data, function (k, v) {
+
+                tt += k + "：" + v + "<br/>";
+
+            });
+
+            $("#dataDiv").html(tt);
+
+        });
+
+    }
+
+    function getJsonDataByPost() {
+
+        $.ajax({
+            url: "/Manager/getData",
+            type: "POST",
+            dataType: "json",
+            data: {},
+            success: function (data) {
+                $("#dataDiv").html(data.Name);
+            }
+        })
+    }
+</script>

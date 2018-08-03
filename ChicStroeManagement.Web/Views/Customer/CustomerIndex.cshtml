@@ -3,5 +3,26 @@
     ViewBag.Title = "CustomerIndex";
 }
 
-<h2>CustomerIndex</h2>
+<div class="row">
+    <div class="col-md-4">
+        <h2>客户登记</h2>
+        <p>
 
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("AddCustomerView","Customer")">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>修改客户信息</h2>
+        <p>
+
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("EditCustomerView","Customer")">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>展示回访信息</h2>
+        <p>
+
+        </p>
+        <p><a class="btn btn-default" href="@Url.Action("ShowVisitInfo","Customer")">Learn more &raquo;</a></p>
+    </div>
+</div>

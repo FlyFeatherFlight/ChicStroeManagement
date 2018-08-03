@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
   
 
-    @Scripts.Render("~/bundles/jscookie")
+    @Scripts.Render("~/Scripts/jquery.cookie.js" )
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
@@ -30,10 +30,6 @@
                 </ul>
 
                 <ul class="nav navbar-nav right">
-
-                    @*<li id="login">@Html.ActionLink("登录", "SignIn", "Account")</li>*@
-                    @*<li id="signUp">@Html.ActionLink("注册", "SignUp", "Account")</li>*@
-
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
                 </ul>
 

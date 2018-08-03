@@ -32,10 +32,9 @@ namespace ChicStoreManagement.Controllers
         
         public ActionResult ManagerAction()
         {
-           
             return View();
 
-            
+
         }
         public JsonResult getData() {
             StoreEmployeeBLL storeEmployeeBLL = new StoreEmployeeBLL();
@@ -43,14 +42,18 @@ namespace ChicStoreManagement.Controllers
           
             if (rows.Any())
             {
-
+                var s = Json(new
+                {
+                    total = rows.Count(),
+                    rows = rows.OrderBy(o => o.ID)
+                }, JsonRequestBehavior.AllowGet);
                 //是否可以省
                 return Json(new
                 {
                     total = rows.Count(),
                     rows = rows.OrderBy(o => o.ID)
                 }, JsonRequestBehavior.AllowGet);
-
+              
 
             }
 
