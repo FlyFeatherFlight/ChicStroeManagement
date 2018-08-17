@@ -42,19 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IBaseRepositoryDAL.cs" />
-    <Compile Include="IDal.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IDal.tt</DependentUpon>
-    </Compile>
-    <Compile Include="IDBContextFactory.cs" />
-    <Compile Include="IDBSession.cs" />
-    <Compile Include="IDBSession1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IDBSession.tt</DependentUpon>
-    </Compile>
+    <Compile Include="IBaseDAL.cs" />
+    <Compile Include="IEmployeeDAL.cs" />
+    <Compile Include="IStoreDAL.cs" />
+    <Compile Include="IPositionDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,17 +54,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="IDal.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IDal.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="IDBSession.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IDBSession1.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

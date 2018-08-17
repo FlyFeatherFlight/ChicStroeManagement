@@ -1,38 +1,52 @@
-﻿@{
-    ViewBag.Title = "CHIC门店管理首页";
-}
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @{
+        ViewBag.Title = "CHIC门店管理首页";
+    }
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 
-<div class="jumbotron">
-    <h1>CHIC</h1>
-    <p class="lead">
-        <br/>
-    </p>
-    <p>Chic Casa 希可家居</p>
-    <p><a href="" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    
-</div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>客户登记</h2>
-        <p>
-            
+    @Scripts.Render("~/Scripts/jquery.cookie.js")
+</head>
+<body>
+    <div class="jumbotron">
+        <h1>CHIC</h1>
+        <p class="lead">
+            <br />
         </p>
-        <p><a class="btn btn-default" href="@Url.Action("CustomerIndex","Customer")">Learn more &raquo;</a></p>
+        <p>Chic Casa 希可家居</p>
+        <p><a href="" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+
     </div>
-    <div class="col-md-4">
-        <h2>设计方案日志</h2>
-        <p></p>
-        <p><a class="btn btn-default" href="@Url.Action("DesignSchemeIndex","DesignScheme")">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>客户登记</h2>
+            <p>
+
+            </p>
+            <p><a class="btn btn-default" href="@Url.Action("CustomerIndex","Customer")">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>设计方案日志</h2>
+            <p></p>
+            <p><a class="btn btn-default" href="@Url.Action("DesignSchemeIndex","DesignScheme")">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>意向客户日志</h2>
+            <p></p>
+            <p><a class="btn btn-default" href="@Url.Action("TrackLogIndex","CustomerTrackLog")">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>店长管理</h2>
+            <p></p>
+            <p><a class="btn btn-default" href="@Url.Action("ManagerAction","Manager")">Learn more &raquo;</a></p>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>意向客户日志</h2>
-        <p></p>
-        <p><a class="btn btn-default" href="@Url.Action("TrackLogIndex","CustomerTrackLog")">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>店长管理</h2>
-        <p></p>
-        <p><a class="btn btn-default" href="@Url.Action("ManagerAction","Manager")">Learn more &raquo;</a></p>
-    </div>
-</div>
+    </body>
+</html>

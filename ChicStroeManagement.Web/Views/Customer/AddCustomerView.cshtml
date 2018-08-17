@@ -3,92 +3,164 @@
     ViewBag.Title = "AddCustomerView";
 }
 
-<h2>AddCustomerView</h2>
 
-   
-    <form role="form" class="form-inline" action="~/Controllers/Customer/AddCustomer">
-        <table class="table table-striped table-bordered table-hover table-condensed  table-responsive ">
+<div class="container mt-5 table-responsive">
+    <h2>添加客户信息</h2>
+
+
+    <form role="form" class="form-inline " action="~/Controllers/Customer/AddCustomer">
+        <div>
+            <b>接待编号： 日期： 店铺： 接待人： 进店时间：<input id="ComeStoreTime" type="time" class=" form-control" /> 离店时间：<input id="Text1" type="time" class=" form-control" /> 时长：</b>
+        </div>
+        <table class="table table-bordered table-striped table- " style="table-layout:fixed">
+
             <tr>
-               <td>
-                   <label>
-                       客户名<input id="Text1" type="text" class=" form-control" />
+                <td width="12%">
+                    客户名:
+                </td>
+                <td width="88%">
+                    <input id="Text1" type="text" class=" form-control" />
 
-                       <input id="Checkbox1" type="checkbox" value="男">先生<input id="Checkbox1" type="checkbox" value=" 女" />女士
-                   </label> 
-               </td>
-            </tr>
-            <tr >
-                <td>
-                    <label>
 
-                        联系电话：<input id="ContactPhone" type="text" class=" form-control" />电子邮箱：<input id="Email" type="email" class=" form-control" />
-                    </label>
+                    &nbsp;<input id="Checkbox1" type="checkbox" value="男">先生 &nbsp;<input id="Checkbox1" type="checkbox" value="女" />女士
+
                 </td>
+
+            </tr>
+            <tr>
+                <td>出生日期:</td><td><input id="Text1" type="date" class=" form-control" /></td>
+            </tr>
+            <tr><td>职业：</td><td><input id="Text1" type="text" class=" form-control" /></td></tr>
+            <tr>
+                <td>
+                    联系电话：
+                </td>
+                <td><input id="ContactPhone" type="text" class=" form-control" /></td>
+            </tr>
+            <tr>
+                <td>电子邮箱：</td>
+                <td><input id="Email" type="email" class=" form-control" /></td>
+
+
+            </tr>
+            <tr>
+                <td>社交软件：</td>
+                <td><input id="Email" type="email" class=" form-control" /></td>
+
+
+            </tr>
+            <tr>
+                <td>客户类型:</td>
+                <td><input id="Checkbox1" type="checkbox" />冷漠 &nbsp;<input id="Checkbox1" type="checkbox" />干练 &nbsp;<input id="Checkbox1" type="checkbox" />暴躁 &nbsp;<input id="Checkbox1" type="checkbox" />慎重 &nbsp;<input id="Checkbox1" type="checkbox" />迷糊 &nbsp;<input id="Checkbox1" type="checkbox" />沉默寡言</td>
+            </tr>
+            <tr>
+                <td>
+                    客户来源：
+                </td>
+                <td><input id="Checkbox1" type="checkbox" />直客 &nbsp;<input id="Checkbox1" type="checkbox" />老客户 &nbsp;<input id="Checkbox1" type="checkbox" />设计师 &nbsp;<input id="Checkbox1" type="checkbox" />软装部 &nbsp;<input id="Checkbox1" type="checkbox" />经销商</td>
             </tr>
 
-            <tr >
-                <td> 您使用的空间：<input id="Checkbox1" type="checkbox" />商空<input id="Checkbox1" type="checkbox" />样板间<input id="Checkbox1" type="checkbox" />住宅（旧换新）<input id="Checkbox1" type="checkbox" />新屋 <input id="Checkbox1" type="checkbox" />其他<input id="Text1" type="text" class=" form-control" /></td>
+            <tr>
+                <td> 您使用的空间：</td>
+                <td><input id="Checkbox1" type="checkbox" />商空 &nbsp;<input id="Checkbox1" type="checkbox" />样板间 &nbsp;<input id="Checkbox1" type="checkbox" />住宅（旧换新） &nbsp;<input id="Checkbox1" type="checkbox" />新屋  &nbsp;<input id="Checkbox1" type="checkbox" />其他 &nbsp;<input id="Text1" type="text" class=" form-control" /></td>
             </tr>
 
-            <tr >
+            <tr>
                 <td>
-                    <label>
-                        您使用空间面积：<input id="area" type="text" class=" form-control" /> 户型：<input id="roomstyle" type="text" class=" form-control" />
-                    </label>
+
+                    您使用空间面积：
                 </td>
-            </tr>
-            <tr >
                 <td>
-                    <label>
-                        装修情况：<input id="Checkbox1" type="checkbox" />待交房<input id="Checkbox1" type="checkbox" />已交房（精装）<input id="Checkbox1" type="checkbox" />正在装修 &nbsp; 进度：<input id="Text1" type="text" class=" form-control" />
-                    </label>
-                </td>
-            </tr>
-            <tr >
-                <td>
-                    <label>装修风格：<input id="Checkbox1" type="checkbox" />欧式<input id="Checkbox1" type="checkbox" />现代<input id="Checkbox1" type="checkbox" />中式<input id="Checkbox1" type="checkbox" />其他<input id="Text1" type="text" class=" form-control" /> </label>
-                </td>
-            </tr>
-            <tr >
-                <td>
-                    <label>预计使用时间：<input id="Text1" type="number" class=" form-control" />年<input id="Text1" type="number" class=" form-control" />月<input id="Text1" type="number" class=" form-control" />日</label>
-                    <label>如何得知品牌：<input id="Text1" type="text" class=" form-control" />来店次数：<input id="Text1" type="text" class=" form-control" /></label>
-                </td>
-            </tr>
-            <tr >
-                <td>
-                    <label>您购买产品的安装地址：<input id="Text1" type="text" class=" form-control" />城市<input id="Text1" type="text" class=" form-control" />区域<input id="Text1" type="text" class=" form-control" />楼盘</label>
-                    <label> <input id="Text1" type="text" class=" form-control" />栋<input id="Text1" type="text" class=" form-control" />单元<input id="Text1" type="text" class=" form-control" />号<input id="Text1" type="text" class=" form-control" /></label>
-                </td>
-            </tr>
-            <tr >
-                <td>
-                    您预计购买的产品：<table>
-                        <tr>
-                            <td>
-                                客厅：<input id="Text1" type="text" class=" form-control" />
-                            </td>
-                            <td>
-                                餐厅：<input id="Text1" type="text" class=" form-control" />
-                            </td>
-                            <td>
-                                卧室：<input id="Text1" type="text" class=" form-control" />
-                            </td>
-                            <td>
-                                其它：<input id="Text1" type="text" class=" form-control" />
-                            </td>
-                        </tr>
-                    </table>
+                    <input id="area" type="text" class=" form-control" />
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label>
-                        您对我们的建议：<textarea id="TextArea1" rows="5" cols="60"class=" form-control"></textarea>
-                    </label>
+                    户型：
+                </td>
+                <td>
+                    <input id="roomstyle" type="text" class=" form-control" />
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    装修情况：
+                </td>
+                <td>
+                    <input id="Checkbox1" type="checkbox" />待交房 &nbsp;<input id="Checkbox1" type="checkbox" />已交房（精装） &nbsp;<input id="Checkbox1" type="checkbox" />正在装修 &nbsp; 进度：<input id="Text1" type="text" class=" form-control" />
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    装修风格：
+                </td>
+                <td>
+                    <input id="Checkbox1" type="checkbox" />欧式 &nbsp;<input id="Checkbox1" type="checkbox" />现代 &nbsp;<input id="Checkbox1" type="checkbox" />中式 &nbsp;<input id="Checkbox1" type="checkbox" />其他 &nbsp;<input id="Text1" type="text" class=" form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    预计使用时间：
+                </td>
+                <td>
+                    <input id="Text1" type="date" class=" form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    如何得知品牌：
+                </td>
+                <td><input id="Text1" type="text" class=" form-control" /></td>
+            </tr>
+            <tr>
+                <td>
+                    来店次数：
+                </td>
+                <td><input id="Text1" type="text" class=" form-control" /></td>
+
+
+            </tr>
+            <tr>
+                <td>
+                    您购买产品的安装地址：
+                </td>
+                <td>
+                    <input id="Text1" type="text" class=" form-control" />城市<input id="Text1" type="text" class=" form-control" />区域<input id="Text1" type="text" class=" form-control" />楼盘
+                    <input id="Text1" type="text" class=" form-control" />栋<input id="Text1" type="text" class=" form-control" />单元<input id="Text1" type="text" class=" form-control" />号
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    您预计购买的产品：
+                </td>
+
+
+                <td>
+                    客厅：<input id="Text1" type="text" class=" form-control" />
+
+                    餐厅：<input id="Text1" type="text" class=" form-control" />
+
+                    卧室：<input id="Text1" type="text" class=" form-control" />
+
+                    其它：<input id="Text1" type="text" class=" form-control" />
+                </td>
+
+
+            </tr>
+            <tr>
+                <td>
+
+                    您对我们的建议：
+                </td>
+                <td width="200px">
+                    <textarea id="TextArea1" rows="5" cols="60" class=" form-control"></textarea>
                 </td>
             </tr>
         </table>
     </form>
 
 
+</div>

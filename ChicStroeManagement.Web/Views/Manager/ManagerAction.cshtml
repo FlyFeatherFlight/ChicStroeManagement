@@ -1,156 +1,90 @@
-﻿@model ChicStoreManagement.Model.销售_店铺员工档案
+﻿@model PagedList.IPagedList<ChicStoreManagement.Model.销售_店铺员工档案>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
 @{
-    ViewBag.Title = "人员";
+
+
+                ViewBag.Title = "人员管理";
 }
-@using ChicStoreManagement.BLL;
 
 
-
-<div id="DivBrowerUser" class="easyui-dialog" style="width: 700px; height: 240px;
-    padding: 10px 20px" closed="true" resizable="true" modal="true" buttons="#dlg-buttons">
-    <table id="tblBrower" class="table tab-content">
-        <thead class="usertablerow2">
-            <tr>
-                <td class="_width">
-                    姓名：
-                </td>
-
-                <td class="width0">
-                    职务ID：
-                </td>
-
-                <td class="_width">
-                    性别：
-                </td>
-
-
-
-                <td>
-                    编号：
-                </td>
-
-                <td>
-                    联系方式：
-                </td>
-
-                <td></td>
+<br />
+<br />
+@using (Html.BeginForm("ManagerAction", "Manager", FormMethod.Get))
+{
+    <p>
+        通过姓名查找: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.Number })
+        </th>
+        <th>编号</th>
+        <th>
+            @Html.ActionLink("姓名", "ManagerAction", new { sortOrder = ViewBag.Name })
+        </th>
 
 
-                <td>
-                    创建人：
-                </td>
+        <th>性别</th>
+        <th>店铺ID</th>
+        <th>职务ID</th>
+        <th>联系方式</th>
+        <th>停用标志</th>
+        <th>制单人</th>
+        <th>制单日期</th>
+        <th>密码</th>
+        <th>操作</th>
 
-                <td>
-                    制单日期：
-                </td>
-
-                <td>
-                    制单人：
-                </td>
-
-
-
-                <td>
-                    角色：
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <span id="v_Name"></span>
-                </td>
-
-
-                <td class="time">
-                    <span id="v_Jobid"></span>
-                </td>
-
-
-                <td class="width2">
-                    <span id="v_Gender"></span>
-                </td>
-
-
-                <td>
-                    <span id="v_SerNumber"></span>
-                </td>
-
-
-                <td>
-                    <span id="v_ContactWay"></span>
-                </td>
-
-
-                <td>
-                    <span id="v_StopFlag"></span>
-                </td>
-
-                <td>
-                    <span id="v_CreateTime"></span>
-                </td>
-
-                <td>
-                    <span id="v_CreateUser"></span>
-                </td>
-            </tr>
-
-
-        </tbody>
-    </table>
-</div>
-<!-------------------------创建和修改层---------------------------------->
-
-
-
-<p>
-    <a href="javascript:void(0)" onclick="javascript:getJsonData();">GetJsonData1</a><br />
-
-    <a href="javascript:void(0)" onclick="javascript: getJsonDataByPost();">GetJsonData2</a><br />
-
-</p>
-
-<div id="dataDiv">
-
-    暂无数据
-
-</div>
-
-@Scripts.Render("~/bundles/jquery")
-
-<h2>json示例项目View</h2>
-<script type="text/javascript" language="javascript">
-
-    function getJsonData() {
-
-        var str = "";
-
-        $.getJSON("/Manager/getData",null, function (data) {
-
-            var tt = "";
-
-            $.each(data, function (k, v) {
-
-                tt += k + "：" + v + "<br/>";
-
-            });
-
-            $("#dataDiv").html(tt);
-
-        });
-
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.编号)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.姓名)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.性别)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.店铺ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.职务ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.联系方式)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.停用标志)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.制单人)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.制单日期)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.密码)
+            </td>
+            <td>
+                @Html.ActionLink("修改", "EditEmploee", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Manager", new { id = item.ID })
+            </td>
+        </tr>
     }
-
-    function getJsonDataByPost() {
-
-        $.ajax({
-            url: "/Manager/getData",
-            type: "POST",
-            dataType: "json",
-            data: {},
-            success: function (data) {
-                $("#dataDiv").html(data.Name);
-            }
-        })
-    }
-</script>
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("ManagerAction",
+    new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}))

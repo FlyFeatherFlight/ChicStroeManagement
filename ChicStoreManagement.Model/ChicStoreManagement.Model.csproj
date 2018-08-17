@@ -57,9 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountEntity.cs" />
-    <Compile Include="MetadataModel\销售_店铺员工档案.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchParam\OrderByExt.cs" />
     <Compile Include="StoreEmploees.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -75,7 +73,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>StoreEmploees.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\Easyui.cs" />
     <Compile Include="销售_店铺员工档案.cs">
       <DependentUpon>StoreEmploees.tt</DependentUpon>
     </Compile>

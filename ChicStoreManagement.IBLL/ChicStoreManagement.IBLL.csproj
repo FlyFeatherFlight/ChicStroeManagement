@@ -42,11 +42,8 @@
   <ItemGroup>
     <Compile Include="AccountManageIBll.cs" />
     <Compile Include="IBaseService.cs" />
-    <Compile Include="IBLL.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IBLL.tt</DependentUpon>
-    </Compile>
+    <Compile Include="IPositionBLL.cs" />
+    <Compile Include="IStoreBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IStoreEmployeesBLL.cs" />
   </ItemGroup>
@@ -59,12 +56,6 @@
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="IBLL.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IBLL.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

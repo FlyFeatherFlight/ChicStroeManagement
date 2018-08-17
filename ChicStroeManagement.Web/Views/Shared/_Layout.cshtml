@@ -4,12 +4,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - CHIC店面管理平台</title>
+    <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-  
 
-    @Scripts.Render("~/Scripts/jquery.cookie.js" )
+    
+    @*@Scripts.Render("~/Scripts/jquery.cookie.js")*@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
@@ -45,9 +45,8 @@
             <p>&copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
         </footer>
     </div>
-    @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jquery")
-  
+    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
 </body>

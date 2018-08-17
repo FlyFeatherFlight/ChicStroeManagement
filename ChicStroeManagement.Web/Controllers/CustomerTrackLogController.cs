@@ -37,5 +37,11 @@ namespace ChicStoreManagement.Controllers
 
             return View();
         }
+
+
+        public ActionResult AddTrakRecordView()
+        {
+            return View();
+        }
     }
 }

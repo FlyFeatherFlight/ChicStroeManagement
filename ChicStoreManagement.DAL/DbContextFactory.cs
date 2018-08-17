@@ -10,19 +10,18 @@ using System.Threading.Tasks;
 
 namespace ChicStoreManagement.DAL
 {
-    public class DbContextFactory : IDBContextFactory
+    public partial class DbContextFactory 
     {
         /// <summary>
-        /// 保证EF上下文实例是线程内唯一。
+        /// 创建EF上下文对象,已存在就直接取,不存在就创建,保证线程内是唯一。
         /// </summary>
-        /// <returns></returns>
-        public DbContext CreateDbContext()
+        public static DbContext Create()
         {
-            DbContext dbContext = (DbContext)CallContext.GetData("dbContext");
+            DbContext dbContext = CallContext.GetData("DbContext") as DbContext;
             if (dbContext == null)
             {
                 dbContext = new chicEntities();
-                CallContext.SetData("dbContext", dbContext);
+                CallContext.SetData("DbContext", dbContext);
             }
             return dbContext;
         }

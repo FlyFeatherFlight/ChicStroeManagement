@@ -3,40 +3,14 @@
     ViewBag.Title = "ShowVisitInfo";
 }
 
-<table class="table table-striped">
-    <caption>
-        店员回访信息
-    </caption>
-    <thead>
-        <tr>
-            <td>销售雇员</td>
-            <td>客户名</td>
-            <td>回访时间</td>
-            <td>回访方式</td>
-            <td>状态</td>
-            <td>店长确认</td>
-        </tr>
+<h1>顾客信息</h1>
+<form role="form" class="form-inline" action="~/Controllers/Customer/EditCustomer">
+    <table class="table table-responsive ">
+       <thead><tr>
+           <td>客户姓名</td><td>性别</td><td>联系电话</td><td>电子邮箱</td><td>使用的空间</td><td>使用面积</td><td>户型</td><td>装修情况</td><td>进度</td><td>装修风格</td><td>预计使用时间</td><td>来店次数</td><td>安装地址</td><td>预计购买产品</td><td>接待销售</td><td>接待时间</td>
+           </tr></thead>
+    </table>
+</form>
 
-    </thead>
-    <tbody>
-        @*@{
-            var dt = (DataTable)ViewData["TestData"];
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                <tr>
 
-                    <td>@dt.Rows[i][0].ToString()</td>
-                    <td>@dt.Rows[i][1].ToString()</td>
-                    <td>@dt.Rows[i][2].ToString()</td>
-                    <td>@dt.Rows[i][3].ToString()</td>
-                    <td>@dt.Rows[i][4].ToString()</td>
-                    <td>
-                      @dt.Rows[i][5].ToString()
-                    </td>
-                </tr>
-            }
-        }*@
-
-    </tbody>
-</table>
 

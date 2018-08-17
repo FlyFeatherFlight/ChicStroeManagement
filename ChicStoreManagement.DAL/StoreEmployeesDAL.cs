@@ -10,19 +10,10 @@ using System.Linq;
 
 namespace ChicStoreManagement.DAL
 {
-    public class StoreEmployeesDAL : BaseRepository<销售_店铺员工档案>, I销售_店铺员工档案Repository
+    public partial class StoreEmployeesDAL :BaseDAL<销售_店铺员工档案>,IEmployeeDAL
     {
        
-
-        public IQueryable<销售_店铺员工档案> GetAll(string entity)
-        {
-            return LoadEntitiesAll(entity);
-        }
-
-        public 销售_店铺员工档案 GetById(int id)
-        {
-            return FindSingleOrDefault(e => e.ID == id);
-        }
+        
     }
 
 }

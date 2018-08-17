@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\ChicStroeManagement.Web\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -52,14 +52,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountManage.cs" />
-    <Compile Include="BaseRepository.cs" />
-    <Compile Include="DalFactory.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DalFactory.tt</DependentUpon>
-    </Compile>
+    <Compile Include="BaseDAL.cs" />
     <Compile Include="DbContextFactory.cs" />
+    <Compile Include="PositionDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreDAL.cs" />
     <Compile Include="StoreEmployeesDAL.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +72,6 @@
       <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
       <Name>ChicStoreManagement.IOC</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DalFactory.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DalFactory.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
