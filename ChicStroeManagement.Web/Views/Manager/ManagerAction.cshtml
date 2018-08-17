@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<ChicStoreManagement.Model.销售_店铺员工档案>
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.Employees>
 @using PagedList.Mvc;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" />
@@ -6,12 +6,14 @@
 @{
 
 
-                ViewBag.Title = "人员管理";
+    ViewBag.Title = "员工列表";
 }
 
+<hr />
+<p>
+    @Html.ActionLink("添加新员工", "AddEmploee",new { @class = "form-control", @Style = "font-size:12px" })
+</p>
 
-<br />
-<br />
 @using (Html.BeginForm("ManagerAction", "Manager", FormMethod.Get))
 {
     <p>
@@ -19,72 +21,82 @@
         <input id="Submit1" type="submit" value="查询" />
     </p>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.Number })
-        </th>
-        <th>编号</th>
-        <th>
-            @Html.ActionLink("姓名", "ManagerAction", new { sortOrder = ViewBag.Name })
-        </th>
-
-
-        <th>性别</th>
-        <th>店铺ID</th>
-        <th>职务ID</th>
-        <th>联系方式</th>
-        <th>停用标志</th>
-        <th>制单人</th>
-        <th>制单日期</th>
-        <th>密码</th>
-        <th>操作</th>
-
-    </tr>
-    @foreach (var item in Model)
+<hr />
+@{ if (Model != null)
     {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.编号)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.姓名)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.性别)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.店铺ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.职务ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.联系方式)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.停用标志)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.制单人)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.制单日期)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.密码)
-            </td>
-            <td>
-                @Html.ActionLink("修改", "EditEmploee", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Manager", new { id = item.ID })
-            </td>
+            <th>
+                @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.Number })
+            </th>
+            <th>编号</th>
+            <th>
+                @Html.ActionLink("姓名", "ManagerAction", new { sortOrder = ViewBag.Name })
+            </th>
+
+
+            <th>性别</th>
+            <th>店铺</th>
+            <th>职务</th>
+            <th>联系方式</th>
+            <th>停用标志</th>
+            <th>制单人</th>
+            <th>制单日期</th>
+            <th>密码</th>
+            <th>操作</th>
+
         </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.编号)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.姓名)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.性别)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.店铺)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.职务)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.联系方式)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.停用标志)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.制单人)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.制单日期)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.密码)
+                </td>
+                <td>
+                    @Html.ActionLink("修改", "EditEmploee", new { id = item.ID }) |
+                    @Html.ActionLink("删除", "DelEmploee", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </table>
+        }
+        else
+        {
+      <p>
+          <h1 style="color:red">数据查询失败！！！</h1>
+      </p>
+        }
     }
-</table>
 <br />
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("ManagerAction",
-    new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}))
+@Html.PagedListPager(Model, page => Url.Action("ManagerAction",new {page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}))

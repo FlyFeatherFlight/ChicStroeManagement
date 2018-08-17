@@ -1,10 +1,10 @@
-﻿@model ChicStoreManagement.Model.销售_店铺员工档案
-
+﻿
+@model ChicStoreManagement.WEB.ViewModel.Employees
 @{
     ViewBag.Title = "修改员工信息";
 }
 
-@using (Html.BeginForm("Edit", "Manager", FormMethod.Post) )
+@using (Html.BeginForm("EmployeeEdit", "Manager", FormMethod.Post) )
 {
     @Html.AntiForgeryToken()
 <div class="form-horizontal">
@@ -21,7 +21,11 @@
     <div class="form-group">
         @Html.LabelFor(model => model.性别, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.性别)
+            @*@Html.EnumDropDownListFor(model => model.性别)*@
+            <select id="性别" name=性别>
+                <option>男</option>
+                <option>女</option>
+            </select>
             @Html.ValidationMessageFor(model => model.性别)
         </div>
     </div>
@@ -33,17 +37,17 @@
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.职务ID, new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.职务, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.职务ID)
-            @Html.ValidationMessageFor(model => model.职务ID)
+            @Html.DropDownList("职务",ViewBag.PositionList as IEnumerable<SelectListItem>);
+            @Html.ValidationMessageFor(model => model.职务)
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.店铺ID, new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.店铺, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.店铺ID)
-            @Html.ValidationMessageFor(model => model.店铺ID)
+            @Html.DropDownList("店铺", ViewBag.StoreList as IEnumerable<SelectListItem>);
+            @Html.ValidationMessageFor(model => model.店铺)
         </div>
     </div>
     <div class="form-group">
@@ -89,5 +93,5 @@
 </div>
 }
 <div>
-    @Html.ActionLink("返回上一页", "ManagerAction")
+    @Html.ActionLink("返回员工管理页", "ManagerAction")
 </div>
