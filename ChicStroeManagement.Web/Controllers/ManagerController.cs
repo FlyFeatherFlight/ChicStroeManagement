@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ChicStoreManagement.CustomAttributes;
 using ChicStoreManagement.IBLL;
 using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
@@ -45,11 +46,10 @@ namespace ChicStoreManagement.Controllers
         /// 员工信息首页，员工信息查询
         /// </summary>
         /// <returns></returns>
+       
         public ViewResult ManagerAction(string sortOrder, string searchString, string currentFilter, int? page)
         {
-            //只提取前10 位
-            //var list = storeEmployeesBLL.GetPagedList(1,10, p => true,p => true,true).ToList();
-
+            
             ViewBag.CurrentSort = sortOrder;
             ViewBag.Number = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.Name = sortOrder == "last" ? "last_desc" : "last";
@@ -71,6 +71,7 @@ namespace ChicStoreManagement.Controllers
             {
                 workers = workers.Where(w => w.姓名.Contains(searchString));//通过姓名查找
             }
+            Session["Name"] = workers.FirstOrDefault();
             #region 排序，默认按ID升序
             switch (sortOrder)
             {
@@ -103,8 +104,14 @@ namespace ChicStoreManagement.Controllers
         /// 员工信息添加页面
         /// </summary>
         /// <returns></returns>
-        public ViewResult AddEmploee() {
-
+        [AuthorizeFilter]
+        public ActionResult AddEmploee() {
+            List<销售_职务> positionList = positionBLL.GetModels(p => true).ToList();
+            SelectList PositionList = new SelectList(positionList, "职务", "职务");
+            ViewBag.PositionList = PositionList;
+            List<销售_店铺档案> storeList = storeBLL.GetModels(p => true).ToList();
+            SelectList StoreList = new SelectList(storeList, "名称", "名称");
+            ViewBag.StoreList = StoreList;
             return View();
         }
 
@@ -114,20 +121,33 @@ namespace ChicStoreManagement.Controllers
         /// <param name="models"></param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      
         public ActionResult EmployeeAdd(Employees models) {
 
-            var Emodel = storeEmployeesBLL.GetModels(p => p.ID == models.ID);
-            Emodel.First().店铺ID = storeBLL.GetModel(p => p.名称 == models.店铺).ID;
-            Emodel.First().职务ID = positionBLL.GetModel(p => p.职务 == models.职务).ID;
+            销售_店铺员工档案 Emodel = new 销售_店铺员工档案
+            {
+                ID = models.ID,
+                姓名=models.姓名,
+                性别=models.性别,
+                编号=models.编号,
+                联系方式=models.联系方式,
+                停用标志=models.停用标志,
+                制单人=models.制单人,
+                制单日期=models.制单日期,
+                密码=models.密码,
+                店铺ID = storeBLL.GetModel(p => p.名称 == models.店铺).ID,
+                职务ID = positionBLL.GetModel(p => p.职务 == models.职务).ID
+            };
+
+           
             if (ModelState.IsValid)
             {
 
-                storeEmployeesBLL.Add(Emodel.First());
+                storeEmployeesBLL.Add(Emodel);
 
                 return RedirectToAction("ManagerAction");
             }
-            return View(models);
+            return View();
           
         }
         #endregion

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ChicStoreManagement.CustomAttributes;
+using log4net;
+using System.IO;
+using System.Threading;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -14,14 +14,42 @@ namespace ChicStoreManagement
         {
 
             MvcHandler.DisableMvcResponseHeader = true; //隐藏ASP.NET MVC版本
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath("Log4Net.config")));;//读取Log4Net配置信息
 
+            MvcHandler.DisableMvcResponseHeader = true; //隐藏ASP.NET MVC版本
 
             AreaRegistration.RegisterAllAreas();
+           
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            BundleConfig.RegisterBundles(BundleTable.Bundles); //启用文件合并和压缩
             //注册AutoFac
             AutoFacConfig.Register();
+
+            RecordLog();
+        }
+
+
+        //采用分布式的方式记录日志
+        private void RecordLog()
+       {
+        //    ThreadPool.QueueUserWorkItem((a) =>
+        //    {
+        //        while (true)
+        //        {
+        //            if (SystemIExceptionFilter.client.GetListCount("errorMsg") > 0)
+        //            {
+        //                string ex = SystemIExceptionFilter.client.DequeueItemFromList("errorMsg");
+        //                ILog logger = LogManager.GetLogger("errorMsg");
+        //                logger.Error(ex);
+        //            }
+        //            else
+        //            {
+        //                Thread.Sleep(3000);//如果队列中没有数据，休息避免造成CPU的占用.
+        //            }
+        //        }
+        //    });
         }
     }
 }

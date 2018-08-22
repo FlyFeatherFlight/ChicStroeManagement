@@ -21,7 +21,10 @@ namespace ChicStoreManagement.Model
 
         public string Password { get; set; }
 
-
+        /// <summary>
+        /// 职位，角色
+        /// </summary>
+        public string Position { get; set; }
 
         public AccountEntity() { } //无参构造函数
 
@@ -35,5 +38,9 @@ namespace ChicStoreManagement.Model
 
         }
 
+        public AccountEntity(string name, string password, string position) : this(name, password)
+        {
+            Position = position;
+        }
     }
 }

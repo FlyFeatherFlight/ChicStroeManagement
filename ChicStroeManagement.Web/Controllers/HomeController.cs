@@ -6,7 +6,7 @@ using ChicStoreManagement.CustomAttributes;
 
 namespace ChicStoreManagement.Controllers
 {
-     [BasicAuthAttribute]
+    
     public class HomeController: Controller
     {
         /// <summary>

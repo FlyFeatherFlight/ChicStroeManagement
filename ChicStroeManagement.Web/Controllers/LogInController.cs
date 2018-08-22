@@ -9,20 +9,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using ChicStoreManagement.WEB.ViewModel;
+using ChicStoreManagement.IBLL;
 
 namespace ChicStoreManagement.Controllers
 {
-
+    [AllowAnonymous]
     public class LogInController : Controller
     {
 
-     
+        private readonly IStoreEmployeesBLL storeEmployeesBLL;
+        private readonly IStoreBLL storeBLL;
+        private readonly IPositionBLL positionBLL;
+        private IQueryable<Employees> workers;
 
-        public LogInController()
+        public LogInController(IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IPositionBLL positionBLL)
         {
-           
-
+            this.storeEmployeesBLL = storeEmployeesBLL;
+            this.storeBLL = storeBLL;
+            this.positionBLL = positionBLL;
+            BuildEmploess();
         }
+
 
         // GET: Account
 
@@ -55,15 +63,16 @@ namespace ChicStoreManagement.Controllers
         /// <param name="password">用户密码</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Login(string userName, string password)
+ 
+        public ActionResult Login(Employees employees)
         {
-            AccountEntity account = new AccountEntity { Name = userName, Password = password };
-            if (new AccountManageBll().LoginCheck(account))
+            employees.IQueryEmployees = workers;
+            if (workers.First(p=>p.姓名==employees.姓名)!=null&& workers.First(p => p.姓名 == employees.姓名).密码==employees.密码)
 
             {
-
-                FormsAuthentication.SetAuthCookie(account.Name, true);
-               
+                //Session["CurrentUser"] = Database.Users.Find(u => u.Name == user);
+                FormsAuthentication.SetAuthCookie(employees.姓名, true);
+                Session["Employee"] =workers.First(p => p.姓名 == employees.姓名);
                 return RedirectToAction("Index", "Home");
 
             }
@@ -96,8 +105,44 @@ namespace ChicStoreManagement.Controllers
         }
 
 
-       
-   
+        /// <summary>
+        /// 将员工数据优化
+        /// </summary>
+        public void BuildEmploess()
+        {
+            List<Employees> employeesList = new List<Employees>();
+
+            if (workers == null)
+            {
+
+                var worker = storeEmployeesBLL.GetModels(p => true);//查询初始员工信息
+                #region 对员工信息进行数据优化
+
+
+                foreach (var item in worker)
+                {
+                    Employees employees = new Employees
+                    {
+                        ID = item.ID,
+                        停用标志 = item.停用标志,
+                        制单人 = item.制单人,
+                        制单日期 = item.制单日期,
+                        姓名 = item.姓名,
+                        密码 = item.密码,
+                        性别 = item.性别,
+                        编号 = item.编号,
+                        职务 = positionBLL.GetModel(p => p.ID == item.职务ID).职务,
+                        店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称,
+                        联系方式 = item.联系方式
+                    };
+                    employeesList.Add(employees);
+                }
+                #endregion
+                workers = employeesList.AsEnumerable().AsQueryable();
+            }
+        }
+
+
     }
 
 

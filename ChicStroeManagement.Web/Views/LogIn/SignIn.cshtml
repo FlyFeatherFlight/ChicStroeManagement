@@ -1,28 +1,49 @@
-﻿
+﻿@model ChicStoreManagement.WEB.ViewModel.Employees
 @{
     ViewBag.Title = "CHIC门店管理登录页面";
 }
 
 <div class="jumbotron">
     <h1>CHIC</h1>
-   
+
     <p>Chic Casa 希可家居</p>
     <p><a href="" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-<form class="form-inline" role="form" action="@Url.Action("Login") " method="post">
-    <p>请登陆系统：<br /><p>
-        <div class="form-group">
-            <label for="userName" class="sr-only"> 用户名</label>
-            <input name="userName" type="text" class="form-control" placeholder="请填写用户名" />
-        </div>
-        <div class="form-group">
-            <label for="password" class="sr-only"> 密码</label>
-            <input name="password" class="form-control" type="password" placeholder="请填写密码" />
-        </div>
+@using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new { @class = "form-inline", @role = "form" }))
+{
+    <p>请登陆系统：<br /></p>
+        @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+                @Html.ValidationSummary(true)
+      
+                @Html.LabelFor(model => model.姓名)
+            
+                @Html.EditorFor(model => model.姓名, new { @class = "form-control", @placeholder = "请填写登录名" })
+                @Html.ValidationMessageFor(model => model.姓名)
 
-        <input id="Submit1" type="submit" value="登录" />
+       
+      
+                @Html.LabelFor(model => model.密码)
+       
+                @Html.EditorFor(model => model.密码, new { @class = "form-control",@placeholder = "请填写密码", @type = "password" })
+                @Html.ValidationMessageFor(model => model.密码)
 
-        <div style="color:#ff0000"> @ViewBag.ErrorMessage</div>
+            
+       
+        <input id="Submit1" type="submit" value="登录"  class="form-control"/>
+    </div>
+}
+@*<form class="form-inline" role="form" action="@Url.Action("Login") " method="post">
+    
+            <div class="form-group">
+                <label for="password" class="sr-only"> 密码</label>
+                <input name="password" class="form-control" type="password" placeholder="请填写密码" />
+            </div>
 
-    </form>
+            <input id="Submit1" type="submit" value="登录" />
+
+            <div style="color:#ff0000"> @ViewBag.ErrorMessage</div>
+          
+</form>*@
