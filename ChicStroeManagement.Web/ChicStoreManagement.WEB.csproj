@@ -210,6 +210,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Employees.cs" />
+    <Compile Include="ViewModel\EmployeesIQuery.cs" />
     <Compile Include="ViewModel\VisitInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\VisitInfoModelList.cs" />
@@ -955,6 +956,14 @@
     <ProjectReference Include="..\ChicStoreManagement.Common\ChicStoreManagement.Common.csproj">
       <Project>{f90ce3c0-6991-45b0-92a8-6649bd2cf5dd}</Project>
       <Name>ChicStoreManagement.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement.DAL\ChicStoreManagement.DAL.csproj">
+      <Project>{F6313EE4-E778-4FF5-A12B-C73B09D0665D}</Project>
+      <Name>ChicStoreManagement.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChicStoreManagement.IDAL\ChicStoreManagement.IDAL.csproj">
+      <Project>{8D795D95-4B37-4DFB-8B3F-5EBF887D940A}</Project>
+      <Name>ChicStoreManagement.IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\ChicStoreManagement.Model\ChicStoreManagement.Model.csproj">
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>

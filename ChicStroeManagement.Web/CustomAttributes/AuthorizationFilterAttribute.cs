@@ -1,4 +1,5 @@
-﻿using ChicStoreManagement.WEB.ViewModel;
+﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.WEB.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,18 @@ namespace ChicStoreManagement.CustomAttributes
     public class AuthorizeFilter : ActionFilterAttribute
     {
         FilterContextInfo fcinfo;
-        private bool isstate = true;
-        private bool islogin = false;
+        private bool isstate;
+        
         private  string userName;
         private Employees Employees;
+        
+
+
+
+
+
+
+
 
         // OnActionExecuted 在执行操作方法后由 ASP.NET MVC 框架调用。
         // OnActionExecuting 在执行操作方法之前由 ASP.NET MVC 框架调用。
@@ -32,7 +41,7 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-
+            
 
             if (filterContext == null)
             {
@@ -50,32 +59,37 @@ namespace ChicStoreManagement.CustomAttributes
 
             #region 是否已经登陆
             var user = filterContext.HttpContext.User;
-            var name = filterContext.HttpContext.User.Identity.Name;
+            userName = filterContext.HttpContext.User.Identity.Name;
             if (user == null || !user.Identity.IsAuthenticated)
 
             {
+                isstate = false;
                 filterContext.Result = new ContentResult { Content = @"抱歉,您还未登录！" };
                 filterContext.Result = new HttpUnauthorizedResult();
                 return;
             }
-            
+            else {
+
+                isstate = true;
+            }
             #endregion
 
-          
+
 
             #region
             #endregion
             #region 权限验证
-            
-            Employees = new Employees();
-            filterContext.HttpContext.Session["Employee"] = "1";
-            Employees = filterContext.HttpContext.Session["Employee"] as Employees;
+
+
+            SetEmployee(filterContext);
+           
+           
             fcinfo = new FilterContextInfo(filterContext);
-            var actionName = fcinfo.ActionName;//获取域名
-            var contollerName = fcinfo.ControllerName;//获取 controllerName 名称
+            string actionName = fcinfo.ActionName;//获取域名
+            string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
 
-            Checkstate(Employees.职务, actionName, contollerName);
+            CheckAuth(Employees.职务, actionName, contollerName);
            
             if (isstate)//如果满足
             {
@@ -91,13 +105,34 @@ namespace ChicStoreManagement.CustomAttributes
             #endregion
         }
 
-        private void Checkstate(string positionName, string actionName, string contollerName)
+        private void SetEmployee(ActionExecutingContext filterContext)
         {
-            islogin = true;
-            if (actionName == "Manager" && positionName == "店长" || actionName == "" && positionName == "销售顾问" || positionName == "" && positionName == "驻店设计师")
+            if (userName!=null)
             {
-                isstate = true;
+              Employees=filterContext.HttpContext.Session["Employee"] as Employees;
+            } 
+        }
 
+        /// <summary>
+        /// 检查权限
+        /// </summary>
+        /// <param name="positionName">职位</param>
+        /// <param name="actionName">action名字</param>
+        /// <param name="contollerName">control名</param>
+        private void CheckAuth(string positionName, string actionName, string contollerName)
+        {
+            if (contollerName == "Home") {
+                return;//如果是首页任何人都可以访问
+            }
+            if (contollerName == "Manager" && positionName == "店长" || contollerName== "ManagerExamine" &&positionName == "店长")
+            {
+                isstate = true;//店长操作
+                return;
+            }
+            if (contollerName == "Manager" && positionName == "老板" || contollerName == "ManagerExamine" && positionName == "老板")
+            {
+                isstate = true;//老板操作
+                return;
             }
         }
 

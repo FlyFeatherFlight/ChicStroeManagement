@@ -10,29 +10,30 @@
     <p><a href="" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-@using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new { @class = "form-inline", @role = "form" }))
+@using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new {@class="form-inline", @role = "form" }))
 {
     <p>请登陆系统：<br /></p>
         @Html.AntiForgeryToken()
-    <div class="form-horizontal">
+    <div class="form-group">
         <hr />
-                @Html.ValidationSummary(true)
-      
-                @Html.LabelFor(model => model.姓名)
-            
-                @Html.EditorFor(model => model.姓名, new { @class = "form-control", @placeholder = "请填写登录名" })
-                @Html.ValidationMessageFor(model => model.姓名)
+        @Html.ValidationSummary(true)
 
-       
-      
-                @Html.LabelFor(model => model.密码)
-       
-                @Html.EditorFor(model => model.密码, new { @class = "form-control",@placeholder = "请填写密码", @type = "password" })
-                @Html.ValidationMessageFor(model => model.密码)
+        @Html.LabelFor(model => model.姓名)
 
-            
-       
-        <input id="Submit1" type="submit" value="登录"  class="form-control"/>
+        @Html.TextBoxFor(model => model.姓名, new { @class = "form-control", @placeholder = "请填写登录名" })
+        @Html.ValidationMessageFor(model => model.姓名)
+
+
+
+        @Html.LabelFor(model => model.密码)
+
+        @Html.TextBoxFor(model => model.密码, new { @class = "form-control", @placeholder = "请填写密码", @type = "password" })
+        @Html.ValidationMessageFor(model => model.密码)
+
+
+
+        <input id="Submit1" type="submit" value="登录" class="form-control" />
+        <div class="form-group"><label style="color:red;font-size:medium">@TempData["msg"]</label></div>
     </div>
 }
 @*<form class="form-inline" role="form" action="@Url.Action("Login") " method="post">

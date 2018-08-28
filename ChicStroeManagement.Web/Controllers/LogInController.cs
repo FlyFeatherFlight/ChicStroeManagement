@@ -67,12 +67,18 @@ namespace ChicStoreManagement.Controllers
         public ActionResult Login(Employees employees)
         {
             employees.IQueryEmployees = workers;
-            if (workers.First(p=>p.姓名==employees.姓名)!=null&& workers.First(p => p.姓名 == employees.姓名).密码==employees.密码)
+            if (workers.FirstOrDefault(p=>p.姓名==employees.姓名)!=null&& workers.FirstOrDefault(p => p.姓名 == employees.姓名).密码==employees.密码)
 
             {
                 //Session["CurrentUser"] = Database.Users.Find(u => u.Name == user);
-                FormsAuthentication.SetAuthCookie(employees.姓名, true);
-                Session["Employee"] =workers.First(p => p.姓名 == employees.姓名);
+                FormsAuthentication.SetAuthCookie(employees.姓名, false);
+                HttpCookie aCookie = new HttpCookie("userName")
+                {
+                    Value = employees.姓名,
+                    Expires = DateTime.Now.AddDays(1)
+                };
+                Response.Cookies.Add(aCookie);
+                Session["Employee"] = workers.First(p => p.姓名 == employees.姓名);
                 return RedirectToAction("Index", "Home");
 
             }
@@ -81,9 +87,9 @@ namespace ChicStoreManagement.Controllers
 
             {
 
-                ViewBag.msg = "用户名或密码错误！.";
+                TempData["msg"] = "用户名或密码错误！";
 
-                return RedirectToAction("SigIn", "Account");
+                return RedirectToAction("SignIn", "LogIn");
 
             }
         }

@@ -12,6 +12,16 @@
 
 
     @Scripts.Render("~/Scripts/jquery.cookie.js")
+    <script src="~/Scripts/jquery-3.0.0.js">
+        function checkCookie() {
+           
+           var username = $.cookie('userName');
+
+          alert('Welcome again ' + username + '!');
+
+           
+        }
+    </script>
 </head>
 <body>
     <div class="jumbotron">
