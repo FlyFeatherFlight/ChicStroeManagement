@@ -17,9 +17,11 @@ namespace ChicStoreManagement.Model
         public 销售_店铺档案()
         {
             this.销售_店铺员工档案 = new HashSet<销售_店铺员工档案>();
+            this.销售_接待记录 = new HashSet<销售_接待记录>();
         }
     
         public int ID { get; set; }
+        public Nullable<int> 经销商ID { get; set; }
         public Nullable<int> 品牌ID { get; set; }
         public string 编号 { get; set; }
         public string 名称 { get; set; }
@@ -40,6 +42,8 @@ namespace ChicStoreManagement.Model
         public Nullable<System.DateTime> 制单日期 { get; set; }
         public string 密码 { get; set; }
     
+        public virtual 销售_经销商档案 销售_经销商档案 { get; set; }
         public virtual ICollection<销售_店铺员工档案> 销售_店铺员工档案 { get; set; }
+        public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
     }
 }

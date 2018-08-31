@@ -1,12 +1,6 @@
-﻿using ChicStoreManagement.IDAL;
-using ChicStoreManagement.Model;
-using System;
-using System.Collections.Generic;
+﻿using ChicStoreManagement.Model;
 using System.Data.Entity;
-using System.Linq;
 using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChicStoreManagement.DAL
 {

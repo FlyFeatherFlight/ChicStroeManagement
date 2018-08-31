@@ -7,61 +7,8 @@
     <title>@ViewBag.Title - 我的 ASP.NET 应用程序</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-    
-
-    <script src="~/Scripts/jquery-3.0.0.js">
-        function checkCookie() {
-            $('logOut').hide();
-            //var username = $.cookie('userName');
-
-            //if (username != null && username != "") {
-            //    alert('Welcome again ' + username + '!');
-            //    document.getElementById('logOut').style.visibility = 'visible';
-            //    document.getElementById('name').innerText = username;
-            //    alert('Welcome again ' + username + '!');
-
-            //}
-            //else {
-            //    document.getElementById('logOut').style.display = 'none';
-            //    alert('Welcome again ' + username + '!');
-            //    $('logOut').hide();
-            //}
-        }
-    </script>
-    <script type="text/javascript">
-        //function getCookie(c_name) {
-        //    if (document.cookie.length > 0) {
-        //        c_start = document.cookie.indexOf(c_name + "=")
-        //        if (c_start != -1) {
-        //            c_start = c_start + c_name.length + 1
-        //            c_end = document.cookie.indexOf(";", c_start)
-        //            if (c_end == -1) c_end = document.cookie.length
-        //            return unescape(document.cookie.substring(c_start, c_end))
-        //        }
-        //    }
-        //    return ""
-        //}
-        function checkCookie() {
-            $('logOut').hide();
-            //var username = $.cookie('userName');
-
-            //if (username != null && username != "") {
-            //    alert('Welcome again ' + username + '!');
-            //    document.getElementById('logOut').style.visibility = 'visible';
-            //    document.getElementById('name').innerText = username;
-            //    alert('Welcome again ' + username + '!');
-
-            //}
-            //else {
-            //    document.getElementById('logOut').style.display = 'none';
-            //    alert('Welcome again ' + username + '!');
-            //    $('logOut').hide();
-            //}
-        }
-    </script>
-
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
@@ -72,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) &nbsp; <div style="color:darkgray">欢迎您：<label></label></div>
+                @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) 
             </div>
             <div class="navbar-collapse collapse" id="two">
                 <ul class="nav navbar-nav">
@@ -98,8 +45,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+  
 
 
 </body>

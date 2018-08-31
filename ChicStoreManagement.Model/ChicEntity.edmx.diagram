@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="12678bba1f684098ac8bf1d40721a95d" Name="Diagram1">
+        <EntityTypeShape EntityType="chicModel.商品档案_型号" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.设计_设计案完结单" Width="1.5" PointX="14.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.设计_设计案完结单_家具成交单" Width="1.5" PointX="17" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.系统用户" Width="1.5" PointX="8" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_店铺档案" Width="1.5" PointX="8" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_店铺员工档案" Width="1.5" PointX="10.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_接待记录" Width="1.5" PointX="12.5" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_接待记录_意向明细" Width="1.5" PointX="14.75" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_经销商档案" Width="1.5" PointX="5.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_设计案跟进日志" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_设计案提交表" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_设计案提交表_客户意向产品明细" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_设计案提交表_项目相关图纸" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_意向追踪日志" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="chicModel.销售_职务" Width="1.5" PointX="8" PointY="14.125" IsExpanded="true" />
+        <AssociationConnector Association="chicModel.FK_家具成交明细_设计案完结单" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_系统用户_销售_经销商档案" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_店铺档案_销售_经销商档案" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_店铺员工档案_销售_店铺档案" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_顾客档案明细_店铺" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_店铺员工档案_销售_职务" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_顾客档案明细_销售顾问" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_接待记录_意向明细_销售_接待记录" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_销售_设计案跟进日志_设计案提交表" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_项目相关图纸_设计案提交表" ManuallyRouted="false" />
+        <AssociationConnector Association="chicModel.FK_意向产品明细_设计案提交表" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

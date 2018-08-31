@@ -12,27 +12,24 @@ namespace ChicStoreManagement.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class 销售_店铺员工档案
+    public partial class 销售_经销商档案
     {
-        public 销售_店铺员工档案()
+        public 销售_经销商档案()
         {
-            this.销售_接待记录 = new HashSet<销售_接待记录>();
+            this.系统用户 = new HashSet<系统用户>();
+            this.销售_店铺档案 = new HashSet<销售_店铺档案>();
         }
     
         public int ID { get; set; }
-        public int 店铺ID { get; set; }
         public string 编号 { get; set; }
-        public string 姓名 { get; set; }
-        public string 性别 { get; set; }
-        public int 职务ID { get; set; }
-        public string 联系方式 { get; set; }
-        public bool 停用标志 { get; set; }
+        public string 名称 { get; set; }
+        public string 负责人 { get; set; }
+        public string 联系电话 { get; set; }
+        public string 证件号码 { get; set; }
         public Nullable<int> 制单人 { get; set; }
         public Nullable<System.DateTime> 制单日期 { get; set; }
-        public string 密码 { get; set; }
     
-        public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
-        public virtual 销售_职务 销售_职务 { get; set; }
-        public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
+        public virtual ICollection<系统用户> 系统用户 { get; set; }
+        public virtual ICollection<销售_店铺档案> 销售_店铺档案 { get; set; }
     }
 }
