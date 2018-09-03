@@ -43,9 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseDAL.cs" />
+    <Compile Include="ICustomerInfo.cs" />
     <Compile Include="IEmployeeDAL.cs" />
+    <Compile Include="IExpectedBuyDAL.cs" />
+    <Compile Include="IProductCodeDAL.cs" />
     <Compile Include="IStoreDAL.cs" />
     <Compile Include="IPositionDAL.cs" />
+    <Compile Include="ISystemAccountDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

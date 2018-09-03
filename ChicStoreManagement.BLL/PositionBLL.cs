@@ -4,6 +4,9 @@ using ChicStoreManagement.Model;
 
 namespace ChicStoreManagement.BLL
 {
+    /// <summary>
+    /// 职位逻辑
+    /// </summary>
     public partial class PositionBLL:BaseService<销售_职务>,IPositionBLL
     {
         private IPositionDAL positionDAL ;

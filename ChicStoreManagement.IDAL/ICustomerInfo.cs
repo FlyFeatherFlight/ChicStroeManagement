@@ -3,9 +3,9 @@
 namespace ChicStoreManagement.IDAL
 {
     /// <summary>
-    /// 职位数据访问
+    /// 顾客接待信息
     /// </summary>
-    public partial interface IPositionDAL:IBaseDAL<销售_职务>
+    public interface ICustomerInfo:IBaseDAL<销售_接待记录>
     {
     }
 }

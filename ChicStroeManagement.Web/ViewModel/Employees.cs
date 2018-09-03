@@ -1,13 +1,13 @@
-﻿using ChicStoreManagement.DAL;
-using ChicStoreManagement.IBLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ChicStoreManagement.WEB.ViewModel
 {
-
+    /// <summary>
+    /// 员工信息
+    /// </summary>
 
     public class Employees
     {

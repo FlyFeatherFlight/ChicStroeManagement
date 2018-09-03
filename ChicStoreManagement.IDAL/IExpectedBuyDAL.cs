@@ -2,10 +2,11 @@
 
 namespace ChicStoreManagement.IDAL
 {
+
     /// <summary>
-    /// 职位数据访问
+    /// 客户预计购买
     /// </summary>
-    public partial interface IPositionDAL:IBaseDAL<销售_职务>
+    public partial interface IExpectedBuyDAL:IBaseDAL<销售_接待记录_意向明细>
     {
     }
 }

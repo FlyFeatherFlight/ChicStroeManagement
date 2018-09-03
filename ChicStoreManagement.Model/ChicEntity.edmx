@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="chicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="chicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="商品档案_型号">
           <Key>
             <PropertyRef Name="ID" />
@@ -164,7 +164,7 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="接待ID" Type="int" Nullable="false" />
-          <Property Name="型号ID" Type="int" Nullable="false" />
+          <Property Name="商品型号ID" Type="int" Nullable="false" />
           <Property Name="备注" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="销售_经销商档案">
@@ -481,8 +481,7 @@
             <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="chicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -657,9 +656,9 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="接待ID" Type="Int32" Nullable="false" />
-          <Property Name="型号ID" Type="Int32" Nullable="false" />
           <Property Name="备注" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="销售_接待记录" Relationship="Self.FK_销售_接待记录_意向明细_销售_接待记录" FromRole="销售_接待记录_意向明细" ToRole="销售_接待记录" />
+          <Property Name="商品型号ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="销售_经销商档案">
           <Key>
@@ -1153,9 +1152,9 @@
           <EntitySetMapping Name="销售_接待记录_意向明细">
             <EntityTypeMapping TypeName="chicModel.销售_接待记录_意向明细">
               <MappingFragment StoreEntitySet="销售_接待记录_意向明细">
+                <ScalarProperty Name="商品型号ID" ColumnName="商品型号ID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="接待ID" ColumnName="接待ID" />
-                <ScalarProperty Name="型号ID" ColumnName="型号ID" />
                 <ScalarProperty Name="备注" ColumnName="备注" />
               </MappingFragment>
             </EntityTypeMapping>

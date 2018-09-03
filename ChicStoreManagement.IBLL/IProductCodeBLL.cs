@@ -3,9 +3,9 @@
 namespace ChicStoreManagement.IBLL
 {
     /// <summary>
-    /// 商店信息
+    /// 商品型号逻辑
     /// </summary>
-    public partial interface IStoreBLL:IBaseService<销售_店铺档案>
+    public partial interface IProductCodeBLL:IBaseService<商品档案_型号>
     {
     }
 }

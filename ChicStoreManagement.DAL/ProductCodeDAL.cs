@@ -4,9 +4,9 @@ using ChicStoreManagement.Model;
 namespace ChicStoreManagement.DAL
 {
     /// <summary>
-    /// 商店信息
+    /// 商品型号数据访问
     /// </summary>
-    public partial  class StoreDAL:BaseDAL<销售_店铺档案>,IStoreDAL
+    public partial class ProductCodeDAL:BaseDAL<商品档案_型号>,IProductCodeDAL
     {
     }
 }

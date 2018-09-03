@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ChicStoreManagement.IBLL;
 using System.Web.Mvc;
 
 namespace ChicStoreManagement.Controllers
 {
     public class CustomerController : Controller
     {
+        private ICustomerInfoBLL customerInfoBLL;
+        private IExceptedBuyBLL exceptedBuyBLL;
         // GET: Customer
         /// <summary>
         /// 展示客户信息

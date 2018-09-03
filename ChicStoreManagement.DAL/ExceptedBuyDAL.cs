@@ -4,9 +4,9 @@ using ChicStoreManagement.Model;
 namespace ChicStoreManagement.DAL
 {
     /// <summary>
-    /// 商店信息
+    /// 客户预计购买
     /// </summary>
-    public partial  class StoreDAL:BaseDAL<销售_店铺档案>,IStoreDAL
+    public partial class ExceptedBuyDAL:BaseDAL<销售_接待记录_意向明细>,IExpectedBuyDAL
     {
     }
 }

@@ -42,8 +42,12 @@
   <ItemGroup>
     <Compile Include="AccountManageIBll.cs" />
     <Compile Include="IBaseService.cs" />
+    <Compile Include="ICustomerInfoBLL.cs" />
+    <Compile Include="IExceptedBuyBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
+    <Compile Include="IProductCodeBLL.cs" />
     <Compile Include="IStoreBLL.cs" />
+    <Compile Include="ISystemAccountBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IStoreEmployeesBLL.cs" />
   </ItemGroup>

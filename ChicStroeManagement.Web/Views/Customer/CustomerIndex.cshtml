@@ -1,29 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "CustomerIndex";
+    ViewBag.Title = "客户接待信息";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>客户信息录入</h2>
-        <p>
-
-        </p>
-        <p><a class="btn btn-default" href="@Url.Action("AddCustomerView","Customer")">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>客户信息修改</h2>
-        <p>
-
-        </p>
-        <p><a class="btn btn-default" href="@Url.Action("EditCustomerView","Customer")">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>客户信息展示</h2>
-        <p>
-
-        </p>
-        <p><a class="btn btn-default" href="@Url.Action("ShowVisitInfo","Customer")">Learn more &raquo;</a></p>
-    </div>
-</div>
+<hr />
+<p>
+    @Html.ActionLink("添加客户接待信息", "AddCustomerView", new { @class = "form-control", @Style = "font-size:12px" })
+</p>
 <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
