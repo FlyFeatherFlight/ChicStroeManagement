@@ -1,8 +1,4 @@
-﻿using ChicStoreManagement.BLL;
-using ChicStoreManagement.Model;
-using ChicStoreManagement.CustomAttributes;
-using ChicStoreManagement.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;

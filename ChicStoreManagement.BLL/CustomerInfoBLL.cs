@@ -1,5 +1,5 @@
-﻿using ChicStoreManagement.DAL;
-using ChicStoreManagement.IBLL;
+﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.IDAL;
 using ChicStoreManagement.Model;
 
 namespace ChicStoreManagement.BLL
@@ -11,9 +11,9 @@ namespace ChicStoreManagement.BLL
 
     public partial class CustomerInfoBLL:BaseService<销售_接待记录>,ICustomerInfoBLL
     {
-        private CustomerInfoDAL customerDAL;
+        private ICustomerInfoDAL customerDAL;
 
-        public CustomerInfoBLL(CustomerInfoDAL customerDAL)
+        public CustomerInfoBLL(ICustomerInfoDAL customerDAL)
         {
             
             this.customerDAL = customerDAL;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ChicStoreManagement.ViewModel
+namespace ChicStoreManagement.WEB.ViewModel
 {
     /// <summary>
     /// 客户接待信息
@@ -151,7 +151,7 @@ namespace ChicStoreManagement.ViewModel
         [Display(Name = "预计使用时间")]
         [DataType(DataType.DateTime)]
         [Required]
-        public Nullable<System.DateTime> 预计使用时间 { get; set; }
+        public DateTime? 预计使用时间 { get; set; }
 
         [Display(Name = "如何得知品牌")]
         [DataType(DataType.Text)]
@@ -189,25 +189,25 @@ namespace ChicStoreManagement.ViewModel
         public string 客户建议 { get; set; }
 
         [Display(Name = "使用空间")]
-        [DataType(DataType.Custom)]
-      
-        public Nullable<bool> 是否有意向 { get; set; }
+        [DataType(DataType.Text)]
+        public bool? 是否有意向 { get; set; }
 
         [Display(Name = "制单日期")]
         [DataType(DataType.DateTime)]
         [Required]
-        public Nullable<System.DateTime> 制单日期 { get; set; }
+        public DateTime? 制单日期 { get; set; }
 
         [Display(Name = "最后更新人")]
         [DataType(DataType.Text)]
-        [Required]
+       
         public string 更新人 { get; set; }
 
         [Display(Name = "更新日期")]
         [DataType(DataType.DateTime)]
         [Required]
-        public Nullable<System.DateTime> 更新日期 { get; set; }
+        public DateTime? 更新日期 { get; set; }
 
+        public IEnumerable<CustomerExceptedBuyModel> customerExceptedBuyModels { set; get; }
         public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
         public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
         public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }

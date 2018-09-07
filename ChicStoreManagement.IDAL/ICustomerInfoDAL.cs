@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChicStoreManagement.Model;
 
 namespace ChicStoreManagement.IDAL
 {
-    class ICustomerInfoDAL
+    /// <summary>
+    /// 顾客接待信息
+    /// </summary>
+    public interface ICustomerInfoDAL:IBaseDAL<销售_接待记录>
     {
     }
 }

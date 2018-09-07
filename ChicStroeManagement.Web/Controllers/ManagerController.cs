@@ -71,7 +71,7 @@ namespace ChicStoreManagement.Controllers
             {
                 workers = workers.Where(w => w.姓名.Contains(searchString));//通过姓名查找
             }
-            Session["Name"] = workers.FirstOrDefault();
+            //Session["Name"] = workers.FirstOrDefault();
             #region 排序，默认按ID升序
             switch (sortOrder)
             {

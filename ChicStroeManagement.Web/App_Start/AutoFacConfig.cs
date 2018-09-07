@@ -19,7 +19,7 @@ namespace ChicStoreManagement
             //告诉Autofac框架，将来要创建的控制器类存放在哪个程序集 (AutoFacMvcDemo)
             Assembly controllerAss = Assembly.Load("ChicStoreManagement.WEB");
             builder.RegisterControllers(controllerAss);
-            builder.RegisterModelBinders(controllerAss);
+            //builder.RegisterModelBinders(controllerAss);
 
             //如果有Dal层的话，注册Dal层的组件
             //告诉autofac框架注册数据仓储层所在程序集中的所有类的对象实例

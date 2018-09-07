@@ -1,4 +1,7 @@
-﻿
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
     ViewBag.Title = "客户接待信息";
 }
@@ -7,4 +10,67 @@
 <p>
     @Html.ActionLink("添加客户接待信息", "AddCustomerView", new { @class = "form-control", @Style = "font-size:12px" })
 </p>
-<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+@using (Html.BeginForm("ManagerAction", "Manager", FormMethod.Get))
+{
+    <p>
+        通过姓名查找: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" />
+    </p>
+}
+<hr />
+@{ if (Model != null)
+    {
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.Number })
+        </th>
+        <th>店铺</th>
+        <th>接待序号</th>
+        <th>接待日期</th>
+        <th>客户来源</th>
+        <th>客户姓名</th>
+        <th>性别</th>
+        <th>年龄段</th>
+        <th>客户类别</th>
+        <th>客户电话</th>
+        <th>客户类型</th>
+        <th>社交软件</th>
+        <th>来店次数</th>
+        <th>接待人</th>
+        <th>跟进人</th>
+        <th>是否有意向</th>
+       
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td> @Html.DisplayFor(modelItem => item.ID)</td>
+        <td> @Html.DisplayFor(modelItem => item.店铺)</td>
+        <td> @Html.DisplayFor(modelItem => item.接待序号)</td>
+        <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
+        <td> @Html.DisplayFor(modelItem => item.客户来源)</td>
+        <td> @Html.DisplayFor(modelItem => item.客户姓名)</td>
+        <td> @Html.DisplayFor(modelItem => item.性别)</td>
+        <td> @Html.DisplayFor(modelItem => item.年龄段)</td>
+        <td> @Html.DisplayFor(modelItem => item.客户类别)</td>
+        <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
+        <td> @Html.DisplayFor(modelItem => item.客户类型)</td>
+        <td> @Html.DisplayFor(modelItem => item.社交软件)</td>
+        <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
+        <td> @Html.DisplayFor(modelItem => item.接待人)</td>
+        <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+        <td> @Html.DisplayFor(modelItem => item.是否有意向)</td>
+    
+        <td>
+            @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })
+        </td>
+    </tr>
+
+    }
+    </table>
+
+
+    }
+}
+        <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

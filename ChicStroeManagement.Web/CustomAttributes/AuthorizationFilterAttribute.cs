@@ -18,10 +18,10 @@ namespace ChicStoreManagement.CustomAttributes
     {
         FilterContextInfo fcinfo;
         private bool isstate;
-        
-        private  string userName;
+
+        private string userName;
         private Employees Employees;
-        
+
 
 
 
@@ -41,7 +41,7 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            
+
 
             if (filterContext == null)
             {
@@ -68,7 +68,8 @@ namespace ChicStoreManagement.CustomAttributes
                 filterContext.Result = new HttpUnauthorizedResult();
                 return;
             }
-            else {
+            else
+            {
 
                 isstate = true;
             }
@@ -81,20 +82,20 @@ namespace ChicStoreManagement.CustomAttributes
             #region 权限验证
 
 
-            SetEmployee(filterContext);
-           
-           
+            GetEmployee(filterContext);
+
+
             fcinfo = new FilterContextInfo(filterContext);
             string actionName = fcinfo.ActionName;//获取域名
             string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
 
             CheckAuth(Employees.职务, actionName, contollerName);
-           
+
             if (isstate)//如果满足
             {
                 return;
-               // filterContext.Result = new HttpUnauthorizedResult();//直接URL输入的页面地址跳转到登陆页  
+                // filterContext.Result = new HttpUnauthorizedResult();//直接URL输入的页面地址跳转到登陆页  
                 // filterContext.Result = new RedirectResult("http://www.baidu.com");//也可以跳到别的站点
 
             }
@@ -105,12 +106,21 @@ namespace ChicStoreManagement.CustomAttributes
             #endregion
         }
 
-        private void SetEmployee(ActionExecutingContext filterContext)
+        /// <summary>
+        /// 得到当前员工信息
+        /// </summary>
+        /// <param name="filterContext"></param>
+        private void GetEmployee(ActionExecutingContext filterContext)
         {
-            if (userName!=null)
+            if (userName != null)
             {
-              Employees=filterContext.HttpContext.Session["Employee"] as Employees;
-            } 
+                Employees = filterContext.HttpContext.Session["Employee"] as Employees;
+                //HttpCookie httpCookie = new HttpCookie("user")
+                //{
+                //    Value = userName
+                //};
+                //Response.Cookie.Add(httpCookie);
+            }
         }
 
         /// <summary>
@@ -121,18 +131,24 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="contollerName">control名</param>
         private void CheckAuth(string positionName, string actionName, string contollerName)
         {
-            if (contollerName == "Home") {
-                return;//如果是首页任何人都可以访问
+            if (contollerName != "ManagerExamine" && contollerName != "Manager" )
+            {
+                isstate = true;
+                return;//如果是非管理者页面 任何人都可以访问
             }
-            if (contollerName == "Manager" && positionName == "店长" || contollerName== "ManagerExamine" &&positionName == "店长")
+            if (contollerName == "Manager" && positionName == "店长" || contollerName == "ManagerExamine" && positionName == "店长")
             {
                 isstate = true;//店长操作
                 return;
             }
-            if (contollerName == "Manager" && positionName == "老板" || contollerName == "ManagerExamine" && positionName == "老板")
+            else if (contollerName == "Manager" && positionName == "老板" || contollerName == "ManagerExamine" && positionName == "老板")
             {
                 isstate = true;//老板操作
                 return;
+            }
+            else
+            {
+                isstate = false;
             }
         }
 

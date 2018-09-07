@@ -2,9 +2,9 @@
 @model List<ChicStoreManagement.Model.销售_店铺员工档案>
 
 @{
-    
-  ViewBag.Title = "测试";
-  
+
+    ViewBag.Title = "测试";
+
 }
 <!DOCTYPE html>
 <html>
@@ -31,20 +31,20 @@
             </tr>
             @foreach (销售_店铺员工档案 staff in Model)
             {
-            <tr>
-                <td>@staff.ID</td>
-                <td>@staff.店铺ID</td>
-                <td>@staff.姓名</td>
-                <td>@staff.性别</td>
-                <td>@staff.编号</td>
-                <td>@staff.职务ID</td>
-                <td>@staff.联系方式</td>
-                <td>@staff.停用标志</td>
-                <td>@staff.制单人</td>
-                <td>@staff.制单日期</td>
-                <td>@staff.密码</td>
-                <td></td>
-            </tr>
+                <tr>
+                    <td>@staff.ID</td>
+                    <td>@staff.店铺ID</td>
+                    <td>@staff.姓名</td>
+                    <td>@staff.性别</td>
+                    <td>@staff.编号</td>
+                    <td>@staff.职务ID</td>
+                    <td>@staff.联系方式</td>
+                    <td>@staff.停用标志</td>
+                    <td>@staff.制单人</td>
+                    <td>@staff.制单日期</td>
+                    <td>@staff.密码</td>
+                    <td></td>
+                </tr>
             }
         </table>
         <hr />
@@ -60,7 +60,7 @@
         <form action="@Url.Action("update", "Test")" method="POST">
             Id:<input name="ID" />
             姓名:<input name="姓名" />
-            
+
             性别:<input name="性别" />
             <button type="submit">提交</button>
         </form>
@@ -70,6 +70,15 @@
             Id:<input name="ID" />
             <button type="submit">提交</button>
         </form>
+    </div>
+    <div>
+        test:
+        
+                    @{
+                        Html.RenderAction("ExceptedBuyViewAction",new { id=1});
+                    }
+          
+      
     </div>
 </body>
 </html>

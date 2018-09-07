@@ -213,6 +213,7 @@
     <Compile Include="ViewModel\Employees.cs" />
     <Compile Include="ViewModel\CustomerInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ProductCodeModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -931,6 +932,7 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Manager\EditEmploee.cshtml" />
     <Content Include="Views\Manager\AddEmploee.cshtml" />
+    <Content Include="Views\Shared\ExceptedBuy_PartialPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

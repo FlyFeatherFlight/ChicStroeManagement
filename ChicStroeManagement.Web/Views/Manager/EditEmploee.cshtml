@@ -21,11 +21,21 @@
     <div class="form-group">
         @Html.LabelFor(model => model.性别, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @*@Html.EnumDropDownListFor(model => model.性别)*@
-            <select id="性别" name=性别>
-                <option>男</option>
-                <option>女</option>
-            </select>
+
+            @{
+
+                List<SelectListItem> list = new List<SelectListItem>();
+
+                SelectListItem item1 = new SelectListItem();
+                item1.Text = "男";
+                item1.Value = "男";
+                SelectListItem item2 = new SelectListItem();
+                item2.Text = "女";
+                item2.Value = "女";
+                list.Add(item2);
+
+            }
+            @Html.DropDownList("性别", list,Model.性别);
             @Html.ValidationMessageFor(model => model.性别)
         </div>
     </div>
@@ -39,7 +49,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.职务, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownList("职务",ViewBag.PositionList as IEnumerable<SelectListItem>);
+            @Html.DropDownList("职务",ViewBag.PositionList as IEnumerable<SelectListItem>,Model.职务);
             @Html.ValidationMessageFor(model => model.职务)
         </div>
     </div>
@@ -92,7 +102,5 @@
     </div>
 </div>
 }
-<div>
-    @Html.ActionLink("返回员工管理页", "ManagerAction")
-</div>
+
 <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

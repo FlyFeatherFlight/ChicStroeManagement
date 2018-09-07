@@ -1,0 +1,81 @@
+﻿@model  PagedList.IPagedList <ChicStoreManagement.WEB.ViewModel.CustomerExceptedBuyModel>
+<h1>增加</h1>
+
+<form action="@Url.Action("Add", "Test")" method="POST">
+    <input type="button" onclick="addone()" value="添加一行">
+    <table id="table1" class=" table-hover table-bordered">
+<tr>
+    <th>商品型号</th>
+    <th>备注</th>
+</tr>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>@Html.LabelFor(model => item.商品型号)</td>
+    <td>@Html.LabelFor(model => item.备注)</td>
+    <td><a href="javascript:;" onclick="delone(this,@item.ID)">删除</a></td>
+</tr>
+        }
+    </table>
+</form>
+<script type="text/javascript">
+    window.onload = function () {
+        var mytr = document.getElementsByTagName('tr');
+        for (var i = 0; i < mytr.length; i++) {
+            newcolor(mytr[i]);
+        }
+    }
+    function newcolor(mtr) {
+        mtr.onmouseover = function () {
+            mtr.style.backgroundColor = "#f2f2f2";
+        }
+        mtr.onmouseout = function () {
+            mtr.style.backgroundColor = "#fff";
+        }
+    }
+    
+    function addone() {
+       
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        td1.innerHTML = "商品型号:<input name='商品型号'/>"
+        var str = prompt("请输入姓名：");
+        td2.innerHTML = "备注: <input name='备注' />";
+        //var td3 = document.createElement("td");
+        //td3.innerHTML = " 年龄:<input name='Age' />";
+        var td4 = document.createElement("td");
+        td4.innerHTML = "<a href='javascript:;' onclick='delone(this)' >删除</a>"+str;
+        var tab = document.getElementById("table1");
+        tab.appendChild(tr);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        //tr.appendChild(td3);
+        tr.appendChild(td4);
+        var mytr = document.getElementsByTagName('tr');
+        for (var i = 0; i < mytr.length; i++) {
+            newcolor(mytr[i]);
+        }
+   
+    }
+    function delone(otr,id) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("DelExceptedBuyAction", "Test")',
+            data: { id},
+            datatype: "json",
+            async: true,//异步
+            success: function (data) {
+                $('#header').html(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+        var a = otr.parentNode.parentNode;
+        a.parentNode.removeChild(a);
+
+
+    }
+</script>
