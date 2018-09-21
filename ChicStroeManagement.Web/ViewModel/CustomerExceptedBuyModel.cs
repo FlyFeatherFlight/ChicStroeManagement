@@ -11,7 +11,7 @@ namespace ChicStoreManagement.WEB.ViewModel
     {
         public int ID { get; set; }
 
-        [Display(Name = "接待人")]
+        [Display(Name = "接待记录id")]
         [DataType(DataType.Text)]
         [Required]
         public int? 接待{ get; set; }

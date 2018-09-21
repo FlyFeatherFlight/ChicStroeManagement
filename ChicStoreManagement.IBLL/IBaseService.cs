@@ -12,6 +12,11 @@ namespace ChicStoreManagement.IBLL
         T AddReturnModel(T model);
         int Del(T model);
         int DelBy(Expression<Func<T, bool>> delWhere);
+        /// <summary>
+        /// 修改更新
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         int Modify(T model);
 
         int Modify(T model, params string[] propertyNames);

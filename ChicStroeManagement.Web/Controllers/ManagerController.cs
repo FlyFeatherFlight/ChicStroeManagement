@@ -165,6 +165,10 @@ namespace ChicStoreManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var model = storeEmployeesBLL.GetModel(p=>p.ID==id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
 
             Employees Emodel = new Employees
             {
@@ -187,10 +191,6 @@ namespace ChicStoreManagement.Controllers
             List<销售_店铺档案> storeList = storeBLL.GetModels(p => true).ToList();
             SelectList StoreList = new SelectList(storeList, "名称", "名称");
             ViewBag.StoreList = StoreList;
-            if (model == null)
-            {
-                return HttpNotFound();
-            }
             
             return View(Emodel);
         }
@@ -208,6 +208,7 @@ namespace ChicStoreManagement.Controllers
             var Emodel=storeEmployeesBLL.GetModels(p => p.ID == model.ID);
             Emodel.First().店铺ID = storeBLL.GetModel(p => p.名称 == model.店铺).ID;
             Emodel.First().职务ID = positionBLL.GetModel(p => p.职务 == model.职务).ID;
+
             if (ModelState.IsValid)
             {
                 

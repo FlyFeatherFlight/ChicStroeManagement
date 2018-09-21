@@ -4,261 +4,491 @@
 }
 
 <h2>修改客户信息</h2>
-<<div class="form-control ">
-    @Html.LabelFor(Model => Model.店铺)
-</div>
-<<div class="form-control ">
-    @Html.LabelFor(Model => Model.接待序号)
-</div>
-<<div class="form-control ">
-    @Html.LabelFor(Model => Model.接待日期)
-</div>
-<<div class="form-control ">
-    @Html.LabelFor(Model => Model.接待人)
-</div>
-
-<div class="form-control ">
-    @Html.LabelFor(Model => Model.跟进人)
-</div>
-@using (Html.BeginForm("EmployeeEdit", "Manager", FormMethod.Post))
+@using (Html.BeginForm("CustomerEdit", "Customer", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <hr />
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.ID)
-
-    <div class="form-group">
-        <label>当前操作人</label>
-        <div class="col-md-10">
-            @Html.EditorFor(model=>model.更新人)
+<table class="table-responsive form-group table-condensed" >
+    <tr>
+        <td> @Html.LabelFor(Model => Model.店铺)</td>
+        <td><input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly"/> </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(Model => Model.接待序号)</td>
+        
+        <td><input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(Model => Model.接待日期)</td>
+      
+        <td><input type="text" name="接待日期" value="@Html.DisplayFor(Model => Model.接待日期)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(Model => Model.接待人)</td>
+        
+        <td><input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(Model => Model.跟进人)</td>
+     
+        <td><input type="text" name="跟进人" value="@Html.DisplayFor(Model => Model.跟进人)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td><label class="control-label col-md-2">当前操作人</label></td>
        
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.更新日期)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户姓名, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <td><input type="text" name="更新人" value="@Html.DisplayFor(model => model.更新人)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.更新日期)</td>
+        
+        <td><input type="text" name="更新日期" value="@Html.DisplayFor(model => model.更新日期)" readonly="readonly" /> </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.客户姓名)</td>
+        <td>
             @Html.EditorFor(model => model.客户姓名)
             @Html.ValidationMessageFor(model => model.客户姓名)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.性别, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.性别)</td>
+        <td>
             @Html.EditorFor(model => model.性别)
             @Html.ValidationMessageFor(model => model.性别)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.年龄段, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    <tr>
+        <td> @Html.LabelFor(model => model.年龄段)</td>
+        <td>
             @Html.EditorFor(model => model.年龄段)
             @Html.ValidationMessageFor(model => model.年龄段)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.来店次数, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.来店次数)</td>
+        <td>
             @Html.EditorFor(model => model.来店次数)
             @Html.ValidationMessageFor(model => model.来店次数)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户类别, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(Model => Model.进店时间)</td>
+        <td>@Html.EditorFor(Model => Model.进店时间)</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(Model => Model.出店时间)</td>
+        <td>@Html.EditorFor(Model => Model.出店时间)</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(Model => Model.进店时长)</td>
+
+       
+
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.客户类别)</td>
+        <td>
             @Html.EditorFor(model => model.客户类别)
             @Html.ValidationMessageFor(model => model.客户类别)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户类型, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.客户类型)</td>
+        <td>
             @Html.EditorFor(model => model.客户类型)
             @Html.ValidationMessageFor(model => model.客户类型)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户职业, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.客户职业)</td>
+        <td>
             @Html.EditorFor(model => model.客户职业)
             @Html.ValidationMessageFor(model => model.客户职业)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户电话, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    <tr>
+        <td> @Html.LabelFor(model => model.客户电话)</td>
+        <td>
             @Html.EditorFor(model => model.客户电话)
             @Html.ValidationMessageFor(model => model.客户电话)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.社交软件, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.社交软件)</td>
+        <td>
             @Html.EditorFor(model => model.社交软件)
             @Html.ValidationMessageFor(model => model.社交软件)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户着装, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.客户着装)</td>
+        <td>
             @Html.EditorFor(model => model.客户着装)
             @Html.ValidationMessageFor(model => model.客户着装)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户来源, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.客户来源)</td>
+        <td>
             @Html.EditorFor(model => model.客户来源)
             @Html.ValidationMessageFor(model => model.客户来源)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.同行人, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.同行人)</td>
+        <td>
             @Html.EditorFor(model => model.同行人)
             @Html.ValidationMessageFor(model => model.同行人)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.主导者, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.主导者)</td>
+        <td>
             @Html.EditorFor(model => model.主导者)
             @Html.ValidationMessageFor(model => model.主导者)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.主导者喜好风格, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.主导者喜好风格)</td>
+        <td>
             @Html.EditorFor(model => model.主导者喜好风格)
             @Html.ValidationMessageFor(model => model.主导者喜好风格)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.家庭成员, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.家庭成员)</td>
+        <td>
             @Html.EditorFor(model => model.家庭成员)
             @Html.ValidationMessageFor(model => model.家庭成员)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.特征, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.特征)</td>
+        <td>
             @Html.EditorFor(model => model.特征)
             @Html.ValidationMessageFor(model => model.特征)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.使用空间, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.使用空间)</td>
+        <td>
             @Html.EditorFor(model => model.使用空间)
             @Html.ValidationMessageFor(model => model.使用空间)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.装修情况, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.装修情况)</td>
+        <td>
             @Html.EditorFor(model => model.装修情况)
             @Html.ValidationMessageFor(model => model.装修情况)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.装修进度, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.装修进度)</td>
+        <td>
             @Html.EditorFor(model => model.装修进度)
             @Html.ValidationMessageFor(model => model.装修进度)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.装修风格, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.装修风格)</td>
+        <td>
             @Html.EditorFor(model => model.装修风格)
             @Html.ValidationMessageFor(model => model.装修风格)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.预计使用时间, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.预计使用时间)</td>
+        <td>
             @Html.EditorFor(model => model.预计使用时间)
             @Html.ValidationMessageFor(model => model.预计使用时间)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.如何得知品牌, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.如何得知品牌)</td>
+        <td>
             @Html.EditorFor(model => model.如何得知品牌)
             @Html.ValidationMessageFor(model => model.如何得知品牌)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.比较品牌, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.比较品牌)</td>
+        <td>
             @Html.EditorFor(model => model.比较品牌)
             @Html.ValidationMessageFor(model => model.比较品牌)
-        </div>
-    </div>
-    <div class="form-group">
-        预计购买产品：
-        <div class="col-md-10">
-
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.安装地址, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.安装地址)</td>
+        <td>
             @Html.EditorFor(model => model.安装地址)
             @Html.ValidationMessageFor(model => model.安装地址)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.预算金额, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td> @Html.LabelFor(model => model.预算金额)</td>
+        <td>
             @Html.EditorFor(model => model.预算金额)
             @Html.ValidationMessageFor(model => model.预算金额)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.预报价折扣, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.预报价折扣)</td>
+        <td>
             @Html.EditorFor(model => model.预报价折扣)
             @Html.ValidationMessageFor(model => model.预报价折扣)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.返点, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.返点)</td>
+        <td>
             @Html.EditorFor(model => model.返点)
             @Html.ValidationMessageFor(model => model.返点)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.设计师, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.设计师)</td>
+        <td>
             @Html.EditorFor(model => model.设计师)
             @Html.ValidationMessageFor(model => model.设计师)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.客户建议, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.客户建议)
-            @Html.ValidationMessageFor(model => model.客户建议)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.是否有意向, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        </td>
+    </tr>
+
+    <tr>
+        <td>@Html.LabelFor(model => model.是否有意向)</td>
+        <td>
             @Html.EditorFor(model => model.是否有意向)
             @Html.ValidationMessageFor(model => model.是否有意向)
-        </div>
+        </td>
+    </tr>
+    <tr>
+        <td><label>  预计购买产品：</label></td>
+        <td>
+            @{
+                Html.RenderAction("ExceptedBuyViewAction", new { id = Model.ID});
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(model => model.客户建议)</td>
+        <td>
+            @Html.EditorFor(model => model.客户建议)
+            @Html.ValidationMessageFor(model => model.客户建议)
+        </td>
+    </tr>
+    
+</table>
+    @*<div class="form-control ">
+
     </div>
 
-    <div>
-        <input type="button" onclick="javascript:window.history.go(-1);" value="取消">|<input id="Submit1" type="submit" value="提交" />
-    </div>
-</div>
+    <div class="form-horizontal ">
+        <hr />
+
+
+
+        <div class="form-group">
+            
+            <div class="col-md-10">
+             
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+              
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+                
+            </div>
+        </div>
+        <div class="form-group">
+            
+            <div class="col-md-10">
+               
+            </div>
+        </div>*@
+
+        <div>
+            <input type="button" onclick="javascript:window.history.go(-1);" value="取消">|<input id="Submit1" type="submit" value="提交" />
+        </div>
+    @*</div>*@
 }
 
 

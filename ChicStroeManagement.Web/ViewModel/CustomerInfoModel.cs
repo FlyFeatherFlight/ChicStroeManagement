@@ -188,7 +188,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         
         public string 客户建议 { get; set; }
 
-        [Display(Name = "使用空间")]
+        [Display(Name = "是否有意向")]
         [DataType(DataType.Text)]
         public bool? 是否有意向 { get; set; }
 

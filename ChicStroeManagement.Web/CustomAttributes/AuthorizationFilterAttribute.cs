@@ -23,13 +23,6 @@ namespace ChicStoreManagement.CustomAttributes
         private Employees Employees;
 
 
-
-
-
-
-
-
-
         // OnActionExecuted 在执行操作方法后由 ASP.NET MVC 框架调用。
         // OnActionExecuting 在执行操作方法之前由 ASP.NET MVC 框架调用。
         // OnResultExecuted 在执行操作结果后由 ASP.NET MVC 框架调用。
@@ -60,9 +53,11 @@ namespace ChicStoreManagement.CustomAttributes
             #region 是否已经登陆
             var user = filterContext.HttpContext.User;
             userName = filterContext.HttpContext.User.Identity.Name;
-            if (user == null || !user.Identity.IsAuthenticated)
+            if (filterContext.HttpContext.Session["Employee"]==null||user == null || !user.Identity.IsAuthenticated)
 
             {
+                filterContext.HttpContext.Session.RemoveAll();
+                
                 isstate = false;
                 filterContext.Result = new ContentResult { Content = @"抱歉,您还未登录！" };
                 filterContext.Result = new HttpUnauthorizedResult();
@@ -131,7 +126,7 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="contollerName">control名</param>
         private void CheckAuth(string positionName, string actionName, string contollerName)
         {
-            if (contollerName != "ManagerExamine" && contollerName != "Manager" )
+            if (contollerName != "ManagerExamine" && contollerName != "Manager")
             {
                 isstate = true;
                 return;//如果是非管理者页面 任何人都可以访问

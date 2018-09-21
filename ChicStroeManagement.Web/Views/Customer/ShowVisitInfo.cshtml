@@ -187,12 +187,12 @@
 
 
             <td>
-                <table class="table-responsive">
-                    @foreach (var item in @Model.customerExceptedBuyModels)
+                <table class="table-responsive table-condensed">
+                    @foreach (var ite in @Model.customerExceptedBuyModels)
                     {
                         <tr>
-                            <td> @Html.DisplayFor(m => item.商品型号)</td>
-                            <td>@Html.DisplayFor(m => item.备注)</td>
+                            <td>型号： @Html.DisplayFor(m => ite.商品型号)</td>
+                            <td>备注：@Html.DisplayFor(m => ite.备注)</td>
                         </tr>
 
                     }

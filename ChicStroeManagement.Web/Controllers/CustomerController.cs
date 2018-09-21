@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
 using PagedList;
 
@@ -65,7 +66,7 @@ namespace ChicStoreManagement.Controllers
             {
                 customerInfoModels = customerInfoModels.Where(w => w.客户姓名.Contains(searchString));//通过姓名查找
             }
-            Session["Name"] = customerInfoModels.FirstOrDefault();
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
             switch (sortOrder)
             {
@@ -99,7 +100,6 @@ namespace ChicStoreManagement.Controllers
         public ActionResult AddCustomerView()
         {
             return View();
-
         }
 
         /// <summary>
@@ -118,13 +118,15 @@ namespace ChicStoreManagement.Controllers
             var customerInfo = customerInfoModels.First(p => p.ID == id);
             BuildExceptedBuy(id);
             customerInfo.customerExceptedBuyModels = exceptedBuyModels;
-
+            customerInfo.更新人 = employeeName;
+            customerInfo.更新日期 = DateTime.Now;
 
 
             return View(customerInfo);
 
         }
 
+     
         /// <summary>
         /// 提交修改数据
         /// </summary>
@@ -133,8 +135,77 @@ namespace ChicStoreManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CustomerEdit(CustomerInfoModel customerInfoModel) {
-            return View(customerInfoModel);
+            销售_接待记录 model = new 销售_接待记录();
+            try
+            {
+                model.ID = customerInfoModel.ID;
+                model.店铺ID = storeBLL.GetModel(p => p.名称 == customerInfoModel.店铺).ID;
+                model.接待人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;
+                model.接待序号 = customerInfoModel.接待序号;
+                model.接待日期 = customerInfoModel.接待日期;
+                model.主导者 = customerInfoModel.主导者;
+                model.主导者喜好风格 = customerInfoModel.主导者喜好风格;
+                model.使用空间 = customerInfoModel.使用空间;
+                model.出店时间 = customerInfoModel.出店时间;
+                model.制单日期 = customerInfoModel.制单日期;
+                model.同行人 = customerInfoModel.同行人;
+                model.如何得知品牌 = customerInfoModel.如何得知品牌;
+                model.安装地址 = customerInfoModel.安装地址;
+                model.客户姓名 = customerInfoModel.客户姓名;
+                model.客户建议 = customerInfoModel.客户建议;
+                model.客户来源 = customerInfoModel.客户来源;
+                model.客户电话 = customerInfoModel.客户电话;
+                model.客户着装 = customerInfoModel.客户着装;
+                model.客户类别 = customerInfoModel.客户类别;
+                model.客户类型 = customerInfoModel.客户类型;
+                model.客户职业 = customerInfoModel.客户职业;
+                model.家庭成员 = customerInfoModel.家庭成员;
+                model.年龄段 = customerInfoModel.年龄段;
+                model.性别 = customerInfoModel.性别;
+                model.是否有意向 = customerInfoModel.是否有意向;
+                if (customerInfoModel.更新人 != null)
+                {
+                    model.更新人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.更新人).ID;
+                }
+
+                model.更新日期 = customerInfoModel.更新日期;
+                model.来店次数 = customerInfoModel.来店次数;
+                model.比较品牌 = customerInfoModel.比较品牌;
+                model.特征 = customerInfoModel.特征;
+                model.社交软件 = customerInfoModel.社交软件;
+                model.装修情况 = customerInfoModel.装修情况;
+                model.装修进度 = customerInfoModel.装修进度;
+                model.装修风格 = customerInfoModel.装修风格;
+                model.设计师 = customerInfoModel.设计师;
+                if (customerInfoModel.跟进人 != null)
+                {
+                    model.跟进人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.跟进人).ID;
+                }
+
+                model.返点 = customerInfoModel.返点;
+                model.进店时长 = customerInfoModel.进店时长;
+                model.进店时间 = customerInfoModel.进店时间;
+                model.预报价折扣 = customerInfoModel.预报价折扣;
+                model.预算金额 = customerInfoModel.预算金额;
+                model.预计使用时间 = customerInfoModel.预计使用时间;
+               
+            
+            customerInfoBLL.Modify(model);
+            } 
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return View(model);
         }
+
+  
+        /// <summary>
+        /// 显示详细信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ShowVisitInfo(int id)
         {
             if (id == 0) {
@@ -148,6 +219,76 @@ namespace ChicStoreManagement.Controllers
             return View(customerInfo);
 
         }
+
+        #region 预计购买操作
+        /// <summary>
+        /// 预计购买
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult ExceptedBuyViewAction(int id, int? page)
+        {
+
+            BuildExceptedBuy(id);
+            if (exceptedBuyModels == null) { return PartialView(); }
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            var model = exceptedBuyModels.ToPagedList(pageNumber, pageSize);
+            return PartialView("ExceptedBuy_PartialPage", model);
+        }
+        /// <summary>
+        /// 删除预购
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DelExceptedBuyAction(int id) {
+            exceptedBuyBLL.DelBy(p => p.商品型号ID == id);
+            
+            return View();
+        }
+        /// <summary>
+        /// 增加预购
+        /// </summary>
+        /// <param name="productCode"></param>
+        /// <param name="remarks"></param>
+        /// <returns></returns>
+        public ActionResult AddExceptedBuyAction(string productCode, string remarks,int receptionid) {
+            销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
+            {
+                商品型号ID = productCodeBLL.GetModel(p => p.型号 == productCode).ID,
+                备注 = remarks,
+                接待ID = receptionid
+            };
+            exceptedBuyBLL.Add(model);
+            return View();
+        }
+
+        /// <summary>
+        /// 更新预购
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public ActionResult UpdateExceptedBuyAction(string productCode,string remarks,int receptionid,int id) {
+            销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
+            {
+                ID = id,
+                接待ID = receptionid,
+                商品型号ID = productCodeBLL.GetModel(p => p.型号 == productCode).ID,
+                备注 = remarks
+            };
+            if (ModelState.IsValid)
+            {
+
+                exceptedBuyBLL.Modify(model);
+
+                return RedirectToAction("EditCustomerView");
+            }
+            return View();
+
+        }
+        #endregion
 
         /// <summary>
         /// 设置当前员工信息
@@ -269,8 +410,10 @@ namespace ChicStoreManagement.Controllers
                 foreach (var item in exceptedBuy)
                 {
                     CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel();
+                    exceptedBuyModel.ID = item.ID;
                     exceptedBuyModel.商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号;
                     exceptedBuyModel.备注 = item.备注;
+                    exceptedBuyModel.接待 = item.接待ID;
                     models.Add(exceptedBuyModel);
                 }
                exceptedBuyModels= models.AsEnumerable().AsQueryable();
