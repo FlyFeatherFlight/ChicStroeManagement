@@ -10,10 +10,10 @@
 <p>
     @Html.ActionLink("添加客户接待信息", "AddCustomerView", new { @class = "form-control", @Style = "font-size:12px" })
 </p>
-@using (Html.BeginForm("ManagerAction", "Manager", FormMethod.Get))
+@using (Html.BeginForm("CustomerIndex", "Customer", FormMethod.Get))
 {
     <p>
-        通过姓名查找: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        通过姓名查找: @Html.TextBox("SearchString", ViewBag.CustomerCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
         <input id="Submit1" type="submit" value="查询" />
     </p>
 }
@@ -23,7 +23,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.Number })
+            @Html.ActionLink("ID", "ManagerAction", new { sortOrder = ViewBag.CustomerNumber })
         </th>
         <th>店铺</th>
         <th>接待序号</th>

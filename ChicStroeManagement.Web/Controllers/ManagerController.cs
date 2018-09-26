@@ -187,7 +187,8 @@ namespace ChicStoreManagement.Controllers
             };
             List<销售_职务> positionList = positionBLL.GetModels(p => true).ToList();       
                 SelectList PositionList = new SelectList(positionList, "职务", "职务");
-            ViewBag.PositionList = PositionList;
+            ViewBag.PositionList = 
+                PositionList;
             List<销售_店铺档案> storeList = storeBLL.GetModels(p => true).ToList();
             SelectList StoreList = new SelectList(storeList, "名称", "名称");
             ViewBag.StoreList = StoreList;

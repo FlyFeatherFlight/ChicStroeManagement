@@ -35,6 +35,7 @@ namespace ChicStoreManagement.WEB.ViewModel
 
         [Display(Name = "客户姓名")]
         [DataType(DataType.Text)]
+        [MaxLength(length: 50)]
         [Required]
         public string 客户姓名 { get; set; }
 
@@ -194,17 +195,15 @@ namespace ChicStoreManagement.WEB.ViewModel
 
         [Display(Name = "制单日期")]
         [DataType(DataType.DateTime)]
-        [Required]
         public DateTime? 制单日期 { get; set; }
 
         [Display(Name = "最后更新人")]
         [DataType(DataType.Text)]
-       
         public string 更新人 { get; set; }
 
         [Display(Name = "更新日期")]
         [DataType(DataType.DateTime)]
-        [Required]
+    
         public DateTime? 更新日期 { get; set; }
 
         public IEnumerable<CustomerExceptedBuyModel> customerExceptedBuyModels { set; get; }

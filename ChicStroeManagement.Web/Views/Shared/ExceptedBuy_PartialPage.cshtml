@@ -12,7 +12,7 @@
             var productid =null,
                 remark = null,
                 serid = null,
-               
+
                 //allFields = $([]).add(name).add(email).add(password),
                 tips = $(".validateTips");
 
@@ -54,7 +54,9 @@
                 draggable:false,
                 buttons: {
                     "提交": function () {
-                        productid = $("#productCode").val();
+                        var options = $("#型号 option:selected");
+                        productid = $("#型号").find("option:selected").val();
+                      
                         remark = $("#remarks").val();
                         serid = $("#receptionid").val();
                         if (methodType == "Add") {
@@ -75,7 +77,7 @@
                         }
                         //修改操作
                         if (methodType == "Edit") {
-                           
+
                                                              $.ajax({
             type: "POST",
             url: '@Url.Action("UpdateExceptedBuyAction", "Customer")',
@@ -91,11 +93,8 @@
 
         });
                         }
-                       
-         
-
                     },
-                    Cancel: function () {
+                    完成: function () {
                         $(this).dialog("close");
                     }
                 },
@@ -108,10 +107,10 @@
                 .button()
                 .click(function () {
                     $("#dialog-form").dialog("open");
-                    $("#dialog-form").window("center");
+
                     methodType = "Add";
                 });
-           
+
     });
 
 
@@ -139,7 +138,7 @@
         var a = otr.parentNode.parentNode;
         a.parentNode.removeChild(a);
     }
-  
+
     function editone(otr) {
         var rows = otr.parentNode.parentNode.rowIndex;
         recordId = $("#users tr:eq(" + rows + ") td:eq(0)").html();
@@ -153,7 +152,7 @@
         $("#dialog-form").dialog("open");
         $("#dialog-form").window("center");
 
-      
+
     }
 </script>
 <body>
@@ -161,26 +160,25 @@
     <div id="dialog-form" title="预购产品">
         <p class="validateTips">所有的表单字段都是必填的。</p>
 
-        <form class="form-group">
+        <form class="form-group" action="~/Customer/AddExceptedBuyAction" method="post">
             <fieldset>
                 <table>
                     <tr>
-                        <td><label for="receptionid">接待id</label></td>
-                        <td> <input type="text" name="receptionid" id="receptionid" value="@Html.DisplayFor(Model=>Model.FirstOrDefault().接待)"  class="text ui-widget-content ui-corner-all" /></td>
+                        <td><label for="receptionid">接待单id</label></td>
+                        <td> <input type="text" name="receptionid" id="receptionid" value="@ViewBag.receptionid" class="text ui-widget-content ui-corner-all" readonly="readonly" style="display:none"/></td>
                     </tr>
                     <tr>
                         <td><label for="productCode">商品型号</label></td>
-                        <td><input type="text" name="productCode" id="productCode" value="" class="text ui-widget-content ui-corner-all" /></td>
+                        <td>@Html.DropDownList("型号",ViewBag.ProductOptions as IEnumerable<SelectListItem>, new { @style = "width:200px;", @id="productCode" })</td>
                     </tr>
                     <tr>
                         <td> <label for="remarks">备注</label></td>
                         <td><input type="text" name="remarks" id="remarks" value="" class="text ui-widget-content ui-corner-all" /></td>
                     </tr>
                 </table>
-
-
-
+                
             </fieldset>
+            
         </form>
     </div>
 
@@ -196,22 +194,25 @@
                     <th style="align-self:center">操作</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td style="display:none">@item.ID</td>
-                        <td style="display:none">@item.接待</td>
-                        <td>@item.商品型号</td>
-                        <td>@item.备注</td>
-                        <td>
-                            <a href="javascript:;" onclick="delone(this)">删除</a>
-                            |<a href="javascript:;" onclick="editone(this)">编辑</a>
-                        </td>
-                    </tr>
-                }
+            @if (Model != null)
+            {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none">@item.ID</td>
+                            <td style="display:none">@item.接待</td>
+                            <td>@item.商品型号</td>
+                            <td>@item.备注</td>
+                            <td>
+                                <a href="javascript:;" onclick="delone(this)">删除</a>
+                                |<a href="javascript:;" onclick="editone(this)">编辑</a>
+                            </td>
+                        </tr>
+                    }
 
-            </tbody>
+                </tbody>
+            }
         </table>
     </div>
     <input type="button" name="create-record" id="create-record" value="添加新纪录" />

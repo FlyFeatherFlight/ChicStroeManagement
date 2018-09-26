@@ -978,6 +978,7 @@
     <Content Include="Views\Manager\EditEmploee.cshtml" />
     <Content Include="Views\Manager\AddEmploee.cshtml" />
     <Content Include="Views\Shared\ExceptedBuy_PartialPage.cshtml" />
+    <Content Include="Views\Shared\ExceptedBuy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
