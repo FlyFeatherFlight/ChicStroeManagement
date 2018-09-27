@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "AddExceptedBuyView";
+}
+
+<h2>AddExceptedBuyView</h2>
+
+<div id="add">
+    <hr />
+    <h1>增加</h1>
+    <form action="@Url.Action("AddExceptedBuyAction", "Customer")" method="POST" role="form">
+        接待id:<input name="接待" id="addid" value="@ViewBag.AddReceptionid" readonly="readonly" />
+        商品型号:@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>, new { @style = "width:200px;"})
+        备注:<input name="备注" id="addrmark" />
+        <button type="submit">提交</button>
+    </form>
+    <hr />
+</div>

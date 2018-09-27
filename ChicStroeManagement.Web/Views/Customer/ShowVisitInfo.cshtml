@@ -188,7 +188,7 @@
 
             <td>
                 <table class="table-responsive table-condensed">
-                    @foreach (var ite in @Model.customerExceptedBuyModels)
+                    @foreach (var ite in @Model.CustomerExceptedBuyModels)
                     {
                         <tr>
                             <td>型号： @Html.DisplayFor(m => ite.商品型号)</td>
@@ -265,7 +265,7 @@
             <td>@Html.DisplayFor(m => Model.更新日期)</td>
         </tr>
         <tr >
-            <td colspan="2" align="center">@Html.ActionLink(">>>修改信息", "EditCustomerView", new { id = Model.ID })  </td>
+            <td colspan="2" align="center">@Html.ActionLink(">>>修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink(">>>修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
         </tr>
     </table>
 

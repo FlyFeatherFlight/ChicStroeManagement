@@ -1,0 +1,93 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+@model  List<ChicStoreManagement.WEB.ViewModel.CustomerExceptedBuyModel>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ExceptedBuyIndex</title>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+</head>
+<body>
+
+    <script>
+        function edit(otr) {
+            document.getElementById("edit").style.display = "block";
+            var rows = otr.parentNode.parentNode.rowIndex;
+            var id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
+            $("#editid").val(id);
+            var receptionid = $("#product tr:eq(" + rows + ") td:eq(1)").html();
+            var product = $("#product tr:eq(" + rows + ") td:eq(2)").html();
+            var remarks = $("#product tr:eq(" + rows + ") td:eq(3)").html();
+            $("#editreception").val(receptionid);
+            $("#editproduct").val(product);
+            $("#editremark").val(remarks);
+        }
+        function del(otr) {
+            var rows = otr.parentNode.parentNode.rowIndex;
+            var Id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
+            var receptionid = $("#product tr:eq(" + rows + ") td:eq(1)").html();
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("DelExceptedBuyAction", "Customer")',
+                data: { id: Id, receptionId: receptionid},
+            datatype: "json",
+            async: true,//异步
+            success: function (data) {
+                $('#products').html(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+        }
+    </script>
+    <div class="jumbotron">
+        @Html.ActionLink("添加预购信息", "AddExceptedBuyView", new { receptionid = @ViewBag.receptionid, @class = "form-control", @Style = "font-size:12px" })
+        <table id="product" border="1" cellpadding="0" cellspacing="0" class=" table-responsive table-bordered table-condensed">
+            <tr>
+                <th>接待单</th>
+                <th>商品型号</th>
+                <th>备注</th>
+                <th>操作</th>
+
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="display:none">@item.ID</td>
+                    <td>@item.接待</td>
+                    <td>@item.商品型号</td>
+                    <td>@item.备注</td>
+                    <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
+                </tr>
+            }
+        </table>
+        
+        <div id="edit" style="display:none">
+            <h1>修改</h1>
+            <form action="@Url.Action("UpdateExceptedBuyAction", "Customer")" method="POST">
+                Id:<input name="id" id="editid" />
+                接待id:<input name="接待" id="editreception" value="@ViewBag.receptionid" readonly="readonly" />
+                商品型号:@Html.DropDownList("型号", ViewBag.ProductOptions as IEnumerable<SelectListItem>, new { @style = "width:200px;" })
+                备注:<input name="备注" id="editremark" />
+                <button type="submit">提交</button>
+            </form>
+            <hr />
+        </div>
+        @*<div id="del" style="display:none">
+            <h1>删除</h1>
+            <form action="@Url.Action("DelExceptedBuyAction", "Customer")" method="POST">
+                Id:<input name="Id" id="delid" />
+                <button type="submit">提交</button>
+            </form>
+        </div>*@
+    </div>
+</body>
+</html>

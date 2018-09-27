@@ -53,11 +53,11 @@ namespace ChicStoreManagement.CustomAttributes
             #region 是否已经登陆
             var user = filterContext.HttpContext.User;
             userName = filterContext.HttpContext.User.Identity.Name;
-            if (filterContext.HttpContext.Session["Employee"]==null||user == null || !user.Identity.IsAuthenticated)
+            if (filterContext.HttpContext.Session["Employee"] == null || user == null || !user.Identity.IsAuthenticated)
 
             {
                 filterContext.HttpContext.Session.RemoveAll();
-                
+
                 isstate = false;
                 filterContext.Result = new ContentResult { Content = @"抱歉,您还未登录！" };
                 filterContext.Result = new HttpUnauthorizedResult();
@@ -84,7 +84,7 @@ namespace ChicStoreManagement.CustomAttributes
             string actionName = fcinfo.ActionName;//获取域名
             string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
-
+            ///检查操作权限
             CheckAuth(Employees.职务, actionName, contollerName);
 
             if (isstate)//如果满足
@@ -98,9 +98,10 @@ namespace ChicStoreManagement.CustomAttributes
             {
                 filterContext.Result = new ContentResult { Content = @"抱歉,你不具有当前操作的权限！" };// 直接返回 return Content("抱歉,你不具有当前操作的权限！")
             }
-            #endregion
+          
+                #endregion
+           
         }
-
         /// <summary>
         /// 得到当前员工信息
         /// </summary>

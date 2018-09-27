@@ -9,7 +9,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.ID)
-<table class="table-responsive form-group table-condensed" >
+<table class="table-responsive table-bordered form-group table-condensed" >
     <tr>
         <td> @Html.LabelFor(Model => Model.店铺)</td>
         <td><input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly"/> </td>
@@ -258,14 +258,6 @@
         <td>
             @Html.EditorFor(model => model.是否有意向)
             @Html.ValidationMessageFor(model => model.是否有意向)
-        </td>
-    </tr>
-    <tr>
-        <td><label>  预计购买产品：</label></td>
-        <td>
-            @{
-                Html.RenderAction("ExceptedBuyViewAction", new { id = Model.ID});
-            }
         </td>
     </tr>
     <tr>

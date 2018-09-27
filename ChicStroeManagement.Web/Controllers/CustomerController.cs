@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using ChicStoreManagement.IBLL;
 using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
@@ -214,7 +212,8 @@ namespace ChicStoreManagement.Controllers
             }
           
                 customerInfoBLL.Add(model);
-                return RedirectToAction("CustomerIndex");
+                var id=customerInfoBLL.GetModel(p=>p.接待序号==model.接待序号).接待人ID;
+                return RedirectToAction("ExceptedBuyViewAction",id);
            
            
            
@@ -234,10 +233,10 @@ namespace ChicStoreManagement.Controllers
             BuildCustomerInfo();
             var customerInfo = customerInfoModels.First(p => p.ID == id);
             BuildExceptedBuy(id);
-            customerInfo.customerExceptedBuyModels = exceptedBuyModels;
+            customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
             customerInfo.更新人 = employeeName;
             customerInfo.更新日期 = DateTime.Now;
-
+            
 
             return View(customerInfo);
 
@@ -332,7 +331,7 @@ namespace ChicStoreManagement.Controllers
             BuildCustomerInfo();
            var customerInfo=customerInfoModels.First(p => p.ID == id);
             BuildExceptedBuy(id);
-            customerInfo.customerExceptedBuyModels = exceptedBuyModels;
+            customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
             return View(customerInfo);
 
         }
@@ -344,23 +343,27 @@ namespace ChicStoreManagement.Controllers
         /// <param name="id"></param>
         /// <param name="page"></param>
         /// <returns></returns>
-        public ActionResult ExceptedBuyViewAction(int id, int? page)
+        public ViewResult ExceptedBuyIndex(int id)
         {
+            Session["method"] = "N";
             if (id == 0) {
-                return Content("暂时无数据");
+                return View();
             }
             BuildExceptedBuy(id);
+            SetEmployee();
+            BuildCustomerInfo();
             ViewBag.receptionid = id;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.ProductOptions = productSelectListItems;
 
-            if (exceptedBuyModels == null) { return Content("查无数据"); }
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            
-            var model = exceptedBuyModels.ToPagedList(pageNumber, pageSize);
-            return PartialView("ExceptedBuy_PartialPage", model);
+            if (exceptedBuyModels == null) { return View(); }
+
+            var model=exceptedBuyModels.ToList();
+
+
+
+            return View(model);
         }
         /// <summary>
         /// 删除预购
@@ -368,10 +371,21 @@ namespace ChicStoreManagement.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult DelExceptedBuyAction(int id) {
-            exceptedBuyBLL.DelBy(p => p.商品型号ID == id);
-            
-            return View();
+        public ActionResult DelExceptedBuyAction(int id,int receptionId) {
+            if (Session["method"].ToString() == "Y")
+            {
+                return View("RepeatSubmit", "Customer", "CustomerIndex");
+            }
+            exceptedBuyBLL.DelBy(p => p.ID == id);
+            Session["method"] = "Y";
+
+            BuildExceptedBuy(receptionId);
+            ViewBag.receptionid = receptionId;
+            var productList = productCodeBLL.GetModels(p => true).ToList();
+            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+            ViewBag.ProductOptions = productSelectListItems;
+            var models = exceptedBuyModels.ToList();
+            return View("ExceptedBuyIndex",models);
         }
         /// <summary>
         /// 增加预购
@@ -380,44 +394,112 @@ namespace ChicStoreManagement.Controllers
         /// <param name="remarks"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddExceptedBuyAction(string 型号, string remarks,int receptionid) {
+        public ActionResult AddExceptedBuyAction(string 型号, string 备注, int 接待) {
+            if (Session["method"].ToString() == "Y")
+            {
+                return View("RepeatSubmit", "Customer", "CustomerIndex");
+            }
             销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
             {
                 商品型号ID = productCodeBLL.GetModel(p => p.型号 == 型号).ID,
-                备注 = remarks,
-                接待ID = receptionid
+                备注 = 备注,
+                接待ID = 接待
             };
-            exceptedBuyBLL.Add(model);
+            if (ModelState.IsValid)
+            {
+                exceptedBuyBLL.Add(model);
+                Session["method"] = "Y";
+
+            }
+            
+                   else
+            {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    return Json(sb);
+                }
+          
+            BuildExceptedBuy(model.接待ID);
+            ViewBag.receptionid = model.接待ID;
+            var productList = productCodeBLL.GetModels(p => true).ToList();
+            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+            ViewBag.ProductOptions = productSelectListItems;
+            var models = exceptedBuyModels.ToList();
+            return View("ExceptedBuyIndex", models);
+        }
+        public ViewResult AddExceptedBuyView(int receptionid) {
+            Session["method"] = "N";
+            ViewBag.AddReceptionid = receptionid;
+            var productList = productCodeBLL.GetModels(p => true).ToList();
+            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+            ViewBag.AddProductOptions = productSelectListItems;
             return View();
         }
-
         /// <summary>
         /// 更新预购
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public ActionResult UpdateExceptedBuyAction(string productCode,string remarks,int receptionid,int id) {
+        public ActionResult UpdateExceptedBuyAction(string 型号, string 备注, int 接待, int id) {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='Index';</script>");
+                return Content(str);
+            }
             销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
             {
                 ID = id,
-                接待ID = receptionid,
-                商品型号ID = productCodeBLL.GetModel(p => p.型号 == productCode).ID,
-                备注 = remarks
+                接待ID = 接待,
+                商品型号ID = productCodeBLL.GetModel(p => p.型号 == 型号).ID,
+                备注 = 备注
             };
+            
             if (ModelState.IsValid)
             {
 
                 exceptedBuyBLL.Modify(model);
+                Session["method"] = "Y";
 
-                return RedirectToAction("EditCustomerView");
             }
-            return View();
+            else
+            {
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+                return Json(sb);
+            }
+            BuildExceptedBuy(接待);
+                ViewBag.AddReceptionid = 接待;
+                var productList = productCodeBLL.GetModels(p => true).ToList();
+                SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+                ViewBag.ProductOptions = productSelectListItems;
+                return View("ExceptedBuyIndex",exceptedBuyModels.ToList());
+            
 
         }
         #endregion
-        public ViewResult ExceptedBuy() {
-            return View();
-        }
+      
         /// <summary>
         /// 设置当前操作人员及店铺信息
         /// </summary>

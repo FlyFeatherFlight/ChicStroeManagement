@@ -201,7 +201,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ManagerExamineController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\WarningController.cs" />
     <Compile Include="CustomAttributes\AuthenticationAttribute.cs" />
     <Compile Include="CustomAttributes\CompressFilterAttribute.cs" />
     <Compile Include="CustomAttributes\SystemIActionFilter.cs" />
@@ -979,6 +979,9 @@
     <Content Include="Views\Manager\AddEmploee.cshtml" />
     <Content Include="Views\Shared\ExceptedBuy_PartialPage.cshtml" />
     <Content Include="Views\Shared\ExceptedBuy.cshtml" />
+    <Content Include="Views\Customer\ExceptedBuyIndex.cshtml" />
+    <Content Include="Views\Customer\AddExceptedBuyView.cshtml" />
+    <Content Include="Views\Warning\RepeatSubmit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

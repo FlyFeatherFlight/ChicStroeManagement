@@ -206,7 +206,7 @@ namespace ChicStoreManagement.WEB.ViewModel
     
         public DateTime? 更新日期 { get; set; }
 
-        public IEnumerable<CustomerExceptedBuyModel> customerExceptedBuyModels { set; get; }
+        public IEnumerable<CustomerExceptedBuyModel> CustomerExceptedBuyModels { set; get; }
         public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
         public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
         public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }

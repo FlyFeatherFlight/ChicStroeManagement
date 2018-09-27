@@ -6,7 +6,7 @@
 @*@using (Html.BeginForm("CustomerAdd", "CustomerController", FormMethod.Post))
     {*@
 <script type="text/javascript">
-    $(function () {
+    @*$(function () {
         $("#dialog-form").dialog({
             autoOpen: false,
             height: 300,
@@ -30,10 +30,10 @@
 
         })
 
-    });
+    });*@
     function submit1(obj) {
 
-            document.getElementById("form1").submit(),
+        document.getElementById("form1").submit();
        
         
        
@@ -272,18 +272,7 @@
                     @Html.EditorFor(Model => Model.安装地址)
                 </td>
             </tr>
-            <tr>
-                <td>
-                    预计购买的产品：
-                </td>
-
-                <td>
-                    @{
-                        Html.RenderAction("ExceptedBuyViewAction", new { id = Model.ID });
-                    }
-
-                </td>
-            </tr>
+           
             <tr>
                 <td>
 
