@@ -8,7 +8,7 @@ namespace ChicStoreManagement.Controllers
         public ActionResult RepeatSubmit(string controllerName,string actionName) {
             ViewBag.ControllerName = controllerName;
             ViewBag.ActionName = actionName;
-            string str = string.Format("<script>alert('重复操作！');parent.location.href='Index';</script>");
+            string str = string.Format("<script>alert('重复操作！');location.href='@Url.Action('CustomerIndex','Home')';</script>");
             return Content(str);
         }
     }

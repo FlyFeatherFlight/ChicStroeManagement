@@ -23,9 +23,9 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string 接待序号 { get; set; }
 
         [Display(Name = "接待日期")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Text)]
         [Required]
-        public System.DateTime 接待日期 { get; set; }
+        public string 接待日期 { get; set; }
 
 
         [Display(Name = "客户来源")]

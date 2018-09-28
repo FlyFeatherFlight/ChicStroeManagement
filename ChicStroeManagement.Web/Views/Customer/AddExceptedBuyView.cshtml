@@ -3,16 +3,21 @@
     ViewBag.Title = "AddExceptedBuyView";
 }
 
-<h2>AddExceptedBuyView</h2>
 
-<div id="add">
+
+<div id="add" class="table-responsive">
     <hr />
-    <h1>增加</h1>
+    <h1>添加预购</h1>
     <form action="@Url.Action("AddExceptedBuyAction", "Customer")" method="POST" role="form">
-        接待id:<input name="接待" id="addid" value="@ViewBag.AddReceptionid" readonly="readonly" />
-        商品型号:@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>, new { @style = "width:200px;"})
-        备注:<input name="备注" id="addrmark" />
-        <button type="submit">提交</button>
+        <table class="table table-condensed" >
+            <tr><td>接待id:</td><td><input name="接待" id="addid" value="@ViewBag.AddReceptionid" readonly="readonly"class="form-control" /></td></tr>
+            
+            <tr><td>商品型号:</td><td> @Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })</td></tr>
+           <tr><td>备注:</td><td> <input name="备注" id="addrmark" class="form-control" /></td></tr>
+            
+           <tr><td colspan="2"><input type="submit" class="btn" value="提交"/></td></tr>
+        </table>
     </form>
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
     <hr />
 </div>

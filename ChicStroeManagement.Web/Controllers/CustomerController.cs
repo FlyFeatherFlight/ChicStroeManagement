@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -45,6 +46,7 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ViewResult CustomerIndex(string sortOrder, string searchString, string currentFilter, int? page)
         {
+            Session["method"] = "N";
             SetEmployee();
             ViewBag.CustomerCurrentSort = sortOrder;
             ViewBag.CustomerNumber = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
@@ -105,6 +107,7 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ViewResult AddCustomerView()
         {
+            Session["method"] = "N";
             SetEmployee();
             List<销售_店铺员工档案> employeeList = storeEmployeesBLL.GetModels(p => true).ToList();
             SelectList EmployeeListList = new SelectList(employeeList, "姓名", "姓名");
@@ -116,12 +119,13 @@ namespace ChicStoreManagement.Controllers
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.ProductOptions = productSelectListItems;
-
+            
             CustomerInfoModel model = new CustomerInfoModel
             {
                 接待序号 = Guid.NewGuid().ToString("D"),
                 制单日期 = DateTime.Now,
-                接待日期=DateTime.Now.Date,
+               
+                接待日期 = DateTime.Now.ToString("d"),
                 店铺 = store,
                 接待人 = employeeName
             };
@@ -130,6 +134,13 @@ namespace ChicStoreManagement.Controllers
         }
         [HttpPost]
         public ActionResult CustomerAdd(CustomerInfoModel customerInfoModel) {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                return Content(str);
+            }
+          
+
             SetEmployee();
             销售_接待记录 model = new 销售_接待记录();
             try
@@ -208,12 +219,22 @@ namespace ChicStoreManagement.Controllers
                         sb.Add(error.ErrorMessage);
                     }
                 }
-                return Json(sb);
+                string s = null;
+                foreach (var item in sb)
+                {
+                    s += item.ToString() + ";";
+                }
+                return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
             }
-          
-                customerInfoBLL.Add(model);
+            var isHave = customerInfoBLL.GetModel(p => p.客户姓名 == model.客户姓名 && p.接待日期.ToString("d") == model.接待日期.ToString("d"));
+            if (isHave!= null)
+            {
+                return Content("<script>alert('数据已存在！，请勿重复提交');parent.location.href='CustomerIndex';</script>");
+            }
+            customerInfoBLL.Add(model);
+                Session["method"] = "Y";
                 var id=customerInfoBLL.GetModel(p=>p.接待序号==model.接待序号).接待人ID;
-                return RedirectToAction("ExceptedBuyViewAction",id);
+                return RedirectToAction("CustomerIndex",id);
            
            
            
@@ -224,6 +245,7 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult EditCustomerView(int id)
         {
+            Session["method"] = "N";
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -251,6 +273,14 @@ namespace ChicStoreManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CustomerEdit(CustomerInfoModel customerInfoModel) {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                return Content(str);
+            }
+           
+            DateTimeFormatInfo dtFormat = new DateTimeFormatInfo();
+            dtFormat.ShortDatePattern = "yyyy/MM/dd";
             销售_接待记录 model = new 销售_接待记录();
             try
             {
@@ -258,7 +288,7 @@ namespace ChicStoreManagement.Controllers
                 model.店铺ID = storeBLL.GetModel(p => p.名称 == customerInfoModel.店铺).ID;
                 model.接待人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;
                 model.接待序号 = customerInfoModel.接待序号;
-                model.接待日期 = customerInfoModel.接待日期;
+                model.接待日期 = Convert.ToDateTime(customerInfoModel.接待日期, dtFormat);
                 model.主导者 = customerInfoModel.主导者;
                 model.主导者喜好风格 = customerInfoModel.主导者喜好风格;
                 model.使用空间 = customerInfoModel.使用空间;
@@ -304,9 +334,35 @@ namespace ChicStoreManagement.Controllers
                 model.预报价折扣 = customerInfoModel.预报价折扣;
                 model.预算金额 = customerInfoModel.预算金额;
                 model.预计使用时间 = customerInfoModel.预计使用时间;
-               
-            
-            customerInfoBLL.Modify(model);
+
+                if (ModelState.IsValid)
+                {
+                    customerInfoBLL.Modify(model);
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = null;
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
             } 
             catch (Exception)
             {
@@ -340,8 +396,8 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 预计购买
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="page"></param>
+        /// <param name="id">接待id</param>
+       
         /// <returns></returns>
         public ViewResult ExceptedBuyIndex(int id)
         {
@@ -374,11 +430,13 @@ namespace ChicStoreManagement.Controllers
         public ActionResult DelExceptedBuyAction(int id,int receptionId) {
             if (Session["method"].ToString() == "Y")
             {
-                return View("RepeatSubmit", "Customer", "CustomerIndex");
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                return Content(str);
             }
+           
+
             exceptedBuyBLL.DelBy(p => p.ID == id);
             Session["method"] = "Y";
-
             BuildExceptedBuy(receptionId);
             ViewBag.receptionid = receptionId;
             var productList = productCodeBLL.GetModels(p => true).ToList();
@@ -397,7 +455,8 @@ namespace ChicStoreManagement.Controllers
         public ActionResult AddExceptedBuyAction(string 型号, string 备注, int 接待) {
             if (Session["method"].ToString() == "Y")
             {
-                return View("RepeatSubmit", "Customer", "CustomerIndex");
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                return Content(str);
             }
             销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
             {
@@ -427,7 +486,12 @@ namespace ChicStoreManagement.Controllers
                             sb.Add(error.ErrorMessage);
                         }
                     }
-                    return Json(sb);
+                string s=null;
+                foreach (var item in sb)
+                {
+                    s += item.ToString()+";";
+                }
+                    return Content("<script>alert('"+s+ "');window.history.go(-1);</script>");
                 }
           
             BuildExceptedBuy(model.接待ID);
@@ -454,7 +518,7 @@ namespace ChicStoreManagement.Controllers
         public ActionResult UpdateExceptedBuyAction(string 型号, string 备注, int 接待, int id) {
             if (Session["method"].ToString() == "Y")
             {
-                string str = string.Format("<script>alert('重复操作！');parent.location.href='Index';</script>");
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
                 return Content(str);
             }
             销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
@@ -487,14 +551,19 @@ namespace ChicStoreManagement.Controllers
                         sb.Add(error.ErrorMessage);
                     }
                 }
-                return Json(sb);
+                string s = null;
+                foreach (var item in sb)
+                {
+                    s += item.ToString() + ";";
+                }
+                return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
             }
             BuildExceptedBuy(接待);
                 ViewBag.AddReceptionid = 接待;
                 var productList = productCodeBLL.GetModels(p => true).ToList();
                 SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
                 ViewBag.ProductOptions = productSelectListItems;
-                return View("ExceptedBuyIndex",exceptedBuyModels.ToList());
+                return RedirectToAction("ExceptedBuyIndex",new {id=接待});
             
 
         }
@@ -540,7 +609,7 @@ namespace ChicStoreManagement.Controllers
                             customerInfo.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
                             customerInfo.接待人 = storeEmployeesBLL.GetModel(p => p.ID == item.接待人ID).姓名;
                             customerInfo.接待序号 = item.接待序号;
-                            customerInfo.接待日期 = item.接待日期;
+                            customerInfo.接待日期 = item.接待日期.ToString("d");
                             customerInfo.主导者 = item.主导者;
                             customerInfo.主导者喜好风格 = item.主导者喜好风格;
                             customerInfo.使用空间 = item.使用空间;

@@ -5,7 +5,7 @@
 
 <h1>顾客接待详情</h1>
 
-<div class="container mt-5 table-responsive">
+<div class="container table-responsive">
 
     <div>
         <b>
@@ -34,14 +34,14 @@
 
         <b>
             时长：
-        </b> @Html.DisplayFor(m => Model.进店时长) &nbsp;
+        </b> @Html.DisplayFor(m => Model.进店时长) 分钟 &nbsp;
 
         <b>
             客户类别：
         </b>@Html.DisplayFor(m => Model.客户类别)
 
     </div>
-    <table class="table table-bordered table-striped table-responsive " style=" table-layout:fixed">
+    <table class="table table-bordered table-striped " >
 
         <tr>
             <td width="12%">
@@ -265,11 +265,11 @@
             <td>@Html.DisplayFor(m => Model.更新日期)</td>
         </tr>
         <tr >
-            <td colspan="2" align="center">@Html.ActionLink(">>>修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink(">>>修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
+            <td colspan="2" align="center">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
         </tr>
     </table>
 
-    <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
 
 </div>
 

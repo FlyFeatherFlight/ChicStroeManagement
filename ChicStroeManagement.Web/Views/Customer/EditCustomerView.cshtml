@@ -3,275 +3,276 @@
     ViewBag.Title = "EditCustomerView";
 }
 
-<h2>修改客户信息</h2>
-@using (Html.BeginForm("CustomerEdit", "Customer", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.ID)
-<table class="table-responsive table-bordered form-group table-condensed" >
-    <tr>
-        <td> @Html.LabelFor(Model => Model.店铺)</td>
-        <td><input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly"/> </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(Model => Model.接待序号)</td>
-        
-        <td><input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(Model => Model.接待日期)</td>
-      
-        <td><input type="text" name="接待日期" value="@Html.DisplayFor(Model => Model.接待日期)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(Model => Model.接待人)</td>
-        
-        <td><input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(Model => Model.跟进人)</td>
-     
-        <td><input type="text" name="跟进人" value="@Html.DisplayFor(Model => Model.跟进人)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td><label class="control-label col-md-2">当前操作人</label></td>
-       
-        <td><input type="text" name="更新人" value="@Html.DisplayFor(model => model.更新人)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.更新日期)</td>
-        
-        <td><input type="text" name="更新日期" value="@Html.DisplayFor(model => model.更新日期)" readonly="readonly" /> </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.客户姓名)</td>
-        <td>
-            @Html.EditorFor(model => model.客户姓名)
-            @Html.ValidationMessageFor(model => model.客户姓名)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.性别)</td>
-        <td>
-            @Html.EditorFor(model => model.性别)
-            @Html.ValidationMessageFor(model => model.性别)
-        </td>
-    <tr>
-        <td> @Html.LabelFor(model => model.年龄段)</td>
-        <td>
-            @Html.EditorFor(model => model.年龄段)
-            @Html.ValidationMessageFor(model => model.年龄段)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.来店次数)</td>
-        <td>
-            @Html.EditorFor(model => model.来店次数)
-            @Html.ValidationMessageFor(model => model.来店次数)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(Model => Model.进店时间)</td>
-        <td>@Html.EditorFor(Model => Model.进店时间)</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(Model => Model.出店时间)</td>
-        <td>@Html.EditorFor(Model => Model.出店时间)</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(Model => Model.进店时长)</td>
+    <h2>修改客户信息</h2>
 
-       
+    @using (Html.BeginForm("CustomerEdit", "Customer", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.ID)
+    <div class="table-responsive ">
+        <table class="table table-condensed ">
+            <tr>
+                <td style="width:10%"> @Html.LabelFor(Model => Model.店铺)</td>
+                <td><input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(Model => Model.接待序号)</td>
 
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.客户类别)</td>
-        <td>
-            @Html.EditorFor(model => model.客户类别)
-            @Html.ValidationMessageFor(model => model.客户类别)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.客户类型)</td>
-        <td>
-            @Html.EditorFor(model => model.客户类型)
-            @Html.ValidationMessageFor(model => model.客户类型)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.客户职业)</td>
-        <td>
-            @Html.EditorFor(model => model.客户职业)
-            @Html.ValidationMessageFor(model => model.客户职业)
-        </td>
-    <tr>
-        <td> @Html.LabelFor(model => model.客户电话)</td>
-        <td>
-            @Html.EditorFor(model => model.客户电话)
-            @Html.ValidationMessageFor(model => model.客户电话)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.社交软件)</td>
-        <td>
-            @Html.EditorFor(model => model.社交软件)
-            @Html.ValidationMessageFor(model => model.社交软件)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.客户着装)</td>
-        <td>
-            @Html.EditorFor(model => model.客户着装)
-            @Html.ValidationMessageFor(model => model.客户着装)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.客户来源)</td>
-        <td>
-            @Html.EditorFor(model => model.客户来源)
-            @Html.ValidationMessageFor(model => model.客户来源)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.同行人)</td>
-        <td>
-            @Html.EditorFor(model => model.同行人)
-            @Html.ValidationMessageFor(model => model.同行人)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.主导者)</td>
-        <td>
-            @Html.EditorFor(model => model.主导者)
-            @Html.ValidationMessageFor(model => model.主导者)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.主导者喜好风格)</td>
-        <td>
-            @Html.EditorFor(model => model.主导者喜好风格)
-            @Html.ValidationMessageFor(model => model.主导者喜好风格)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.家庭成员)</td>
-        <td>
-            @Html.EditorFor(model => model.家庭成员)
-            @Html.ValidationMessageFor(model => model.家庭成员)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.特征)</td>
-        <td>
-            @Html.EditorFor(model => model.特征)
-            @Html.ValidationMessageFor(model => model.特征)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.使用空间)</td>
-        <td>
-            @Html.EditorFor(model => model.使用空间)
-            @Html.ValidationMessageFor(model => model.使用空间)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.装修情况)</td>
-        <td>
-            @Html.EditorFor(model => model.装修情况)
-            @Html.ValidationMessageFor(model => model.装修情况)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.装修进度)</td>
-        <td>
-            @Html.EditorFor(model => model.装修进度)
-            @Html.ValidationMessageFor(model => model.装修进度)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.装修风格)</td>
-        <td>
-            @Html.EditorFor(model => model.装修风格)
-            @Html.ValidationMessageFor(model => model.装修风格)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.预计使用时间)</td>
-        <td>
-            @Html.EditorFor(model => model.预计使用时间)
-            @Html.ValidationMessageFor(model => model.预计使用时间)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.如何得知品牌)</td>
-        <td>
-            @Html.EditorFor(model => model.如何得知品牌)
-            @Html.ValidationMessageFor(model => model.如何得知品牌)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.比较品牌)</td>
-        <td>
-            @Html.EditorFor(model => model.比较品牌)
-            @Html.ValidationMessageFor(model => model.比较品牌)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.安装地址)</td>
-        <td>
-            @Html.EditorFor(model => model.安装地址)
-            @Html.ValidationMessageFor(model => model.安装地址)
-        </td>
-    </tr>
-    <tr>
-        <td> @Html.LabelFor(model => model.预算金额)</td>
-        <td>
-            @Html.EditorFor(model => model.预算金额)
-            @Html.ValidationMessageFor(model => model.预算金额)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.预报价折扣)</td>
-        <td>
-            @Html.EditorFor(model => model.预报价折扣)
-            @Html.ValidationMessageFor(model => model.预报价折扣)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.返点)</td>
-        <td>
-            @Html.EditorFor(model => model.返点)
-            @Html.ValidationMessageFor(model => model.返点)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.设计师)</td>
-        <td>
-            @Html.EditorFor(model => model.设计师)
-            @Html.ValidationMessageFor(model => model.设计师)
-        </td>
-    </tr>
+                <td><input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(Model => Model.接待日期)</td>
 
-    <tr>
-        <td>@Html.LabelFor(model => model.是否有意向)</td>
-        <td>
-            @Html.EditorFor(model => model.是否有意向)
-            @Html.ValidationMessageFor(model => model.是否有意向)
-        </td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(model => model.客户建议)</td>
-        <td>
-            @Html.EditorFor(model => model.客户建议)
-            @Html.ValidationMessageFor(model => model.客户建议)
-        </td>
-    </tr>
-    
-</table>
-        <div>
-            <input type="button" onclick="javascript:window.history.go(-1);" value="取消">|<input id="Submit1" type="submit" value="提交" />
-        </div>
+                <td><input type="text" name="接待日期" value="@Html.DisplayFor(Model => Model.接待日期)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(Model => Model.接待人)</td>
+
+                <td><input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+
+            <tr>
+                <td><label>当前操作人</label></td>
+
+                <td><input type="text" name="更新人" value="@Html.DisplayFor(model => model.更新人)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.更新日期)</td>
+
+                <td><input type="text" name="更新日期" value="@Html.DisplayFor(model => model.更新日期)" readonly="readonly" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.跟进人)</td>
+
+                <td><input type="text" name="跟进人" value="@Html.DisplayFor(Model => Model.跟进人)" class="form-control" /> </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.客户姓名)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户姓名, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户姓名)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.性别)</td>
+                <td>
+                    @Html.EditorFor(model => model.性别, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.性别)
+                </td>
+            <tr>
+                <td> @Html.LabelFor(model => model.年龄段)</td>
+                <td>
+                    @Html.EditorFor(model => model.年龄段, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.年龄段)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.来店次数)</td>
+                <td>
+                    @Html.EditorFor(model => model.来店次数, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.来店次数)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.进店时间)</td>
+                <td>@Html.EditorFor(Model => Model.进店时间, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.出店时间)</td>
+                <td>@Html.EditorFor(Model => Model.出店时间, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.客户类别)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户类别, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户类别)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.客户类型)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户类型, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户类型)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.客户职业)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户职业, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户职业)
+                </td>
+            <tr>
+                <td> @Html.LabelFor(model => model.客户电话)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户电话, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户电话)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.社交软件)</td>
+                <td>
+                    @Html.EditorFor(model => model.社交软件, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.社交软件)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.客户着装)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户着装, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户着装)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.客户来源)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户来源, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户来源)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.同行人)</td>
+                <td>
+                    @Html.EditorFor(model => model.同行人, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.同行人)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.主导者)</td>
+                <td>
+                    @Html.EditorFor(model => model.主导者, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.主导者)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.主导者喜好风格)</td>
+                <td>
+                    @Html.EditorFor(model => model.主导者喜好风格, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.主导者喜好风格)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.家庭成员)</td>
+                <td>
+                    @Html.EditorFor(model => model.家庭成员, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.家庭成员)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.特征)</td>
+                <td>
+                    @Html.EditorFor(model => model.特征, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.特征)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.使用空间)</td>
+                <td>
+                    @Html.EditorFor(model => model.使用空间, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.使用空间)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.装修情况)</td>
+                <td>
+                    @Html.EditorFor(model => model.装修情况, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.装修情况)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.装修进度)</td>
+                <td>
+                    @Html.EditorFor(model => model.装修进度, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.装修进度)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.装修风格)</td>
+                <td>
+                    @Html.EditorFor(model => model.装修风格, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.装修风格)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.预计使用时间)</td>
+                <td>
+                    @Html.EditorFor(model => model.预计使用时间, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.预计使用时间)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.如何得知品牌)</td>
+                <td>
+                    @Html.EditorFor(model => model.如何得知品牌, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.如何得知品牌)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.比较品牌)</td>
+                <td>
+                    @Html.EditorFor(model => model.比较品牌, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.比较品牌)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.安装地址)</td>
+                <td>
+                    @Html.EditorFor(model => model.安装地址, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.安装地址)
+                </td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => model.预算金额)</td>
+                <td>
+                    @Html.EditorFor(model => model.预算金额, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.预算金额)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.预报价折扣)</td>
+                <td>
+                    @Html.EditorFor(model => model.预报价折扣, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.预报价折扣)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.返点)</td>
+                <td>
+                    @Html.EditorFor(model => model.返点, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.返点)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.设计师)</td>
+                <td>
+                    @Html.EditorFor(model => model.设计师, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.设计师)
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => model.是否有意向)</td>
+                <td>
+                    @Html.RadioButtonFor(Model => Model.是否有意向, "true", new { htmlAttributes = new { @class = "form-control" } }) 是 &nbsp;
+                    @Html.RadioButtonFor(Model => Model.是否有意向, "false", new { htmlAttributes = new { @class = "form-control" } }) 否
+                    @Html.ValidationMessageFor(model => model.是否有意向)
+
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.客户建议)</td>
+                <td>
+                    @Html.EditorFor(model => model.客户建议, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.客户建议)
+                </td>
+            </tr>
+
+        </table> 
+        <input id="Submit1" type="submit" value="提交" class="btn" />|<input type="button" onclick="javascript:window.history.go(-1);" value="取消" class="btn">
+    </div>
+<div>
+  
+</div>
     @*</div>*@
 }
 
