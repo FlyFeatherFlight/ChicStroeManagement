@@ -54,7 +54,12 @@
     <Compile Include="AccountManage.cs" />
     <Compile Include="BaseDAL.cs" />
     <Compile Include="CustomerInfoDAL.cs" />
+    <Compile Include="CustomerTrackingLogDAL.cs" />
     <Compile Include="DbContextFactory.cs" />
+    <Compile Include="DesignSubmitDAL.cs" />
+    <Compile Include="DesignTrackingLogDAL.cs" />
+    <Compile Include="Design_CustomerExceptedBuyDAL.cs" />
+    <Compile Include="Design_ProjectDrawingsDAL.cs" />
     <Compile Include="ExceptedBuyDAL.cs" />
     <Compile Include="PositionDAL.cs" />
     <Compile Include="ProductCodeDAL.cs" />

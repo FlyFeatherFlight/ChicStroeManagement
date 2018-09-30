@@ -17,9 +17,18 @@ namespace ChicStoreManagement.CustomAttributes
     public class AuthorizeFilter : ActionFilterAttribute
     {
         FilterContextInfo fcinfo;
-        private bool isstate;
+        /// <summary>
+        /// 身份检测判断
+        /// </summary>
+        private bool isState;
 
+        /// <summary>
+        /// 当前操作人员名字
+        /// </summary>
         private string userName;
+        /// <summary>
+        /// 当前操作人员信息
+        /// </summary>
         private Employees Employees;
 
 
@@ -52,13 +61,14 @@ namespace ChicStoreManagement.CustomAttributes
 
             #region 是否已经登陆
             var user = filterContext.HttpContext.User;
-            userName = filterContext.HttpContext.User.Identity.Name;
+            userName = filterContext.HttpContext.User.Identity.Name;//取得当前用户名
+
             if (filterContext.HttpContext.Session["Employee"] == null || user == null || !user.Identity.IsAuthenticated)
 
             {
                 filterContext.HttpContext.Session.RemoveAll();
 
-                isstate = false;
+                isState = false;
                 filterContext.Result = new ContentResult { Content = @"抱歉,您还未登录！" };
                 filterContext.Result = new HttpUnauthorizedResult();
                 return;
@@ -66,7 +76,7 @@ namespace ChicStoreManagement.CustomAttributes
             else
             {
 
-                isstate = true;
+                isState = true;
             }
             #endregion
 
@@ -77,7 +87,7 @@ namespace ChicStoreManagement.CustomAttributes
             #region 权限验证
 
 
-            GetEmployee(filterContext);
+            GetEmployee(filterContext);//得到当前员工信息
 
 
             fcinfo = new FilterContextInfo(filterContext);
@@ -87,7 +97,7 @@ namespace ChicStoreManagement.CustomAttributes
             ///检查操作权限
             CheckAuth(Employees.职务, actionName, contollerName);
 
-            if (isstate)//如果满足
+            if (isState)//如果满足
             {
                 return;
                 // filterContext.Result = new HttpUnauthorizedResult();//直接URL输入的页面地址跳转到登陆页  
@@ -129,22 +139,22 @@ namespace ChicStoreManagement.CustomAttributes
         {
             if (contollerName != "ManagerExamine" && contollerName != "Manager")
             {
-                isstate = true;
+                isState = true;
                 return;//如果是非管理者页面 任何人都可以访问
             }
             if (contollerName == "Manager" && positionName == "店长" || contollerName == "ManagerExamine" && positionName == "店长")
             {
-                isstate = true;//店长操作
+                isState = true;//店长操作
                 return;
             }
             else if (contollerName == "Manager" && positionName == "老板" || contollerName == "ManagerExamine" && positionName == "老板")
             {
-                isstate = true;//老板操作
+                isState = true;//老板操作
                 return;
             }
             else
             {
-                isstate = false;
+                isState = false;
             }
         }
 

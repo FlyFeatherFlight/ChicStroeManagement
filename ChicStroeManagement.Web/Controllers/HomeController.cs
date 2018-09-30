@@ -3,18 +3,30 @@ using ChicStoreManagement.Model;
 using System.Web.Mvc;
 using System.Web.Security;
 using ChicStoreManagement.CustomAttributes;
+using ChicStoreManagement.WEB.ViewModel;
 
 namespace ChicStoreManagement.Controllers
 {
     
     public class HomeController: Controller
     {
+      
+
         /// <summary>
         /// 门店管理首页
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
         {
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+
+                ViewBag.StoreName = employees.店铺;
+               
+            }
+           
             return View();
         }
 

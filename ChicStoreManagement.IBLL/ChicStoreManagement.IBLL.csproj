@@ -43,6 +43,11 @@
     <Compile Include="AccountManageIBll.cs" />
     <Compile Include="IBaseService.cs" />
     <Compile Include="ICustomerInfoBLL.cs" />
+    <Compile Include="ICustomerTrackingBLL.cs" />
+    <Compile Include="IDesignSubmitBLL.cs" />
+    <Compile Include="IDesignTrackingLogBLL.cs" />
+    <Compile Include="IDesign_CustomerExceptedBuyBLL.cs" />
+    <Compile Include="IDesign_ProjectDrawingsBLL.cs" />
     <Compile Include="IExceptedBuyBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />

@@ -19,35 +19,40 @@
 
         @Html.ValidationSummary(true)
 
-        <table class=" table-condensed">
+        <table class="table ">
             <tr>
-                <td> @Html.LabelFor(Model => Model.接待序号):</td>
+                <td> @Html.LabelFor(Model => Model.接待序号)</td>
                 <td><input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" class="form-control" /></td>
+           
                 <td>
-                    @Html.LabelFor(Model => Model.接待日期):
+                    @Html.LabelFor(Model => Model.接待日期)
                 </td>
                 <td>
                     <input type="text" name="接待日期" value="@Html.DisplayFor(Model => Model.接待日期)" readonly="readonly" class="form-control" />
                 </td>
-
+            </tr>
+            <tr>
                 <td>
-                    @Html.LabelFor(Model => Model.店铺):
+                    @Html.LabelFor(Model => Model.店铺)
                 </td>
                 <td>
                     <input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly" class="form-control" />
                 </td>
-                <td>@Html.LabelFor(Model => Model.接待人):</td>
+            
+                <td>@Html.LabelFor(Model => Model.接待人)</td>
 
                 <td> <input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" class="form-control" /></td>
 
             </tr>
+
             <tr>
-                <td>@Html.LabelFor(Model => Model.进店时间):</td>
+                <td>@Html.LabelFor(Model => Model.进店时间)</td>
                 <td>
                     @Html.EditorFor(Model => Model.进店时间, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(Model => Model.进店时间)
                 </td>
-                <td>@Html.LabelFor(Model => Model.出店时间):</td>
+           
+                <td>@Html.LabelFor(Model => Model.出店时间)</td>
                 <td>
                     @Html.EditorFor(Model => Model.出店时间, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(Model => Model.出店时间)
@@ -55,6 +60,7 @@
             </tr>
 
         </table>
+        <hr />
         <table class="table table-bordered table-striped table-responsive " style="table-layout:fixed">
 
             <tr>
@@ -73,7 +79,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(Model => Model.来店次数)：
+                    @Html.LabelFor(Model => Model.来店次数)
                 </td>
                 <td>
                     @Html.EditorFor(Model => Model.来店次数, new { htmlAttributes = new { @class = "form-control" } })
@@ -89,7 +95,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(Model => Model.客户电话)：：
+                    @Html.LabelFor(Model => Model.客户电话)
                 </td>
                 <td>
                     @Html.EditorFor(Model => Model.客户电话, new { htmlAttributes = new { @class = "form-control" } })
@@ -97,7 +103,7 @@
                 </td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(Model => Model.社交软件)：</td>
+                <td>@Html.LabelFor(Model => Model.社交软件)</td>
                 <td>@Html.EditorFor(Model => Model.社交软件, new { htmlAttributes = new { @class = "form-control" } })</td>
 
 
@@ -269,13 +275,13 @@
                     @Html.EditorFor(Model => Model.客户建议, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
             </tr>
-            <tr>
+            @*<tr>
                 <td>@Html.LabelFor(Model => Model.跟进人)</td>
                 <td>
                     @Html.DropDownListFor(Model => Model.跟进人, ViewBag.EmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
 
                 </td>
-            </tr>
+            </tr>*@
             <tr>
                 <td>
                     @Html.LabelFor(Model => Model.是否有意向)

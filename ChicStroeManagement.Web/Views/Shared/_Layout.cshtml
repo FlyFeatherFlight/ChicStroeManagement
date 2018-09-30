@@ -27,8 +27,11 @@
             <div class="navbar-collapse collapse" id="two">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
+                    <li>@Html.ActionLink("意向日志", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("设计日志", "Contact", "Home")</li>
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
 
                 </ul>

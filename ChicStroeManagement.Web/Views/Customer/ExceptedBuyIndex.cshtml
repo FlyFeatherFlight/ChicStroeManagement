@@ -10,13 +10,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>ExceptedBuyIndex</title>
+    <title>预购信息</title>
     <script src="~/Scripts/jquery-3.0.0.js"></script>
     <script src="~/Scripts/jquery-3.0.0.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
 </head>
 <body>
-
+    
     <script>
         function edit(otr) {
             document.getElementById("edit").style.display = "block";
@@ -63,9 +63,13 @@
             <div class="navbar-collapse collapse" id="two">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
-                    <li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("关于", "About", "Home")</li>
+                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
+                    <li>@Html.ActionLink("意向日志", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("设计日志", "Contact", "Home")</li>
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
+
                 </ul>
             </div>
         </div>
@@ -73,7 +77,9 @@
     </div>
 
     <div class="container body-content">
+        <h3>@ViewBag.CustomerName 的预购信息</h3>
         <div class="table-responsive container">
+
             @Html.ActionLink("添加预购信息", "AddExceptedBuyView", new { receptionid = @ViewBag.receptionid, @class = "form-control", @Style = "font-size:12px" })
             <hr />
             <table id="product" class="table table-striped">
@@ -97,7 +103,7 @@
             </table>
 
             <div id="edit" style="display:none" class="form-group">
-                <h1>修改</h1>
+                <h3>修改</h3>
                 <form action="@Url.Action("UpdateExceptedBuyAction", "Customer")" method="POST">
                     Id:<input name="id" id="editid" class="form-control" readonly="readonly" />
                     接待id:<input name="接待" id="editreception" value="@ViewBag.receptionid" readonly="readonly" class="form-control" />
@@ -107,18 +113,12 @@
                 </form>
                 <hr />
             </div>
-            @*<div id="del" style="display:none">
-            <h1>删除</h1>
-            <form action="@Url.Action("DelExceptedBuyAction", "Customer")" method="POST">
-                Id:<input name="Id" id="delid" />
-                <button type="submit">提交</button>
-            </form>
-        </div>*@
+          
             <br />
             <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
             <hr />
         </div>
-        
+
         <footer>
             <p>&copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
         </footer>

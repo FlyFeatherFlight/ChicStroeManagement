@@ -3,43 +3,47 @@
     ViewBag.Title = "接待详细";
 }
 
-<h1>顾客接待详情</h1>
+
 
 <div class="container table-responsive">
+    <h3>@Model.客户姓名 详细信息</h3>
+    <div class="container-fluid">
+        <p class="text-info">
+            <b>
+                店铺：
+            </b> @Html.DisplayFor(m => Model.店铺)&nbsp;
+       
+            <b>
+                接待人：
+            </b> @Html.DisplayFor(m => Model.接待人) &nbsp;
 
-    <div>
-        <b>
-            接待编号：
-        </b>@Html.DisplayFor(m => Model.接待序号) &nbsp;
-        <b>
-            日期：
-        </b> @Html.DisplayFor(m => Model.接待日期)&nbsp;
-
-        <b>
-            店铺：
-        </b> @Html.DisplayFor(m => Model.店铺)&nbsp;
-
-        <b>
-            接待人：
-        </b> @Html.DisplayFor(m => Model.接待人) &nbsp;
-
-        <b>
-            进店时间：
-        </b> @Html.DisplayFor(m => Model.进店时间) &nbsp;
-
-        <b>
-            离店时间：
-        </b>
-        @Html.DisplayFor(m => Model.出店时间) &nbsp;
-
-        <b>
-            时长：
-        </b> @Html.DisplayFor(m => Model.进店时长) 分钟 &nbsp;
-
-        <b>
-            客户类别：
-        </b>@Html.DisplayFor(m => Model.客户类别)
-
+       
+            <b>
+                接待编号：
+            </b>@Html.DisplayFor(m => Model.接待序号) &nbsp;
+        </p>
+    @*<p>
+            <b>
+                日期：
+            </b> @Html.DisplayFor(m => Model.接待日期)&nbsp;
+        </p>*@<p>
+            <b>
+                进店时间：
+            </b> @Html.DisplayFor(m => Model.进店时间)
+        </p><p>
+            <b>
+                离店时间：
+            </b>
+            @Html.DisplayFor(m => Model.出店时间) &nbsp;
+        </p><p>
+            <b>
+                时长：
+            </b> @Html.DisplayFor(m => Model.进店时长) 分钟 &nbsp;
+        </p><p>
+            <b>
+                客户类别：
+            </b>@Html.DisplayFor(m => Model.客户类别)
+        </p>
     </div>
     <table class="table table-bordered table-striped " >
 
@@ -270,6 +274,6 @@
     </table>
 
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
-
+    <br/>
 </div>
 
