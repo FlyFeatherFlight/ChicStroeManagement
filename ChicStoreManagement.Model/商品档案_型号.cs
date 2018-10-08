@@ -7,20 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ChicStoreManagement.Model
+using System;
+using System.Collections.Generic;
+
+public partial class 商品档案_型号
 {
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class 商品档案_型号
-    {
-        public int ID { get; set; }
-        public int 分类ID { get; set; }
-        public Nullable<int> 品牌ID { get; set; }
-        public Nullable<int> 系列ID { get; set; }
-        public string 型号 { get; set; }
-        public Nullable<int> 制单人 { get; set; }
-        public Nullable<System.DateTime> 制单日期 { get; set; }
-        public Nullable<bool> 停用标志 { get; set; }
-    }
+    public int ID { get; set; }
+    public int 分类ID { get; set; }
+    public Nullable<int> 品牌ID { get; set; }
+    public Nullable<int> 系列ID { get; set; }
+    public string 型号 { get; set; }
+    public Nullable<int> 制单人 { get; set; }
+    public Nullable<System.DateTime> 制单日期 { get; set; }
+    public Nullable<bool> 停用标志 { get; set; }
 }

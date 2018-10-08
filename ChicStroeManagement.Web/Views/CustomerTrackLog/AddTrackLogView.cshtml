@@ -1,21 +1,41 @@
-﻿
+﻿@model  ChicStoreManagement.WEB.ViewModel.CustomerTrackingModel
 @{
     ViewBag.Title = "AddTrackLogView";
 }
 
 <h2>意向客户追踪日志添加</h2>
 
-<form role="form" class="form-inline" action="~/Controllers/Customer/AddTrackLogView">
-    <label>客户名：xxx</label><label>客户来源：xxx</label><label>接待销售：xxx</label><label>接待日期：@DateTime.Now.Year</label>
-    <table class="table table-striped table-bordered table-hover table-condensed  table-responsive ">
-        <tr>
-            <td>跟进时间：<input id="Text1" type="text" class=" form-control"/></td>
-        </tr>
-        <tr><td>方式：<input id="Text1" type="text"class=" form-control" /></td></tr>
-        <tr><td>跟进结果：<input id="Radio1" type="radio" name="result"  value="success"/>成功<input id="Radio2" type="radio" name="result" value="giveup"/>放弃<input id="Radio3" type="radio" name="result" value="continnue"/>待定</td></tr>
-        <tr><td>处理详细：<textarea id="TextArea1" rows="10" cols="30"class=" form-control"></textarea></td></tr>
-        
-    </table>
+<form role="form" class="form-inline" action="~/Controllers/CustomerTrackLog/AddTrackLogView">
+    <label>当前店铺</label>
+    <input name="店铺" type="text" value="@Model.店铺" readonly="readonly" />
+    <label>接待序号</label>
+    @{
+        if (Model.接待序号 != null)
+        {
+            <input type="text" name="接待序号" value="@Model.接待序号" readonly="readonly" />
+        }
+        else
+        {
+            @Html.DropDownListFor(Model => Model.接待序号, ViewBag.ReceptionOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
+        }
+    }
+    <lable>跟进时间</lable>
+    @Html.EditorFor(Model => Model.跟进时间, new { htmlAttributes = new { @class = "form-control" } })
+    <lable>跟进方式</lable>
+    @Html.EditorFor(Model => Model.跟进方式, new { htmlAttributes = new { @class = "form-control" } })
+    <lable>跟进内容</lable>
+    @Html.EditorFor(Model => Model.跟进内容, new { htmlAttributes = new { @class = "form-control" } })
+    <lable>跟进结果</lable>
+    @Html.EditorFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
+    <lable>备注</lable>
+    @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
+    <lable>店长审核</lable>
+    @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control" } })
+    <label>当前跟进人</label>
+    <input name="当前跟进人" type="text" value="@Model.跟进人" readonly="readonly" />
+    <lable>是否申请设计师</lable>
+    @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } })|
+    @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
     <input id="Submit1" type="submit" value="提交" class="form-control" />
 </form>
 <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
