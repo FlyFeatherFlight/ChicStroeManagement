@@ -62,13 +62,13 @@ namespace ChicStoreManagement.Controllers
             List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
             Session["method"] = "N";
             SetEmployee();
-           
+
             ViewBag.TrackingCurrentSort = sortOrder;
             ViewBag.TrackingNumber = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.TrackingName = sortOrder == "last" ? "last_desc" : "last";
-            if (id != null&&id !=0)
+            if (id != null && id != 0)
             {
-                customerTrackingModels = BuildTrackingInfo(id,employeeID);
+                customerTrackingModels = BuildTrackingInfo(id, employeeID);
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
             }
             else
@@ -117,9 +117,260 @@ namespace ChicStoreManagement.Controllers
             #endregion
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-           
+
             return View(customerTrackingModels.ToPagedList(pageNumber, pageSize));
         }
+
+
+
+        /// <summary>
+        /// 添加跟进日志
+        /// </summary>
+        /// <param name="reception">接待序号</param>
+        /// <param name="trackingPeopleName">跟进人姓名</param>
+        /// <param name="storeName">店铺名字</param>
+        /// <returns></returns>
+        public ActionResult AddTrackLogView(string reception, string trackingPeopleName, string storeName)
+        {
+            Session["method"] = "N";
+            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel();
+            customerTrackingModel.店铺 = storeName;
+            customerTrackingModel.跟进人 = trackingPeopleName;
+            if (reception != null)
+            {
+                customerTrackingModel.接待序号 = reception;
+            }
+            var trackingPeopleId = storeEmployeesBLL.GetModel(p => p.姓名 == trackingPeopleName).ID;
+            var customerModels = customerInfoBLL.GetModels(p => p.跟进人ID == trackingPeopleId);
+
+            if (customerModels.Count() == 0)//如果没有查到匹配的跟进信息
+            {
+                string str = string.Format("<script>alert('当前没有匹配到任何您可以进行跟进的客户,请让店长为您添加！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+
+
+            SelectList receptionSelectListItems = new SelectList(customerModels, "接待序号", "接待序号");
+            ViewBag.ReceptionOptions = receptionSelectListItems;
+
+
+
+            return View(customerTrackingModel);
+        }
+
+        public ActionResult TrackLogAdd(CustomerTrackingModel customerTrackingModel)
+        {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+            try
+            {
+
+
+                销售_意向追踪日志 trackLog = new 销售_意向追踪日志
+                {
+                    店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID,
+                    备注 = customerTrackingModel.备注,
+                    店长审核 = customerTrackingModel.店长审核,
+                    接待记录ID = customerInfoBLL.GetModel(p => p.接待序号 == customerTrackingModel.接待序号).ID,
+                    是否申请设计师 = customerTrackingModel.是否申请设计师,
+                    跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID,
+                    跟进内容 = customerTrackingModel.跟进内容,
+                    跟进方式 = customerTrackingModel.跟进方式,
+                    跟进时间 = customerTrackingModel.跟进时间,
+                    跟进结果 = customerTrackingModel.跟进结果
+                };
+                if (ModelState.IsValid)
+                {
+                    customerTrackingBLL.Add(trackLog);
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = null;
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return RedirectToAction("TrackLogIndex");
+        }
+        /// <summary>
+        /// 修改跟进日志
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EditTrackLogView(int id)
+        {
+            var model = customerTrackingBLL.GetModel(p => p.id == id);
+            if (model == null)
+            {
+                string str = string.Format("<script>alert('数据已更改，未查到跟进日志信息！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+
+            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
+            {
+                Id = model.id,
+                备注 = model.备注,
+                店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称,
+                店长审核 = model.店长审核,
+                接待序号 = customerInfoBLL.GetModel(p => p.ID == model.接待记录ID).接待序号,
+                是否申请设计师 = model.是否申请设计师,
+                跟进人 = storeEmployeesBLL.GetModel(p => p.ID == model.跟进人).姓名,
+                跟进内容 = model.跟进内容,
+                跟进方式 = model.跟进方式,
+                跟进时间 = model.跟进时间,
+                跟进结果 = model.跟进结果
+            };
+
+
+            return View(customerTrackingModel);
+        }
+
+
+        public ActionResult TrackLogEdit(CustomerTrackingModel customerTrackingModel)
+        {
+
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+            try
+            {
+
+
+                销售_意向追踪日志 trackLog = new 销售_意向追踪日志
+                {
+                    id = customerTrackingModel.Id,
+                    店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID,
+                    备注 = customerTrackingModel.备注,
+                    店长审核 = customerTrackingModel.店长审核,
+                    接待记录ID = customerInfoBLL.GetModel(p => p.接待序号 == customerTrackingModel.接待序号).ID,
+                    是否申请设计师 = customerTrackingModel.是否申请设计师,
+                    跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID,
+                    跟进内容 = customerTrackingModel.跟进内容,
+                    跟进方式 = customerTrackingModel.跟进方式,
+                    跟进时间 = customerTrackingModel.跟进时间,
+                    跟进结果 = customerTrackingModel.跟进结果
+                };
+                if (ModelState.IsValid)
+                {
+                    customerTrackingBLL.Modify(trackLog);
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = null;
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return RedirectToAction("TrackLogIndex");
+        }
+
+
+        /// <summary>
+        /// 根据id删除相应跟踪日志
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult DelTrakRecord(int id)
+        {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    customerTrackingBLL.DelBy(p => p.id == id);
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = null;
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View();
+        }
+
+
+
 
         /// <summary>
         /// 根据当前操作人员或职位或接待id查找跟进信息
@@ -145,141 +396,30 @@ namespace ChicStoreManagement.Controllers
                 mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).ToList();//店员查看所有(只有自己跟进的)
             }
 
-            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel();
+
             List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
             foreach (var item in mt)
             {
-                customerTrackingModel.Id = item.id;
-                customerTrackingModel.备注 = item.备注;
-                customerTrackingModel.店长审核 = item.店长审核;
-                customerTrackingModel.接待序号 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).接待序号;
-                customerTrackingModel.是否申请设计师 = item.是否申请设计师;
-                customerTrackingModel.跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人).姓名;
-                customerTrackingModel.跟进内容 = item.跟进内容;
-                customerTrackingModel.跟进方式 = item.跟进方式;
-                customerTrackingModel.跟进时间 = item.跟进时间;
-                customerTrackingModel.跟进结果 = item.跟进结果;
-                customerTrackingModel.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
+                CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
+                {
+                    Id = item.id,
+                    备注 = item.备注,
+                    店长审核 = item.店长审核,
+                    接待序号 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).接待序号,
+                    是否申请设计师 = item.是否申请设计师,
+                    跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人).姓名,
+                    跟进内容 = item.跟进内容,
+                    跟进方式 = item.跟进方式,
+                    跟进时间 = item.跟进时间,
+                    跟进结果 = item.跟进结果,
+                    店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称
+                };
                 customerTrackingModels.Add(customerTrackingModel);
             }
 
             return customerTrackingModels;
 
         }
-
-
-        /// <summary>
-        /// 添加跟进日志
-        /// </summary>
-        /// <param name="reception">接待序号</param>
-        /// <param name="trackingPeopleName">跟进人姓名</param>
-        /// <param name="storeName">店铺名字</param>
-        /// <returns></returns>
-        public ActionResult AddTrackLogView(string reception, string trackingPeopleName,string storeName)
-        {
-            Session["method"] = "N";
-            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel();
-            customerTrackingModel.店铺 = storeName;
-            customerTrackingModel.跟进人 = trackingPeopleName;
-            if(reception!=null){
-                customerTrackingModel.接待序号 = reception;
-            }
-                var trackingPeopleId = storeEmployeesBLL.GetModel(p => p.姓名 == trackingPeopleName).ID;
-                var customerModels = customerInfoBLL.GetModels(p => p.跟进人ID == trackingPeopleId);
-             
-                if (customerModels.Count() == 0)//如果没有查到匹配的跟进信息
-                {
-                    string str = string.Format("<script>alert('当前没有匹配到任何您可以进行跟进的客户,请让店长为您添加！');parent.location.href='TrackLogIndex';</script>");
-                    return Content(str);
-                }
-              
-
-                SelectList receptionSelectListItems = new SelectList(customerModels,"接待序号", "接待序号");
-                ViewBag.ReceptionOptions = receptionSelectListItems;
-            
-          
-
-            return View(customerTrackingModel);
-        }
-
-        public ActionResult TrackLogAdd(CustomerTrackingModel customerTrackingModel) {
-            if (Session["method"].ToString() == "Y")
-            {
-                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
-                return Content(str);
-            }
-            try
-            {
-
-           
-            销售_意向追踪日志 trackLog = new 销售_意向追踪日志
-            {
-                店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID,
-                备注 = customerTrackingModel.备注,
-                店长审核 = customerTrackingModel.店长审核,
-                接待记录ID = customerInfoBLL.GetModel(p => p.接待序号 == customerTrackingModel.接待序号).ID,
-                是否申请设计师 = customerTrackingModel.是否申请设计师,
-                跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID,
-                跟进内容 = customerTrackingModel.跟进内容,
-                跟进方式 = customerTrackingModel.跟进方式,
-                跟进时间 = customerTrackingModel.跟进时间,
-                跟进结果 = customerTrackingModel.跟进结果
-            };
-            if (ModelState.IsValid)
-            {
-                customerTrackingBLL.Modify(trackLog);
-                Session["method"] = "Y";
-            }
-
-            else
-            {
-                List<string> sb = new List<string>();
-                //获取所有错误的Key
-                List<string> Keys = ModelState.Keys.ToList();
-                //获取每一个key对应的ModelStateDictionary
-                foreach (var key in Keys)
-                {
-                    var errors = ModelState[key].Errors.ToList();
-                    //将错误描述添加到sb中
-                    foreach (var error in errors)
-                    {
-                        sb.Add(error.ErrorMessage);
-                    }
-                }
-                string s = null;
-                foreach (var item in sb)
-                {
-                    s += item.ToString() + "<br/>";
-                }
-                return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
-            }
-        } 
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return RedirectToAction("TrackLogIndex");
-        }
-        /// <summary>
-        /// 修改跟进日志
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult EditTrackLogView()
-        {
-
-            return View();
-        }
-
-
-        public ActionResult AddTrakRecordView()
-        {
-            return View();
-        }
-
-
-
-
 
 
         /// <summary>

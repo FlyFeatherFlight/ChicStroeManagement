@@ -126,7 +126,9 @@ namespace ChicStoreManagement.Controllers
             {
                 接待序号 = Guid.NewGuid().ToString("D"),
                 制单日期 = DateTime.Now,
-               
+                出店时间=DateTime.Now,
+                进店时间=DateTime.Now,
+                预计使用时间=DateTime.Now,
                 接待日期 = DateTime.Now.ToString("d"),
                 店铺 = store,
                 接待人 = employeeName
@@ -187,10 +189,8 @@ namespace ChicStoreManagement.Controllers
                 model.装修进度 = customerInfoModel.装修进度;
                 model.装修风格 = customerInfoModel.装修风格;
                 model.设计师 = customerInfoModel.设计师;
-                if (customerInfoModel.跟进人 != null)
-                {
-                    model.跟进人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;
-                }
+                model.跟进人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;//初次添加，跟进人为当前接待人员。
+               
 
                 model.返点 = customerInfoModel.返点;
                 model.进店时长 = int.Parse((customerInfoModel.出店时间 - customerInfoModel.进店时间).TotalMinutes.ToString());
@@ -229,7 +229,7 @@ namespace ChicStoreManagement.Controllers
                 }
                 return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
             }
-            var isHave = customerInfoBLL.GetModel(p => p.客户姓名 == model.客户姓名 && p.接待日期.ToString("d") == model.接待日期.ToString("d"));
+            var isHave = customerInfoBLL.GetModel(p => p.客户姓名 == model.客户姓名 && p.接待日期 == model.接待日期);
             if (isHave!= null)
             {
                 return Content("<script>alert('数据已存在！，请勿重复提交');parent.location.href='CustomerIndex';</script>");

@@ -69,7 +69,7 @@ namespace ChicStoreManagement.WEB.ViewModel
        
         public string 社交软件 { get; set; }
 
-        [Display(Name = "来电次数")]
+        [Display(Name = "来店次数")]
         [DataType(DataType.Text)]
         [Required]
         public int 来店次数 { get; set; }

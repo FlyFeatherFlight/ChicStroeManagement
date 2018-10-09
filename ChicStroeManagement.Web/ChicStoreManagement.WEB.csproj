@@ -974,7 +974,6 @@
     <Content Include="Views\ManagerExamine\CustomerTrackLogExamineView.cshtml" />
     <Content Include="Views\ManagerExamine\DesignTrackLogExamineView.cshtml" />
     <Content Include="Views\ManagerExamine\SincerityCustomerConfirmView.cshtml" />
-    <Content Include="Views\CustomerTrackLog\AddTrakRecordView.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Manager\EditEmploee.cshtml" />
     <Content Include="Views\Manager\AddEmploee.cshtml" />
