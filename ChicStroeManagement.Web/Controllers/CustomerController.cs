@@ -51,7 +51,7 @@ namespace ChicStoreManagement.Controllers
             Session["method"] = "N";
             SetEmployee();
             ViewBag.CustomerCurrentSort = sortOrder;
-            ViewBag.CustomerNumber = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.CustomerDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.CustomerName = sortOrder == "last" ? "last_desc" : "last";
             BuildCustomerInfo();//将顾客接待信息数据优化
             if (searchString != null)
@@ -73,7 +73,7 @@ namespace ChicStoreManagement.Controllers
             switch (sortOrder)
             {
                 case "first_desc":
-                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID);
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.接待日期);
                     break;
                 case "last_desc":
                     customerInfoModels = customerInfoModels.OrderByDescending(w => w.客户姓名);
@@ -82,7 +82,7 @@ namespace ChicStoreManagement.Controllers
                     customerInfoModels = customerInfoModels.OrderBy(w => w.客户姓名);
                     break;
                 default:
-                    customerInfoModels = customerInfoModels.OrderBy(w => w.ID);
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.接待日期);
                     break;
             }
 
@@ -421,20 +421,30 @@ namespace ChicStoreManagement.Controllers
             if (id == 0) {
                 return View();
             }
-            BuildExceptedBuy(id);
-            SetEmployee();
-            BuildCustomerInfo();
-            ViewBag.receptionid = id;
-            ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
-            var productList = productCodeBLL.GetModels(p => true).ToList();
-            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
-            ViewBag.ProductOptions = productSelectListItems;
+            try
+            {
+               
+                SetEmployee();
+                BuildCustomerInfo();
+                BuildExceptedBuy(id);
+                ViewBag.receptionid = id;
+                ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
+                var productList = productCodeBLL.GetModels(p => true).ToList();
+                SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+                ViewBag.ProductOptions = productSelectListItems;
 
-            if (exceptedBuyModels == null) { return View(); }
+                if (exceptedBuyModels == null) { return View(); }
 
-            var model=exceptedBuyModels.ToList();
+             
 
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+
+            var model = exceptedBuyModels.ToList();
 
             return View(model);
         }
@@ -444,15 +454,15 @@ namespace ChicStoreManagement.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult DelExceptedBuyAction(int id,int receptionId) {
-            if (Session["method"].ToString() == "Y")
+        public ActionResult DelExceptedBuyAction(int ExceptedBuyID, int receptionId) {
+            if (exceptedBuyBLL.GetModel(p=>p.ID==ExceptedBuyID)==null)
             {
-                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                string str = string.Format("<script>alert('该数据已被更改，或不存在！');parent.location.href='CustomerIndex';</script>");
                 return Content(str);
             }
            
 
-            exceptedBuyBLL.DelBy(p => p.ID == id);
+            exceptedBuyBLL.DelBy(p => p.ID == ExceptedBuyID);
             Session["method"] = "Y";
             BuildExceptedBuy(receptionId);
             ViewBag.receptionid = receptionId;
@@ -460,7 +470,7 @@ namespace ChicStoreManagement.Controllers
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.ProductOptions = productSelectListItems;
 
-            return RedirectToAction("ExceptedBuyIndex", new { id });
+            return Json(exceptedBuyModels);
         }
         /// <summary>
         /// 增加预购
@@ -705,11 +715,13 @@ namespace ChicStoreManagement.Controllers
             {
                 foreach (var item in exceptedBuy)
                 {
-                    CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel();
-                    exceptedBuyModel.ID = item.ID;
-                    exceptedBuyModel.商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号;
-                    exceptedBuyModel.备注 = item.备注;
-                    exceptedBuyModel.接待 = id;
+                    CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel
+                    {
+                        ID = item.ID,
+                        商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号,
+                        备注 = item.备注,
+                        接待 = id
+                    };
                     models.Add(exceptedBuyModel);
                 }
                exceptedBuyModels= models.AsEnumerable().AsQueryable();

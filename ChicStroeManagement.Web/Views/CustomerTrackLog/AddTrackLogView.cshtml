@@ -34,13 +34,13 @@
                     <lable>备注</lable>
                     @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
                     @*<lable>店长审核</lable>
-                    @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control" } })*@
+        @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control" } })*@
                     <label>当前跟进人</label>
                     <input name="跟进人" type="text" value="@Model.跟进人" readonly="readonly" class="form-control" />
                     <lable>是否申请设计师</lable>
                     @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } })|
                     @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
-                    <input id="Submit1" type="submit" value="提交" class="form-control" />
+                    <input id="Submit1" type="submit" value="提交" class="btn-default" />| @Html.ActionLink("查看商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @class = "form-control", @Style = "font-size:12px" })
                 </td>
             </tr>
         </table>

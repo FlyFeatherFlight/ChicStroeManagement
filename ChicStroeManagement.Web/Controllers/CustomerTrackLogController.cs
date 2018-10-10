@@ -41,7 +41,7 @@ namespace ChicStoreManagement.Controllers
         private string store;//当前店铺名称
         private int storeID;//当前店铺id
         // private IQueryable<Employees> workers;//所有员工信息
-        private IQueryable<CustomerInfoModel> customerTrackingModels;//所有接待信息
+        private IQueryable<CustomerInfoModel> customerInfoModels;//所有接待信息
         private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;//预计购买
 
 
@@ -51,24 +51,24 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 跟进日志
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="sortOrder"></param>
-        /// <param name="searchString"></param>
+        /// <param name="id">接待id</param>
+        /// <param name="sortOrder">排序关键字</param>
+        /// <param name="searchString">搜索词</param>
         /// <param name="currentFilter"></param>
-        /// <param name="page"></param>
+        /// <param name="page">页码</param>
         /// <returns></returns>
         public ActionResult TrackLogIndex(int? id, string sortOrder, string searchString, string currentFilter, int? page)
         {
             List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
             Session["method"] = "N";
-            SetEmployee();
+            SetEmployee();//获取当前人员信息
 
             ViewBag.TrackingCurrentSort = sortOrder;
-            ViewBag.TrackingNumber = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
-            ViewBag.TrackingName = sortOrder == "last" ? "last_desc" : "last";
+            ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
             if (id != null && id != 0)
             {
-                customerTrackingModels = BuildTrackingInfo(id, employeeID);
+                customerTrackingModels = BuildTrackingInfo(id, employeeID);//获取当前人员可查看的跟进信息
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
             }
             else
@@ -77,7 +77,7 @@ namespace ChicStoreManagement.Controllers
             }
             if (customerTrackingModels == null)
             {
-                return View("当前操作人并无关联跟进信息或无进入权限！");
+                return View("当前操作人并无关联的跟进信息或无进入权限！");
             }
             BuildCustomerInfo();//将顾客接待信息数据优化
             ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端
@@ -94,23 +94,23 @@ namespace ChicStoreManagement.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                this.customerTrackingModels = this.customerTrackingModels.Where(w => w.客户姓名.Contains(searchString));//通过姓名查找
+                customerTrackingModels = customerTrackingModels.Where(w => w.跟进人.Contains(searchString)).ToList();//通过姓名查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
             switch (sortOrder)
             {
                 case "first_desc":
-                    this.customerTrackingModels = this.customerTrackingModels.OrderByDescending(w => w.ID);
+                    customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进时间).ToList();
                     break;
                 case "last_desc":
-                    this.customerTrackingModels = this.customerTrackingModels.OrderByDescending(w => w.客户姓名);
+                   customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进结果).ToList();
                     break;
                 case "last":
-                    this.customerTrackingModels = this.customerTrackingModels.OrderBy(w => w.客户姓名);
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进结果).ToList();
                     break;
                 default:
-                    this.customerTrackingModels = this.customerTrackingModels.OrderBy(w => w.ID);
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进时间).ToList();
                     break;
             }
 
@@ -133,9 +133,11 @@ namespace ChicStoreManagement.Controllers
         public ActionResult AddTrackLogView(string reception, string trackingPeopleName, string storeName)
         {
             Session["method"] = "N";
-            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel();
-            customerTrackingModel.店铺 = storeName;
-            customerTrackingModel.跟进人 = trackingPeopleName;
+            CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
+            {
+                店铺 = storeName,
+                跟进人 = trackingPeopleName
+            };
             if (reception != null)
             {
                 customerTrackingModel.接待序号 = reception;
@@ -203,7 +205,7 @@ namespace ChicStoreManagement.Controllers
                             sb.Add(error.ErrorMessage);
                         }
                     }
-                    string s = null;
+                    string s = "添加日志出错：";
                     foreach (var item in sb)
                     {
                         s += item.ToString() + "<br/>";
@@ -211,10 +213,10 @@ namespace ChicStoreManagement.Controllers
                     return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return Content("<script>alert('添加日志异常" + ex + "');window.history.go(-1);</script>");
             }
             return RedirectToAction("TrackLogIndex");
         }
@@ -224,6 +226,7 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult EditTrackLogView(int id)
         {
+            Session["method"] = "N";
             var model = customerTrackingBLL.GetModel(p => p.id == id);
             if (model == null)
             {
@@ -238,6 +241,7 @@ namespace ChicStoreManagement.Controllers
                 店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称,
                 店长审核 = model.店长审核,
                 接待序号 = customerInfoBLL.GetModel(p => p.ID == model.接待记录ID).接待序号,
+                接待ID = model.接待记录ID,
                 是否申请设计师 = model.是否申请设计师,
                 跟进人 = storeEmployeesBLL.GetModel(p => p.ID == model.跟进人).姓名,
                 跟进内容 = model.跟进内容,
@@ -298,7 +302,7 @@ namespace ChicStoreManagement.Controllers
                             sb.Add(error.ErrorMessage);
                         }
                     }
-                    string s = null;
+                    string s = "修改日志出错：";
                     foreach (var item in sb)
                     {
                         s += item.ToString() + "<br/>";
@@ -306,10 +310,10 @@ namespace ChicStoreManagement.Controllers
                     return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                return Content("<script>alert('修改日志异常：" + e + "');window.history.go(-1);</script>");
             }
             return RedirectToAction("TrackLogIndex");
         }
@@ -322,11 +326,13 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult DelTrakRecord(int id)
         {
-            if (Session["method"].ToString() == "Y")
+            var model = customerTrackingBLL.GetModel(p => p.id == id);
+            if (model == null)
             {
-                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                string str = string.Format("<script>alert('数据已被更改，未查到跟进日志信息！');parent.location.href='TrackLogIndex';</script>");
                 return Content(str);
             }
+           
 
             try
             {
@@ -352,18 +358,18 @@ namespace ChicStoreManagement.Controllers
                             sb.Add(error.ErrorMessage);
                         }
                     }
-                    string s = null;
+                    string s = "删除日志出错：";
                     foreach (var item in sb)
                     {
                         s += item.ToString() + "<br/>";
                     }
-                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                    return Content("<script>alert('" +s + "');window.history.go(-1);</script>");
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
-                throw;
+                return Content("<script>alert('删除日志异常：" + e + "');window.history.go(-1);</script>");
             }
 
             return View();
@@ -406,6 +412,7 @@ namespace ChicStoreManagement.Controllers
                     备注 = item.备注,
                     店长审核 = item.店长审核,
                     接待序号 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).接待序号,
+                    接待ID=item.接待记录ID,
                     是否申请设计师 = item.是否申请设计师,
                     跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人).姓名,
                     跟进内容 = item.跟进内容,
@@ -473,7 +480,7 @@ namespace ChicStoreManagement.Controllers
         {
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
 
-            if (customerTrackingModels == null)
+            if (customerInfoModels == null)
             {
                 var customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺所有顾客接待信息
                 if (customer != null)
@@ -549,7 +556,7 @@ namespace ChicStoreManagement.Controllers
                 }
 
 
-                customerTrackingModels = customerInfoModelsList.AsEnumerable().AsQueryable();
+                customerInfoModels = customerInfoModelsList.AsEnumerable().AsQueryable();
             }
 
         }

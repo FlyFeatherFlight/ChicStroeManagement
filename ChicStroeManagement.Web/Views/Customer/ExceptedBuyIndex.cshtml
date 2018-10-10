@@ -37,14 +37,15 @@
             $.ajax({
             type: "POST",
             url: '@Url.Action("DelExceptedBuyAction", "Customer")',
-                data: { id: Id, receptionId: receptionid},
+            data: { ExceptedBuyID: Id, receptionId: receptionid},
             datatype: "json",
-            async: true,//异步
-            success: function (data) {
-                $('#products').html(data);
+            async: false,//异步
+                success: function (data) {
+                    alert(data);
+                    window.location.reload();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert(errorThrown);
+                alert("系统繁忙！");
             }
 
         });

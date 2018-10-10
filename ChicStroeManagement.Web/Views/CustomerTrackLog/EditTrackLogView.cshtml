@@ -7,10 +7,11 @@
 
 <div class="form-group">
     <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogEdit">
+        <div style="text-align:right">@Html.ActionLink("修改商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @Style = "font-size:12px" ,@align="right" })</div>
         <table class="table table-responsive">
             <tr>
                 <td align="center">
-                    <input name="id" type="number" value="@Model.Id" style="display:none"/>
+                    <input name="id" type="number" value="@Model.Id" style="display:none" />
                     <label>当前店铺</label>
                     <input name="店铺" type="text" value="@Model.店铺" readonly="readonly" class="form-control" />
                     <label>接待序号</label>
@@ -29,24 +30,24 @@
                     <lable>跟进方式</lable>
                     @Html.EditorFor(Model => Model.跟进方式, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>跟进内容</lable>
-                    <textarea name="跟进内容" class="form-control" rows="3" >@Model.跟进内容</textarea>
+                    <textarea name="跟进内容" class="form-control" rows="3">@Model.跟进内容</textarea>
                     <lable>跟进结果</lable>
                     @Html.EditorFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>备注</lable>
                     @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>店长审核</lable>
-                    @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+                    @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     <label>当前跟进人</label>
                     <input name="跟进人" type="text" value="@Model.跟进人" readonly="readonly" class="form-control" />
                     <lable>是否申请设计师</lable>
                     @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } })|
-                    @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })   
-                    <hr />
-                    <input id="Submit1" type="submit" value="提交" class="btn" />|   <input type="button" class="btn" onclick="javascript:window.history.go(-1);" value="取消">
+                    @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
+                   
                 </td>
             </tr>
         </table>
-
+        <hr />
+        <input id="Submit1" type="submit" value="提交" class="btn" />|   <input type="button" class="btn" onclick="javascript:window.history.go(-1);" value="取消">
     </form>
 
  
