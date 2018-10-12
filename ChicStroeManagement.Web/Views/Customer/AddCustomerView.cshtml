@@ -1,15 +1,46 @@
 ﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
 @{
     ViewBag.Title = "添加接待客户";
+
 }
 
-@*@using (Html.BeginForm("CustomerAdd", "CustomerController", FormMethod.Post))
-    {*@
 <script type="text/javascript">
+
 
     function submit1(obj) {
         document.getElementById("form1").submit();
     }
+
+
+
+
+    $(document).ready(function () {
+    
+
+        $(function () {
+
+            $("#comeInDate").datetimepicker({
+               
+                format: 'YYYY-MM-DD hh:mm',
+                locale: moment.locale('zh-cn'),
+                pickerPosition:'top-right'
+            });
+            $("#leaveTime").datetimepicker({
+                format: 'YYYY-MM-DD hh:mm',
+                locale: moment.locale('zh-cn')
+            });
+            $("#useTime").datetimepicker({
+                format: 'YYYY-MM-DD hh:mm',
+                locale: moment.locale('zh-cn')
+            });
+
+        });
+    });
+
+
+
+
+
 </script>
 <div class="container table-responsive">
     <h2>添加客户信息</h2>
@@ -19,11 +50,11 @@
 
         @Html.ValidationSummary(true)
 
-        <table class="table ">
+        <table class="table table-responsive ">
             <tr>
                 <td> @Html.LabelFor(Model => Model.接待序号)</td>
                 <td><input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" class="form-control" /></td>
-           
+
                 <td>
                     @Html.LabelFor(Model => Model.接待日期)
                 </td>
@@ -38,7 +69,7 @@
                 <td>
                     <input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly" class="form-control" />
                 </td>
-            
+
                 <td>@Html.LabelFor(Model => Model.接待人)</td>
 
                 <td> <input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" class="form-control" /></td>
@@ -47,14 +78,19 @@
 
             <tr>
                 <td>@Html.LabelFor(Model => Model.进店时间)</td>
-                <td>
-                    @Html.EditorFor(Model => Model.进店时间, new { htmlAttributes = new { @class = "form-control" } })
+                <td width="25%">
+                   
+                        <input type="text" name="进店时间"id="comeInDate" class="span2 col-md-2 form-control" />
+                  
                     @Html.ValidationMessageFor(Model => Model.进店时间)
+
                 </td>
-           
+
                 <td>@Html.LabelFor(Model => Model.出店时间)</td>
-                <td>
-                    @Html.EditorFor(Model => Model.出店时间, new { htmlAttributes = new { @class = "form-control" } })
+                <td width="25%">
+
+                        <input type="text" name="出店时间" id="leaveTime" class="form-control" />
+ 
                     @Html.ValidationMessageFor(Model => Model.出店时间)
                 </td>
             </tr>
@@ -211,7 +247,13 @@
                     @Html.LabelFor(Model => Model.预计使用时间)
                 </td>
                 <td>
-                    @Html.EditorFor(Model => Model.预计使用时间, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="input-group date" id="useTime">
+                        <input type="text" name="预计使用时间" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                   
                 </td>
             </tr>
             <tr>
@@ -276,12 +318,12 @@
                 </td>
             </tr>
             @*<tr>
-                <td>@Html.LabelFor(Model => Model.跟进人)</td>
-                <td>
-                    @Html.DropDownListFor(Model => Model.跟进人, ViewBag.EmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    <td>@Html.LabelFor(Model => Model.跟进人)</td>
+                    <td>
+                        @Html.DropDownListFor(Model => Model.跟进人, ViewBag.EmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
 
-                </td>
-            </tr>*@
+                    </td>
+                </tr>*@
             <tr>
                 <td>
                     @Html.LabelFor(Model => Model.是否有意向)

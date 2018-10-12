@@ -9,9 +9,10 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
+    
     @Scripts.Render("~/bundles/jqueryui")
-    @Scripts.Render("~/Content/themes/i18n")
+   
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
@@ -30,7 +31,7 @@
                     @*<li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
-                    <li>@Html.ActionLink("意向日志", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("意向日志", "TrackLogIndex", "CustomerTrackLog")</li>
                     <li>@Html.ActionLink("设计日志", "Contact", "Home")</li>
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
 
@@ -43,7 +44,7 @@
 
     </div>
 
-    <div class="container body-content">
+    <div class="container">
         @RenderBody()
         <hr />
         <footer>

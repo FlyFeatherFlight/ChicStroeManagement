@@ -6,6 +6,7 @@
 <h2>意向客户追踪日志添加</h2>
 
 <div class="form-group">
+    <div style="text-align:right">@Html.ActionLink("查看商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new {  @Style = "font-size:12px" })</div>
     <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogAdd">
         <table class="table table-responsive">
             <tr>
@@ -37,10 +38,11 @@
         @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control" } })*@
                     <label>当前跟进人</label>
                     <input name="跟进人" type="text" value="@Model.跟进人" readonly="readonly" class="form-control" />
+                    <br />
                     <lable>是否申请设计师</lable>
-                    @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } })|
-                    @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
-                    <input id="Submit1" type="submit" value="提交" class="btn-default" />| @Html.ActionLink("查看商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @class = "form-control", @Style = "font-size:12px" })
+                    是 @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } }) |否 @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
+                    <br />
+                    <input id="Submit1" type="submit" value="提交" class="btn" />
                 </td>
             </tr>
         </table>
