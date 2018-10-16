@@ -21,17 +21,21 @@
 
             $("#comeInDate").datetimepicker({
                
-                format: 'YYYY-MM-DD hh:mm',
+                format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn'),
-                pickerPosition:'top-right'
+                showClose: true
+                
             });
             $("#leaveTime").datetimepicker({
-                format: 'YYYY-MM-DD hh:mm',
-                locale: moment.locale('zh-cn')
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                showClose: true
             });
             $("#useTime").datetimepicker({
-                format: 'YYYY-MM-DD hh:mm',
-                locale: moment.locale('zh-cn')
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                allowInputToggle: true,
+                showClose: true
             });
 
         });
@@ -78,20 +82,28 @@
 
             <tr>
                 <td>@Html.LabelFor(Model => Model.进店时间)</td>
-                <td width="25%">
-                   
-                        <input type="text" name="进店时间"id="comeInDate" class="span2 col-md-2 form-control" />
-                  
+                <td colspan="3">
+                    <div class="input-group" id="comeInDate">
+                        <input type="text" name="进店时间" class=" form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                     @Html.ValidationMessageFor(Model => Model.进店时间)
-
+                    <label style="color:red">*</label>
                 </td>
-
+                </tr>
+            <tr>
                 <td>@Html.LabelFor(Model => Model.出店时间)</td>
-                <td width="25%">
-
-                        <input type="text" name="出店时间" id="leaveTime" class="form-control" />
- 
+                <td colspan="3">
+                    <div class="input-group" id="leaveTime">
+                        <input type="text" name="出店时间" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
                     @Html.ValidationMessageFor(Model => Model.出店时间)
+                    <label style="color:red">*</label>
                 </td>
             </tr>
 
@@ -104,14 +116,17 @@
                     @Html.LabelFor(Model => Model.客户姓名)
                 </td>
                 <td width="88%">
-                    @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control" } }) 
                     @Html.ValidationMessageFor(Model => Model.客户姓名)
+               
                     &nbsp;<input name="性别" type="radio" value="男">先生 &nbsp;<input name="性别" type="radio" value="女" />女士
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(Model => Model.年龄段)</td>
-                <td>@Html.DropDownListFor(Model => Model.年龄段, ViewBag.AgeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })</td>
+                <td>@Html.DropDownListFor(Model => Model.年龄段, ViewBag.AgeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    <label style="color:red">*</label></td>
             </tr>
             <tr>
                 <td>
@@ -119,11 +134,13 @@
                 </td>
                 <td>
                     @Html.EditorFor(Model => Model.来店次数, new { htmlAttributes = new { @class = "form-control" } })
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(Model => Model.客户职业)</td>
-                <td>@Html.EditorFor(Model => Model.客户职业, new { htmlAttributes = new { @class = "form-control" } })</td>
+                <td>@Html.EditorFor(Model => Model.客户职业, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(Model => Model.客户着装)</td>
@@ -136,6 +153,7 @@
                 <td>
                     @Html.EditorFor(Model => Model.客户电话, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(Model => Model.客户电话)
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
@@ -152,8 +170,10 @@
                     <input type="radio" name="客户类别" value="A" />A
                     <input type="radio" name="客户类别" value="B" />B
                     <input type="radio" name="客户类别" value="C" />C
-                    <input type="radio" name="客户类别" value="D" />D
+                    <input type="radio" name="客户类别" value="D" />D 
+                    <label style="color:red">*</label>
                 </td>
+               
             </tr>
             <tr>
                 <td>@Html.LabelFor(Model => Model.客户类型)</td>
@@ -164,6 +184,7 @@
                     <input name="客户类型" type="radio" value="慎重" />慎重 &nbsp;
                     <input name="客户类型" type="radio" value="迷糊" />迷糊 &nbsp;
                     <input name="客户类型" type="radio" value="沉默寡言" />沉默寡言
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
@@ -176,6 +197,7 @@
                     <input name="客户来源" type="radio" value="设计师" />设计师 &nbsp;
                     <input name="客户来源" type="radio" value="软装部" />软装部 &nbsp;
                     <input name="客户来源" type="radio" value="经销商" />经销商
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
@@ -212,7 +234,7 @@
                     <input name="使用空间" type="radio" value="住宅（旧换新）" />住宅（旧换新） &nbsp;
                     <input name="使用空间" type="radio" value="新屋" />新屋  &nbsp;
                     <input name="使用空间" type="radio" value="其他" />其他 &nbsp;
-
+                    <label style="color:red">*</label>
                 </td>
             </tr>
 
@@ -225,7 +247,7 @@
                     <input name="装修风格" type="radio" value="现代" />现代 &nbsp;
                     <input name="装修风格" type="radio" value="中式" />中式 &nbsp;
                     <input name="装修风格" type="radio" value="其他" />其他 &nbsp;
-
+                    <label style="color:red">*</label>
                 </td>
             </tr>
             <tr>
@@ -246,7 +268,7 @@
                 <td>
                     @Html.LabelFor(Model => Model.预计使用时间)
                 </td>
-                <td>
+                <td width="50%">
                     <div class="input-group date" id="useTime">
                         <input type="text" name="预计使用时间" class="form-control" />
                         <span class="input-group-addon">
@@ -332,6 +354,7 @@
                     @Html.RadioButtonFor(Model => Model.是否有意向, "true", new { htmlAttributes = new { @class = "form-control" } }) 是 &nbsp;
                     @Html.RadioButtonFor(Model => Model.是否有意向, "false", new { htmlAttributes = new { @class = "form-control" } }) 否
                     @Html.ValidationMessageFor(model => model.是否有意向)
+                   
                 </td>
             </tr>
         </table>

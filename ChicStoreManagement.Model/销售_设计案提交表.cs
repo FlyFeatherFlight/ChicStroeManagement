@@ -14,9 +14,9 @@ public partial class 销售_设计案提交表
 {
     public 销售_设计案提交表()
     {
+        this.销售_设计案跟进日志 = new HashSet<销售_设计案跟进日志>();
         this.销售_设计案提交表_项目相关图纸 = new HashSet<销售_设计案提交表_项目相关图纸>();
         this.销售_设计案提交表_客户意向产品明细 = new HashSet<销售_设计案提交表_客户意向产品明细>();
-        this.销售_设计案跟进日志 = new HashSet<销售_设计案跟进日志>();
     }
 
     public int id { get; set; }
@@ -30,23 +30,24 @@ public partial class 销售_设计案提交表
     public string 装修风格 { get; set; }
     public string 装修进度 { get; set; }
     public Nullable<decimal> 预算 { get; set; }
-    public string 客户喜好 { get; set; }
+    public string 客户喜好或忌讳 { get; set; }
     public string 客户在意品牌或已购买品牌 { get; set; }
-    public string 客户的问题 { get; set; }
     public string 客户提问与要求 { get; set; }
     public string 项目方案要求 { get; set; }
     public string 整体软装配饰 { get; set; }
     public string 家具空间 { get; set; }
-    public Nullable<int> 客户意向产品明细 { get; set; }
-    public Nullable<int> 项目相关图纸 { get; set; }
     public string 销售人员 { get; set; }
     public string 设计人员 { get; set; }
     public string 店长 { get; set; }
     public Nullable<bool> 店长确认 { get; set; }
     public Nullable<bool> 设计人员确认 { get; set; }
+    public System.DateTime 项目提交时间 { get; set; }
+    public System.DateTime 项目量房时间 { get; set; }
+    public System.DateTime 项目预计完成时间 { get; set; }
+    public string 备注 { get; set; }
 
     public virtual 销售_接待记录 销售_接待记录 { get; set; }
+    public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
     public virtual ICollection<销售_设计案提交表_项目相关图纸> 销售_设计案提交表_项目相关图纸 { get; set; }
     public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
-    public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
 }

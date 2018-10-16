@@ -9,7 +9,7 @@ namespace ChicStoreManagement
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-3.0.0.min.js",
+                        "~/Scripts/jquery-3.0.0.js",
                         "~/Scripts/moment.js",
                         "~/Scripts/moment-with-locales.min.js"));
 

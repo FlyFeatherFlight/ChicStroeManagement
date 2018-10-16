@@ -56,7 +56,7 @@ namespace ChicStoreManagement.WEB.ViewModel
 
         [Display(Name = "客户电话")]
         [DataType(DataType.PhoneNumber)]
-       
+        [Required]
         public string 客户电话 { get; set; }
 
         [Display(Name = "客户类型")]

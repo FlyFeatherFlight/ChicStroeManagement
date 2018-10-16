@@ -24,19 +24,19 @@
         <AssociationConnector ManuallyRouted="false" Association="chicModel.FK_销售_顾客档案明细_销售顾问" />
         <AssociationConnector ManuallyRouted="false" Association="chicModel.FK_销售_接待记录_意向明细_销售_接待记录" />
         <EntityTypeShape EntityType="chicModel.销售_设计案跟进日志" Width="3.375" PointX="9.75" PointY="28.25" />
-        <EntityTypeShape EntityType="chicModel.销售_设计案提交表" Width="3.375" PointX="9.75" PointY="10.125" />
         <EntityTypeShape EntityType="chicModel.销售_设计案提交表_客户意向产品明细" Width="3.375" PointX="12" PointY="16.625" />
         <EntityTypeShape EntityType="chicModel.销售_设计案提交表_项目相关图纸" Width="3.375" PointX="14.25" PointY="12.375" />
         <AssociationConnector Association="chicModel.FK_销售_设计案跟进日志_设计案提交表" />
         <AssociationConnector Association="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" />
-        <AssociationConnector Association="chicModel.FK_销售_设计案提交表_销售_接待记录" />
-        <AssociationConnector Association="chicModel.FK_项目相关图纸_设计案提交表" />
-        <AssociationConnector Association="chicModel.FK_意向产品明细_设计案提交表" />
-        <AssociationConnector Association="chicModel.FK_销售_设计案跟进日志_设计案提交表1" />
         <EntityTypeShape EntityType="chicModel.销售_意向追踪日志" Width="1.5" PointX="14.75" PointY="7.875" />
         <AssociationConnector Association="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案" />
         <AssociationConnector Association="chicModel.FK_销售_意向追踪日志_销售_接待记录" />
         <AssociationConnector Association="chicModel.FK_销售_意向追踪日志_销售_店铺档案" />
+        <EntityTypeShape EntityType="chicModel.销售_设计案提交表" Width="1.5" PointX="9.75" PointY="12.625" />
+        <AssociationConnector Association="chicModel.FK_销售_设计案提交表_销售_接待记录" />
+        <AssociationConnector Association="chicModel.FK_销售_设计案跟进日志_设计案提交表1" />
+        <AssociationConnector Association="chicModel.FK_项目相关图纸_设计案提交表" />
+        <AssociationConnector Association="chicModel.FK_意向产品明细_设计案提交表" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

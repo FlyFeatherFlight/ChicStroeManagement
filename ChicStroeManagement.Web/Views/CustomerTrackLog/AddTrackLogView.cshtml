@@ -6,7 +6,7 @@
 <h2>意向客户追踪日志添加</h2>
 
 <div class="form-group">
-    <div style="text-align:right">@Html.ActionLink("查看商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new {  @Style = "font-size:12px" })</div>
+  
     <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogAdd">
         <table class="table table-responsive">
             <tr>
@@ -15,13 +15,13 @@
                     <input name="店铺" type="text" value="@Model.店铺" readonly="readonly" class="form-control" />
                     <label>接待序号</label>
                     @{
-                        if (Model.接待序号 != null)
+                        if (Model.客户电话 != null)
                         {
-                            <input type="text" name="接待序号" value="@Model.接待序号" readonly="readonly" />
+                            <input type="text" name="客户电话" value="@Model.客户电话" readonly="readonly" />
                         }
                         else
                         {
-                            @Html.DropDownListFor(Model => Model.接待序号, ViewBag.ReceptionOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                            @Html.DropDownListFor(Model => Model.客户电话, ViewBag.ReceptionOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
                         }
                     }
                     <lable>跟进时间</lable>

@@ -94,7 +94,7 @@ namespace ChicStoreManagement.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                customerTrackingModels = customerTrackingModels.Where(w => w.跟进人.Contains(searchString)).ToList();//通过姓名查找
+                customerTrackingModels = customerTrackingModels.Where(w => w.客户电话==searchString).ToList();//通过客户电话查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
@@ -141,6 +141,7 @@ namespace ChicStoreManagement.Controllers
             if (reception != null)
             {
                 customerTrackingModel.接待序号 = reception;
+                customerTrackingModel.接待ID = customerInfoBLL.GetModel(p=>p.接待序号==reception).接待人ID;
             }
             var trackingPeopleId = storeEmployeesBLL.GetModel(p => p.姓名 == trackingPeopleName).ID;
             var customerModels = customerInfoBLL.GetModels(p => p.跟进人ID == trackingPeopleId);
@@ -152,7 +153,7 @@ namespace ChicStoreManagement.Controllers
             }
 
 
-            SelectList receptionSelectListItems = new SelectList(customerModels, "接待序号", "接待序号");
+            SelectList receptionSelectListItems = new SelectList(customerModels, "客户电话", "客户电话");
             ViewBag.ReceptionOptions = receptionSelectListItems;
 
 
@@ -176,13 +177,14 @@ namespace ChicStoreManagement.Controllers
                     店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID,
                     备注 = customerTrackingModel.备注,
                     店长审核 = customerTrackingModel.店长审核,
-                    接待记录ID = customerInfoBLL.GetModel(p => p.接待序号 == customerTrackingModel.接待序号).ID,
+                    接待记录ID = customerInfoBLL.GetModel(p => p.客户电话 == customerTrackingModel.客户电话).ID,
                     是否申请设计师 = customerTrackingModel.是否申请设计师,
                     跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID,
                     跟进内容 = customerTrackingModel.跟进内容,
                     跟进方式 = customerTrackingModel.跟进方式,
                     跟进时间 = customerTrackingModel.跟进时间,
                     跟进结果 = customerTrackingModel.跟进结果
+                
                 };
                 if (ModelState.IsValid)
                 {
@@ -247,7 +249,8 @@ namespace ChicStoreManagement.Controllers
                 跟进内容 = model.跟进内容,
                 跟进方式 = model.跟进方式,
                 跟进时间 = model.跟进时间,
-                跟进结果 = model.跟进结果
+                跟进结果 = model.跟进结果,
+                客户电话=customerInfoBLL.GetModel(p=>p.ID==model.接待记录ID).客户电话
             };
 
 
@@ -412,7 +415,8 @@ namespace ChicStoreManagement.Controllers
                     备注 = item.备注,
                     店长审核 = item.店长审核,
                     接待序号 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).接待序号,
-                    客户姓名= customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).客户姓名,
+                    客户姓名 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).客户姓名,
+                    客户电话 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).客户电话,
                     接待ID =item.接待记录ID,
                     是否申请设计师 = item.是否申请设计师,
                     跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人).姓名,

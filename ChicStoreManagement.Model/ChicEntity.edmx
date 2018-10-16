@@ -214,20 +214,21 @@
           <Property Name="装修风格" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="装修进度" Type="nvarchar" MaxLength="500" />
           <Property Name="预算" Type="money" />
-          <Property Name="客户喜好" Type="nvarchar" MaxLength="500" />
+          <Property Name="客户喜好或忌讳" Type="nvarchar" MaxLength="500" />
           <Property Name="客户在意品牌或已购买品牌" Type="nvarchar" MaxLength="500" />
-          <Property Name="客户的问题" Type="nvarchar" MaxLength="500" />
           <Property Name="客户提问与要求" Type="nvarchar" MaxLength="1000" />
           <Property Name="项目方案要求" Type="nvarchar" MaxLength="1000" />
           <Property Name="整体软装配饰" Type="nvarchar" MaxLength="1000" />
           <Property Name="家具空间" Type="nvarchar" MaxLength="50" />
-          <Property Name="客户意向产品明细" Type="int" />
-          <Property Name="项目相关图纸" Type="int" />
           <Property Name="销售人员" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="设计人员" Type="nvarchar" MaxLength="50" />
           <Property Name="店长" Type="nvarchar" MaxLength="50" />
           <Property Name="店长确认" Type="bit" />
           <Property Name="设计人员确认" Type="bit" />
+          <Property Name="项目提交时间" Type="date" Nullable="false" />
+          <Property Name="项目量房时间" Type="date" Nullable="false" />
+          <Property Name="项目预计完成时间" Type="date" Nullable="false" />
+          <Property Name="备注" Type="varchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="销售_设计案提交表_客户意向产品明细">
           <Key>
@@ -750,8 +751,8 @@
           <NavigationProperty Name="销售_接待记录_意向明细" Relationship="Self.FK_销售_接待记录_意向明细_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_接待记录_意向明细" />
           <NavigationProperty Name="销售_设计案跟进日志" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表" FromRole="销售_接待记录" ToRole="销售_设计案跟进日志" />
           <NavigationProperty Name="销售_设计案提交表_客户意向产品明细" Relationship="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_设计案提交表_客户意向产品明细" />
-          <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_设计案提交表" />
           <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_意向追踪日志" />
+          <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_设计案提交表" />
         </EntityType>
         <EntityType Name="销售_接待记录_意向明细">
           <Key>
@@ -930,7 +931,6 @@
             <End EntitySet="销售_接待记录_意向明细" Role="销售_接待记录_意向明细" />
           </AssociationSet>
           <EntitySet Name="销售_设计案跟进日志" EntityType="chicModel.销售_设计案跟进日志" />
-          <EntitySet Name="销售_设计案提交表" EntityType="chicModel.销售_设计案提交表" />
           <EntitySet Name="销售_设计案提交表_客户意向产品明细" EntityType="chicModel.销售_设计案提交表_客户意向产品明细" />
           <EntitySet Name="销售_设计案提交表_项目相关图纸" EntityType="chicModel.销售_设计案提交表_项目相关图纸" />
           <AssociationSet Name="FK_销售_设计案跟进日志_设计案提交表" Association="chicModel.FK_销售_设计案跟进日志_设计案提交表">
@@ -940,22 +940,6 @@
           <AssociationSet Name="FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" Association="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录">
             <End Role="销售_接待记录" EntitySet="销售_接待记录" />
             <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
-          </AssociationSet>
-          <AssociationSet Name="FK_销售_设计案提交表_销售_接待记录" Association="chicModel.FK_销售_设计案提交表_销售_接待记录">
-            <End Role="销售_接待记录" EntitySet="销售_接待记录" />
-            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
-          </AssociationSet>
-          <AssociationSet Name="FK_项目相关图纸_设计案提交表" Association="chicModel.FK_项目相关图纸_设计案提交表">
-            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
-            <End Role="销售_设计案提交表_项目相关图纸" EntitySet="销售_设计案提交表_项目相关图纸" />
-          </AssociationSet>
-          <AssociationSet Name="FK_意向产品明细_设计案提交表" Association="chicModel.FK_意向产品明细_设计案提交表">
-            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
-            <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
-          </AssociationSet>
-          <AssociationSet Name="FK_销售_设计案跟进日志_设计案提交表1" Association="chicModel.FK_销售_设计案跟进日志_设计案提交表1">
-            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
-            <End Role="销售_设计案跟进日志" EntitySet="销售_设计案跟进日志" />
           </AssociationSet>
           <EntitySet Name="销售_意向追踪日志" EntityType="chicModel.销售_意向追踪日志" />
           <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺员工档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案">
@@ -970,7 +954,24 @@
             <End Role="销售_店铺档案" EntitySet="销售_店铺档案" />
             <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="销售_设计案提交表" EntityType="chicModel.销售_设计案提交表" />
+          <AssociationSet Name="FK_销售_设计案提交表_销售_接待记录" Association="chicModel.FK_销售_设计案提交表_销售_接待记录">
+            <End Role="销售_接待记录" EntitySet="销售_接待记录" />
+            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
+          </AssociationSet>
+          <AssociationSet Name="FK_销售_设计案跟进日志_设计案提交表1" Association="chicModel.FK_销售_设计案跟进日志_设计案提交表1">
+            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
+            <End Role="销售_设计案跟进日志" EntitySet="销售_设计案跟进日志" />
+          </AssociationSet>
+          <AssociationSet Name="FK_项目相关图纸_设计案提交表" Association="chicModel.FK_项目相关图纸_设计案提交表">
+            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
+            <End Role="销售_设计案提交表_项目相关图纸" EntitySet="销售_设计案提交表_项目相关图纸" />
+          </AssociationSet>
+          <AssociationSet Name="FK_意向产品明细_设计案提交表" Association="chicModel.FK_意向产品明细_设计案提交表">
+            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
+            <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="销售_设计案跟进日志">
           <Key>
             <PropertyRef Name="id" />
@@ -991,40 +992,6 @@
           <Property Name="设计案提交表id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表" FromRole="销售_设计案跟进日志" ToRole="销售_接待记录" />
           <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表1" FromRole="销售_设计案跟进日志" ToRole="销售_设计案提交表" />
-        </EntityType>
-        <EntityType Name="销售_设计案提交表">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="接待记录ID" Type="Int32" Nullable="false" />
-          <Property Name="客户姓名" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="联系方式" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="职业" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="家庭成员" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="楼盘具体位置" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
-          <Property Name="面积大小" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="装修风格" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="装修进度" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="预算" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="客户喜好" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="客户在意品牌或已购买品牌" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="客户的问题" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="客户提问与要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="项目方案要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="整体软装配饰" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="家具空间" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="客户意向产品明细" Type="Int32" />
-          <Property Name="项目相关图纸" Type="Int32" />
-          <Property Name="销售人员" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="设计人员" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="店长" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="店长确认" Type="Boolean" />
-          <Property Name="设计人员确认" Type="Boolean" />
-          <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_设计案提交表" ToRole="销售_接待记录" />
-          <NavigationProperty Name="销售_设计案提交表_项目相关图纸" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_项目相关图纸" />
-          <NavigationProperty Name="销售_设计案提交表_客户意向产品明细" Relationship="chicModel.FK_意向产品明细_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_客户意向产品明细" />
-          <NavigationProperty Name="销售_设计案跟进日志" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表1" FromRole="销售_设计案提交表" ToRole="销售_设计案跟进日志" />
         </EntityType>
         <EntityType Name="销售_设计案提交表_客户意向产品明细">
           <Key>
@@ -1086,54 +1053,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_销售_设计案提交表_销售_接待记录">
-          <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
-          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_接待记录">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="销售_设计案提交表">
-              <PropertyRef Name="接待记录ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_项目相关图纸_设计案提交表">
-          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
-          <End Type="chicModel.销售_设计案提交表_项目相关图纸" Role="销售_设计案提交表_项目相关图纸" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_设计案提交表">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="销售_设计案提交表_项目相关图纸">
-              <PropertyRef Name="设计案提交表ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_意向产品明细_设计案提交表">
-          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
-          <End Type="chicModel.销售_设计案提交表_客户意向产品明细" Role="销售_设计案提交表_客户意向产品明细" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_设计案提交表">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="销售_设计案提交表_客户意向产品明细">
-              <PropertyRef Name="设计提交案" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_销售_设计案跟进日志_设计案提交表1">
-          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
-          <End Type="chicModel.销售_设计案跟进日志" Role="销售_设计案跟进日志" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_设计案提交表">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="销售_设计案跟进日志">
-              <PropertyRef Name="设计案提交表id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="销售_意向追踪日志">
           <Key>
             <PropertyRef Name="id" />
@@ -1189,7 +1108,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="销售_设计案提交表">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="接待记录ID" Type="Int32" Nullable="false" />
+          <Property Name="客户姓名" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="联系方式" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="职业" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="家庭成员" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="楼盘具体位置" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
+          <Property Name="面积大小" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="装修风格" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="装修进度" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="预算" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="客户喜好或忌讳" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="客户在意品牌或已购买品牌" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="客户提问与要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="项目方案要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="整体软装配饰" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="家具空间" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="销售人员" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="设计人员" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="店长" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="店长确认" Type="Boolean" />
+          <Property Name="设计人员确认" Type="Boolean" />
+          <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_设计案提交表" ToRole="销售_接待记录" />
+          <NavigationProperty Name="销售_设计案跟进日志" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表1" FromRole="销售_设计案提交表" ToRole="销售_设计案跟进日志" />
+          <NavigationProperty Name="销售_设计案提交表_项目相关图纸" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_项目相关图纸" />
+          <NavigationProperty Name="销售_设计案提交表_客户意向产品明细" Relationship="chicModel.FK_意向产品明细_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_客户意向产品明细" />
+          <Property Name="项目提交时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="项目量房时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="项目预计完成时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="备注" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_销售_设计案提交表_销售_接待记录">
+          <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
+          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_接待记录">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_设计案提交表">
+              <PropertyRef Name="接待记录ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_销售_设计案跟进日志_设计案提交表1">
+          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
+          <End Type="chicModel.销售_设计案跟进日志" Role="销售_设计案跟进日志" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_设计案提交表">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="销售_设计案跟进日志">
+              <PropertyRef Name="设计案提交表id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_项目相关图纸_设计案提交表">
+          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
+          <End Type="chicModel.销售_设计案提交表_项目相关图纸" Role="销售_设计案提交表_项目相关图纸" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_设计案提交表">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="销售_设计案提交表_项目相关图纸">
+              <PropertyRef Name="设计案提交表ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_意向产品明细_设计案提交表">
+          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
+          <End Type="chicModel.销售_设计案提交表_客户意向产品明细" Role="销售_设计案提交表_客户意向产品明细" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_设计案提交表">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="销售_设计案提交表_客户意向产品明细">
+              <PropertyRef Name="设计提交案" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1407,37 +1409,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="销售_设计案提交表">
-            <EntityTypeMapping TypeName="chicModel.销售_设计案提交表">
-              <MappingFragment StoreEntitySet="销售_设计案提交表">
-                <ScalarProperty Name="设计人员确认" ColumnName="设计人员确认" />
-                <ScalarProperty Name="店长确认" ColumnName="店长确认" />
-                <ScalarProperty Name="店长" ColumnName="店长" />
-                <ScalarProperty Name="设计人员" ColumnName="设计人员" />
-                <ScalarProperty Name="销售人员" ColumnName="销售人员" />
-                <ScalarProperty Name="项目相关图纸" ColumnName="项目相关图纸" />
-                <ScalarProperty Name="客户意向产品明细" ColumnName="客户意向产品明细" />
-                <ScalarProperty Name="家具空间" ColumnName="家具空间" />
-                <ScalarProperty Name="整体软装配饰" ColumnName="整体软装配饰" />
-                <ScalarProperty Name="项目方案要求" ColumnName="项目方案要求" />
-                <ScalarProperty Name="客户提问与要求" ColumnName="客户提问与要求" />
-                <ScalarProperty Name="客户的问题" ColumnName="客户的问题" />
-                <ScalarProperty Name="客户在意品牌或已购买品牌" ColumnName="客户在意品牌或已购买品牌" />
-                <ScalarProperty Name="客户喜好" ColumnName="客户喜好" />
-                <ScalarProperty Name="预算" ColumnName="预算" />
-                <ScalarProperty Name="装修进度" ColumnName="装修进度" />
-                <ScalarProperty Name="装修风格" ColumnName="装修风格" />
-                <ScalarProperty Name="面积大小" ColumnName="面积大小" />
-                <ScalarProperty Name="楼盘具体位置" ColumnName="楼盘具体位置" />
-                <ScalarProperty Name="家庭成员" ColumnName="家庭成员" />
-                <ScalarProperty Name="职业" ColumnName="职业" />
-                <ScalarProperty Name="联系方式" ColumnName="联系方式" />
-                <ScalarProperty Name="客户姓名" ColumnName="客户姓名" />
-                <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="销售_设计案提交表_客户意向产品明细">
             <EntityTypeMapping TypeName="chicModel.销售_设计案提交表_客户意向产品明细">
               <MappingFragment StoreEntitySet="销售_设计案提交表_客户意向产品明细">
@@ -1485,6 +1456,38 @@
                 <ScalarProperty Name="跟进方式" ColumnName="跟进方式" />
                 <ScalarProperty Name="跟进时间" ColumnName="跟进时间" />
                 <ScalarProperty Name="跟进人" ColumnName="跟进人" />
+                <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="销售_设计案提交表">
+            <EntityTypeMapping TypeName="chicModel.销售_设计案提交表">
+              <MappingFragment StoreEntitySet="销售_设计案提交表">
+                <ScalarProperty Name="备注" ColumnName="备注" />
+                <ScalarProperty Name="项目预计完成时间" ColumnName="项目预计完成时间" />
+                <ScalarProperty Name="项目量房时间" ColumnName="项目量房时间" />
+                <ScalarProperty Name="项目提交时间" ColumnName="项目提交时间" />
+                <ScalarProperty Name="设计人员确认" ColumnName="设计人员确认" />
+                <ScalarProperty Name="店长确认" ColumnName="店长确认" />
+                <ScalarProperty Name="店长" ColumnName="店长" />
+                <ScalarProperty Name="设计人员" ColumnName="设计人员" />
+                <ScalarProperty Name="销售人员" ColumnName="销售人员" />
+                <ScalarProperty Name="家具空间" ColumnName="家具空间" />
+                <ScalarProperty Name="整体软装配饰" ColumnName="整体软装配饰" />
+                <ScalarProperty Name="项目方案要求" ColumnName="项目方案要求" />
+                <ScalarProperty Name="客户提问与要求" ColumnName="客户提问与要求" />
+                <ScalarProperty Name="客户在意品牌或已购买品牌" ColumnName="客户在意品牌或已购买品牌" />
+                <ScalarProperty Name="客户喜好或忌讳" ColumnName="客户喜好或忌讳" />
+                <ScalarProperty Name="预算" ColumnName="预算" />
+                <ScalarProperty Name="装修进度" ColumnName="装修进度" />
+                <ScalarProperty Name="装修风格" ColumnName="装修风格" />
+                <ScalarProperty Name="面积大小" ColumnName="面积大小" />
+                <ScalarProperty Name="楼盘具体位置" ColumnName="楼盘具体位置" />
+                <ScalarProperty Name="家庭成员" ColumnName="家庭成员" />
+                <ScalarProperty Name="职业" ColumnName="职业" />
+                <ScalarProperty Name="联系方式" ColumnName="联系方式" />
+                <ScalarProperty Name="客户姓名" ColumnName="客户姓名" />
                 <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>

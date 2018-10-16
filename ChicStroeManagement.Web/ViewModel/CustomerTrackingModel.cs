@@ -21,7 +21,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         public int 接待ID { get; set; }
 
         public string 客户姓名 { get; set; }
-
+        public string 客户电话 { get; set; }
         [Display(Name = "跟进人")]
         [DataType(DataType.Text)]
         [Required]

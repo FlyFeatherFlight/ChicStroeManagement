@@ -17,8 +17,8 @@ public partial class 销售_接待记录
         this.销售_接待记录_意向明细 = new HashSet<销售_接待记录_意向明细>();
         this.销售_设计案跟进日志 = new HashSet<销售_设计案跟进日志>();
         this.销售_设计案提交表_客户意向产品明细 = new HashSet<销售_设计案提交表_客户意向产品明细>();
-        this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
         this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
+        this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
     }
 
     public int ID { get; set; }
@@ -69,6 +69,6 @@ public partial class 销售_接待记录
     public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }
     public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
     public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
-    public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
     public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
+    public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
 }

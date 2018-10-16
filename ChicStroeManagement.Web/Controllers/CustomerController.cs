@@ -66,7 +66,7 @@ namespace ChicStoreManagement.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                customerInfoModels = customerInfoModels.Where(w => w.客户姓名.Contains(searchString));//通过姓名查找
+                customerInfoModels = customerInfoModels.Where(w => w.客户电话==searchString);//通过姓名查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
@@ -89,16 +89,11 @@ namespace ChicStoreManagement.Controllers
             #endregion
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            if (storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID == 3)
-            {
-                return View(customerInfoModels.ToPagedList(pageNumber, pageSize));
-            }
+            ViewBag.employeeName = employeeName;//给前端传入当前操作人
+            ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
         
-            var customerInfoModels1 = customerInfoModels.Where(p => p.接待人 == employeeName||p.跟进人==employeeName);
-            if (customerInfoModels1 == null) {
-                return View("当前操作人并无关联客户或无进入权限！");
-            }
-            return View(customerInfoModels1.ToPagedList(pageNumber, pageSize));
+           
+            return View(customerInfoModels.ToPagedList(pageNumber, pageSize));
 
         }
 
@@ -266,17 +261,24 @@ namespace ChicStoreManagement.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+           
             SetEmployee();
             BuildCustomerInfo();
             var customerInfo = customerInfoModels.First(p => p.ID == id);
-            BuildExceptedBuy(id);
-            customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
-            customerInfo.更新人 = employeeName;
-            customerInfo.更新日期 = DateTime.Now;
+
+            if (customerInfo.接待人==employeeName||customerInfo.跟进人==employeeName||storeEmployeesBLL.GetModel(p=>p.姓名==employeeName).职务ID==3)
+            {
+                BuildExceptedBuy(id);
+                customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
+                customerInfo.更新人 = employeeName;
+                customerInfo.更新日期 = DateTime.Now;
+                ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;
+                return View(customerInfo);
+            }
+           
             
 
-            return View(customerInfo);
+            return Content("<script>alert('无操作权限！！');window.history.go(-1);</script>");
 
         }
 
@@ -294,9 +296,14 @@ namespace ChicStoreManagement.Controllers
                 string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
                 return Content(str);
             }
-           
-            DateTimeFormatInfo dtFormat = new DateTimeFormatInfo();
-            dtFormat.ShortDatePattern = "yyyy/MM/dd";
+            if (customerInfoModel==null)
+            {
+                return Content("<script>alert('违规操作！！');window.history.go(-1);</script>");
+            }
+            DateTimeFormatInfo dtFormat = new DateTimeFormatInfo
+            {
+                ShortDatePattern = "yyyy/MM/dd"
+            };
             销售_接待记录 model = new 销售_接待记录();
             try
             {
@@ -415,25 +422,29 @@ namespace ChicStoreManagement.Controllers
         /// <param name="id">接待id</param>
        
         /// <returns></returns>
-        public ViewResult ExceptedBuyIndex(int id)
+        public ActionResult ExceptedBuyIndex(int id)
         {
             Session["method"] = "N";
             if (id == 0) {
-                return View();
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            SetEmployee();
+            BuildCustomerInfo();
+            BuildExceptedBuy(id);
+
+
+            ViewBag.receptionid = id;
+            var customerInfo = customerInfoModels.Where(p => p.ID == id).FirstOrDefault();
+            ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
+            var productList = productCodeBLL.GetModels(p => true).ToList();
             try
             {
                
-                SetEmployee();
-                BuildCustomerInfo();
-                BuildExceptedBuy(id);
-                ViewBag.receptionid = id;
-                ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
-                var productList = productCodeBLL.GetModels(p => true).ToList();
+               
                 SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
                 ViewBag.ProductOptions = productSelectListItems;
 
-                if (exceptedBuyModels == null) { return View(); }
+                if (exceptedBuyModels == null) { return Content("<script>alert('查无数据！！');window.history.go(-1);</script>"); }
 
              
 
@@ -443,10 +454,14 @@ namespace ChicStoreManagement.Controllers
 
                 throw;
             }
+            if (customerInfo.接待人==employeeName||customerInfo.跟进人==employeeName|| storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID == 3)
+            {
+                var model = exceptedBuyModels.ToList();
 
-            var model = exceptedBuyModels.ToList();
+                return View(model);
+            }
+            return Content("<script>alert('无操作权限！！');window.history.go(-1);</script>");
 
-            return View(model);
         }
         /// <summary>
         /// 删除预购
@@ -484,6 +499,10 @@ namespace ChicStoreManagement.Controllers
             {
                 string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
                 return Content(str);
+            }
+            if (接待==0)
+            {
+                return Content("<script>alert('不存在你跟进的客户，你不能执行预购操作！');window.history.go(-1);</script>");
             }
             销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
             {

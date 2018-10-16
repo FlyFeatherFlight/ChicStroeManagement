@@ -211,6 +211,7 @@
     </Compile>
     <Compile Include="ViewModel\CustomerExceptedBuyModel.cs" />
     <Compile Include="ViewModel\CustomerTrackingModel.cs" />
+    <Compile Include="ViewModel\DesignSubmitModel.cs" />
     <Compile Include="ViewModel\Employees.cs" />
     <Compile Include="ViewModel\CustomerInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

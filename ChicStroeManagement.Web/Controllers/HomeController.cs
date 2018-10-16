@@ -24,7 +24,7 @@ namespace ChicStoreManagement.Controllers
                 var employees = HttpContext.Session["Employee"] as Employees;
 
                 ViewBag.StoreName = employees.店铺;
-               
+                ViewBag.Position = employees.职务;
             }
            
             return View();
