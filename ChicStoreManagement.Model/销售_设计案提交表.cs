@@ -33,7 +33,6 @@ public partial class 销售_设计案提交表
     public string 客户喜好或忌讳 { get; set; }
     public string 客户在意品牌或已购买品牌 { get; set; }
     public string 客户提问与要求 { get; set; }
-    public string 项目方案要求 { get; set; }
     public string 整体软装配饰 { get; set; }
     public string 家具空间 { get; set; }
     public string 销售人员 { get; set; }
@@ -45,6 +44,8 @@ public partial class 销售_设计案提交表
     public System.DateTime 项目量房时间 { get; set; }
     public System.DateTime 项目预计完成时间 { get; set; }
     public string 备注 { get; set; }
+    public string 更新人 { get; set; }
+    public Nullable<System.DateTime> 更新日期 { get; set; }
 
     public virtual 销售_接待记录 销售_接待记录 { get; set; }
     public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }

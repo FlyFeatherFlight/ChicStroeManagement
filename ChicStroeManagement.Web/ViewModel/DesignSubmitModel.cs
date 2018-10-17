@@ -65,10 +65,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Text)]
 
         public string 客户提问与要求 { get; set; }
-        [Display(Name = "项目方案要求")]
-        [DataType(DataType.Text)]
- 
-        public string 项目方案要求 { get; set; }
+       
         [Display(Name = "整体软装配饰")]
         [DataType(DataType.Text)]
        
@@ -112,16 +109,22 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.DateTime)]
         [Required]
         public System.DateTime 项目预计完成时间 { get; set; }
-        [Display(Name = "订单有效性")]
+        [Display(Name = "审批状态")]
         [DataType(DataType.Text)]
-        public bool 有效订单 { get; set; }
+        public bool 审批状态 { get; set; }
 
         [Display(Name ="备注")]
         [DataType(DataType.Text)]
         public string 备注 { get; set; }
+        [Display(Name ="最后一次更新人")]
+        [DataType(DataType.Text)]
+        public string 更新人 { get; set; }
+        [Display(Name ="更新日期")]
+        [DataType(DataType.DateTime)]
+        public DateTime? 更新日期 { get; set; }
         public virtual 销售_接待记录 销售_接待记录 { get; set; }
         public virtual ICollection<销售_设计案提交表_项目相关图纸> 销售_设计案提交表_项目相关图纸 { get; set; }
-        public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
+        public virtual List<CustomerExceptedBuyModel> 销售_设计案提交表_客户意向产品明细 { get; set; }
         public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
     }
 }

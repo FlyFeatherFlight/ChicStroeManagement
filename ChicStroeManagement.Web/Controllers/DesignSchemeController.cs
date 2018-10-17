@@ -13,7 +13,8 @@ namespace ChicStoreManagement.Controllers
         private readonly ICustomerInfoBLL customerInfoBLL;
         private readonly IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL;
         private readonly IDesignSubmitBLL designSubmitBLL;
-       
+        private readonly IExceptedBuyBLL exceptedBuyBLL;
+        private readonly IProductCodeBLL productCodeBLL;
         private readonly IStoreBLL storeBLL;
         private readonly IPositionBLL positionBLL;
         private readonly IStoreEmployeesBLL storeEmployeesBLL;
@@ -22,7 +23,7 @@ namespace ChicStoreManagement.Controllers
         private string store;
         private int storeID;
 
-        public DesignSchemeController(ICustomerInfoBLL customerInfoIBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL)
+        public DesignSchemeController(ICustomerInfoBLL customerInfoIBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL, IExceptedBuyBLL exceptedBuyBLL)
         {
             this.customerInfoBLL = customerInfoIBLL;
             this.design_CustomerExceptedBuyBLL = design_CustomerExceptedBuyBLL;
@@ -75,10 +76,10 @@ namespace ChicStoreManagement.Controllers
                     designSubmitModels = designSubmitModels.OrderByDescending(w => w.项目提交时间).ToList();
                     break;
                 case "last_desc":
-                    designSubmitModels = designSubmitModels.OrderByDescending(w => w.有效订单).ToList();
+                    designSubmitModels = designSubmitModels.OrderByDescending(w => w.审批状态).ToList();
                     break;
                 case "last":
-                    designSubmitModels = designSubmitModels.OrderBy(w => w.有效订单).ToList();
+                    designSubmitModels = designSubmitModels.OrderBy(w => w.审批状态).ToList();
                     break;
                 default:
                     designSubmitModels = designSubmitModels.OrderBy(w => w.项目提交时间).ToList();
@@ -110,6 +111,21 @@ namespace ChicStoreManagement.Controllers
                      
             return View();
 
+        }
+
+        /// <summary>
+        /// 设计申请提交表详细信息
+        /// </summary>
+        /// <param name="id">设计提交案id</param>
+        /// <returns></returns>
+        public ActionResult DesignApplyInfoView(DesignSubmitModel submitModel) {
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
+
+            var costomerModels = BuildCustomerInfo();
+
+            submitModel.销售_设计案提交表_客户意向产品明细 = BuildExceptedBuy(submitModel.Id);
+            return View(submitModel);
         }
         /// <summary>
         /// 添加设计进度日志
@@ -282,6 +298,36 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModelList.Add(designSubmitModel);
             }
             return designSubmitModelList.AsQueryable();
+        }
+
+        /// <summary>
+        /// 根据接待id查询产品信息
+        /// </summary>
+        private List<CustomerExceptedBuyModel> BuildExceptedBuy(int id)
+        {
+            if (id == 0)
+            {
+                return null;
+            }
+            List<CustomerExceptedBuyModel> models = new List<CustomerExceptedBuyModel>();
+            var exceptedBuy = exceptedBuyBLL.GetListBy(p => p.接待ID == id);
+            if (exceptedBuy != null)
+            {
+                foreach (var item in exceptedBuy)
+                {
+                    CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel
+                    {
+                        ID = item.ID,
+                        商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号,
+                        备注 = item.备注,
+                        接待 = id
+                    };
+                    models.Add(exceptedBuyModel);
+                }
+                return models;
+            }
+            return null;
+
         }
     }
 }

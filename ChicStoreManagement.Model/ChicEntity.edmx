@@ -217,7 +217,6 @@
           <Property Name="客户喜好或忌讳" Type="nvarchar" MaxLength="500" />
           <Property Name="客户在意品牌或已购买品牌" Type="nvarchar" MaxLength="500" />
           <Property Name="客户提问与要求" Type="nvarchar" MaxLength="1000" />
-          <Property Name="项目方案要求" Type="nvarchar" MaxLength="1000" />
           <Property Name="整体软装配饰" Type="nvarchar" MaxLength="1000" />
           <Property Name="家具空间" Type="nvarchar" MaxLength="50" />
           <Property Name="销售人员" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -229,6 +228,8 @@
           <Property Name="项目量房时间" Type="date" Nullable="false" />
           <Property Name="项目预计完成时间" Type="date" Nullable="false" />
           <Property Name="备注" Type="varchar" MaxLength="1000" />
+          <Property Name="更新人" Type="nvarchar" MaxLength="16" />
+          <Property Name="更新日期" Type="datetime" />
         </EntityType>
         <EntityType Name="销售_设计案提交表_客户意向产品明细">
           <Key>
@@ -1126,7 +1127,6 @@
           <Property Name="客户喜好或忌讳" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="客户在意品牌或已购买品牌" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="客户提问与要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="项目方案要求" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="整体软装配饰" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="家具空间" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="销售人员" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1142,6 +1142,8 @@
           <Property Name="项目量房时间" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="项目预计完成时间" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="备注" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="更新人" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="更新日期" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_销售_设计案提交表_销售_接待记录">
           <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
@@ -1464,6 +1466,8 @@
           <EntitySetMapping Name="销售_设计案提交表">
             <EntityTypeMapping TypeName="chicModel.销售_设计案提交表">
               <MappingFragment StoreEntitySet="销售_设计案提交表">
+                <ScalarProperty Name="更新日期" ColumnName="更新日期" />
+                <ScalarProperty Name="更新人" ColumnName="更新人" />
                 <ScalarProperty Name="备注" ColumnName="备注" />
                 <ScalarProperty Name="项目预计完成时间" ColumnName="项目预计完成时间" />
                 <ScalarProperty Name="项目量房时间" ColumnName="项目量房时间" />
@@ -1475,7 +1479,6 @@
                 <ScalarProperty Name="销售人员" ColumnName="销售人员" />
                 <ScalarProperty Name="家具空间" ColumnName="家具空间" />
                 <ScalarProperty Name="整体软装配饰" ColumnName="整体软装配饰" />
-                <ScalarProperty Name="项目方案要求" ColumnName="项目方案要求" />
                 <ScalarProperty Name="客户提问与要求" ColumnName="客户提问与要求" />
                 <ScalarProperty Name="客户在意品牌或已购买品牌" ColumnName="客户在意品牌或已购买品牌" />
                 <ScalarProperty Name="客户喜好或忌讳" ColumnName="客户喜好或忌讳" />
