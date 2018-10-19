@@ -25,6 +25,6 @@ public partial class 销售_意向追踪日志
     public int 店铺ID { get; set; }
 
     public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
-    public virtual 销售_接待记录 销售_接待记录 { get; set; }
     public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
+    public virtual 销售_接待记录 销售_接待记录 { get; set; }
 }

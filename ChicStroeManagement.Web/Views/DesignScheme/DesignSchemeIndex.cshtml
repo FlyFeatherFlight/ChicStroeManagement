@@ -1,10 +1,13 @@
 ﻿@using PagedList.Mvc;
 @model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignSubmitModel>
 @{
-    ViewBag.Title = "DesignSchemeIndex";
+    ViewBag.Title = "软装服务设计案";
 }
 
 <h2>软装服务设计案提交表</h2>
+<div>
+    @Html.ActionLink("申请设计", "ApplyDesignView", new { @Style = "font-size:12px", @align = "right" })                                                                                                                                                                                                                                                                                                                                                                                                
+</div>
 @using (Html.BeginForm("DesignSchemeIndex", "DesignScheme", FormMethod.Get))
 {
     <p>
@@ -18,7 +21,7 @@
 @{ 
     if (Model != null) {
         <div class="table-responsive">
-            <table>
+            <table class="table">
                 <tr>
                     <th>Id</th>
                     <th>客户姓名</th>

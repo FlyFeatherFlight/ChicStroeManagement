@@ -93,6 +93,7 @@ namespace ChicStoreManagement.Controllers
             return View(designSubmitModels.ToPagedList(pageNumber,pageSize));
         }
 
+
         /// <summary>
         /// 添加设计方案
         /// </summary>
@@ -102,17 +103,225 @@ namespace ChicStoreManagement.Controllers
             return View();
         }
 
+        #region 设计案申请模块
+
         /// <summary>
         /// 申请设计
         /// </summary>
+       
         /// <returns></returns>
         public ActionResult ApplyDesignView()
         {
-                     
+            Session["method"] = "N";
+            SetEmployee();
+            List<销售_接待记录> customerInfos = new List<销售_接待记录>();
+            if (employeeID!=0)
+            {
+                customerInfos = customerInfoBLL.GetModels(p => p.接待人ID == employeeID || p.跟进人ID == employeeID).ToList();
+                SelectList customerInfosSelectListItem = new SelectList(customerInfos, "客户电话", "客户电话");
+                ViewBag.CustomerPhoneNumber = customerInfosSelectListItem;
+         
+            }
             return View();
 
         }
+        /// <summary>
+        /// 设计案申请修改(店长确认之后不可修改！)
+        /// </summary>
+        /// <param name="id">设计案申请id</param>
+        /// <returns></returns>
+        public ActionResult EditDesignApply(int id) {
+            Session["method"] = "N";
+            销售_设计案提交表 model = new 销售_设计案提交表();
+            model=designSubmitBLL.GetModel(p => p.id == id);
+            DesignSubmitModel designSubmitModel = new DesignSubmitModel
+            {
+                Id = model.id,
+                客户喜好 = model.客户喜好或忌讳,
+                客户在意品牌或已购买品牌 = model.客户在意品牌或已购买品牌,
+                客户姓名 = model.客户姓名,
+                客户提问与要求 = model.客户提问与要求,
+                家具空间 = model.家具空间,
+                家庭成员 = model.家庭成员,
+                店长 = model.店长,
+                店长确认 = model.店长确认,
+                接待记录ID = model.接待记录ID,
+                整体软装配饰 = model.整体软装配饰.Value,
+                楼盘具体位置 = model.楼盘具体位置,
+                职业 = model.职业,
+                联系方式 = model.联系方式,
+                装修进度 = model.装修进度,
+                装修风格 = model.装修风格,
+                设计人员 = model.设计人员,
+                设计人员确认 = model.设计人员确认,
+                销售人员 = model.销售人员,
+                面积大小 = model.面积大小,
+                预算 = model.预算,
+                项目提交时间 = model.项目提交时间,
+                项目量房时间 = model.项目量房时间,
+                项目预计完成时间 = model.项目预计完成时间,
+                备注 = model.备注
+            };
+            if (model.店长 != null && model.店长确认 == true && model.设计人员 != null && model.设计人员确认 == true && model.销售人员 != null)
+            {
+                designSubmitModel.审批状态 = true;
+            }
+                return View(designSubmitModel);
+        }
 
+        /// <summary>
+        /// 设计案申请修改(店长确认之后不可修改！)
+        /// </summary>
+        /// <param name="designSubmitModel">设计案申请实体</param>
+        /// <returns></returns>
+        public ActionResult DesignApplyEdit(DesignSubmitModel designSubmitModel) {
+
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+            SetEmployee();
+            try
+            {
+                销售_设计案提交表 model = new 销售_设计案提交表
+                {
+                    id=designSubmitModel.Id,
+                    接待记录ID=designSubmitModel.接待记录ID,
+                    客户姓名 = designSubmitModel.客户姓名,
+                    联系方式 = designSubmitModel.联系方式,
+                    职业 = designSubmitModel.职业,
+                    家庭成员 = designSubmitModel.家庭成员,
+                    楼盘具体位置 = designSubmitModel.楼盘具体位置,
+                    面积大小 = designSubmitModel.面积大小,
+                    装修风格 = designSubmitModel.装修风格,
+                    装修进度 = designSubmitModel.装修进度,
+                    预算 = designSubmitModel.预算,
+                    客户喜好或忌讳 = designSubmitModel.客户喜好,
+                    客户在意品牌或已购买品牌 = designSubmitModel.客户在意品牌或已购买品牌,
+                    客户提问与要求 = designSubmitModel.客户提问与要求,
+                    整体软装配饰 = designSubmitModel.整体软装配饰,
+                    家具空间 = designSubmitModel.家具空间,
+                    项目提交时间 = designSubmitModel.项目提交时间,
+                    项目量房时间 = designSubmitModel.项目量房时间,
+                    项目预计完成时间 = designSubmitModel.项目预计完成时间,
+                    销售人员 = employeeName,
+                    备注 = designSubmitModel.备注,
+                    更新人 = employeeName,
+                    更新日期 = DateTime.Now
+                };
+                if (ModelState.IsValid)
+                {
+                    designSubmitBLL.Modify(model);
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = "添加设计案申请信息出错：";
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
+
+            }
+            catch (Exception e)
+            {
+                return Content("<script>alert('信息异常：" + e + "。');window.history.go(-1);</script>");
+            }
+            return RedirectToAction("DesignSchemeIndex", new { id=designSubmitModel.Id });
+        }
+        /// <summary>
+        /// 提交设计案申请
+        /// </summary>
+        /// <param name="designSubmitModel"></param>
+        /// <param name="id">接待记录id</param>
+        /// <returns></returns>
+         [HttpPost]
+        public ActionResult DesignApply(DesignSubmitModel designSubmitModel) {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
+            SetEmployee();
+            int receptionid = 0;
+            try {
+                销售_设计案提交表 model = new 销售_设计案提交表
+                {
+                    客户姓名 = designSubmitModel.客户姓名,
+                    联系方式 = designSubmitModel.联系方式,
+                    职业 = designSubmitModel.职业,
+                    家庭成员 = designSubmitModel.家庭成员,
+                    楼盘具体位置 = designSubmitModel.楼盘具体位置,
+                    面积大小 = designSubmitModel.面积大小,
+                    装修风格 = designSubmitModel.装修风格,
+                    装修进度 = designSubmitModel.装修进度,
+                    预算 = designSubmitModel.预算,
+                    客户喜好或忌讳 = designSubmitModel.客户喜好,
+                    客户在意品牌或已购买品牌 = designSubmitModel.客户在意品牌或已购买品牌,
+                    客户提问与要求 = designSubmitModel.客户提问与要求,
+                    整体软装配饰 = designSubmitModel.整体软装配饰,
+                    家具空间 = designSubmitModel.家具空间,
+                    项目提交时间 = designSubmitModel.项目提交时间,
+                    项目量房时间 = designSubmitModel.项目量房时间,
+                    项目预计完成时间 = designSubmitModel.项目预计完成时间,
+                    销售人员 = employeeName,
+                    备注 = designSubmitModel.备注,
+                    更新人 = employeeName,
+                    更新日期 = DateTime.Now
+                };
+                if (ModelState.IsValid)
+                {
+                    designSubmitBLL.Add(model);
+                    receptionid = customerInfoBLL.GetModel(p => p.客户电话 == model.联系方式).ID;
+                    Session["method"] = "Y";
+                }
+
+                else
+                {
+                    List<string> sb = new List<string>();
+                    //获取所有错误的Key
+                    List<string> Keys = ModelState.Keys.ToList();
+                    //获取每一个key对应的ModelStateDictionary
+                    foreach (var key in Keys)
+                    {
+                        var errors = ModelState[key].Errors.ToList();
+                        //将错误描述添加到sb中
+                        foreach (var error in errors)
+                        {
+                            sb.Add(error.ErrorMessage);
+                        }
+                    }
+                    string s = "添加设计案申请信息出错：";
+                    foreach (var item in sb)
+                    {
+                        s += item.ToString() + "<br/>";
+                    }
+                    return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+                }
+
+            }
+            catch (Exception e) {
+                return Content("<script>alert('信息异常：" + e + "。');window.history.go(-1);</script>");
+            }
+            return RedirectToAction("DesignSchemeIndex",new { id=receptionid });
+        }
         /// <summary>
         /// 设计申请提交表详细信息
         /// </summary>
@@ -135,7 +344,7 @@ namespace ChicStoreManagement.Controllers
         {
             return View();
         }
-
+        #endregion
         /// <summary>
         /// 设置当前的用户信息
         /// </summary>
@@ -276,7 +485,7 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.店长 = item.店长;
                 designSubmitModel.店长确认 = item.店长确认;
                 designSubmitModel.接待记录ID = item.接待记录ID;
-                designSubmitModel.整体软装配饰 = item.整体软装配饰;
+                designSubmitModel.整体软装配饰 = item.整体软装配饰.Value;
                 designSubmitModel.楼盘具体位置 = item.楼盘具体位置;
                 designSubmitModel.职业 = item.职业;
                 designSubmitModel.联系方式 = item.联系方式;
@@ -286,14 +495,14 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.设计人员确认 = item.设计人员确认;
                 designSubmitModel.销售人员 = item.销售人员;
                 designSubmitModel.面积大小 = item.面积大小;
-                designSubmitModel.项目方案要求 = item.项目方案要求;
+               
                 designSubmitModel.预算 = item.预算;
                 designSubmitModel.项目提交时间 = item.项目提交时间;
                 designSubmitModel.项目量房时间 = item.项目量房时间;
                 designSubmitModel.项目预计完成时间 = item.项目预计完成时间;
                 designSubmitModel.备注 = item.备注;
                 if (item.店长!=null&& item.店长确认==true&&item.设计人员!=null&&item.设计人员确认==true&&item.销售人员!=null) {
-                    designSubmitModel.有效订单 = true;
+                    designSubmitModel.审批状态 = true;
                 }
                 designSubmitModelList.Add(designSubmitModel);
             }

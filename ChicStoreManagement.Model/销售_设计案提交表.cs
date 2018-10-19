@@ -33,7 +33,7 @@ public partial class 销售_设计案提交表
     public string 客户喜好或忌讳 { get; set; }
     public string 客户在意品牌或已购买品牌 { get; set; }
     public string 客户提问与要求 { get; set; }
-    public string 整体软装配饰 { get; set; }
+    public Nullable<bool> 整体软装配饰 { get; set; }
     public string 家具空间 { get; set; }
     public string 销售人员 { get; set; }
     public string 设计人员 { get; set; }

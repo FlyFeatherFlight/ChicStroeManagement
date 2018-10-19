@@ -31,7 +31,6 @@ namespace ChicStoreManagement.Model
         public DbSet<系统用户> 系统用户 { get; set; }
         public DbSet<销售_店铺档案> 销售_店铺档案 { get; set; }
         public DbSet<销售_店铺员工档案> 销售_店铺员工档案 { get; set; }
-        public DbSet<销售_接待记录> 销售_接待记录 { get; set; }
         public DbSet<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }
         public DbSet<销售_经销商档案> 销售_经销商档案 { get; set; }
         public DbSet<销售_职务> 销售_职务 { get; set; }
@@ -39,6 +38,7 @@ namespace ChicStoreManagement.Model
         public DbSet<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
         public DbSet<销售_设计案提交表_项目相关图纸> 销售_设计案提交表_项目相关图纸 { get; set; }
         public DbSet<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
+        public DbSet<销售_接待记录> 销售_接待记录 { get; set; }
         public DbSet<销售_设计案提交表> 销售_设计案提交表 { get; set; }
     }
 }

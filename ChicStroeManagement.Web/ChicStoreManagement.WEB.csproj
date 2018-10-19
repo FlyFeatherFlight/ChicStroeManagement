@@ -997,6 +997,7 @@
     <Content Include="Views\Customer\AddExceptedBuyView.cshtml" />
     <Content Include="Views\Warning\RepeatSubmit.cshtml" />
     <Content Include="Views\DesignScheme\DesignApplyInfoView.cshtml" />
+    <Content Include="Views\DesignScheme\EditDesignApply.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

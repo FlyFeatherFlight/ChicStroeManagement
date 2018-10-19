@@ -15,8 +15,8 @@ public partial class 销售_店铺档案
     public 销售_店铺档案()
     {
         this.销售_店铺员工档案 = new HashSet<销售_店铺员工档案>();
-        this.销售_接待记录 = new HashSet<销售_接待记录>();
         this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
+        this.销售_接待记录 = new HashSet<销售_接待记录>();
     }
 
     public int ID { get; set; }
@@ -43,6 +43,6 @@ public partial class 销售_店铺档案
 
     public virtual 销售_经销商档案 销售_经销商档案 { get; set; }
     public virtual ICollection<销售_店铺员工档案> 销售_店铺员工档案 { get; set; }
-    public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
     public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
+    public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
 }

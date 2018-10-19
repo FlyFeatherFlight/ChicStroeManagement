@@ -67,9 +67,8 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string 客户提问与要求 { get; set; }
        
         [Display(Name = "整体软装配饰")]
-        [DataType(DataType.Text)]
-       
-        public string 整体软装配饰 { get; set; }
+   
+        public bool 整体软装配饰 { get; set; }
         [Display(Name = "家具空间")]
         [DataType(DataType.Text)]
      
@@ -104,7 +103,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name = "项目量房时间")]
         [DataType(DataType.DateTime)]
         [Required]
-        public System.DateTime 项目量房时间 { get; set; }
+        public DateTime 项目量房时间 { get; set; }
         [Display(Name = "项目预计完成时间")]
         [DataType(DataType.DateTime)]
         [Required]
