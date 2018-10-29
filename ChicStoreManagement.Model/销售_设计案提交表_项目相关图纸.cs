@@ -14,16 +14,14 @@ public partial class 销售_设计案提交表_项目相关图纸
 {
     public int id { get; set; }
     public int 设计案提交表ID { get; set; }
-    public string CAD { get; set; }
-    public string 效果3D图 { get; set; }
-    public string 比较产品图 { get; set; }
-    public string 其它 { get; set; }
-    public string 项目提交时间 { get; set; }
-    public string 提交备注 { get; set; }
-    public string 项目量房时间 { get; set; }
-    public string 量房备注 { get; set; }
-    public string 项目完成时间 { get; set; }
+    public Nullable<System.DateTime> 提交时间 { get; set; }
     public string 备注 { get; set; }
+    public string 更新人 { get; set; }
+    public Nullable<System.DateTime> 更新日期 { get; set; }
+    public string 提交人 { get; set; }
+    public int 文件类型 { get; set; }
+    public string 存储路径 { get; set; }
+    public string 文件名 { get; set; }
 
     public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
 }

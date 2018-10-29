@@ -26,17 +26,18 @@ namespace ChicStoreManagement
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/bootstrap-datetimepicker.js",
-                      //"~/Scripts/bootstrap-datetimepicker.min.js",
-                      "~/Scripts/bootstrap-datetimepicker.zh-CN.js"
+                  
+                      "~/Scripts/bootstrap-datetimepicker.zh-CN.js",
+                          "~/Scripts/fileinput.min.js",
+                          "~/Scripts/locales/zh.js"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css",
                       "~/Content/PagedList.css", 
-                      //"~/Content/jquery.datetimepicker.min.css",
-                      //"~/Content/bootstrap-datetimepicker.min.css",
-                      "~/Content/bootstrap-datetimepicker.css"
+                      "~/Content/bootstrap-datetimepicker.css",
+                      "~/Content/bootstrap-fileinput/css/fileinput.min.css"
                       ));
            
             //jquery-ui
@@ -44,23 +45,6 @@ namespace ChicStoreManagement
                 "~/Scripts/jquery-ui-1.12.1.js"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                "~/Scripts/jquery-ui-1.12.1.min.js"));
-
-            try
-            {
-            //    bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-            //    "~/Scripts/jquery.datetimepicker.full.min.js"));
-              
-            //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-            //    "~/Scripts/jquery.datetimepicker.min.js"));
-               // bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-               //"~/Scripts/calendar.js"));
-            }
-            catch (System.Exception e)
-            {
-
-                throw e;
-            }
-          
 
             bundles.Add(new StyleBundle("~/Content/jqueryui").Include(
                "~/Content/themes/base/jquery-ui.css"));

@@ -1,4 +1,5 @@
 ﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
 using PagedList;
 using System;
@@ -77,7 +78,7 @@ namespace ChicStoreManagement.Controllers
             }
             if (customerTrackingModels == null)
             {
-                return View("当前操作人并无关联的跟进信息或无进入权限！");
+                return Content("当前操作人并无关联的跟进信息或无进入权限！");
             }
             BuildCustomerInfo();//将顾客接待信息数据优化
             ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端

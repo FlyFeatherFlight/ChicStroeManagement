@@ -49,6 +49,7 @@
     <Compile Include="IDesign_CustomerExceptedBuyBLL.cs" />
     <Compile Include="IDesign_ProjectDrawingsBLL.cs" />
     <Compile Include="IExceptedBuyBLL.cs" />
+    <Compile Include="IFileTypeBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />
     <Compile Include="IStoreBLL.cs" />

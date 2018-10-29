@@ -49,6 +49,7 @@
     <Compile Include="Design_ProjectDrawingsBLL.cs" />
     <Compile Include="ExceptedBuyBLL.cs" />
     <Compile Include="DesignSubmitBLL.cs" />
+    <Compile Include="FileTypeBLL.cs" />
     <Compile Include="PositionBLL.cs" />
     <Compile Include="ProductCodeBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,99 +6,117 @@
 
 <h2>修改设计案申请表</h2>
 <div>
-    <form action="~/Controllers/DesignSchemeController/Apply">
+    <form action="~/DesignScheme/DesignApplyEdit">
         <div class="table-responsive">
+            <input type="text" name="Id" value="@Model.Id" style="display:none" />
+            <input type="text" name="销售人员" value="@Model.销售人员" style="display:none" />
+            <input type="text"  name="接待记录ID" value="@Model.接待记录ID" style="display:none" />
             <table class="table table-bordered">
                 <tr>
+
                     <td width="10%">客户名称</td>
                     <td>
-                        @Html.EditorFor(Model => Model.客户姓名)
+                        @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                     <td>联系方式</td>
                     <td>
-                        @Html.EditorFor(Model => Model.联系方式)
+                        @Html.EditorFor(Model => Model.联系方式, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                 </tr>
                 <tr>
                     <td>职业</td>
                     <td>
-                        @Html.EditorFor(Model => Model.职业)
+                        @Html.EditorFor(Model => Model.职业, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                     <td>家庭成员</td>
                     <td>
-                        @Html.EditorFor(Model => Model.家庭成员)
+                        @Html.EditorFor(Model => Model.家庭成员, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                 </tr>
                 <tr>
                     <td>楼盘具体位置</td>
                     <td colspan="3">
-                        @Html.EditorFor(Model => Model.楼盘具体位置)
+                        @Html.EditorFor(Model => Model.楼盘具体位置, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                 </tr>
                 <tr>
                     <td>面积大小</td>
                     <td colspan="3">
-                        @Html.EditorFor(Model => Model.面积大小)
+                        @Html.EditorFor(Model => Model.面积大小, new { htmlAttributes = new { @class = "form-control" } })
                     </td>
                 </tr>
                 <tr>
                     <td>装修风格</td>
-                    <td colspan="3">@Html.EditorFor(Model => Model.装修风格)</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.装修风格, new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
                 <tr>
                     <td>装修进度</td>
-                    <td colspan="3">@Html.EditorFor(Model => Model.装修进度)</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.装修进度, new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
                 <tr>
                     <td>预算(可细化到空间)</td>
-                    <td colspan="3">@Html.EditorFor(Model => Model.预算)</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.预算, new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
                 <tr>
                     <td colspan="4">客户喜好或忌讳的颜色，形状，材质等</td>
                 </tr>
                 <tr>
-                    <td colspan="4">@Html.EditorFor(Model => Model.客户喜好)</td>
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户喜好, new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
                 <tr>
                     <td colspan="4">客户正在比较的品牌或已经购买的品牌</td>
                 </tr>
                 <tr>
-                    <td colspan="4">@Html.EditorFor(Model => Model.客户在意品牌或已购买品牌)</td>
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户在意品牌或已购买品牌, new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
                 <tr>
                     <td colspan="4">客户问题及特殊要求</td>
                 </tr>
                 <tr>
-                    <td colspan="4">@Html.EditorFor(Model => Model.客户提问与要求)</td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        项目方案要求
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户提问与要求, new { htmlAttributes = new { @class = "form-control" } })</td>
 
-                        @Html.EditorFor(Model => Model.整体软装配饰)
-                    </td>
                 </tr>
                 <tr>
-                    <td>家具：</td>
+                    <td colspan="4" align="center">
+                        项目方案要求
+                    </td>
+                    </tr>
+                    @if (Model.整体软装配饰!=null)
+                    {
+                        <tr>
+                    <td >
+                        整体软装配饰
+                    </td>
+                     <td colspan="3">
+                        @Html.EditorFor(Model=>Model.整体软装配饰,new { htmlAttributes=new { @class="form-control"} })
+                    </td>
+                    </tr>
+                    }
+
+               
+                <tr>
+                    <td>家具空间：</td>
                 </tr>
                 <tr>
                     <td>项目提交时间</td>
                     <td colspan="3">
-                        <input type="text" name="项目提交时间" value="@DateTime.Now.ToString()" readonly="readonly" />
+                        <input type="text" name="项目提交时间" value="@Model.项目提交时间.Date.ToString("yyyy-MM-dd")" readonly="readonly" class="form-control" />
                     </td>
                 </tr>
                 <tr>
                     <td>项目量房时间</td>
                     <td colspan="3">
-                        <input type="text" name=" 项目量房时间">
+                        <input type="date" name="项目量房时间" value="@Model.项目量房时间.Date.ToString("yyyy-MM-dd")" class="form-control">
+
                     </td>
                 </tr>
                 <tr>
                     <td>项目预计完成时间</td>
-                    <td colspan="3"><input type="date" name=" 项目预计完成时间" class="form-control" /></td>
+                    <td colspan="3"><input type="date" name="项目预计完成时间" class="form-control" value="@Model.项目预计完成时间.Date.ToString("yyyy-MM-dd")" /></td>
                 </tr>
                 <tr><td colspan="4"><input type="submit" value="提交" /></td></tr>
             </table>
+
         </div>
     </form>
 </div>

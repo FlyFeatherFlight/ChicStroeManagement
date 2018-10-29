@@ -5,13 +5,18 @@
 
 <h2>软装服务设计案提交表</h2>
 <div>
-    <form action=" ~/DesignSchemeController/DesignApply" method="post">
+    <form action="~/DesignScheme/DesignApply" method="post">
+       
         <div class="table-responsive">
+            @Html.ValidationSummary(true)
+            当填表前销售人员：<input type="text" name="销售人员" value="@ViewBag.EmployeeName" readonly="readonly" />
             <table class="table table-bordered">
                 <tr>
                     <td width="10%">客户名称</td>
                     <td>
                         @Html.EditorFor(Model => Model.客户姓名)
+                        <span style="color:red">*</span>
+                        @Html.ValidationMessageFor(Model => Model.客户姓名)
                     </td>
                     <td>联系方式</td>
                     <td>
@@ -89,12 +94,12 @@
                 <tr>
                     <td>项目量房时间</td>
                     <td colspan="3">
-                        <input type="text" name=" 项目量房时间">
+                        <input type="date" name="项目量房时间" value="@DateTime.Now.Date">
                     </td>
                 </tr>
                 <tr>
                     <td>项目预计完成时间</td>
-                    <td colspan="3"><input type="date" name=" 项目预计完成时间" class="form-control" /></td>
+                    <td colspan="3"><input type="date" name="项目预计完成时间" value="@DateTime.Now.Date" class="form-control" /></td>
                 </tr>
                 <tr><td colspan="4"><input type="submit" value="提交" /></td></tr>
             </table>

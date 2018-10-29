@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChicStoreManagement.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,7 +19,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         public int 接待记录ID { get; set; }
         [Display(Name = "客户姓名")]
         [DataType(DataType.Text)]
-        [Required]
+        [Required(ErrorMessage = "客户姓名为必填项。")]
         public string 客户姓名 { get; set; }
         [Display(Name = "联系方式")]
         [DataType(DataType.PhoneNumber)]
@@ -68,7 +69,7 @@ namespace ChicStoreManagement.WEB.ViewModel
        
         [Display(Name = "整体软装配饰")]
    
-        public bool 整体软装配饰 { get; set; }
+        public bool? 整体软装配饰 { get; set; }
         [Display(Name = "家具空间")]
         [DataType(DataType.Text)]
      
@@ -76,7 +77,8 @@ namespace ChicStoreManagement.WEB.ViewModel
  
         [Display(Name = "销售人员")]
         [DataType(DataType.Text)]
-        [Required]
+        
+        [Required(ErrorMessage ="销售人员是必须的！")]
         public string 销售人员 { get; set; }
         [Display(Name = "设计人员")]
         [DataType(DataType.Text)]
@@ -89,11 +91,11 @@ namespace ChicStoreManagement.WEB.ViewModel
 
         [Display(Name = "店长确认")]
         [DataType(DataType.Text)]
-        [Required]
+      
         public Nullable<bool> 店长确认 { get; set; }
         [Display(Name = "设计人员确认")]
         [DataType(DataType.Text)]
-        [Required]
+    
         public Nullable<bool> 设计人员确认 { get; set; }
 
         [Display(Name = "项目提交时间")]
@@ -101,11 +103,11 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Required]
         public System.DateTime 项目提交时间 { get; set; }
         [Display(Name = "项目量房时间")]
-        [DataType(DataType.DateTime)]
-        [Required]
+        [DataType(DataType.Date)]
+    
         public DateTime 项目量房时间 { get; set; }
         [Display(Name = "项目预计完成时间")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Required]
         public System.DateTime 项目预计完成时间 { get; set; }
         [Display(Name = "审批状态")]

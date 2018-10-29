@@ -1,0 +1,61 @@
+﻿@model  ChicStoreManagement.WEB.ViewModel.FileViewModel
+
+@{
+    ViewBag.Title = "FileUpload";
+}
+<script>
+
+    $(function () {
+        var control = $("#cad_file");
+        var uploadrul = "/DesignFile/UploadFile";
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadrul, //上传的地址
+            allowedFileExtensions: ['png','jpg','jpeg','xls','xlsx','doc','docx','pdf','ppt','pps','xml'],//接收的文件后缀
+            showUpload: true, //显示批量上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            dropZoneEnabled: true,//是否显示拖拽区域
+            maxFileCount: 100,
+            enctype: 'multipart/form-data',
+            validateInitialCount: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            uploadAsync: true,
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            uploadExtraData: function (previewId, index) {
+                var data = {
+                    FileType: findType(),
+                };
+                return data;
+            }
+        });
+        //导入文件上传完成之后的事件
+        $("#cad_file").on("fileuploaded", function (event, data, previewId, index) {
+           
+        });
+
+        findType = function () {
+
+           return $("#FileType option:selected").text();
+        }
+      
+
+    });
+</script>
+<h2>FileUpload</h2>
+<div>
+    <form id="addform" name="addform" action="~/DesignFile/UploadFile" method="post">
+        <div>
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">请选择文件</h4>
+            </div>
+            <div class="modal-body">
+                
+                @Html.EnumDropDownListFor(Model => Model.FileType)
+                <input type="file" name="UploadStream" id="cad_file" multiple class="file-loading" />
+            </div>
+        </div>
+        <input type="submit" name="name" value="提交" />  
+    </form>
+</div>
+

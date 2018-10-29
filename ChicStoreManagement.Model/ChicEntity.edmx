@@ -54,6 +54,13 @@
           <Property Name="成交价" Type="money" />
           <Property Name="设计案完结单" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="设计_文件类型">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="文件类型" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
         <EntityType Name="系统用户">
           <Key>
             <PropertyRef Name="ID" />
@@ -212,7 +219,7 @@
           <Property Name="楼盘具体位置" Type="nchar" MaxLength="500" Nullable="false" />
           <Property Name="面积大小" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="装修风格" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="装修进度" Type="nvarchar" MaxLength="500" />
+          <Property Name="装修进度" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="预算" Type="money" />
           <Property Name="客户喜好或忌讳" Type="nvarchar" MaxLength="500" />
           <Property Name="客户在意品牌或已购买品牌" Type="nvarchar" MaxLength="500" />
@@ -253,16 +260,14 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="设计案提交表ID" Type="int" Nullable="false" />
-          <Property Name="CAD" Type="nchar" MaxLength="10" />
-          <Property Name="效果3D图" Type="nchar" MaxLength="10" />
-          <Property Name="比较产品图" Type="nchar" MaxLength="10" />
-          <Property Name="其它" Type="nchar" MaxLength="10" />
-          <Property Name="项目提交时间" Type="nchar" MaxLength="10" />
-          <Property Name="提交备注" Type="nchar" MaxLength="10" />
-          <Property Name="项目量房时间" Type="nchar" MaxLength="10" />
-          <Property Name="量房备注" Type="nchar" MaxLength="10" />
-          <Property Name="项目完成时间" Type="nchar" MaxLength="10" />
-          <Property Name="备注" Type="nchar" MaxLength="10" />
+          <Property Name="提交时间" Type="datetime" />
+          <Property Name="备注" Type="nchar" MaxLength="1" />
+          <Property Name="更新人" Type="nvarchar" MaxLength="50" />
+          <Property Name="更新日期" Type="date" />
+          <Property Name="提交人" Type="nvarchar" MaxLength="50" />
+          <Property Name="文件类型" Type="int" Nullable="false" />
+          <Property Name="存储路径" Type="nvarchar(max)" />
+          <Property Name="文件名" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="销售_意向追踪日志">
           <Key>
@@ -499,6 +504,7 @@
           <EntitySet Name="商品档案_型号" EntityType="Self.商品档案_型号" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="设计_设计案完结单" EntityType="Self.设计_设计案完结单" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="设计_设计案完结单_家具成交单" EntityType="Self.设计_设计案完结单_家具成交单" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="设计_文件类型" EntityType="Self.设计_文件类型" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="系统用户" EntityType="Self.系统用户" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="销售_店铺档案" EntityType="Self.销售_店铺档案" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="销售_店铺员工档案" EntityType="Self.销售_店铺员工档案" Schema="dbo" store:Type="Tables" />
@@ -828,7 +834,6 @@
           </AssociationSet>
           <EntitySet Name="销售_设计案跟进日志" EntityType="chicModel.销售_设计案跟进日志" />
           <EntitySet Name="销售_设计案提交表_客户意向产品明细" EntityType="chicModel.销售_设计案提交表_客户意向产品明细" />
-          <EntitySet Name="销售_设计案提交表_项目相关图纸" EntityType="chicModel.销售_设计案提交表_项目相关图纸" />
           <EntitySet Name="销售_意向追踪日志" EntityType="chicModel.销售_意向追踪日志" />
           <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺员工档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案">
             <End Role="销售_店铺员工档案" EntitySet="销售_店铺员工档案" />
@@ -872,13 +877,15 @@
             <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
             <End Role="销售_设计案跟进日志" EntitySet="销售_设计案跟进日志" />
           </AssociationSet>
-          <AssociationSet Name="FK_项目相关图纸_设计案提交表" Association="chicModel.FK_项目相关图纸_设计案提交表">
-            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
-            <End Role="销售_设计案提交表_项目相关图纸" EntitySet="销售_设计案提交表_项目相关图纸" />
-          </AssociationSet>
           <AssociationSet Name="FK_意向产品明细_设计案提交表" Association="chicModel.FK_意向产品明细_设计案提交表">
             <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
             <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
+          </AssociationSet>
+          <EntitySet Name="设计_文件类型" EntityType="chicModel.设计_文件类型" />
+          <EntitySet Name="销售_设计案提交表_项目相关图纸" EntityType="chicModel.销售_设计案提交表_项目相关图纸" />
+          <AssociationSet Name="FK_项目相关图纸_设计案提交表" Association="chicModel.FK_项目相关图纸_设计案提交表">
+            <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
+            <End Role="销售_设计案提交表_项目相关图纸" EntitySet="销售_设计案提交表_项目相关图纸" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="销售_设计案跟进日志">
@@ -919,24 +926,6 @@
           <Property Name="配置" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" FromRole="销售_设计案提交表_客户意向产品明细" ToRole="销售_接待记录" />
           <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_意向产品明细_设计案提交表" FromRole="销售_设计案提交表_客户意向产品明细" ToRole="销售_设计案提交表" />
-        </EntityType>
-        <EntityType Name="销售_设计案提交表_项目相关图纸">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="设计案提交表ID" Type="Int32" Nullable="false" />
-          <Property Name="CAD" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="效果3D图" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="比较产品图" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="其它" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="项目提交时间" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="提交备注" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="项目量房时间" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="量房备注" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="项目完成时间" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="备注" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表_项目相关图纸" ToRole="销售_设计案提交表" />
         </EntityType>
         <EntityType Name="销售_意向追踪日志">
           <Key>
@@ -1122,7 +1111,7 @@
           <Property Name="楼盘具体位置" Type="String" Nullable="false" MaxLength="500" FixedLength="true" Unicode="true" />
           <Property Name="面积大小" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="装修风格" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="装修进度" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="装修进度" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="预算" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="客户喜好或忌讳" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="客户在意品牌或已购买品牌" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
@@ -1142,8 +1131,8 @@
           <Property Name="更新日期" Type="DateTime" Precision="3" />
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_设计案提交表" ToRole="销售_接待记录" />
           <NavigationProperty Name="销售_设计案跟进日志" Relationship="chicModel.FK_销售_设计案跟进日志_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案跟进日志" />
-          <NavigationProperty Name="销售_设计案提交表_项目相关图纸" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_项目相关图纸" />
           <NavigationProperty Name="销售_设计案提交表_客户意向产品明细" Relationship="chicModel.FK_意向产品明细_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_客户意向产品明细" />
+          <NavigationProperty Name="销售_设计案提交表_项目相关图纸" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表" ToRole="销售_设计案提交表_项目相关图纸" />
         </EntityType>
         <Association Name="FK_销售_设计案提交表_销售_接待记录">
           <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
@@ -1169,18 +1158,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_项目相关图纸_设计案提交表">
-          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
-          <End Type="chicModel.销售_设计案提交表_项目相关图纸" Role="销售_设计案提交表_项目相关图纸" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_设计案提交表">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="销售_设计案提交表_项目相关图纸">
-              <PropertyRef Name="设计案提交表ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_意向产品明细_设计案提交表">
           <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
           <End Type="chicModel.销售_设计案提交表_客户意向产品明细" Role="销售_设计案提交表_客户意向产品明细" Multiplicity="*" />
@@ -1190,6 +1167,41 @@
             </Principal>
             <Dependent Role="销售_设计案提交表_客户意向产品明细">
               <PropertyRef Name="设计提交案" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="设计_文件类型">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="文件类型" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="销售_设计案提交表_项目相关图纸">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="设计案提交表ID" Type="Int32" Nullable="false" />
+          <Property Name="提交时间" Type="DateTime" Precision="3" />
+          <Property Name="备注" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="更新人" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="更新日期" Type="DateTime" Precision="0" />
+          <Property Name="提交人" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="文件类型" Type="Int32" Nullable="false" />
+          <Property Name="存储路径" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="文件名" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_项目相关图纸_设计案提交表" FromRole="销售_设计案提交表_项目相关图纸" ToRole="销售_设计案提交表" />
+        </EntityType>
+        <Association Name="FK_项目相关图纸_设计案提交表">
+          <End Type="chicModel.销售_设计案提交表" Role="销售_设计案提交表" Multiplicity="1" />
+          <End Type="chicModel.销售_设计案提交表_项目相关图纸" Role="销售_设计案提交表_项目相关图纸" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_设计案提交表">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="销售_设计案提交表_项目相关图纸">
+              <PropertyRef Name="设计案提交表ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1380,24 +1392,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="销售_设计案提交表_项目相关图纸">
-            <EntityTypeMapping TypeName="chicModel.销售_设计案提交表_项目相关图纸">
-              <MappingFragment StoreEntitySet="销售_设计案提交表_项目相关图纸">
-                <ScalarProperty Name="备注" ColumnName="备注" />
-                <ScalarProperty Name="项目完成时间" ColumnName="项目完成时间" />
-                <ScalarProperty Name="量房备注" ColumnName="量房备注" />
-                <ScalarProperty Name="项目量房时间" ColumnName="项目量房时间" />
-                <ScalarProperty Name="提交备注" ColumnName="提交备注" />
-                <ScalarProperty Name="项目提交时间" ColumnName="项目提交时间" />
-                <ScalarProperty Name="其它" ColumnName="其它" />
-                <ScalarProperty Name="比较产品图" ColumnName="比较产品图" />
-                <ScalarProperty Name="效果3D图" ColumnName="效果3D图" />
-                <ScalarProperty Name="CAD" ColumnName="CAD" />
-                <ScalarProperty Name="设计案提交表ID" ColumnName="设计案提交表ID" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="销售_意向追踪日志">
             <EntityTypeMapping TypeName="chicModel.销售_意向追踪日志">
               <MappingFragment StoreEntitySet="销售_意向追踪日志">
@@ -1492,6 +1486,30 @@
                 <ScalarProperty Name="联系方式" ColumnName="联系方式" />
                 <ScalarProperty Name="客户姓名" ColumnName="客户姓名" />
                 <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="设计_文件类型">
+            <EntityTypeMapping TypeName="chicModel.设计_文件类型">
+              <MappingFragment StoreEntitySet="设计_文件类型">
+                <ScalarProperty Name="文件类型" ColumnName="文件类型" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="销售_设计案提交表_项目相关图纸">
+            <EntityTypeMapping TypeName="chicModel.销售_设计案提交表_项目相关图纸">
+              <MappingFragment StoreEntitySet="销售_设计案提交表_项目相关图纸">
+                <ScalarProperty Name="文件名" ColumnName="文件名" />
+                <ScalarProperty Name="存储路径" ColumnName="存储路径" />
+                <ScalarProperty Name="文件类型" ColumnName="文件类型" />
+                <ScalarProperty Name="提交人" ColumnName="提交人" />
+                <ScalarProperty Name="更新日期" ColumnName="更新日期" />
+                <ScalarProperty Name="更新人" ColumnName="更新人" />
+                <ScalarProperty Name="备注" ColumnName="备注" />
+                <ScalarProperty Name="提交时间" ColumnName="提交时间" />
+                <ScalarProperty Name="设计案提交表ID" ColumnName="设计案提交表ID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

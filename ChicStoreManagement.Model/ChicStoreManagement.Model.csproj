@@ -79,6 +79,9 @@
     <Compile Include="系统用户.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="设计_文件类型.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="设计_设计案完结单.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>

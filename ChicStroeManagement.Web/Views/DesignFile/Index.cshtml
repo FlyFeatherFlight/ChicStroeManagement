@@ -1,0 +1,42 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignFileViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>设计申请相关图纸</h2>
+<div>
+    @Html.ActionLink("上传", "FileUpload",new { id=ViewBag.DesignID}, new { @Style = "font-size:12px", @align = "right" })
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>申请序号</th>
+ <th>文件类型</th>
+            <th>文件名</th>
+            <th>提交人</th>
+            <th>提交时间</th>
+            <th>更新人</th>
+            <th>更新日期</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td>@item.Id</td>
+               <td>@item.设计案提交表序号</td>
+               <td>@item.文件类型</td>
+               <td>@item.文件名</td>
+               <td>@item.提交人</td>
+               <td>@item.提交时间</td>
+               <td>@item.更新人</td>
+               <td>@item.更新日期</td>
+               <td>@Html.ActionLink("下载","DowloadFile",new {id=item.Id })</td>
+           </tr>
+       }
+    </tbody>
+</table>
+
