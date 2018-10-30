@@ -31,9 +31,11 @@
         });
         //导入文件上传完成之后的事件
         $("#cad_file").on("fileuploaded", function (event, data, previewId, index) {
-           
+            alert(JSON.stringify(data.response));
+            window.location.reload();
         });
 
+        //获得文件类型
         findType = function () {
 
            return $("#FileType option:selected").text();

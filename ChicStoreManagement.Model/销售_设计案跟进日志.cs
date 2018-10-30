@@ -7,26 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_设计案跟进日志
+namespace ChicStoreManagement.Model
 {
-    public int id { get; set; }
-    public int 接待记录ID { get; set; }
-    public string 客户基本信息 { get; set; }
-    public string 销售人员 { get; set; }
-    public string 设计师 { get; set; }
-    public Nullable<System.DateTime> 设计案需求提交时间 { get; set; }
-    public string 跟进日期 { get; set; }
-    public string 进度描述 { get; set; }
-    public string 参与人员 { get; set; }
-    public string 需要的支持 { get; set; }
-    public Nullable<System.DateTime> 预计签约时间 { get; set; }
-    public Nullable<bool> 店长审查 { get; set; }
-    public string 备注 { get; set; }
-    public int 设计案提交表id { get; set; }
-
-    public virtual 销售_接待记录 销售_接待记录 { get; set; }
-    public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_设计案跟进日志
+    {
+        public int id { get; set; }
+        public int 接待记录ID { get; set; }
+        public string 客户基本信息 { get; set; }
+        public string 销售人员 { get; set; }
+        public string 设计师 { get; set; }
+        public Nullable<System.DateTime> 设计案需求提交时间 { get; set; }
+        public string 跟进日期 { get; set; }
+        public string 进度描述 { get; set; }
+        public string 参与人员 { get; set; }
+        public string 需要的支持 { get; set; }
+        public Nullable<System.DateTime> 预计签约时间 { get; set; }
+        public Nullable<bool> 店长审查 { get; set; }
+        public string 备注 { get; set; }
+        public int 设计案提交表id { get; set; }
+    
+        public virtual 销售_接待记录 销售_接待记录 { get; set; }
+        public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
+    }
 }

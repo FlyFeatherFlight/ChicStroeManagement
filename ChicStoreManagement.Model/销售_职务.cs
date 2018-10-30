@@ -7,18 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_职务
+namespace ChicStoreManagement.Model
 {
-    public 销售_职务()
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_职务
     {
-        this.销售_店铺员工档案 = new HashSet<销售_店铺员工档案>();
+        public 销售_职务()
+        {
+            this.销售_店铺员工档案 = new HashSet<销售_店铺员工档案>();
+        }
+    
+        public int ID { get; set; }
+        public string 职务 { get; set; }
+    
+        public virtual ICollection<销售_店铺员工档案> 销售_店铺员工档案 { get; set; }
     }
-
-    public int ID { get; set; }
-    public string 职务 { get; set; }
-
-    public virtual ICollection<销售_店铺员工档案> 销售_店铺员工档案 { get; set; }
 }

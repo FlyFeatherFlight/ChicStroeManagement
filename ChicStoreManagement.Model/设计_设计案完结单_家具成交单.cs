@@ -7,18 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 设计_设计案完结单_家具成交单
+namespace ChicStoreManagement.Model
 {
-    public int id { get; set; }
-    public string 空间 { get; set; }
-    public string 产品型号 { get; set; }
-    public string 单位 { get; set; }
-    public Nullable<int> 数量 { get; set; }
-    public Nullable<decimal> 成交价 { get; set; }
-    public int 设计案完结单 { get; set; }
-
-    public virtual 设计_设计案完结单 设计_设计案完结单 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 设计_设计案完结单_家具成交单
+    {
+        public int id { get; set; }
+        public string 空间 { get; set; }
+        public string 产品型号 { get; set; }
+        public string 单位 { get; set; }
+        public Nullable<int> 数量 { get; set; }
+        public Nullable<decimal> 成交价 { get; set; }
+        public int 设计案完结单 { get; set; }
+    
+        public virtual 设计_设计案完结单 设计_设计案完结单 { get; set; }
+    }
 }

@@ -9,6 +9,7 @@ using System.Web.Configuration;
 using System.Web.Mvc;
 using PagedList;
 using System.Web;
+using System.IO;
 
 namespace ChicStoreManagement.WEB.Controllers
 {
@@ -139,10 +140,12 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns>成功则为true，失败异常则为False</returns>
         public JsonResult UploadFile(FileViewModel fileModel)
         {
+            string msg = "true";
             fileModel.DesignId =Int32.Parse(Session["DesignID"].ToString());
             if (fileModel.DesignId == 0)
             {
-                return Json("<script>alert('设计案ID获取出错！');window.history.go(-1);</script>");
+                msg = "设计案ID获取出错！";
+                return Json(msg);
             }
             //if (Session["method"].ToString() == "Y")
             //{
@@ -158,13 +161,18 @@ namespace ChicStoreManagement.WEB.Controllers
                 fileModel.UserName = employeeName;
                 fileModel.StoreName = storeBLL.GetModel(p => p.ID == storeID).名称;
 
-                var m = fileModel.UploadStream.InputStream.;
-                //var path = UploadManager.SaveFile(fileModel.UploadStream.InputStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
-                //fileModel.Path = path;
-                //if (path == null)
-                //{
-                //    return Json("false");
-                //}
+                var m = fileModel.UploadStream.InputStream;
+                msg=IsAllowedExtension(fileModel.UploadStream,fileModel.FileType);
+                if (msg!= "true")
+                {
+                    return Json(msg);//如果上传文件不匹配，则返回出错信息！
+                }
+                var path = UploadManager.SaveFile(fileModel.UploadStream.InputStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
+                fileModel.Path = path;
+                if (path == null)
+                {
+                    return Json("false");
+                }
                 销售_设计案提交表_项目相关图纸 model = new 销售_设计案提交表_项目相关图纸
                 {
                     提交人 = fileModel.UserName,
@@ -180,10 +188,6 @@ namespace ChicStoreManagement.WEB.Controllers
                 {
                     case FileType.CAD图:
                         s = fileModel.FileType.ToString();
-                        //if (fileModel.UploadStream.ContentType)
-                        //{
-
-                        //}
                         model.存储路径 = fileModel.Path;
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
@@ -201,7 +205,6 @@ namespace ChicStoreManagement.WEB.Controllers
                         model.存储路径 = fileModel.Path;
                         s = fileModel.FileType.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-
                         break;
                     case FileType.PPT文件:
                         model.存储路径 = fileModel.Path;
@@ -220,7 +223,7 @@ namespace ChicStoreManagement.WEB.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    //design_ProjectDrawingsBLL.Add(model);
+                    design_ProjectDrawingsBLL.Add(model);
                     Session["method"] = "Y";
                 }
 
@@ -242,29 +245,58 @@ namespace ChicStoreManagement.WEB.Controllers
                         sb.Add(error.ErrorMessage);
                     }
                 }
-                string s = "修改日志出错：";
+                msg = "修改日志出错：";
                 foreach (var item in sb)
                 {
-                    s += item.ToString() + "<br/>";
+                    msg+= item.ToString() + "<br/>";
                 }
-                return Json("<script>alert('" + s + "');window.history.go(-1);</script>");
+                return Json(msg);
             }
-            return Json("success");
+            return Json(msg);
         }
 
-        public JsonResult Upload(HttpPostedFileBase httpPostedFileBase) {
-
-
-            return Json("false");
-        }
-
+     
         /// <summary>
         /// 下载文件的具体方法
         /// </summary>
         /// <returns>成功则为true，失败异常则为false</returns>
-        public JsonResult DownLoadFile(string path)
+        public ActionResult DownLoadFile(string path,string fileName)
         {
-            return null;
+            //path = Server.MapPath(path);
+            string msg = "";
+            if (!System.IO.File.Exists(path))
+            {
+               var model= design_ProjectDrawingsBLL.GetModel(p => p.存储路径 == path);
+                model.备注 = "false";
+                try
+                {
+                    design_ProjectDrawingsBLL.Modify(model);
+                }
+                catch (Exception e)
+                {
+                   
+                    return Content(e.Message);
+                }
+                
+                msg = "<script>alert('文件下载失败！');parent.location.href='Index';</script>";
+                return Content(msg);
+            }
+            FileStream fs = new FileStream(path, FileMode.Open);
+            byte[] bytes = new byte[(int)fs.Length];
+            fs.Read(bytes, 0, bytes.Length);
+            fs.Close();
+            Response.Charset = "UTF-8";
+            Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+            Response.ContentType = "application/octet-stream";
+
+
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlEncode(fileName));
+            Response.BinaryWrite(bytes);
+            Response.Flush();
+            Response.End();
+            return new EmptyResult();
+
+            
         }
 
         /// <summary>
@@ -422,5 +454,102 @@ namespace ChicStoreManagement.WEB.Controllers
             return null;
         }
 
+        /// <summary>
+        /// 判断选择的文件类型是否与上传类型相符合
+        /// </summary>
+        /// <param name="filestream"></param>
+        /// <param name="fileType">文件类型</param>
+        /// <returns>返回的是否匹配的信息或者异常信息</returns>
+        public string IsAllowedExtension(HttpPostedFileBase filestream,FileType fileType) {
+            string isAllow = "";
+            string fileclass = "";
+            try
+            {
+                BinaryReader reader = new BinaryReader(filestream.InputStream);
+                
+                for (int i = 0; i < 2; i++)
+                {
+                    fileclass += reader.ReadByte().ToString();
+                }
+            }
+            catch (Exception e)
+            {
+
+                return e.Message;
+            }
+           
+            switch (fileType)
+            {
+                case FileType.CAD图:
+                    if (fileclass =="255216"||fileclass=="13780")
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传JPG或PNG格式文件。";
+                    }
+                    break;
+                case FileType.效果3D图:
+                    if (fileclass == "255216" || fileclass == "13780")
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传JPG或PNG格式文件。";
+                    }
+                    break;
+                case FileType.对比图:
+                    if (fileclass == "255216" || fileclass == "13780")
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传JPG或PNG格式文件。";
+                    }
+                    break;
+                case FileType.PDF文件:
+                    if (fileclass == "3780" )
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传pdf格式文件。";
+                    }
+                    break;
+                case FileType.PPT文件:
+                    if (fileclass == "208207"|| fileclass == "8075")
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传ppt,doc,xls,xlsx,docx,pptx格式文件。";
+                    }
+                    break;
+                case FileType.Excel文件:
+                    if (fileclass == "8075"|| fileclass == "208207")
+                    {
+                        isAllow = "true";
+                    }
+                    else
+                    {
+                        isAllow = "请上传xlsx,docx,pptx,ppt,doc,xls格式文件";
+                    }
+                    break;
+                case FileType.其它:
+                    isAllow = "true";
+                    break;
+                default:
+                    isAllow = "未知格式文件!";
+                    break;
+            }
+
+            return isAllow;
+
+        }
     }
 }

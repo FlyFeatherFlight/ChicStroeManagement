@@ -261,7 +261,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="设计案提交表ID" Type="int" Nullable="false" />
           <Property Name="提交时间" Type="datetime" />
-          <Property Name="备注" Type="nchar" MaxLength="1" />
+          <Property Name="备注" Type="nvarchar" MaxLength="255" />
           <Property Name="更新人" Type="nvarchar" MaxLength="50" />
           <Property Name="更新日期" Type="date" />
           <Property Name="提交人" Type="nvarchar" MaxLength="50" />
@@ -1184,7 +1184,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="设计案提交表ID" Type="Int32" Nullable="false" />
           <Property Name="提交时间" Type="DateTime" Precision="3" />
-          <Property Name="备注" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="备注" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="更新人" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="更新日期" Type="DateTime" Precision="0" />
           <Property Name="提交人" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />

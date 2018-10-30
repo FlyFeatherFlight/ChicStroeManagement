@@ -7,35 +7,38 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 设计_设计案完结单
+namespace ChicStoreManagement.Model
 {
-    public 设计_设计案完结单()
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 设计_设计案完结单
     {
-        this.设计_设计案完结单_家具成交单 = new HashSet<设计_设计案完结单_家具成交单>();
+        public 设计_设计案完结单()
+        {
+            this.设计_设计案完结单_家具成交单 = new HashSet<设计_设计案完结单_家具成交单>();
+        }
+    
+        public int id { get; set; }
+        public string 订单号 { get; set; }
+        public System.DateTime 计划完成时间 { get; set; }
+        public string 实际完成时间 { get; set; }
+        public string 计划完成空间 { get; set; }
+        public string 实际完成空房间 { get; set; }
+        public string 延期或无法完成原因 { get; set; }
+        public byte[] 效果图 { get; set; }
+        public byte[] 平面图 { get; set; }
+        public byte[] PPT { get; set; }
+        public Nullable<int> 家具成交明细 { get; set; }
+        public Nullable<decimal> 合计成交金额 { get; set; }
+        public string 建议 { get; set; }
+        public string 销售人员 { get; set; }
+        public string 设计师 { get; set; }
+        public string 店长 { get; set; }
+        public Nullable<System.DateTime> 销售人员确认日期 { get; set; }
+        public Nullable<System.DateTime> 设计师确认日期 { get; set; }
+        public Nullable<System.DateTime> 店长确认日期 { get; set; }
+    
+        public virtual ICollection<设计_设计案完结单_家具成交单> 设计_设计案完结单_家具成交单 { get; set; }
     }
-
-    public int id { get; set; }
-    public string 订单号 { get; set; }
-    public System.DateTime 计划完成时间 { get; set; }
-    public string 实际完成时间 { get; set; }
-    public string 计划完成空间 { get; set; }
-    public string 实际完成空房间 { get; set; }
-    public string 延期或无法完成原因 { get; set; }
-    public byte[] 效果图 { get; set; }
-    public byte[] 平面图 { get; set; }
-    public byte[] PPT { get; set; }
-    public Nullable<int> 家具成交明细 { get; set; }
-    public Nullable<decimal> 合计成交金额 { get; set; }
-    public string 建议 { get; set; }
-    public string 销售人员 { get; set; }
-    public string 设计师 { get; set; }
-    public string 店长 { get; set; }
-    public Nullable<System.DateTime> 销售人员确认日期 { get; set; }
-    public Nullable<System.DateTime> 设计师确认日期 { get; set; }
-    public Nullable<System.DateTime> 店长确认日期 { get; set; }
-
-    public virtual ICollection<设计_设计案完结单_家具成交单> 设计_设计案完结单_家具成交单 { get; set; }
 }

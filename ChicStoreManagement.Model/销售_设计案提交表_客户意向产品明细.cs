@@ -7,23 +7,26 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_设计案提交表_客户意向产品明细
+namespace ChicStoreManagement.Model
 {
-    public int id { get; set; }
-    public int 接待记录ID { get; set; }
-    public int 设计提交案 { get; set; }
-    public string 空间 { get; set; }
-    public string 系列 { get; set; }
-    public string 产品名称 { get; set; }
-    public byte[] 图片 { get; set; }
-    public string 尺寸 { get; set; }
-    public string 单位 { get; set; }
-    public Nullable<int> 数量 { get; set; }
-    public string 配置 { get; set; }
-
-    public virtual 销售_接待记录 销售_接待记录 { get; set; }
-    public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_设计案提交表_客户意向产品明细
+    {
+        public int id { get; set; }
+        public int 接待记录ID { get; set; }
+        public int 设计提交案 { get; set; }
+        public string 空间 { get; set; }
+        public string 系列 { get; set; }
+        public string 产品名称 { get; set; }
+        public byte[] 图片 { get; set; }
+        public string 尺寸 { get; set; }
+        public string 单位 { get; set; }
+        public Nullable<int> 数量 { get; set; }
+        public string 配置 { get; set; }
+    
+        public virtual 销售_接待记录 销售_接待记录 { get; set; }
+        public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
+    }
 }

@@ -7,68 +7,71 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_接待记录
+namespace ChicStoreManagement.Model
 {
-    public 销售_接待记录()
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_接待记录
     {
-        this.销售_接待记录_意向明细 = new HashSet<销售_接待记录_意向明细>();
-        this.销售_设计案跟进日志 = new HashSet<销售_设计案跟进日志>();
-        this.销售_设计案提交表_客户意向产品明细 = new HashSet<销售_设计案提交表_客户意向产品明细>();
-        this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
-        this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
+        public 销售_接待记录()
+        {
+            this.销售_接待记录_意向明细 = new HashSet<销售_接待记录_意向明细>();
+            this.销售_设计案跟进日志 = new HashSet<销售_设计案跟进日志>();
+            this.销售_设计案提交表_客户意向产品明细 = new HashSet<销售_设计案提交表_客户意向产品明细>();
+            this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
+            this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
+        }
+    
+        public int ID { get; set; }
+        public int 店铺ID { get; set; }
+        public string 接待序号 { get; set; }
+        public System.DateTime 接待日期 { get; set; }
+        public string 客户来源 { get; set; }
+        public string 客户姓名 { get; set; }
+        public string 性别 { get; set; }
+        public string 年龄段 { get; set; }
+        public string 客户类别 { get; set; }
+        public string 客户电话 { get; set; }
+        public string 客户类型 { get; set; }
+        public string 社交软件 { get; set; }
+        public int 来店次数 { get; set; }
+        public int 接待人ID { get; set; }
+        public Nullable<int> 跟进人ID { get; set; }
+        public System.DateTime 进店时间 { get; set; }
+        public System.DateTime 出店时间 { get; set; }
+        public int 进店时长 { get; set; }
+        public string 客户职业 { get; set; }
+        public string 客户着装 { get; set; }
+        public string 同行人 { get; set; }
+        public string 主导者 { get; set; }
+        public string 主导者喜好风格 { get; set; }
+        public string 特征 { get; set; }
+        public string 设计师 { get; set; }
+        public string 家庭成员 { get; set; }
+        public string 使用空间 { get; set; }
+        public string 装修风格 { get; set; }
+        public string 装修情况 { get; set; }
+        public string 装修进度 { get; set; }
+        public Nullable<System.DateTime> 预计使用时间 { get; set; }
+        public string 如何得知品牌 { get; set; }
+        public string 比较品牌 { get; set; }
+        public Nullable<decimal> 预算金额 { get; set; }
+        public string 预报价折扣 { get; set; }
+        public string 返点 { get; set; }
+        public string 安装地址 { get; set; }
+        public string 客户建议 { get; set; }
+        public Nullable<bool> 是否有意向 { get; set; }
+        public Nullable<System.DateTime> 制单日期 { get; set; }
+        public Nullable<int> 更新人 { get; set; }
+        public Nullable<System.DateTime> 更新日期 { get; set; }
+    
+        public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
+        public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
+        public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }
+        public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
+        public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
+        public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
+        public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
     }
-
-    public int ID { get; set; }
-    public int 店铺ID { get; set; }
-    public string 接待序号 { get; set; }
-    public System.DateTime 接待日期 { get; set; }
-    public string 客户来源 { get; set; }
-    public string 客户姓名 { get; set; }
-    public string 性别 { get; set; }
-    public string 年龄段 { get; set; }
-    public string 客户类别 { get; set; }
-    public string 客户电话 { get; set; }
-    public string 客户类型 { get; set; }
-    public string 社交软件 { get; set; }
-    public int 来店次数 { get; set; }
-    public int 接待人ID { get; set; }
-    public Nullable<int> 跟进人ID { get; set; }
-    public System.DateTime 进店时间 { get; set; }
-    public System.DateTime 出店时间 { get; set; }
-    public int 进店时长 { get; set; }
-    public string 客户职业 { get; set; }
-    public string 客户着装 { get; set; }
-    public string 同行人 { get; set; }
-    public string 主导者 { get; set; }
-    public string 主导者喜好风格 { get; set; }
-    public string 特征 { get; set; }
-    public string 设计师 { get; set; }
-    public string 家庭成员 { get; set; }
-    public string 使用空间 { get; set; }
-    public string 装修风格 { get; set; }
-    public string 装修情况 { get; set; }
-    public string 装修进度 { get; set; }
-    public Nullable<System.DateTime> 预计使用时间 { get; set; }
-    public string 如何得知品牌 { get; set; }
-    public string 比较品牌 { get; set; }
-    public Nullable<decimal> 预算金额 { get; set; }
-    public string 预报价折扣 { get; set; }
-    public string 返点 { get; set; }
-    public string 安装地址 { get; set; }
-    public string 客户建议 { get; set; }
-    public Nullable<bool> 是否有意向 { get; set; }
-    public Nullable<System.DateTime> 制单日期 { get; set; }
-    public Nullable<int> 更新人 { get; set; }
-    public Nullable<System.DateTime> 更新日期 { get; set; }
-
-    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
-    public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
-    public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }
-    public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
-    public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
-    public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
-    public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
 }

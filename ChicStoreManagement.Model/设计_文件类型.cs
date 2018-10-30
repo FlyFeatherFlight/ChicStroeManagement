@@ -7,11 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 设计_文件类型
+namespace ChicStoreManagement.Model
 {
-    public int ID { get; set; }
-    public string 文件类型 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 设计_文件类型
+    {
+        public int ID { get; set; }
+        public string 文件类型 { get; set; }
+    }
 }
