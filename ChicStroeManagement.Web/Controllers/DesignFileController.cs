@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using PagedList;
 using System.Web;
 using System.IO;
+using Microsoft.Win32;
 
 namespace ChicStoreManagement.WEB.Controllers
 {
@@ -66,7 +67,7 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.DesignFileCurrentSort = sortOrder;
             ViewBag.DesignFileDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignFileResult = sortOrder == "last" ? "last_desc" : "last";
-            if (id == 0)
+            if (id == 0||id==null)
             {
                 return Content("<script>alert('设计案ID获取出错！');window.history.go(-1);</script>");
             }
@@ -169,7 +170,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 }
                 var path = UploadManager.SaveFile(fileModel.UploadStream.InputStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
                 fileModel.Path = path;
-                if (path == null)
+                if (path == null||design_ProjectDrawingsBLL.GetModel(p=>p.存储路径==path)!=null)
                 {
                     return Json("false");
                 }
@@ -245,13 +246,14 @@ namespace ChicStoreManagement.WEB.Controllers
                         sb.Add(error.ErrorMessage);
                     }
                 }
-                msg = "修改日志出错：";
+                msg = "上传文件出错：";
                 foreach (var item in sb)
                 {
                     msg+= item.ToString() + "<br/>";
                 }
                 return Json(msg);
             }
+            msg = "上传成功！";
             return Json(msg);
         }
 
@@ -262,6 +264,7 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns>成功则为true，失败异常则为false</returns>
         public ActionResult DownLoadFile(string path,string fileName)
         {
+          
             //path = Server.MapPath(path);
             string msg = "";
             if (!System.IO.File.Exists(path))
@@ -285,9 +288,26 @@ namespace ChicStoreManagement.WEB.Controllers
             byte[] bytes = new byte[(int)fs.Length];
             fs.Read(bytes, 0, bytes.Length);
             fs.Close();
+            FileInfo fi = new FileInfo(path);
+            //**********处理可以解决文件类型问题
+            string fileextname = fi.Extension;
+            string DEFAULT_CONTENT_TYPE = "application/unknown";
+            RegistryKey regkey, fileextkey;
+            string filecontenttype;
+            try
+            {
+                regkey = Registry.ClassesRoot;
+                fileextkey = regkey.OpenSubKey(fileextname);
+                filecontenttype = fileextkey.GetValue("Content Type", DEFAULT_CONTENT_TYPE).ToString();
+            }
+            catch
+            {
+                filecontenttype = DEFAULT_CONTENT_TYPE;
+            }
+            //**********end
             Response.Charset = "UTF-8";
             Response.ContentEncoding = System.Text.Encoding.GetEncoding("UTF-8");
-            Response.ContentType = "application/octet-stream";
+            Response.ContentType = filecontenttype;
 
 
             Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlEncode(fileName));
@@ -297,6 +317,41 @@ namespace ChicStoreManagement.WEB.Controllers
             return new EmptyResult();
 
             
+        }
+        public void DownloadFiletest(string path,string fileName)
+        {
+     
+            //判断文件是否存在
+            if (!System.IO.File.Exists(path))
+            {
+                Response.Write("该文件不存在服务器上");
+                Response.End();
+                return;
+            }
+            FileInfo fi = new FileInfo(path);
+            //**********处理可以解决文件类型问题
+            string fileextname = fi.Extension;
+            string DEFAULT_CONTENT_TYPE = "application/unknown";
+            RegistryKey regkey, fileextkey;
+            string filecontenttype;
+            try
+            {
+                regkey = Registry.ClassesRoot;
+                fileextkey = regkey.OpenSubKey(fileextname);
+                filecontenttype = fileextkey.GetValue("Content Type", DEFAULT_CONTENT_TYPE).ToString();
+            }
+            catch
+            {
+                filecontenttype = DEFAULT_CONTENT_TYPE;
+            }
+            //**********end
+            Response.Clear();
+            Response.Charset = "utf-8";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.AppendHeader("Content-Disposition", "attachment;filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
+            Response.ContentType = filecontenttype;
+            Response.WriteFile(path);
+            Response.End();
         }
 
         /// <summary>

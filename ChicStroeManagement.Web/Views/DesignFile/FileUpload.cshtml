@@ -1,7 +1,7 @@
 ﻿@model  ChicStoreManagement.WEB.ViewModel.FileViewModel
 
 @{
-    ViewBag.Title = "FileUpload";
+    ViewBag.Title = "上传文件";
 }
 <script>
 
@@ -57,7 +57,7 @@
                 <input type="file" name="UploadStream" id="cad_file" multiple class="file-loading" />
             </div>
         </div>
-        <input type="submit" name="name" value="提交" />  
+        <input type="button" onclick="javascript:window.history.back(-1);" value="返回上一页" class="btn">
     </form>
 </div>
 

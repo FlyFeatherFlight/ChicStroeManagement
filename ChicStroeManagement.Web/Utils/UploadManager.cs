@@ -127,8 +127,8 @@ namespace ChicStoreManagement.WEB.Utils
             finally
             {
                 // 删除临时文件
-                //if (File.Exists(tempPath))
-                //    File.Delete(tempPath);
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
             }
             return targetPath;
         }

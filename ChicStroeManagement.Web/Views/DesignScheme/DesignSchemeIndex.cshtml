@@ -20,46 +20,47 @@
 <label>当前店铺:</label>
 @{ 
     if (Model != null) {
-        <div class="table-responsive">
-            <table class="table">
-                <tr>
-                    <th>Id</th>
-                    <th>客户姓名</th>
-                    <th>联系方式</th>
-                    <th>职业</th>
-                    <th>楼盘具体位置</th>
-                    <th>面积大小</th>
-                    <th>装修风格</th>
-                    <th>装修进度</th>
-                    <th>预算</th>
-                    <th>销售人员</th>
-                    <th>审批状态</th>
-                    <th>详情</th>
-                </tr>
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>客户姓名</th>
+            <th>联系方式</th>
+            <th>职业</th>
+            <th>楼盘具体位置</th>
+            <th>面积大小</th>
+            <th>装修风格</th>
+            <th>装修进度</th>
+            <th>预算</th>
+            <th>销售人员</th>
+            <th>审批状态</th>
+            <th>详情</th>
+        </tr>
 
-                @foreach (var item in Model)
-                {
-                <tr>
-                    <td>@Html.DisplayFor(Model => item.Id)</td>
-                    <td>@Html.DisplayFor(Model => item.客户姓名)</td>
-                    <td>@Html.DisplayFor(Model => item.联系方式)</td>
-                    <td>@Html.DisplayFor(Model => item.职业)</td>
-                    <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
-                    <td>@Html.DisplayFor(Model => item.面积大小)</td>
-                    <td>@Html.DisplayFor(Model => item.装修风格)</td>
-                    <td>@Html.DisplayFor(Model => item.装修进度)</td>
-                    <td>@Html.DisplayFor(Model => item.预算)</td>
-                    <td>@Html.DisplayFor(Modle => item.销售人员)</td>
-                    <td>@Html.DisplayFor(Model => item.审批状态)</td>
-                    <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
-                    @*@{
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(Model => item.Id)</td>
+                <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                <td>@Html.DisplayFor(Model => item.联系方式)</td>
+                <td>@Html.DisplayFor(Model => item.职业)</td>
+                <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
+                <td>@Html.DisplayFor(Model => item.面积大小)</td>
+                <td>@Html.DisplayFor(Model => item.装修风格)</td>
+                <td>@Html.DisplayFor(Model => item.装修进度)</td>
+                <td>@Html.DisplayFor(Model => item.预算)</td>
+                <td>@Html.DisplayFor(Modle => item.销售人员)</td>
+                <td>@Html.DisplayFor(Model => item.审批状态)</td>
+                <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })</td>
+                @*@{
                         var submitModel = item as ChicStoreManagement.WEB.ViewModel.DesignSubmitModel;
                     }*@
-                </tr>
-                        }
-            </table>
-            
-        </div>
+            </tr>
+        }
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignSubCurrentSort, currentFilter = ViewBag.DesignCurrentFilter }))
+</div>
     }
 
 }

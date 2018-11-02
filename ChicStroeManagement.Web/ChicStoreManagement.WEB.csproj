@@ -189,6 +189,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DesignFileController.cs" />
+    <Compile Include="Controllers\DesignTrackLogController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="CustomAttributes\AuthorizationFilterAttribute.cs" />
     <Compile Include="App_Start\AutoFacConfig.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="ViewModel\CustomerTrackingModel.cs" />
     <Compile Include="ViewModel\DesignFileViewModel.cs" />
     <Compile Include="ViewModel\DesignSubmitModel.cs" />
+    <Compile Include="ViewModel\DesignTackLogViewModel.cs" />
     <Compile Include="ViewModel\Employees.cs" />
     <Compile Include="ViewModel\CustomerInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1084,6 +1086,7 @@
     <Content Include="Views\DesignScheme\EditDesignApply.cshtml" />
     <Content Include="Views\DesignFile\FileUpload.cshtml" />
     <Content Include="Views\DesignFile\Index.cshtml" />
+    <Content Include="Views\DesignTrackLog\DesignTrakLogIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

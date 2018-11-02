@@ -15,8 +15,6 @@ namespace ChicStoreManagement.Model
     public partial class 销售_设计案跟进日志
     {
         public int id { get; set; }
-        public int 接待记录ID { get; set; }
-        public string 客户基本信息 { get; set; }
         public string 销售人员 { get; set; }
         public string 设计师 { get; set; }
         public Nullable<System.DateTime> 设计案需求提交时间 { get; set; }
@@ -29,7 +27,6 @@ namespace ChicStoreManagement.Model
         public string 备注 { get; set; }
         public int 设计案提交表id { get; set; }
     
-        public virtual 销售_接待记录 销售_接待记录 { get; set; }
         public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
     }
 }
