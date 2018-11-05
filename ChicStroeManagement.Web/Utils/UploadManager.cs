@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Hosting;
 
@@ -62,7 +63,7 @@ namespace ChicStoreManagement.WEB.Utils
         /// <param name="fileType">文件类型</param>
         /// <returns>存储的路径</returns>
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
-        public static String SaveFile(Stream stream, string fileName, string storeName, string guid,string fileType)
+        public static String SaveFile(HttpPostedFileBase MyFile, string fileName, string storeName, string id,string fileType)
         {
             string tempPath = string.Empty, targetPath = string.Empty;
 
@@ -73,7 +74,7 @@ namespace ChicStoreManagement.WEB.Utils
                 if (storeName != null)
                 {
                     var storename = storeName;
-                    var contentId = guid;
+                    var contentId = id;
 
                     tempPath = GetTempFilePath(fileName);//获取临时文件路径
                     targetPath = GetTargetFilePath(fileName, storename, contentId, fileType);//获取目标文件路径
@@ -92,13 +93,14 @@ namespace ChicStoreManagement.WEB.Utils
                         tempFile.Directory.Create();
                     }
 
-                    FileStream fs = File.Open(tempPath, FileMode.Append);
+                    //FileStream fs = File.Open(tempPath, FileMode.Append);
                     
-                        if (stream.Length > 0)
+                        if (MyFile.ContentLength> 0)
                         {
-                            SaveFile(stream, fs);
+                        //SaveFile(stream, fs);
+                        MyFile.SaveAs(tempPath);
                         }
-                        fs.Close();
+                        //fs.Close();
                    
                     if (File.Exists(targetPath))
                     { //如果文件存在，直接替换文件，并建立备份
@@ -138,15 +140,15 @@ namespace ChicStoreManagement.WEB.Utils
         /// </summary>
         /// <param name="stream"></param>
         /// <param name="fs"></param>
-        public static void SaveFile(Stream stream, FileStream fs)
-        {
-            var buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
-            {
-                fs.Write(buffer, 0, bytesRead);
-            }
-        }
+        //public static void SaveFile(Stream stream, FileStream fs)
+        //{
+        //    var buffer = new byte[4096];
+        //    int bytesRead;
+        //    while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+        //    {
+        //        fs.Write(buffer, 0, bytesRead);
+        //    }
+        //}
 
         #endregion
 

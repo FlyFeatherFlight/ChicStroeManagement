@@ -195,9 +195,9 @@
           <Property Name="销售人员" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="设计师" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="设计案需求提交时间" Type="date" />
-          <Property Name="跟进日期" Type="nvarchar" MaxLength="500" />
-          <Property Name="进度描述" Type="nvarchar" MaxLength="500" />
-          <Property Name="参与人员" Type="nvarchar" MaxLength="500" />
+          <Property Name="跟进日期" Type="date" Nullable="false" />
+          <Property Name="进度描述" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="参与人员" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="需要的支持" Type="nvarchar" MaxLength="500" />
           <Property Name="预计签约时间" Type="date" />
           <Property Name="店长审查" Type="bit" />
@@ -1145,9 +1145,9 @@
           <Property Name="销售人员" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="设计师" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="设计案需求提交时间" Type="DateTime" Precision="0" />
-          <Property Name="跟进日期" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="进度描述" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="参与人员" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="跟进日期" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="进度描述" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="参与人员" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="需要的支持" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="预计签约时间" Type="DateTime" Precision="0" />
           <Property Name="店长审查" Type="Boolean" />

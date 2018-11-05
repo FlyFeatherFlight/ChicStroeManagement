@@ -32,7 +32,7 @@
         <EntityTypeShape EntityType="chicModel.销售_设计案提交表" Width="1.5" PointX="9.75" PointY="12.25" />
         <AssociationConnector Association="chicModel.FK_销售_设计案提交表_销售_接待记录" />
         <AssociationConnector Association="chicModel.FK_意向产品明细_设计案提交表" />
-        <EntityTypeShape EntityType="chicModel.设计_文件类型" Width="1.5" PointX="9.75" PointY="9.875" />
+        <EntityTypeShape EntityType="chicModel.设计_文件类型" Width="1.5" PointX="14.25" PointY="12.375" />
         <EntityTypeShape EntityType="chicModel.销售_设计案提交表_项目相关图纸" Width="1.5" PointX="12" PointY="12.125" />
         <AssociationConnector Association="chicModel.FK_项目相关图纸_设计案提交表" />
         <EntityTypeShape EntityType="chicModel.销售_设计案跟进日志" Width="1.5" PointX="12" PointY="7.875" />

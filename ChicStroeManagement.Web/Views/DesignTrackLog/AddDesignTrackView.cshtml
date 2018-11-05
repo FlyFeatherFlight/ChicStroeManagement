@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "设计按跟进日志增加";
+}
+<script>
+    $(document).ready(function () {
+
+
+        $(function () {
+
+            $("#trackDate").datetimepicker({
+
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                showClose: true
+
+            });
+            $("#preDate").datetimepicker({
+                format: 'YYYY-MM-DD HH:mm',
+                locale: moment.locale('zh-cn'),
+                showClose: true
+            });
+           
+        });
+    });
+</script>
+
+   
+<h2>添加跟进日志</h2>
+
+<div>
+    <form action="~/DesignTrackLog/AddDesignTrackLogAction" method="post">
+        <table>
+            <tr>
+                <td>日期</td>
+                <td>
+                    <div class="input-group date" id="trackDate">
+                        <input type="text" name="跟进日期" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>进度描述</td>
+                <td>
+                    <input type="text" name="进度描述" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>参与人员</td>
+                <td><input type="text" name="参与人员" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>需要的支持</td>
+                <td><input type="text" name="需要的支持" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>预计签约时间</td>
+                <td>
+                    <div class="input-group date" id="preDate">
+                        <input type="text" name="跟进日期" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

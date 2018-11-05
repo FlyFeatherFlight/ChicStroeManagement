@@ -168,7 +168,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 {
                     return Json(msg);//如果上传文件不匹配，则返回出错信息！
                 }
-                var path = UploadManager.SaveFile(fileModel.UploadStream.InputStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
+                var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
                 fileModel.Path = path;
                 if (path == null||design_ProjectDrawingsBLL.GetModel(p=>p.存储路径==path)!=null)
                 {
@@ -214,6 +214,11 @@ namespace ChicStoreManagement.WEB.Controllers
 
                         break;
                     case FileType.Excel文件:
+                        model.存储路径 = fileModel.Path;
+                        s = fileModel.FileType.ToString();
+                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                        break;
+                    case FileType.其它:
                         model.存储路径 = fileModel.Path;
                         s = fileModel.FileType.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
@@ -310,7 +315,7 @@ namespace ChicStoreManagement.WEB.Controllers
             Response.ContentType = filecontenttype;
 
 
-            Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.UrlEncode(fileName));
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);//设置文件信息
             Response.BinaryWrite(bytes);
             Response.Flush();
             Response.End();

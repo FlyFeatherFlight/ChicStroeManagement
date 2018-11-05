@@ -48,7 +48,7 @@ namespace ChicStoreManagement.WEB.Controllers
             designTackLogViewModels = BuildDesignTrackLogInfo(id);
             if (designTackLogViewModels == null)
             {
-                return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
+                return Content("<script>alert('当前操作人并无关联的设计 </div>信息或无进入权限！');window.history.go(-1);</script>");
             }
             ViewBag.DesignTrackPeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.DesignTrackstoreName = store;//将当前店铺名字传到前端
@@ -90,8 +90,38 @@ namespace ChicStoreManagement.WEB.Controllers
             return View(designTackLogViewModels.ToPagedList(pageNumber, pageSize));
           
         }
-        
 
+        /// <summary>
+        /// 添加跟进日志视图
+        /// </summary>
+        /// <param name="id">设计案提交表ID</param>
+        /// <returns></returns>
+        public ActionResult AddDesignTrackView(int? id)
+        {
+            designSubmitBLL.GetModel(p => p.id == id);
+
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult AddDesignTrackAction()
+        {
+
+            return null;
+        }
+
+        public ActionResult EditDesignTrackView() {
+
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult EditDesignTrackAction()
+        {
+
+            return null;
+        }
+       
         /// <summary>
         /// 初始化设计案跟进日志
         /// </summary>

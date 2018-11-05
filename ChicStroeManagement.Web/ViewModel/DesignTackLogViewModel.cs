@@ -17,7 +17,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string 销售人员 { get; set; }
         public string 设计师 { get; set; }
         public DateTime? 设计案需求提交时间 { get; set; }
-        public string 跟进日期 { get; set; }
+        public DateTime 跟进日期 { get; set; }
         public string 进度描述 { get; set; }
         public string 参与人员 { get; set; }
         public string 需要的支持 { get; set; }

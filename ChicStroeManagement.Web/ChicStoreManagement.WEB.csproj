@@ -1087,6 +1087,7 @@
     <Content Include="Views\DesignFile\FileUpload.cshtml" />
     <Content Include="Views\DesignFile\Index.cshtml" />
     <Content Include="Views\DesignTrackLog\DesignTrakLogIndex.cshtml" />
+    <Content Include="Views\DesignTrackLog\AddDesignTrackView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
