@@ -137,24 +137,24 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="contollerName">control名</param>
         private void CheckAuth(string positionName, string actionName, string contollerName)
         {
-            if (contollerName != "ManagerExamine" && contollerName != "Manager")
+            if (contollerName != "ManagerExamine" && contollerName != "Manager"&& contollerName!= "ManagerGoal")
             {
                 isState = true;
                 return;//如果是非管理者页面 任何人都可以访问
             }
-            if (contollerName == "Manager" && positionName == "店长" || contollerName == "ManagerExamine" && positionName == "店长")
+            if (contollerName == "Manager" || contollerName == "ManagerExamine"|| contollerName== "ManagerGoal")
             {
-                isState = true;//店长操作
+                if (positionName=="店长"||positionName=="老板")
+                {
+                isState = true;//店长或者老板操作
                 return;
-            }
-            else if (contollerName == "Manager" && positionName == "老板" || contollerName == "ManagerExamine" && positionName == "老板")
-            {
-                isState = true;//老板操作
-                return;
+                }
+               
             }
             else
             {
                 isState = false;
+                return;
             }
         }
 

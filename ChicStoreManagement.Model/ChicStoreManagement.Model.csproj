@@ -109,6 +109,12 @@
     <Compile Include="销售_职务.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="销售_订单.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_订单明细.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="销售_设计案提交表.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>

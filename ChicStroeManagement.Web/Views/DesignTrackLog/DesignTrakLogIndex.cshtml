@@ -2,50 +2,25 @@
 @model PagedList.IPagedList <ChicStoreManagement.WEB.ViewModel.DesignTackLogViewModel>
 
     @{
-        ViewBag.Title = "DesignTrakLogIndex";
+        ViewBag.Title = "添加跟进信息";
     }
 
     <h2>设计案跟进日志</h2>
 
     <div>
+        <p>
+            @Html.ActionLink("添加跟进信息", "AddDesignTrackView", new { id = @ViewBag.DesignTrackSubmitID, @class = "form-control", @Style = "font-size:12px" })
+        </p>
         @if (Model.Count != 0)
-        {<p>
-                @Html.ActionLink("添加客户接待信息", "AddDesignTrackView", new { id = Model.FirstOrDefault().设计案提交表id, @class = "form-control", @Style = "font-size:12px" })
-            </p>
-            @using (Html.BeginForm("DesignTrackLogIndex", "DesignTrackLog", FormMethod.Get))
-            {
-                <p>
-                    通过客户电话查找: @Html.TextBox("SearchString", ViewBag.DesignTrackLogCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
-                    <input id="Submit1" type="submit" value="查询" class="btn" />
-                </p>
-            }
+        {
+
             <hr />
 
-            <table>
-                <tr>
-                    <td>客户名称:</td>
-                    <td>@Model.FirstOrDefault().客户姓名</td>
-                    <td>联系方式:</td>
-                    <td>@Model.FirstOrDefault().联系方式</td>
-                </tr>
-                <tr>
-                    <td>楼盘具体位置:</td>
-                    <td colspan="3">@Model.FirstOrDefault().楼盘具体位置</td>
-                </tr>
-                <tr>
-                    <td>销售人员:</td>
-                    <td>@Model.FirstOrDefault().销售人员</td>
-                    <td>设计师:</td>
-                    <td>@Model.FirstOrDefault().设计师</td>
-                </tr>
-                <tr>
-
-                    <td>设计案需求提交时间:</td>
-                    <td colspan="3">@Model.FirstOrDefault().设计案需求提交时间 </td>
-                </tr>
-            </table>
+            <div>
+                <pre style="text-align:left;font-size:12px">客户名称:@Model.FirstOrDefault().客户姓名  联系方式:@Model.FirstOrDefault().联系方式 销售人员:@Model.FirstOrDefault().销售人员 设计师:@Model.FirstOrDefault().设计师 设计案需求提交时间:@Model.FirstOrDefault().设计案需求提交时间 楼盘具体位置:@Model.FirstOrDefault().楼盘具体位置</pre>
+            </div>
         }
-
+     
         <div>
             <table class="table">
                 <tr>
@@ -61,6 +36,7 @@
                 </tr>
                 @foreach (var item in Model)
                 {
+
                     <tr>
                         <td>@item.跟进日期</td>
                         <td>@item.进度描述</td>
@@ -70,6 +46,7 @@
                         @*<td>@item.设计案需求提交时间</td>*@
                         <td>@item.店长审查</td>
                         <td>@item.备注</td>
+                        @*<td>@Url.Action("修改",new { id=item.Id})</td>*@
                     </tr>
                 }
             </table>
@@ -78,4 +55,5 @@
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignTrackLogCurrentSort, currentFilter = ViewBag.DesignTrackLogCurrentFilter }))
 
         </div>
+        <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
     </div>

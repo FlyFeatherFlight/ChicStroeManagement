@@ -1,5 +1,6 @@
-﻿@model  ChicStoreManagement.WEB.ViewModel.FileViewModel
-
+﻿
+@model  ChicStoreManagement.WEB.ViewModel.FileViewModel
+@using ChicStoreManagement.WEB.ViewModel
 @{
     ViewBag.Title = "上传文件";
 }
@@ -11,7 +12,7 @@
         control.fileinput({
             language: 'zh', //设置语言
             uploadUrl: uploadrul, //上传的地址
-            allowedFileExtensions: ['png','jpg','jpeg','xls','xlsx','doc','docx','pdf','ppt','pps','xml','zip','rar','7z'],//接收的文件后缀
+            allowedFileExtensions: ['png', 'jpg', 'jpeg', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'ppt', 'pps', 'xml', 'zip', 'rar', '7z'],//接收的文件后缀
             showUpload: true, //显示批量上传按钮
             showCaption: false,//是否显示标题
             browseClass: "btn btn-primary", //按钮样式
@@ -38,13 +39,13 @@
         //获得文件类型
         findType = function () {
 
-           return $("#FileType option:selected").text();
+            return $("#FileType option:selected").text();
         }
-      
+
 
     });
 </script>
-<h2>FileUpload</h2>
+<h2>文件上传</h2>
 <div>
     <form id="addform" name="addform" action="~/DesignFile/UploadFile" method="post">
         <div>
@@ -52,8 +53,14 @@
                 <h4 class="modal-title" id="myModalLabel">请选择文件</h4>
             </div>
             <div class="modal-body">
-                
-                @Html.EnumDropDownListFor(Model => Model.FileType)
+                @if (ViewBag.Filetype == "Result")
+                {
+                    <input type="text" name="FileType" value="@FileType.完成效果文件" readonly="readonly" />
+                }
+                else
+                {
+                    @Html.EnumDropDownListFor(Model => Model.Filetype)
+                }
                 <input type="file" name="UploadStream" id="cad_file" multiple class="file-loading" />
             </div>
         </div>

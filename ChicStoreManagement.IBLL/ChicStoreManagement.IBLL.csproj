@@ -44,6 +44,8 @@
     <Compile Include="IBaseService.cs" />
     <Compile Include="ICustomerInfoBLL.cs" />
     <Compile Include="ICustomerTrackingBLL.cs" />
+    <Compile Include="IDesignResultBLL.cs" />
+    <Compile Include="IDesignResult_ListingBLL.cs" />
     <Compile Include="IDesignSubmitBLL.cs" />
     <Compile Include="IDesignTrackingLogBLL.cs" />
     <Compile Include="IDesign_CustomerExceptedBuyBLL.cs" />
@@ -52,6 +54,7 @@
     <Compile Include="IFileTypeBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />
+    <Compile Include="ISalesOrderBLL.cs" />
     <Compile Include="IStoreBLL.cs" />
     <Compile Include="ISystemAccountBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

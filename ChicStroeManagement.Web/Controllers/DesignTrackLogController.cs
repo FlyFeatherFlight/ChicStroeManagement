@@ -35,12 +35,26 @@ namespace ChicStoreManagement.WEB.Controllers
             this.storeEmployeesBLL = storeEmployeesBLL;
         }
 
-
+        /// <summary>
+        /// 跟进记录首页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="sortOrder"></param>
+        /// <param name="searchString"></param>
+        /// <param name="currentFilter"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         // GET: DesignTrackLog
         public ActionResult DesignTrakLogIndex(int? id, string sortOrder, string searchString, string currentFilter, int? page)
         {
+            if (id == 0 || id == null)
+            {
+                return Content("非法操作");
+            }
+            ViewBag.DesignTrackSubmitID = id;
             Session["method"] = "N";
             SetEmployee();
+            
             ViewBag.DesignTrackLogCurrentSort = sortOrder;
             ViewBag.DesignSubmitDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.CustomerName = sortOrder == "last" ? "last_desc" : "last";
@@ -98,28 +112,150 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns></returns>
         public ActionResult AddDesignTrackView(int? id)
         {
-            designSubmitBLL.GetModel(p => p.id == id);
+            if (id==0||id==null)
+            {
+                return Content("设计案申请不存在，非法操作!");
+            }
+            Session["method"] = "N";
+            ViewBag.DesignSubmitID = id;
 
-            return null;
+            return View();
         }
 
         [HttpPost]
-        public ActionResult AddDesignTrackAction()
+        public ActionResult AddDesignTrackAction(DesignTackLogViewModel designTackLogViewModel)
         {
+            SetEmployee();
+            if (designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员==null)
+            {
+                return Content("设计或店长未确认，非法操作!");
+            }
+            销售_设计案跟进日志 model = new 销售_设计案跟进日志
+            {
+                参与人员 = designTackLogViewModel.参与人员,
+                备注 = designTackLogViewModel.备注,
 
-            return null;
+                设计师 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员,
+                设计案提交表id = designTackLogViewModel.设计案提交表id,
+                设计案需求提交时间 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).更新日期,
+                跟进日期 = designTackLogViewModel.跟进日期,
+                进度描述 = designTackLogViewModel.进度描述,
+                销售人员 = employeeName,
+                需要的支持 = designTackLogViewModel.需要的支持,
+                预计签约时间 = designTackLogViewModel.预计签约时间
+            };
+            if (ModelState.IsValid)
+            {
+              
+                designTrackingLogBLL.Add(model);
+                Session["method"] = "Y";
+            }
+            else
+            {
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+                string  msg = "添加日志出错：";
+                foreach (var item in sb)
+                {
+                    msg += item.ToString() + "<br/>";
+                }
+                return Content(msg);
+            }
+            return RedirectToAction("DesignTrakLogIndex",new { id=model.设计案提交表id});
         }
 
-        public ActionResult EditDesignTrackView() {
-
-            return null;
+        /// <summary>
+        /// 修改跟进日志
+        /// </summary>
+        /// <param name="id">跟进日志ID</param>
+        /// <returns></returns>
+        public ActionResult EditDesignTrackView(int? id) {
+            Session["method"] = "N";
+            if (id==0||id==null)
+            {
+                return Content("非法操作！");
+            }
+            DesignTackLogViewModel designTackLogViewModel = new DesignTackLogViewModel();
+            销售_设计案跟进日志 model = new 销售_设计案跟进日志();
+            model = designTrackingLogBLL.GetModel(p=>p.id==id);
+            designTackLogViewModel.Id = model.id;
+            designTackLogViewModel.参与人员 = model.参与人员;
+            designTackLogViewModel.备注 = model.备注;
+            designTackLogViewModel.客户姓名 = designSubmitBLL.GetModel(p => p.id == model.设计案提交表id).客户姓名;
+            designTackLogViewModel.店长审查 = model.店长审查;
+            designTackLogViewModel.楼盘具体位置 = designSubmitBLL.GetModel(p => p.id == model.设计案提交表id).楼盘具体位置;
+            designTackLogViewModel.联系方式 = designSubmitBLL.GetModel(p => p.id == model.设计案提交表id).联系方式;
+            designTackLogViewModel.设计师 = model.设计师;
+            designTackLogViewModel.设计案提交表id = model.设计案提交表id;
+            designTackLogViewModel.设计案需求提交时间 = model.设计案需求提交时间;
+            designTackLogViewModel.跟进日期 = model.跟进日期;
+            designTackLogViewModel.进度描述 = model.进度描述;
+            designTackLogViewModel.销售人员 = model.销售人员;
+            designTackLogViewModel.需要的支持 = model.需要的支持;
+            designTackLogViewModel.预计签约时间 = model.预计签约时间;
+            return View(designTackLogViewModel);
         }
 
         [HttpPost]
-        public ActionResult EditDesignTrackAction()
+        public ActionResult EditDesignTrackAction(DesignTackLogViewModel designTackLogViewModel)
         {
-
-            return null;
+            if (designTackLogViewModel==null)
+            {
+                return Content("数据为空！");
+            }
+            销售_设计案跟进日志 model = new 销售_设计案跟进日志
+            {
+                id = designTackLogViewModel.Id.Value,
+                参与人员 = designTackLogViewModel.参与人员,
+                备注 = designTackLogViewModel.备注,
+                设计师 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员,
+                设计案提交表id = designTackLogViewModel.设计案提交表id,
+                设计案需求提交时间 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).更新日期,
+                跟进日期 = designTackLogViewModel.跟进日期,
+                进度描述 = designTackLogViewModel.进度描述,
+                销售人员 = employeeName,
+                需要的支持 = designTackLogViewModel.需要的支持,
+                预计签约时间 = designTackLogViewModel.预计签约时间
+            };
+            if (ModelState.IsValid)
+            {
+                designTrackingLogBLL.Modify(model);
+                Session["method"] = "Y";
+            }
+            else
+            {
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+                string msg = "添加日志出错：";
+                foreach (var item in sb)
+                {
+                    msg += item.ToString() + "<br/>";
+                }
+                return Content(msg);
+            }
+            return RedirectToAction("DesignTrakLogIndex");
         }
        
         /// <summary>
@@ -128,7 +264,7 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns></returns>
         private List<DesignTackLogViewModel> BuildDesignTrackLogInfo(int? id)
         {
-            if (id==0||id==null)
+            if (id==0|| id==null)
             {
                 return null;
             }
@@ -136,7 +272,7 @@ namespace ChicStoreManagement.WEB.Controllers
             try
             {
 
-            var designTackLogList = designTrackingLogBLL.GetModels(p => p.设计案提交表id == id);
+            var designTackLogList = designTrackingLogBLL.GetModels(p => p.设计案提交表id == id);   
             foreach (var item in designTackLogList)
             {
                 DesignTackLogViewModel designTackLogViewModel = new DesignTackLogViewModel();

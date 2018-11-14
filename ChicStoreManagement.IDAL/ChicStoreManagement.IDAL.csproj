@@ -45,6 +45,8 @@
     <Compile Include="IBaseDAL.cs" />
     <Compile Include="ICustomerInfoDAL.cs" />
     <Compile Include="ICustomerTrackingLogDAL.cs" />
+    <Compile Include="IDesignResultDAL.cs" />
+    <Compile Include="IDesignResult_ListingDAL.cs" />
     <Compile Include="IDesignSubmitDAL.cs" />
     <Compile Include="IDesignTrackingLogDAL.cs" />
     <Compile Include="IDesign_CustomerExceptedBuyDAL.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="IExpectedBuyDAL.cs" />
     <Compile Include="IFileTypeDAL.cs" />
     <Compile Include="IProductCodeDAL.cs" />
+    <Compile Include="ISalesOrderDAL.cs" />
     <Compile Include="IStoreDAL.cs" />
     <Compile Include="IPositionDAL.cs" />
     <Compile Include="ISystemAccountDAL.cs" />

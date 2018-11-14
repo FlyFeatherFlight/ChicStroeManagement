@@ -1,0 +1,52 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignTackLogViewModel
+
+@{
+    ViewBag.Title = "修改信息";
+}
+
+<h2>修改设计案跟进信息</h2>
+
+<div>
+    <form action="~/DesignTrackLog/AddDesignTrackAction" method="post">
+        设计案提交表id <input type="text" name="设计案提交表id" value="@ViewBag.DesignSubmitID" />
+        <table>
+            <tr>
+                <td>日期</td>
+                <td>
+                    <div class="input-group date" id="trackDate">
+                        <input type="text" name="跟进日期" class="form-control" value="@Model.跟进日期" readonly="readonly" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>进度描述</td>
+                <td>
+                    <input type="text" name="进度描述" class="form-control" value="@Model.进度描述" />
+                </td>
+            </tr>
+            <tr>
+                <td>参与人员</td>
+                <td><input type="text" name="参与人员" class="form-control" value="@Model.参与人员" /></td>
+            </tr>
+            <tr>
+                <td>需要的支持</td>
+                <td><input type="text" name="需要的支持" class="form-control" value="@Model.需要的支持" /></td>
+            </tr>
+            <tr>
+                <td>预计签约时间</td>
+                <td>
+                    <div class="input-group date" id="preDate">
+                        <input type="text" name="跟进日期" class="form-control" value="@Model.预计签约时间" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="提交" />
+    </form>
+</div>

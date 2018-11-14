@@ -1,5 +1,7 @@
 ﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,24 +23,34 @@ namespace ChicStoreManagement.Controllers
         private readonly IProductCodeBLL productCodeBLL;
         private readonly ICustomerTrackingBLL customerTrackingBLL;
         private readonly IPositionBLL positionBLL;
+        private readonly IDesignSubmitBLL designSubmitBLL;
+        private readonly IDesignTrackingLogBLL designTrackingLogBLL;
+        private readonly IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL;
+        private readonly IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL;
 
-        private int employeeID;//员工id
-        private string employeeName;//员工姓名
-        private string store;//当前店铺名称
-        private int storeID;//当前店铺id
+        private  int employeeID;//员工id
+        private  string employeeName;//员工姓名
+        private  string store;//当前店铺名称
+        private  int storeID;//当前店铺id
         // private IQueryable<Employees> workers;//所有员工信息
         private IQueryable<CustomerInfoModel> customerInfoModels;//所有接待信息
         private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;//预计购买
-        public ManagerExamineController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, IPositionBLL positionBLL)
+
+        public ManagerExamineController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, IPositionBLL positionBLL, IDesignSubmitBLL designSubmitBLL, IDesignTrackingLogBLL designTrackingLogBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL)
         {
             this.customerInfoBLL = customerInfoBLL;
             this.exceptedBuyBLL = exceptedBuyBLL;
             this.storeEmployeesBLL = storeEmployeesBLL;
             this.storeBLL = storeBLL;
             this.productCodeBLL = productCodeBLL;
-            this.customerTrackingBLL = customerTrackingBLL; 
+            this.customerTrackingBLL = customerTrackingBLL;
             this.positionBLL = positionBLL;
+            this.designSubmitBLL = designSubmitBLL;
+            this.designTrackingLogBLL = designTrackingLogBLL;
+            this.design_ProjectDrawingsBLL = design_ProjectDrawingsBLL;
+            this.design_CustomerExceptedBuyBLL = design_CustomerExceptedBuyBLL;
         }
+
 
 
         // GET: ManagerExamine
@@ -55,9 +67,68 @@ namespace ChicStoreManagement.Controllers
         /// 客户追踪日志审查
         /// </summary>
         /// <returns></returns>
-        public ActionResult CustomerTrackLogExamineView() {
+        public ActionResult CustomerTrackLogExamineView(int? id, string sortOrder, string searchString, string currentFilter, int? page) {
+            List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
 
-            return View();
+            ViewBag.TrackingCurrentSort = sortOrder;
+            ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
+            if (id != null && id != 0)
+            {
+                customerTrackingModels = BuildTrackingInfo(id, employeeID);//获取当前人员可查看的跟进信息
+                ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
+            }
+            else
+            {
+                customerTrackingModels = BuildTrackingInfo(0, employeeID);
+            }
+            if (customerTrackingModels == null)
+            {
+                return Content("当前操作人并无关联的跟进信息或无进入权限！");
+            }
+            BuildCustomerInfo();//将顾客接待信息数据优化
+            ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端
+            ViewBag.storeName = store;//将当前店铺名字传到前端
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.TrackingCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                customerTrackingModels = customerTrackingModels.Where(w => w.客户电话 == searchString).ToList();//通过客户电话查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进时间).ToList();
+                    break;
+                case "last_desc":
+                    customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进结果).ToList();
+                    break;
+                case "last":
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进结果).ToList();
+                    break;
+                default:
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进时间).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(customerTrackingModels.ToPagedList(pageNumber, pageSize));
+            
         }
 
         /// <summary>
@@ -78,8 +149,78 @@ namespace ChicStoreManagement.Controllers
 
         }
 
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private void SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                employeeID = employees.ID;
+                employeeName = employees.姓名;
+                store = employees.店铺;
+                storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+            }
+        }
+
+        /// <summary>
+        /// 根据当前操作人员或职位或接待id查找跟进信息
+        /// </summary>
+        /// <param name="customerInfoID">接待id</param>
+        /// <param name="employeeName">当前操作人员姓名</param>
+        /// <returns>跟进信息</returns>s
+        private List<CustomerTrackingModel> BuildTrackingInfo(int? customerInfoID, int employeeId)
+        {
+            List<销售_意向追踪日志> mt = new List<销售_意向追踪日志>();
+            var e = storeEmployeesBLL.GetModel(p => p.ID == employeeID);
+            if (customerInfoID != 0)
+            {
+                mt = customerTrackingBLL.GetModels(p => p.接待记录ID == customerInfoID).ToList();//查看当前客户的跟进信息
+            }
+            else if (e.职务ID == 3)
+            {
+                mt = customerTrackingBLL.GetModels(p => p.店铺ID == e.店铺ID).ToList();//店长查看(只有自己店铺的)
+            }
+
+            else
+            {
+                mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).ToList();//店员查看所有(只有自己跟进的)
+            }
 
 
+            List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
+            foreach (var item in mt)
+            {
+                CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
+                {
+                    Id = item.id,
+                    备注 = item.备注,
+                    店长审核 = item.店长审核,
+                    接待序号 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).接待序号,
+                    客户姓名 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).客户姓名,
+                    客户电话 = customerInfoBLL.GetModel(p => p.ID == item.接待记录ID).客户电话,
+                    接待ID = item.接待记录ID,
+                    是否申请设计师 = item.是否申请设计师,
+                    跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人).姓名,
+                    跟进内容 = item.跟进内容,
+                    跟进方式 = item.跟进方式,
+                    跟进时间 = item.跟进时间,
+                    跟进结果 = item.跟进结果,
+                    店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称
+                };
+                customerTrackingModels.Add(customerTrackingModel);
+            }
+
+            return customerTrackingModels;
+
+        }
+
+        /// <summary>
+        /// 构建客户基本信息
+        /// </summary>
         private void BuildCustomerInfo()
         {
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();

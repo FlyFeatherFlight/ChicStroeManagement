@@ -24,6 +24,7 @@ namespace ChicStoreManagement.Model
         public int 文件类型 { get; set; }
         public string 存储路径 { get; set; }
         public string 文件名 { get; set; }
+        public Nullable<bool> 完成效果 { get; set; }
     
         public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
     }

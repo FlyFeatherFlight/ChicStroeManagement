@@ -48,6 +48,7 @@ namespace ChicStoreManagement.Controllers
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
             var costomerModels = BuildCustomerInfo();
+            ViewBag.EmployeesID = employeeID;
             ViewBag.DesignSubCurrentSort = sortOrder;
             ViewBag.DesignSubDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignSubResult = sortOrder == "last" ? "last_desc" : "last";
@@ -223,6 +224,10 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult EditDesignApply(int id) {
             Session["method"] = "N";
+            if (designSubmitBLL.GetModel(p => p.id == id).店长确认.Value==true)
+            {
+                return Content("该记录不可修改！");
+            }
             销售_设计案提交表 model = new 销售_设计案提交表();
             model=designSubmitBLL.GetModel(p => p.id == id);
             DesignSubmitModel designSubmitModel = new DesignSubmitModel
@@ -307,7 +312,11 @@ namespace ChicStoreManagement.Controllers
                     销售人员 = employeeName,
                     备注 = designSubmitModel.备注,
                     更新人 = employeeName,
-                    更新日期 = DateTime.Now
+                    更新日期 = DateTime.Now,
+                   店长=designSubmitBLL.GetModel(p=>p.id==designSubmitModel.Id).店长,
+                   店长确认= designSubmitBLL.GetModel(p => p.id == designSubmitModel.Id).店长确认,
+                   设计人员= designSubmitBLL.GetModel(p => p.id == designSubmitModel.Id).设计人员,
+                   设计人员确认=designSubmitModel.设计人员确认
                 };
                 if (ModelState.IsValid)
                 {

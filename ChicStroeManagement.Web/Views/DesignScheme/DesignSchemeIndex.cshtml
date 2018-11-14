@@ -6,7 +6,7 @@
 
 <h2>软装服务设计案提交表</h2>
 <div>
-    @Html.ActionLink("申请设计", "ApplyDesignView", new { @Style = "font-size:12px", @align = "right" })                                                                                                                                                  
+    @Html.ActionLink("申请设计", "ApplyDesignView", new { @Style = "font-size:12px", @align = "right" })|@Html.ActionLink("查看完结信息","DesignResultIndex","DesignResult",new { }, new { @Style = "font-size:12px", @align = "left" })                                                                                                                                      
 </div>
 @using (Html.BeginForm("DesignSchemeIndex", "DesignScheme", FormMethod.Get))
 {
@@ -39,23 +39,64 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@Html.DisplayFor(Model => item.Id)</td>
-                <td>@Html.DisplayFor(Model => item.客户姓名)</td>
-                <td>@Html.DisplayFor(Model => item.联系方式)</td>
-                <td>@Html.DisplayFor(Model => item.职业)</td>
-                <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
-                <td>@Html.DisplayFor(Model => item.面积大小)</td>
-                <td>@Html.DisplayFor(Model => item.装修风格)</td>
-                <td>@Html.DisplayFor(Model => item.装修进度)</td>
-                <td>@Html.DisplayFor(Model => item.预算)</td>
-                <td>@Html.DisplayFor(Modle => item.销售人员)</td>
-                <td>@Html.DisplayFor(Model => item.审批状态)</td>
-                <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })</td>
-                @*@{
-                        var submitModel = item as ChicStoreManagement.WEB.ViewModel.DesignSubmitModel;
-                    }*@
-            </tr>
+
+            if (item.审批状态.ToString() == null)
+            {
+                <tr style="color:yellow">
+                    <td>@Html.DisplayFor(Model => item.Id)</td>
+                    <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                    <td>@Html.DisplayFor(Model => item.联系方式)</td>
+                    <td>@Html.DisplayFor(Model => item.职业)</td>
+                    <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
+                    <td>@Html.DisplayFor(Model => item.面积大小)</td>
+                    <td>@Html.DisplayFor(Model => item.装修风格)</td>
+                    <td>@Html.DisplayFor(Model => item.装修进度)</td>
+                    <td>@Html.DisplayFor(Model => item.预算)</td>
+                    <td>@Html.DisplayFor(Modle => item.销售人员)</td>
+                    <td>@Html.DisplayFor(Model => item.审批状态)</td>
+                    <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+
+                </tr>
+            }
+            if (item.审批状态 == false)
+            {
+                <tr style="color:darkgrey">
+                    <td>@Html.DisplayFor(Model => item.Id)</td>
+                    <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                    <td>@Html.DisplayFor(Model => item.联系方式)</td>
+                    <td>@Html.DisplayFor(Model => item.职业)</td>
+                    <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
+                    <td>@Html.DisplayFor(Model => item.面积大小)</td>
+                    <td>@Html.DisplayFor(Model => item.装修风格)</td>
+                    <td>@Html.DisplayFor(Model => item.装修进度)</td>
+                    <td>@Html.DisplayFor(Model => item.预算)</td>
+                    <td>@Html.DisplayFor(Modle => item.销售人员)</td>
+                    <td>@Html.DisplayFor(Model => item.审批状态)</td>
+                    <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>@Html.DisplayFor(Model => item.Id)</td>
+                    <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                    <td>@Html.DisplayFor(Model => item.联系方式)</td>
+                    <td>@Html.DisplayFor(Model => item.职业)</td>
+                    <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
+                    <td>@Html.DisplayFor(Model => item.面积大小)</td>
+                    <td>@Html.DisplayFor(Model => item.装修风格)</td>
+                    <td>@Html.DisplayFor(Model => item.装修进度)</td>
+                    <td>@Html.DisplayFor(Model => item.预算)</td>
+                    <td>@Html.DisplayFor(Modle => item.销售人员)</td>
+                    <td>@Html.DisplayFor(Model => item.审批状态)</td>
+                    <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "AddDesignResultView", "DesignResult", new { subid = item.Id }, new { @Style = "font-size:12px" })</td>
+                </tr>
+            }
+            //{
+            //var submitModel = item as ChicStoreManagement.WEB.ViewModel.DesignSubmitModel;
+            //}
+
         }
     </table>
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount

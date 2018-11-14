@@ -1,0 +1,95 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignResultViewModel
+
+@{
+    ViewBag.Title = "提交设计案完结单";
+}
+
+<h2>提交设计案完结单</h2>
+
+<form action="/" method="post">
+    <table>
+        <tr>
+            <td>客户单号</td>
+            <td><input type="text" name="客户编号" value="@Model.客户编号" readonly="readonly"/> </td>
+        </tr>
+        <tr>
+            <td>销售单号</td>
+            <td><input type="text" name="销售单号" value="@Model.销售单号" readonly="readonly"/> </td>
+        </tr>
+        <tr>
+            <td>单据编号</td>
+            <td><input type="text"  name="单据编号" value="@Model.单据编号" readonly="readonly"/> </td>
+        </tr>
+        <tr>
+            <td>计划完成时间</td>
+            <td>
+                <input type="text" name="计划完成时间" value="@Model.计划完成时间" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>实际完成时间</td>
+            <td>
+            <input type="date" name="实际完成时间" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>计划完成空间</td>
+            <td>
+
+                <input type="text"  name="计划完成空间" value="@Model.计划完成空间" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr>
+            <td>实际完成空间</td>
+            <td>
+                <input type="text" name="实际完成空间" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td>延期或者无法完成原因</td>
+            <td>
+                <input type="text" name="延期或无法完成原因" value="" />
+            </td>
+        </tr>
+        <tr>
+            <td>完成效果：</td>
+            <td>
+                @Html.ActionLink("上传", "FileUpload", "DesignFile",new {id=Model.Id, fileType ="Result"},new { @Style = "font-size:12px" })
+            </td>
+        </tr>
+        <tr>
+            <td>家具成交清单：</td>
+            <td>
+                <table>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    @{
+                        var n = 0;
+                        foreach (var item in Model.设计_设计案完结单_家具成交单)
+                        {
+                            <tr>
+                                <td>@item.空间</td>
+                                <td>@item.产品型号</td>
+                                <td>@item.单位</td>
+                                <td>@item.数量</td>
+                                <td>@item.成交价</td>
+                            </tr>
+                            n = n + int.Parse(item.成交价.Value.ToString());
+                        }
+
+                        <tr>
+                            <td>合计成交金额</td>
+                            <td><input type="text" name="合计成交金额" value="@n" /></td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>建议：</td>
+            <td>@Html.EditorFor(Model=>Model.建议)</td>
+        </tr>
+
+    </table>
+</form>

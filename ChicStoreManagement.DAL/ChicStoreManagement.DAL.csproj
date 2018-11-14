@@ -56,6 +56,8 @@
     <Compile Include="CustomerInfoDAL.cs" />
     <Compile Include="CustomerTrackingLogDAL.cs" />
     <Compile Include="DbContextFactory.cs" />
+    <Compile Include="DesignResultDAL.cs" />
+    <Compile Include="DesignResult_ListingDAL.cs" />
     <Compile Include="DesignSubmitDAL.cs" />
     <Compile Include="DesignTrackingLogDAL.cs" />
     <Compile Include="Design_CustomerExceptedBuyDAL.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="PositionDAL.cs" />
     <Compile Include="ProductCodeDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SalesOrderDAL.cs" />
     <Compile Include="StoreDAL.cs" />
     <Compile Include="StoreEmployeesDAL.cs" />
     <Compile Include="SystemAccountDAL.cs" />

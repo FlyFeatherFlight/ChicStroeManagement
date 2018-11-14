@@ -122,9 +122,10 @@ namespace ChicStoreManagement.WEB.Controllers
         /// </summary>
         /// <param name="id">设计申请ID</param>
         /// <returns></returns>
-        public ActionResult FileUpload(int? id)
+        public ActionResult FileUpload(int? id,string fileType)
         {
             Session["method"] = "N";
+            ViewBag.Filetype = fileType;
             FileViewModel model = new FileViewModel();
 
            
@@ -163,12 +164,12 @@ namespace ChicStoreManagement.WEB.Controllers
                 fileModel.StoreName = storeBLL.GetModel(p => p.ID == storeID).名称;
 
                 var m = fileModel.UploadStream.InputStream;
-                msg=IsAllowedExtension(fileModel.UploadStream,fileModel.FileType);
+                msg=IsAllowedExtension(fileModel.UploadStream,fileModel.Filetype);
                 if (msg!= "true")
                 {
                     return Json(msg);//如果上传文件不匹配，则返回出错信息！
                 }
-                var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.FileType.ToString());//获得上传路径
+                var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.Filetype.ToString());//获得上传路径
                 fileModel.Path = path;
                 if (path == null||design_ProjectDrawingsBLL.GetModel(p=>p.存储路径==path)!=null)
                 {
@@ -185,42 +186,42 @@ namespace ChicStoreManagement.WEB.Controllers
                 };
                
                 var s="";
-                switch (fileModel.FileType)
+                switch (fileModel.Filetype)
                 {
                     case FileType.CAD图:
-                        s = fileModel.FileType.ToString();
+                        s = fileModel.Filetype.ToString();
                         model.存储路径 = fileModel.Path;
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     case FileType.效果3D图:
                         model.存储路径 = fileModel.Path;
-                         s = fileModel.FileType.ToString();
+                         s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     case FileType.对比图:
                         model.存储路径 = fileModel.Path;
-                         s = fileModel.FileType.ToString();
+                         s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     case FileType.PDF文件:
                         model.存储路径 = fileModel.Path;
-                        s = fileModel.FileType.ToString();
+                        s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     case FileType.PPT文件:
                         model.存储路径 = fileModel.Path;
-                        s = fileModel.FileType.ToString();
+                        s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
 
                         break;
                     case FileType.Excel文件:
                         model.存储路径 = fileModel.Path;
-                        s = fileModel.FileType.ToString();
+                        s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     case FileType.其它:
                         model.存储路径 = fileModel.Path;
-                        s = fileModel.FileType.ToString();
+                        s = fileModel.Filetype.ToString();
                         model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                         break;
                     default:

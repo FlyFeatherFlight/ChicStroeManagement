@@ -23,7 +23,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Text)]
         public string 文件类型 { get; set; }
         [Display(Name ="文件名")]
-      public string 文件名 { get; set; }
+        public string 文件名 { get; set; }
 
         [Display(Name = "提交人")]
         [DataType(DataType.Text)]
@@ -37,6 +37,9 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name = "更新日期")]
         [DataType(DataType.DateTime)]
         public DateTime? 更新日期 { get; set; }
+        [Display(Name ="是否是完结效果")]
+        [DataType(DataType.Text)]
+        public bool? 完成效果 { get; set; }
 
     }
 }

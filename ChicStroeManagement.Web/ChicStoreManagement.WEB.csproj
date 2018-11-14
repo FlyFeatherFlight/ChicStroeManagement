@@ -189,8 +189,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DesignFileController.cs" />
+    <Compile Include="Controllers\DesignResultController.cs" />
     <Compile Include="Controllers\DesignTrackLogController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\ManagerGoalController.cs" />
     <Compile Include="CustomAttributes\AuthorizationFilterAttribute.cs" />
     <Compile Include="App_Start\AutoFacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="ViewModel\CustomerExceptedBuyModel.cs" />
     <Compile Include="ViewModel\CustomerTrackingModel.cs" />
     <Compile Include="ViewModel\DesignFileViewModel.cs" />
+    <Compile Include="ViewModel\DesignResultViewModel.cs" />
     <Compile Include="ViewModel\DesignSubmitModel.cs" />
     <Compile Include="ViewModel\DesignTackLogViewModel.cs" />
     <Compile Include="ViewModel\Employees.cs" />
@@ -1088,11 +1091,16 @@
     <Content Include="Views\DesignFile\Index.cshtml" />
     <Content Include="Views\DesignTrackLog\DesignTrakLogIndex.cshtml" />
     <Content Include="Views\DesignTrackLog\AddDesignTrackView.cshtml" />
+    <Content Include="Views\DesignTrackLog\EditDesignTrackView.cshtml" />
+    <Content Include="Views\DesignResult\DesignResultIndex.cshtml" />
+    <Content Include="Views\DesignResult\AddDesignResultView.cshtml" />
+    <Content Include="Views\DesignResult\EditDesignResultView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\File\" />
+    <Folder Include="Views\ManagerGoal\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

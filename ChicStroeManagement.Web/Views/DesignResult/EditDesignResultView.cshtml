@@ -1,0 +1,22 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignResultViewModel
+@{
+    ViewBag.Title = "修改设计案完结单";
+}
+
+<h2>修改设计案完结单</h2>
+<div>
+    <form action="EditDesignResult" method="post">
+
+
+        <table>
+            <tr style="display:none"><td></td><td>@Html.EditorFor(Model => Model.Id, new { @readonly = "readonly" })</td></tr>
+            <tr><td>客户编号</td><td>@Html.EditorFor(Model => Model.客户编号,new { @readonly="readonly"})</td></tr>
+            <tr><td>销售单号</td><td>@Html.EditorFor(Model => Model.销售单号, new { @readonly = "readonly" })</td></tr>
+            <tr><td>实际完成时间</td><td><input type="date" name="实际完成时间" class="form-control" /></td></tr>
+            <tr><td>实际完成空间</td><td>@Html.EditorFor(Model => Model.实际完成空间)</td></tr>
+            <tr><td>延期或无法完成原因</td><td>@Html.EditorFor(Model => Model.延期或无法完成原因)</td></tr>
+            <tr><td>建议</td><td>@Html.EditorFor(Model => Model.建议)</td></tr>
+        </table>
+    </form>
+</div>
+
