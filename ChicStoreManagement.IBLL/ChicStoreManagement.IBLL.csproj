@@ -54,6 +54,7 @@
     <Compile Include="IFileTypeBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />
+    <Compile Include="IProductSkuBLL.cs" />
     <Compile Include="ISalesOrderBLL.cs" />
     <Compile Include="IStoreBLL.cs" />
     <Compile Include="ISystemAccountBLL.cs" />

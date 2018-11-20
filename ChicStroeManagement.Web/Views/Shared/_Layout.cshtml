@@ -31,8 +31,8 @@
                     @*<li>@Html.ActionLink("关于", "About", "Home")</li>
                     <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
-                    <li>@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog")</li>
-                    <li>@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme")</li>
+                    <li>@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog",new { id=0},new { @style="font-size:12px"})</li>
+                    <li>@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme",new {id=0 },new { @style = "font-size:12px"})</li>
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
 
                 </ul>

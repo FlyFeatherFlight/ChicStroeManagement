@@ -112,7 +112,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         public System.DateTime 项目预计完成时间 { get; set; }
         [Display(Name = "审批状态")]
         [DataType(DataType.Text)]
-        public bool 审批状态 { get; set; }
+        public bool? 审批状态 { get; set; }
 
         [Display(Name ="备注")]
         [DataType(DataType.Text)]

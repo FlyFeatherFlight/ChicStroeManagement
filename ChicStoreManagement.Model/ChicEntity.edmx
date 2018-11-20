@@ -5,6 +5,18 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="chicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="商品档案_SKU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SPU_ID" Type="int" Nullable="false" />
+          <Property Name="SKU编号" Type="nvarchar" MaxLength="50" />
+          <Property Name="描述" Type="nvarchar" MaxLength="100" />
+          <Property Name="制单人" Type="int" />
+          <Property Name="制单日期" Type="datetime" />
+          <Property Name="停用标志" Type="bit" />
+        </EntityType>
         <EntityType Name="商品档案_型号">
           <Key>
             <PropertyRef Name="ID" />
@@ -331,8 +343,8 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="店铺ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="店铺ID" Type="int" Nullable="false" />
           <Property Name="接待记录ID" Type="int" Nullable="false" />
           <Property Name="跟进人" Type="int" Nullable="false" />
           <Property Name="跟进时间" Type="date" Nullable="false" />
@@ -457,6 +469,18 @@
             </Principal>
             <Dependent Role="销售_订单">
               <PropertyRef Name="员工ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_销售_订单明细_商品档案_SKU">
+          <End Role="商品档案_SKU" Type="Self.商品档案_SKU" Multiplicity="1" />
+          <End Role="销售_订单明细" Type="Self.销售_订单明细" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_SKU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_订单明细">
+              <PropertyRef Name="SKU_ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -597,6 +621,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="chicModelStoreContainer">
+          <EntitySet Name="商品档案_SKU" EntityType="Self.商品档案_SKU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="商品档案_型号" EntityType="Self.商品档案_型号" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="设计_设计案完结单" EntityType="Self.设计_设计案完结单" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="设计_设计案完结单_家具成交单" EntityType="Self.设计_设计案完结单_家具成交单" Schema="dbo" store:Type="Tables" />
@@ -650,6 +675,10 @@
           <AssociationSet Name="FK_销售_订单_销售_店铺员工档案" Association="Self.FK_销售_订单_销售_店铺员工档案">
             <End Role="销售_店铺员工档案" EntitySet="销售_店铺员工档案" />
             <End Role="销售_订单" EntitySet="销售_订单" />
+          </AssociationSet>
+          <AssociationSet Name="FK_销售_订单明细_商品档案_SKU" Association="Self.FK_销售_订单明细_商品档案_SKU">
+            <End Role="商品档案_SKU" EntitySet="商品档案_SKU" />
+            <End Role="销售_订单明细" EntitySet="销售_订单明细" />
           </AssociationSet>
           <AssociationSet Name="FK_销售_订单明细_销售_订单" Association="Self.FK_销售_订单明细_销售_订单">
             <End Role="销售_订单" EntitySet="销售_订单" />
@@ -769,9 +798,9 @@
           <Property Name="密码" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
           <NavigationProperty Name="销售_经销商档案" Relationship="Self.FK_销售_店铺档案_销售_经销商档案" FromRole="销售_店铺档案" ToRole="销售_经销商档案" />
           <NavigationProperty Name="销售_店铺员工档案" Relationship="Self.FK_销售_店铺员工档案_销售_店铺档案" FromRole="销售_店铺档案" ToRole="销售_店铺员工档案" />
-          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺档案" FromRole="销售_店铺档案" ToRole="销售_意向追踪日志" />
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_顾客档案明细_店铺" FromRole="销售_店铺档案" ToRole="销售_接待记录" />
           <NavigationProperty Name="销售_订单" Relationship="chicModel.FK_销售_订单_销售_店铺档案" FromRole="销售_店铺档案" ToRole="销售_订单" />
+          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺档案" FromRole="销售_店铺档案" ToRole="销售_意向追踪日志" />
         </EntityType>
         <EntityType Name="销售_店铺员工档案">
           <Key>
@@ -790,10 +819,10 @@
           <Property Name="密码" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
           <NavigationProperty Name="销售_店铺档案" Relationship="Self.FK_销售_店铺员工档案_销售_店铺档案" FromRole="销售_店铺员工档案" ToRole="销售_店铺档案" />
           <NavigationProperty Name="销售_职务" Relationship="Self.FK_销售_店铺员工档案_销售_职务" FromRole="销售_店铺员工档案" ToRole="销售_职务" />
-          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案" FromRole="销售_店铺员工档案" ToRole="销售_意向追踪日志" />
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_顾客档案明细_销售顾问" FromRole="销售_店铺员工档案" ToRole="销售_接待记录" />
           <Property Name="跟进目标计划数" Type="Int32" />
           <NavigationProperty Name="销售_订单" Relationship="chicModel.FK_销售_订单_销售_店铺员工档案" FromRole="销售_店铺员工档案" ToRole="销售_订单" />
+          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案" FromRole="销售_店铺员工档案" ToRole="销售_意向追踪日志" />
         </EntityType>
         <EntityType Name="销售_接待记录_意向明细">
           <Key>
@@ -904,15 +933,6 @@
             <End EntitySet="销售_店铺员工档案" Role="销售_店铺员工档案" />
           </AssociationSet>
           <EntitySet Name="销售_设计案提交表_客户意向产品明细" EntityType="chicModel.销售_设计案提交表_客户意向产品明细" />
-          <EntitySet Name="销售_意向追踪日志" EntityType="chicModel.销售_意向追踪日志" />
-          <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺员工档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案">
-            <End Role="销售_店铺员工档案" EntitySet="销售_店铺员工档案" />
-            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
-          </AssociationSet>
-          <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺档案">
-            <End Role="销售_店铺档案" EntitySet="销售_店铺档案" />
-            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
-          </AssociationSet>
           <EntitySet Name="销售_接待记录" EntityType="chicModel.销售_接待记录" />
           <AssociationSet Name="FK_销售_顾客档案明细_店铺" Association="chicModel.FK_销售_顾客档案明细_店铺">
             <End Role="销售_店铺档案" EntitySet="销售_店铺档案" />
@@ -929,10 +949,6 @@
           <AssociationSet Name="FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" Association="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录">
             <End Role="销售_接待记录" EntitySet="销售_接待记录" />
             <End Role="销售_设计案提交表_客户意向产品明细" EntitySet="销售_设计案提交表_客户意向产品明细" />
-          </AssociationSet>
-          <AssociationSet Name="FK_销售_意向追踪日志_销售_接待记录" Association="chicModel.FK_销售_意向追踪日志_销售_接待记录">
-            <End Role="销售_接待记录" EntitySet="销售_接待记录" />
-            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
           </AssociationSet>
           <EntitySet Name="销售_设计案提交表" EntityType="chicModel.销售_设计案提交表" />
           <AssociationSet Name="FK_销售_设计案提交表_销售_接待记录" Association="chicModel.FK_销售_设计案提交表_销售_接待记录">
@@ -977,6 +993,24 @@
             <End Role="销售_设计案提交表" EntitySet="销售_设计案提交表" />
             <End Role="销售_设计案跟进日志" EntitySet="销售_设计案跟进日志" />
           </AssociationSet>
+          <EntitySet Name="商品档案_SKU" EntityType="chicModel.商品档案_SKU" />
+          <AssociationSet Name="FK_销售_订单明细_商品档案_SKU" Association="chicModel.FK_销售_订单明细_商品档案_SKU">
+            <End Role="商品档案_SKU" EntitySet="商品档案_SKU" />
+            <End Role="销售_订单明细" EntitySet="销售_订单明细" />
+          </AssociationSet>
+          <EntitySet Name="销售_意向追踪日志" EntityType="chicModel.销售_意向追踪日志" />
+          <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺档案">
+            <End Role="销售_店铺档案" EntitySet="销售_店铺档案" />
+            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
+          </AssociationSet>
+          <AssociationSet Name="FK_销售_意向追踪日志_销售_店铺员工档案" Association="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案">
+            <End Role="销售_店铺员工档案" EntitySet="销售_店铺员工档案" />
+            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
+          </AssociationSet>
+          <AssociationSet Name="FK_销售_意向追踪日志_销售_接待记录" Association="chicModel.FK_销售_意向追踪日志_销售_接待记录">
+            <End Role="销售_接待记录" EntitySet="销售_接待记录" />
+            <End Role="销售_意向追踪日志" EntitySet="销售_意向追踪日志" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="销售_设计案提交表_客户意向产品明细">
           <Key>
@@ -996,49 +1030,6 @@
           <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" FromRole="销售_设计案提交表_客户意向产品明细" ToRole="销售_接待记录" />
           <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_意向产品明细_设计案提交表" FromRole="销售_设计案提交表_客户意向产品明细" ToRole="销售_设计案提交表" />
         </EntityType>
-        <EntityType Name="销售_意向追踪日志">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="接待记录ID" Type="Int32" Nullable="false" />
-          <Property Name="跟进人" Type="Int32" Nullable="false" />
-          <Property Name="跟进时间" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="跟进方式" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="跟进内容" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="跟进结果" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="店长审核" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="备注" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="是否申请设计师" Type="Boolean" />
-          <NavigationProperty Name="销售_店铺员工档案" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案" FromRole="销售_意向追踪日志" ToRole="销售_店铺员工档案" />
-          <Property Name="店铺ID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="销售_店铺档案" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺档案" FromRole="销售_意向追踪日志" ToRole="销售_店铺档案" />
-          <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_意向追踪日志_销售_接待记录" FromRole="销售_意向追踪日志" ToRole="销售_接待记录" />
-        </EntityType>
-        <Association Name="FK_销售_意向追踪日志_销售_店铺员工档案">
-          <End Type="chicModel.销售_店铺员工档案" Role="销售_店铺员工档案" Multiplicity="1" />
-          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_店铺员工档案">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="销售_意向追踪日志">
-              <PropertyRef Name="跟进人" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_销售_意向追踪日志_销售_店铺档案">
-          <End Type="chicModel.销售_店铺档案" Role="销售_店铺档案" Multiplicity="1" />
-          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_店铺档案">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="销售_意向追踪日志">
-              <PropertyRef Name="店铺ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="销售_接待记录">
           <Key>
             <PropertyRef Name="ID" />
@@ -1089,8 +1080,8 @@
           <NavigationProperty Name="销售_店铺员工档案" Relationship="chicModel.FK_销售_顾客档案明细_销售顾问" FromRole="销售_接待记录" ToRole="销售_店铺员工档案" />
           <NavigationProperty Name="销售_接待记录_意向明细" Relationship="chicModel.FK_销售_接待记录_意向明细_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_接待记录_意向明细" />
           <NavigationProperty Name="销售_设计案提交表_客户意向产品明细" Relationship="chicModel.FK_销售_设计案提交表_客户意向产品明细_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_设计案提交表_客户意向产品明细" />
-          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_意向追踪日志" />
           <NavigationProperty Name="销售_设计案提交表" Relationship="chicModel.FK_销售_设计案提交表_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_设计案提交表" />
+          <NavigationProperty Name="销售_意向追踪日志" Relationship="chicModel.FK_销售_意向追踪日志_销售_接待记录" FromRole="销售_接待记录" ToRole="销售_意向追踪日志" />
         </EntityType>
         <Association Name="FK_销售_顾客档案明细_店铺">
           <End Type="chicModel.销售_店铺档案" Role="销售_店铺档案" Multiplicity="1" />
@@ -1138,18 +1129,6 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="销售_设计案提交表_客户意向产品明细">
-              <PropertyRef Name="接待记录ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_销售_意向追踪日志_销售_接待记录">
-          <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
-          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="销售_接待记录">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="销售_意向追踪日志">
               <PropertyRef Name="接待记录ID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1333,6 +1312,7 @@
           <Property Name="交货周期" Type="Int32" />
           <Property Name="默认交期" Type="DateTime" Precision="3" />
           <NavigationProperty Name="销售_订单" Relationship="chicModel.FK_销售_订单明细_销售_订单" FromRole="销售_订单明细" ToRole="销售_订单" />
+          <NavigationProperty Name="商品档案_SKU" Relationship="chicModel.FK_销售_订单明细_商品档案_SKU" FromRole="销售_订单明细" ToRole="商品档案_SKU" />
         </EntityType>
         <Association Name="FK_销售_订单明细_销售_订单">
           <End Type="chicModel.销售_订单" Role="销售_订单" Multiplicity="1">
@@ -1428,6 +1408,86 @@
             </Principal>
             <Dependent Role="销售_设计案跟进日志">
               <PropertyRef Name="设计案提交表id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="商品档案_SKU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SPU_ID" Type="Int32" Nullable="false" />
+          <Property Name="SKU编号" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="描述" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="制单人" Type="Int32" />
+          <Property Name="制单日期" Type="DateTime" Precision="3" />
+          <Property Name="停用标志" Type="Boolean" />
+          <NavigationProperty Name="销售_订单明细" Relationship="chicModel.FK_销售_订单明细_商品档案_SKU" FromRole="商品档案_SKU" ToRole="销售_订单明细" />
+        </EntityType>
+        <Association Name="FK_销售_订单明细_商品档案_SKU">
+          <End Type="chicModel.商品档案_SKU" Role="商品档案_SKU" Multiplicity="1" />
+          <End Type="chicModel.销售_订单明细" Role="销售_订单明细" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_SKU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_订单明细">
+              <PropertyRef Name="SKU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="销售_意向追踪日志">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="店铺ID" Type="Int32" Nullable="false" />
+          <Property Name="接待记录ID" Type="Int32" Nullable="false" />
+          <Property Name="跟进人" Type="Int32" Nullable="false" />
+          <Property Name="跟进时间" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="跟进方式" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="跟进内容" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="跟进结果" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="店长审核" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="备注" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="是否申请设计师" Type="Boolean" />
+          <NavigationProperty Name="销售_店铺档案" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺档案" FromRole="销售_意向追踪日志" ToRole="销售_店铺档案" />
+          <NavigationProperty Name="销售_店铺员工档案" Relationship="chicModel.FK_销售_意向追踪日志_销售_店铺员工档案" FromRole="销售_意向追踪日志" ToRole="销售_店铺员工档案" />
+          <NavigationProperty Name="销售_接待记录" Relationship="chicModel.FK_销售_意向追踪日志_销售_接待记录" FromRole="销售_意向追踪日志" ToRole="销售_接待记录" />
+        </EntityType>
+        <Association Name="FK_销售_意向追踪日志_销售_店铺档案">
+          <End Type="chicModel.销售_店铺档案" Role="销售_店铺档案" Multiplicity="1" />
+          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_店铺档案">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_意向追踪日志">
+              <PropertyRef Name="店铺ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_销售_意向追踪日志_销售_店铺员工档案">
+          <End Type="chicModel.销售_店铺员工档案" Role="销售_店铺员工档案" Multiplicity="1" />
+          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_店铺员工档案">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_意向追踪日志">
+              <PropertyRef Name="跟进人" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_销售_意向追踪日志_销售_接待记录">
+          <End Type="chicModel.销售_接待记录" Role="销售_接待记录" Multiplicity="1" />
+          <End Type="chicModel.销售_意向追踪日志" Role="销售_意向追踪日志" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="销售_接待记录">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="销售_意向追踪日志">
+              <PropertyRef Name="接待记录ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1569,23 +1629,6 @@
                 <ScalarProperty Name="系列" ColumnName="系列" />
                 <ScalarProperty Name="空间" ColumnName="空间" />
                 <ScalarProperty Name="设计提交案" ColumnName="设计提交案" />
-                <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="销售_意向追踪日志">
-            <EntityTypeMapping TypeName="chicModel.销售_意向追踪日志">
-              <MappingFragment StoreEntitySet="销售_意向追踪日志">
-                <ScalarProperty Name="店铺ID" ColumnName="店铺ID" />
-                <ScalarProperty Name="是否申请设计师" ColumnName="是否申请设计师" />
-                <ScalarProperty Name="备注" ColumnName="备注" />
-                <ScalarProperty Name="店长审核" ColumnName="店长审核" />
-                <ScalarProperty Name="跟进结果" ColumnName="跟进结果" />
-                <ScalarProperty Name="跟进内容" ColumnName="跟进内容" />
-                <ScalarProperty Name="跟进方式" ColumnName="跟进方式" />
-                <ScalarProperty Name="跟进时间" ColumnName="跟进时间" />
-                <ScalarProperty Name="跟进人" ColumnName="跟进人" />
                 <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
@@ -1796,6 +1839,36 @@
                 <ScalarProperty Name="设计案需求提交时间" ColumnName="设计案需求提交时间" />
                 <ScalarProperty Name="设计师" ColumnName="设计师" />
                 <ScalarProperty Name="销售人员" ColumnName="销售人员" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="商品档案_SKU">
+            <EntityTypeMapping TypeName="chicModel.商品档案_SKU">
+              <MappingFragment StoreEntitySet="商品档案_SKU">
+                <ScalarProperty Name="停用标志" ColumnName="停用标志" />
+                <ScalarProperty Name="制单日期" ColumnName="制单日期" />
+                <ScalarProperty Name="制单人" ColumnName="制单人" />
+                <ScalarProperty Name="描述" ColumnName="描述" />
+                <ScalarProperty Name="SKU编号" ColumnName="SKU编号" />
+                <ScalarProperty Name="SPU_ID" ColumnName="SPU_ID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="销售_意向追踪日志">
+            <EntityTypeMapping TypeName="chicModel.销售_意向追踪日志">
+              <MappingFragment StoreEntitySet="销售_意向追踪日志">
+                <ScalarProperty Name="是否申请设计师" ColumnName="是否申请设计师" />
+                <ScalarProperty Name="备注" ColumnName="备注" />
+                <ScalarProperty Name="店长审核" ColumnName="店长审核" />
+                <ScalarProperty Name="跟进结果" ColumnName="跟进结果" />
+                <ScalarProperty Name="跟进内容" ColumnName="跟进内容" />
+                <ScalarProperty Name="跟进方式" ColumnName="跟进方式" />
+                <ScalarProperty Name="跟进时间" ColumnName="跟进时间" />
+                <ScalarProperty Name="跟进人" ColumnName="跟进人" />
+                <ScalarProperty Name="接待记录ID" ColumnName="接待记录ID" />
+                <ScalarProperty Name="店铺ID" ColumnName="店铺ID" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

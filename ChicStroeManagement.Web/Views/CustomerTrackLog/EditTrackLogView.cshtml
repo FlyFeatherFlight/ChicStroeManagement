@@ -7,7 +7,7 @@
 
 <div class="form-group">
     <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogEdit">
-        <div style="text-align:right">@Html.ActionLink("修改商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @Style = "font-size:12px" ,@align="right" })</div>
+        <div style="text-align:right">@Html.ActionLink("修改商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @Style = "font-size:12px", @align = "right" })</div>
         <table class="table table-responsive">
             <tr>
                 <td align="center">
@@ -26,7 +26,14 @@
                         }
                     }
                     <lable>跟进时间</lable>
-                    @Html.EditorFor(Model => Model.跟进时间, new { htmlAttributes = new { @class = "form-control" } })
+                    @{
+
+                        var s = @Model.跟进时间.ToShortDateString();
+
+                       <input type="date" name="跟进时间" value="@s" class="form-control" />
+
+                    }
+
                     <lable>跟进方式</lable>
                     @Html.EditorFor(Model => Model.跟进方式, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>跟进内容</lable>
@@ -42,15 +49,15 @@
                     <lable>是否申请设计师</lable>
                     @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } })|
                     @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
-                   
+
                 </td>
             </tr>
         </table>
         <hr />
-        <input id="Submit1" type="submit" value="提交" class="btn" />|   <input type="button" class="btn" onclick="javascript:window.history.go(-1);" value="取消">
+        <input id="Submit1" type="submit" value="提交" class="btn" />|<input type="button" class="btn" onclick="javascript:window.history.go(-1);" value="取消">
     </form>
 
- 
+
 </div>
 
 

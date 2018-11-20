@@ -16,9 +16,9 @@ namespace ChicStoreManagement.Model
     {
         public 销售_店铺员工档案()
         {
-            this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
             this.销售_接待记录 = new HashSet<销售_接待记录>();
             this.销售_订单 = new HashSet<销售_订单>();
+            this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
         }
     
         public int ID { get; set; }
@@ -36,8 +36,8 @@ namespace ChicStoreManagement.Model
     
         public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
         public virtual 销售_职务 销售_职务 { get; set; }
-        public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
         public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
         public virtual ICollection<销售_订单> 销售_订单 { get; set; }
+        public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
     }
 }

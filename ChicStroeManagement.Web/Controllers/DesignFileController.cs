@@ -64,6 +64,7 @@ namespace ChicStoreManagement.WEB.Controllers
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
             Session["DesignID"] = id;
+            ViewBag.DesignID = id;
             ViewBag.DesignFileCurrentSort = sortOrder;
             ViewBag.DesignFileDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignFileResult = sortOrder == "last" ? "last_desc" : "last";
@@ -122,14 +123,16 @@ namespace ChicStoreManagement.WEB.Controllers
         /// </summary>
         /// <param name="id">设计申请ID</param>
         /// <returns></returns>
-        public ActionResult FileUpload(int? id,string fileType)
+        public ActionResult FileUpload(int? id,string content)
         {
             Session["method"] = "N";
-            ViewBag.Filetype = fileType;
+            ViewBag.content = content;
             FileViewModel model = new FileViewModel();
+            var lis=fileTypeBLL.GetModels(p => true);
+
 
            
-            if (id == 0)
+            if (id == 0||id==null)
             {
                 return Content("<script>alert('设计案ID获取出错！');window.history.go(-1);</script>");
             }
@@ -143,7 +146,7 @@ namespace ChicStoreManagement.WEB.Controllers
         public JsonResult UploadFile(FileViewModel fileModel)
         {
             string msg = "true";
-            fileModel.DesignId =Int32.Parse(Session["DesignID"].ToString());
+            fileModel.DesignId = Int32.Parse(Session["DesignID"].ToString());
             if (fileModel.DesignId == 0)
             {
                 msg = "设计案ID获取出错！";
@@ -156,85 +159,81 @@ namespace ChicStoreManagement.WEB.Controllers
             //}
             SetEmployee();
 
+
+
+            fileModel.FileName = fileModel.UploadStream.FileName;
+            fileModel.UserName = employeeName;
+            fileModel.StoreName = storeBLL.GetModel(p => p.ID == storeID).名称;
+
+            var m = fileModel.UploadStream.InputStream;
+            msg = IsAllowedExtension(fileModel.UploadStream, fileModel.Filetype);
+            if (msg != "true")
+            {
+                return Json(msg);//如果上传文件不匹配，则返回出错信息！
+            }
+            var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.Filetype.ToString());//获得上传路径
+            fileModel.Path = path;
+            if (path == null || design_ProjectDrawingsBLL.GetModel(p => p.存储路径 == path) != null)
+            {
+                return Json("false");
+            }
+            销售_设计案提交表_项目相关图纸 model = new 销售_设计案提交表_项目相关图纸
+            {
+                提交人 = fileModel.UserName,
+                提交时间 = DateTime.Now,
+                更新人 = fileModel.UserName,
+                更新日期 = DateTime.Now,
+                设计案提交表ID = fileModel.DesignId,
+                文件名 = fileModel.FileName
+            };
+
+            var s = "";
+            switch (fileModel.Filetype)
+            {
+                case FileType.CAD图:
+                    s = fileModel.Filetype.ToString();
+                    model.存储路径 = fileModel.Path;
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.效果3D图:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.对比图:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.PDF文件:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.PPT文件:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+
+                    break;
+                case FileType.Excel文件:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.其它:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                default:
+                    break;
+            }
+
             if (ModelState.IsValid)
             {
-                
-                fileModel.FileName = fileModel.UploadStream.FileName;
-                fileModel.UserName = employeeName;
-                fileModel.StoreName = storeBLL.GetModel(p => p.ID == storeID).名称;
-
-                var m = fileModel.UploadStream.InputStream;
-                msg=IsAllowedExtension(fileModel.UploadStream,fileModel.Filetype);
-                if (msg!= "true")
-                {
-                    return Json(msg);//如果上传文件不匹配，则返回出错信息！
-                }
-                var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.Filetype.ToString());//获得上传路径
-                fileModel.Path = path;
-                if (path == null||design_ProjectDrawingsBLL.GetModel(p=>p.存储路径==path)!=null)
-                {
-                    return Json("false");
-                }
-                销售_设计案提交表_项目相关图纸 model = new 销售_设计案提交表_项目相关图纸
-                {
-                    提交人 = fileModel.UserName,
-                    提交时间 = DateTime.Now,
-                    更新人 = fileModel.UserName,
-                    更新日期 = DateTime.Now,
-                    设计案提交表ID = fileModel.DesignId,
-                    文件名=fileModel.FileName
-                };
-               
-                var s="";
-                switch (fileModel.Filetype)
-                {
-                    case FileType.CAD图:
-                        s = fileModel.Filetype.ToString();
-                        model.存储路径 = fileModel.Path;
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    case FileType.效果3D图:
-                        model.存储路径 = fileModel.Path;
-                         s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    case FileType.对比图:
-                        model.存储路径 = fileModel.Path;
-                         s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    case FileType.PDF文件:
-                        model.存储路径 = fileModel.Path;
-                        s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    case FileType.PPT文件:
-                        model.存储路径 = fileModel.Path;
-                        s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-
-                        break;
-                    case FileType.Excel文件:
-                        model.存储路径 = fileModel.Path;
-                        s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    case FileType.其它:
-                        model.存储路径 = fileModel.Path;
-                        s = fileModel.Filetype.ToString();
-                        model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
-                        break;
-                    default:
-                        break;
-                }
-
-                if (ModelState.IsValid)
-                {
-                    design_ProjectDrawingsBLL.Add(model);
-                    Session["method"] = "Y";
-                }
-
-
+                design_ProjectDrawingsBLL.Add(model);
+                Session["method"] = "Y";
                 ModelState.Clear();
             }
             else

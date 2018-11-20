@@ -17,28 +17,28 @@
         <input id="Submit1" type="submit" value="查询" class="btn" />
     </p>
 }
+<pre style="color:red"> 如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</pre>
 <hr />
 @{
     if (Model == null)
     {
         <div class="table-responsive">
-
             暂无当前店铺接待或跟进的相关数据！
         </div>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table">
                 <tr>
                     <th style="display:none">
                         ID
                     </th>
                     <th width="10%">店铺</th>
                     <th>接待序号</th>
-                    <th>@Html.ActionLink("接待日期", "CustomerIndex", new { sortOrder = ViewBag.CustomerDate })</th>
+                    <th>@Html.ActionLink("接待日期", "CustomerIndex", new { sortOrder = ViewBag.CustomerID })</th>
 
-                    <th> @Html.ActionLink("客户姓名", "CustomerIndex", new { sortOrder = ViewBag.CustomerName })</th>
+                    <th>客户姓名</th>
                     <th>性别</th>
                     <th>年龄段</th>
                     <th>客户类别</th>
@@ -57,51 +57,58 @@
                 @foreach (var item in Model)
                 {
 
+
+                    string fontColor = "";
+
+                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
+                    {
+                        fontColor = "color:black";
+                    }
+                    else
+                    {
+                        fontColor = "color:gray";
+                    }
                     if (item.跟进人 == null)
                     {
-                        #region 如果没有跟进人
-                        <tr style="color:red">
-                            <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
-                            <td> @Html.DisplayFor(modelItem => item.店铺)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待序号)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
+                        fontColor = "color:red";
+                    }
 
-                            <td> @Html.DisplayFor(modelItem => item.客户姓名)</td>
-                            <td> @Html.DisplayFor(modelItem => item.性别)</td>
-                            <td> @Html.DisplayFor(modelItem => item.年龄段)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户类别)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户来源)</td>
 
-                            <td> @Html.DisplayFor(modelItem => item.客户类型)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
-                            <td> @Html.DisplayFor(modelItem => item.社交软件)</td>
-                            <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待人)</td>
-                            <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
-                            @{
-                                if (item.是否有意向 == true)
+                   
+                <tr style="@fontColor">
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
+                    <td> @Html.DisplayFor(modelItem => item.店铺)</td>
+                    <td> @Html.DisplayFor(modelItem => item.接待序号)</td>
+                    <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
+
+                    <td> @Html.DisplayFor(modelItem => item.客户姓名)</td>
+                    <td> @Html.DisplayFor(modelItem => item.性别)</td>
+                    <td> @Html.DisplayFor(modelItem => item.年龄段)</td>
+                    <td> @Html.DisplayFor(modelItem => item.客户类别)</td>
+                    <td> @Html.DisplayFor(modelItem => item.客户来源)</td>
+
+                    <td> @Html.DisplayFor(modelItem => item.客户类型)</td>
+                    <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
+                    <td> @Html.DisplayFor(modelItem => item.社交软件)</td>
+                    <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
+                    <td> @Html.DisplayFor(modelItem => item.接待人)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+                    @{
+                        if (item.是否有意向 == true)
+                        {
+
+                            <td>是</td>
+                            
+                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
                                 {
-
-                                    <td>是</td>
+                                   
+                            <td>
+                                @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })| @Html.ActionLink("预购", "ExceptedBuyIndex", new { id = item.ID, @class = "form-control", @Style = "font-size:12px" })
+                                @if (item.跟进人!=null)
+                                {
+                                <b>|</b> @Html.ActionLink("跟进", "TrackLogIndex", "CustomerTrackLog", new { id=item.ID}, new { @Style = "font-size:12px" })
                                 }
-                                else if (item.是否有意向 == false)
-                                {
-
-                                    <td>否</td>
-                                }
-                                else
-                                {
-                                    <td>待定</td>
-                                }
-
-                            }
-
-                            @{
-                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position==3)
-                                {
-                                    <td>
-                                        @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })| @Html.ActionLink("添加预购", "AddExceptedBuyView", new { receptionid = item.ID, @class = "form-control", @Style = "font-size:12px" })
-                                    </td>
+                            </td>
                                 }
 
                                 else
@@ -110,54 +117,17 @@
                                         无权限!
                                     </td>
                                 }
-                            }
-                        </tr>
-                        #endregion
-                    }
+                           
+                        }
+                        else if (item.是否有意向 == false)
+                        {
 
-                    else
-                    {
-                        #region 有跟进人
-                        <tr>
-                            <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
-                            <td> @Html.DisplayFor(modelItem => item.店铺)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待序号)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
-
-                            <td> @Html.DisplayFor(modelItem => item.客户姓名)</td>
-                            <td> @Html.DisplayFor(modelItem => item.性别)</td>
-                            <td> @Html.DisplayFor(modelItem => item.年龄段)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户类别)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户来源)</td>
-
-                            <td> @Html.DisplayFor(modelItem => item.客户类型)</td>
-                            <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
-                            <td> @Html.DisplayFor(modelItem => item.社交软件)</td>
-                            <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待人)</td>
-                            <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
-                            @{
-                                if (item.是否有意向 == true)
-                                {
-
-                                    <td>是</td>
-                                }
-                                else if (item.是否有意向 == false)
-                                {
-
-                                    <td>否</td>
-                                }
-                                else
-                                {
-                                    <td>待定</td>
-                                }
-
-                            }
-                            @{
+                            <td>否</td>
+                           
                                 if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
                                 {
                                     <td>
-                                        @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })| @Html.ActionLink("添加预购", "AddExceptedBuyView", new { receptionid = item.ID, @class = "form-control", @Style = "font-size:12px" })
+                                        @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })
                                     </td>
                                 }
 
@@ -167,12 +137,21 @@
                                         无权限!
                                     </td>
                                 }
-                            }
-                        </tr>
-                        #endregion
+                          
+                        }
+                        else
+                        {
+                            <td>待定</td>
+                        }
+
                     }
 
-                }
+
+                </tr>
+                               
+
+
+                                }
             </table>
         </div>
 

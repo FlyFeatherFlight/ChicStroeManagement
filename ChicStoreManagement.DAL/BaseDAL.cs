@@ -171,7 +171,7 @@ namespace ChicStoreManagement.DAL
         /// <returns></returns>
         public T GetModel(Expression<Func<T, bool>> whereLambda)
         {
-            return dbContext.Set<T>().Where(whereLambda).AsNoTracking().FirstOrDefault();
+           return dbContext.Set<T>().Where(whereLambda).AsNoTracking().FirstOrDefault();
         }
         #endregion
         #region 4.1 根据条件查询单个model并排序  +  T GetModel<TKey>(Expression<Func<T, bool>> whereLambda, Expression<Func<T, TKey>> orderLambda, bool isAsc = true)

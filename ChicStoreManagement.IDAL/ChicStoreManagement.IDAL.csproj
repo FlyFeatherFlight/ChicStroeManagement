@@ -55,6 +55,7 @@
     <Compile Include="IExpectedBuyDAL.cs" />
     <Compile Include="IFileTypeDAL.cs" />
     <Compile Include="IProductCodeDAL.cs" />
+    <Compile Include="IProductSkuDAL.cs" />
     <Compile Include="ISalesOrderDAL.cs" />
     <Compile Include="IStoreDAL.cs" />
     <Compile Include="IPositionDAL.cs" />

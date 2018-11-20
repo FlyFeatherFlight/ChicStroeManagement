@@ -12,6 +12,7 @@ namespace ChicStoreManagement.Controllers
     public class DesignSchemeController : Controller
     {
         private readonly ICustomerInfoBLL customerInfoBLL;
+        private readonly ICustomerTrackingBLL customerTrackingBLL;
         private readonly IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL;
         private readonly IDesignSubmitBLL designSubmitBLL;
         private readonly IExceptedBuyBLL exceptedBuyBLL;
@@ -19,12 +20,14 @@ namespace ChicStoreManagement.Controllers
         private readonly IStoreBLL storeBLL;
         private readonly IPositionBLL positionBLL;
         private readonly IStoreEmployeesBLL storeEmployeesBLL;
+     
+
         private int employeeID;
         private string employeeName;
         private string store;
         private int storeID;
 
-        public DesignSchemeController(ICustomerInfoBLL customerInfoIBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL, IExceptedBuyBLL exceptedBuyBLL, IProductCodeBLL productCodeBLL)
+        public DesignSchemeController(ICustomerInfoBLL customerInfoIBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL, IExceptedBuyBLL exceptedBuyBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL)
         {
             this.customerInfoBLL = customerInfoIBLL;
             this.design_CustomerExceptedBuyBLL = design_CustomerExceptedBuyBLL;
@@ -34,6 +37,7 @@ namespace ChicStoreManagement.Controllers
             this.storeEmployeesBLL = storeEmployeesBLL;
             this.exceptedBuyBLL = exceptedBuyBLL;
             this.productCodeBLL = productCodeBLL;
+            this.customerTrackingBLL = customerTrackingBLL;
         }
 
         /// <summary>
@@ -55,6 +59,10 @@ namespace ChicStoreManagement.Controllers
             List<DesignSubmitModel> designSubmitModels = new List<DesignSubmitModel>();
             //构建设计表信息  
            designSubmitModels = BuildDesignSubInfo(id).ToList();
+            if (id!=0&&id!=null)
+            {
+                ViewBag.DreceptionID = id;
+            }
             if (designSubmitModels==null)
             {
                 return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
@@ -100,12 +108,70 @@ namespace ChicStoreManagement.Controllers
 
 
         /// <summary>
-        /// 添加设计方案
+        ///当前跟进人的名录
         /// </summary>
         /// <returns></returns>
-        public ActionResult AddDesignView()
+        public ActionResult DoingApplyDesignView( string sortOrder, string searchString, string currentFilter, int? page)
         {
-            return View();
+            Session["method"] = "N";
+            SetEmployee();
+            ViewBag.CustomerDesignCurrentSort = sortOrder;
+            ViewBag.CustomerDesignDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.CustomerDesignName = sortOrder == "last" ? "last_desc" : "last";
+           var customerInfoModels= BuildCustomerInfo();//将顾客接待信息数据优化
+            
+            List<BaseCustomerInfo> model = new List<BaseCustomerInfo>();
+            foreach (var item in customerInfoModels)
+            {
+                BaseCustomerInfo baseCustomerInfo = new BaseCustomerInfo();
+                baseCustomerInfo.客户姓名 = item.客户姓名;
+                baseCustomerInfo.接待序号 = item.接待序号;
+                baseCustomerInfo.接待记录ID = item.ID;
+                baseCustomerInfo.联系方式 = item.客户电话;
+                baseCustomerInfo.接待日期 = item.接待日期;
+                model.Add(baseCustomerInfo);
+            }
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CustomerDesignCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            var models = model.AsQueryable();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                models = models.Where(w => w.联系方式 == searchString);//通过姓名查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    models = models.OrderByDescending(w => w.接待日期);
+                    break;
+                case "last_desc":
+                    models = models.OrderByDescending(w => w.客户姓名);
+                    break;
+                case "last":
+                    models = models.OrderBy(w => w.客户姓名);
+                    break;
+                default:
+                    models = models.OrderBy(w => w.接待日期);
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.CustomerDesignName = employeeName;//给前端传入当前操作人
+            ViewBag.CustomerDesignPosition = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
+
+
+            return View(models.ToPagedList(pageNumber, pageSize));
         }
 
         #region 设计案申请模块
@@ -113,14 +179,31 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 申请设计
         /// </summary>
-       
         /// <returns></returns>
-        public ActionResult ApplyDesignView()
+        public ActionResult ApplyDesignView(int? recepitonID)
         {
             Session["method"] = "N";
             SetEmployee();
             List<销售_接待记录> customerInfos = new List<销售_接待记录>();
-            if (employeeID!=0)
+            DesignSubmitModel designSubmitModel = new DesignSubmitModel();
+            if (recepitonID!=null&&recepitonID!=0)
+            {
+                var model = customerInfoBLL.GetModel(p => p.ID == recepitonID);
+                designSubmitModel.客户姓名 = model.客户姓名;
+                designSubmitModel.家庭成员 = model.家庭成员;
+                designSubmitModel.职业 = model.家庭成员;
+                designSubmitModel.楼盘具体位置 = model.安装地址;
+                designSubmitModel.职业 = model.客户职业;
+                designSubmitModel.联系方式 = model.客户电话;
+                designSubmitModel.客户喜好 = model.主导者喜好风格;
+                designSubmitModel.客户在意品牌或已购买品牌 = model.比较品牌;
+                designSubmitModel.装修风格 = model.装修风格;
+                designSubmitModel.装修进度 = model.装修进度;
+                designSubmitModel.预算 = model.预算金额;
+                designSubmitModel.接待记录ID = model.ID;
+                designSubmitModel.销售人员 = employeeName;
+            }
+            else if (employeeID!=0)
             {
                 customerInfos = customerInfoBLL.GetModels(p => p.接待人ID == employeeID || p.跟进人ID == employeeID).ToList();
                 SelectList customerInfosSelectListItem = new SelectList(customerInfos, "客户电话", "客户电话");
@@ -128,7 +211,7 @@ namespace ChicStoreManagement.Controllers
          
             }
             ViewBag.EmployeeName = employeeName;
-            return View();
+            return View(designSubmitModel);
 
         }
 
@@ -157,7 +240,7 @@ namespace ChicStoreManagement.Controllers
             {
                 销售_设计案提交表 model = new 销售_设计案提交表
                 {
-                    接待记录ID=designSubmitModel.接待记录ID,
+                    接待记录ID = designSubmitModel.接待记录ID,
                     客户姓名 = designSubmitModel.客户姓名,
                     联系方式 = designSubmitModel.联系方式,
                     职业 = designSubmitModel.职业,
@@ -224,9 +307,9 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult EditDesignApply(int id) {
             Session["method"] = "N";
-            if (designSubmitBLL.GetModel(p => p.id == id).店长确认.Value==true)
+            if (designSubmitBLL.GetModel(p => p.id == id).店长确认!=null&& designSubmitBLL.GetModel(p => p.id == id).店长确认 == true)
             {
-                return Content("该记录不可修改！");
+                return Content("该记录已被审核通过，不可修改！");
             }
             销售_设计案提交表 model = new 销售_设计案提交表();
             model=designSubmitBLL.GetModel(p => p.id == id);
@@ -408,7 +491,7 @@ namespace ChicStoreManagement.Controllers
                 submitModel.审批状态 = true;
             }
 
-            var costomerModels = BuildCustomerInfo();
+         
 
             submitModel.销售_设计案提交表_客户意向产品明细 = BuildExceptedBuy(submitModel.接待记录ID);
             return View(submitModel);
@@ -447,8 +530,16 @@ namespace ChicStoreManagement.Controllers
         {
 
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
-
-            var customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺所有顾客接待信息
+            List<销售_接待记录> customer = new List<销售_接待记录>();
+            if (storeEmployeesBLL.GetModel(p=>p.ID==employeeID).职务ID==3)
+            {
+                 customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID).ToList();//查询当前店铺所有顾客接待信息
+            }
+            else
+            {
+                customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.跟进人ID == employeeID).ToList();//查询当前跟进顾客接待信息
+            }
+           
             if (customer != null)
             {
                 foreach (var item in customer)

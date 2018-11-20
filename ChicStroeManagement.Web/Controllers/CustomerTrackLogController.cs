@@ -69,19 +69,19 @@ namespace ChicStoreManagement.Controllers
             ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
             if (id != null && id != 0)
             {
-                customerTrackingModels = BuildTrackingInfo(id, employeeID);//获取当前人员可查看的跟进信息
+                customerTrackingModels = BuildTrackingInfo(id);//获取当前人员可查看的跟进信息
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
             }
             else
             {
-                customerTrackingModels = BuildTrackingInfo(0, employeeID);
+                customerTrackingModels = BuildTrackingInfo(0);
             }
             if (customerTrackingModels == null)
             {
                 return Content("当前操作人并无关联的跟进信息或无进入权限！");
             }
             BuildCustomerInfo();//将顾客接待信息数据优化
-            ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端
+            
             ViewBag.storeName = store;//将当前店铺名字传到前端
             if (searchString != null)
             {
@@ -129,22 +129,23 @@ namespace ChicStoreManagement.Controllers
         /// </summary>
         /// <param name="reception">接待序号</param>
         /// <param name="trackingPeopleName">跟进人姓名</param>
-        /// <param name="storeName">店铺名字</param>
+     
         /// <returns></returns>
-        public ActionResult AddTrackLogView(string reception, string trackingPeopleName, string storeName)
+        public ActionResult AddTrackLogView(string reception)
         {
             Session["method"] = "N";
+            SetEmployee();
             CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
             {
-                店铺 = storeName,
-                跟进人 = trackingPeopleName
+                店铺 = store,
+                跟进人 = employeeName
             };
             if (reception != null)
             {
                 customerTrackingModel.接待序号 = reception;
-                customerTrackingModel.接待ID = customerInfoBLL.GetModel(p=>p.接待序号==reception).接待人ID;
+                customerTrackingModel.接待ID = customerInfoBLL.GetModel(p=>p.接待序号==reception).ID;
             }
-            var trackingPeopleId = storeEmployeesBLL.GetModel(p => p.姓名 == trackingPeopleName).ID;
+            var trackingPeopleId = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).ID;
             var customerModels = customerInfoBLL.GetModels(p => p.跟进人ID == trackingPeopleId);
 
             if (customerModels.Count() == 0)//如果没有查到匹配的跟进信息
@@ -153,9 +154,7 @@ namespace ChicStoreManagement.Controllers
                 return Content(str);
             }
 
-
-            SelectList receptionSelectListItems = new SelectList(customerModels, "客户电话", "客户电话");
-            ViewBag.ReceptionOptions = receptionSelectListItems;
+            ViewBag.ReceptionSer = customerTrackingModel.接待序号;
 
 
 
@@ -173,20 +172,22 @@ namespace ChicStoreManagement.Controllers
             {
 
 
-                销售_意向追踪日志 trackLog = new 销售_意向追踪日志
-                {
-                    店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID,
-                    备注 = customerTrackingModel.备注,
-                    店长审核 = customerTrackingModel.店长审核,
-                    接待记录ID = customerInfoBLL.GetModel(p => p.客户电话 == customerTrackingModel.客户电话).ID,
-                    是否申请设计师 = customerTrackingModel.是否申请设计师,
-                    跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID,
-                    跟进内容 = customerTrackingModel.跟进内容,
-                    跟进方式 = customerTrackingModel.跟进方式,
-                    跟进时间 = customerTrackingModel.跟进时间,
-                    跟进结果 = customerTrackingModel.跟进结果
+                销售_意向追踪日志 trackLog = new 销售_意向追踪日志();
+
+
+                trackLog.店铺ID = storeBLL.GetModel(P => P.名称 == customerTrackingModel.店铺).ID;
+                    trackLog.备注 = customerTrackingModel.备注;
+                trackLog.店长审核 = customerTrackingModel.店长审核;
+                trackLog.接待记录ID = customerInfoBLL.GetModel(p => p.接待序号 == customerTrackingModel.接待序号).ID;
+                trackLog.是否申请设计师 = customerTrackingModel.是否申请设计师;
+                    trackLog.跟进人 = storeEmployeesBLL.GetModel(p => p.姓名 == customerTrackingModel.跟进人).ID;
+                trackLog.跟进内容 = customerTrackingModel.跟进内容;
+                    trackLog.跟进方式 = customerTrackingModel.跟进方式;
+                trackLog.跟进时间 = customerTrackingModel.跟进时间;
+                    
                 
-                };
+             
+                trackLog.跟进结果 = Enum.GetName(typeof(CustomerTrackResult), customerTrackingModel.跟进结果).ToString();
                 if (ModelState.IsValid)
                 {
                     customerTrackingBLL.Add(trackLog);
@@ -219,9 +220,9 @@ namespace ChicStoreManagement.Controllers
             catch (Exception ex)
             {
 
-                return Content("<script>alert('添加日志异常" + ex + "');window.history.go(-1);</script>");
+                return Content("添加跟进日志时错误:"+ex.ToString());
             }
-            return RedirectToAction("TrackLogIndex");
+            return RedirectToAction("TrackLogIndex",new { id=customerTrackingModel.接待ID});
         }
         /// <summary>
         /// 修改跟进日志
@@ -250,10 +251,29 @@ namespace ChicStoreManagement.Controllers
                 跟进内容 = model.跟进内容,
                 跟进方式 = model.跟进方式,
                 跟进时间 = model.跟进时间,
-                跟进结果 = model.跟进结果,
+               
                 客户电话=customerInfoBLL.GetModel(p=>p.ID==model.接待记录ID).客户电话
             };
-
+            switch (model.跟进结果)
+            {
+                case "成交":
+                    customerTrackingModel.跟进结果 = CustomerTrackResult.成交;
+                    break;
+                case "申请设计":
+                    customerTrackingModel.跟进结果 = CustomerTrackResult.申请设计;
+                    break;
+                case "观察":
+                    customerTrackingModel.跟进结果 = CustomerTrackResult.观察;
+                    break;
+                case "放弃":
+                    customerTrackingModel.跟进结果 = CustomerTrackResult.放弃;
+                    break;
+                case "继续跟进":
+                    customerTrackingModel.跟进结果 = CustomerTrackResult.继续跟进;
+                    break;
+                default:
+                    break;
+            }
 
             return View(customerTrackingModel);
         }
@@ -283,7 +303,7 @@ namespace ChicStoreManagement.Controllers
                     跟进内容 = customerTrackingModel.跟进内容,
                     跟进方式 = customerTrackingModel.跟进方式,
                     跟进时间 = customerTrackingModel.跟进时间,
-                    跟进结果 = customerTrackingModel.跟进结果
+                    跟进结果 = customerTrackingModel.跟进结果.ToString()
                 };
                 if (ModelState.IsValid)
                 {
@@ -385,16 +405,16 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 根据当前操作人员或职位或接待id查找跟进信息
         /// </summary>
-        /// <param name="customerInfoID">接待id</param>
-        /// <param name="employeeName">当前操作人员姓名</param>
+        /// <param name="id">接待id</param>
+        
         /// <returns>跟进信息</returns>s
-        private List<CustomerTrackingModel> BuildTrackingInfo(int? customerInfoID, int employeeId)
+        private List<CustomerTrackingModel> BuildTrackingInfo(int? id)
         {
             List<销售_意向追踪日志> mt = new List<销售_意向追踪日志>();
             var e = storeEmployeesBLL.GetModel(p => p.ID == employeeID);
-            if (customerInfoID != 0)
+            if (id != 0)
             {
-                mt = customerTrackingBLL.GetModels(p => p.接待记录ID == customerInfoID).ToList();//查看当前客户的跟进信息
+                mt = customerTrackingBLL.GetModels(p => p.接待记录ID == id).ToList();//查看当前客户的跟进信息
             }
             else if (e.职务ID == 3)
             {
@@ -403,7 +423,7 @@ namespace ChicStoreManagement.Controllers
 
             else
             {
-                mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).ToList();//店员查看所有(只有自己跟进的)
+                mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).ToList();//店员查看(只有自己跟进的)
             }
 
 
@@ -424,10 +444,31 @@ namespace ChicStoreManagement.Controllers
                     跟进内容 = item.跟进内容,
                     跟进方式 = item.跟进方式,
                     跟进时间 = item.跟进时间,
-                    跟进结果 = item.跟进结果,
+              
                     店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称
                 };
                 customerTrackingModels.Add(customerTrackingModel);
+                switch (item.跟进结果)
+                {
+                    case "成交":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.成交;
+                        break;
+                    case "申请设计":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.申请设计;
+                        break;
+                    case "观察":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.观察;
+                        break;
+                    case "放弃":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.放弃;
+                        break;
+                    case "继续跟进":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.继续跟进;
+                        break;
+                    default:
+                        break;
+                }
+
             }
 
             return customerTrackingModels;

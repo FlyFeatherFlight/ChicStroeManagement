@@ -30,5 +30,6 @@ namespace ChicStoreManagement.Model
         public Nullable<System.DateTime> 默认交期 { get; set; }
     
         public virtual 销售_订单 销售_订单 { get; set; }
+        public virtual 商品档案_SKU 商品档案_SKU { get; set; }
     }
 }

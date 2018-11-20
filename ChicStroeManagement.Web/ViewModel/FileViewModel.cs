@@ -13,7 +13,8 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name ="文件名称")]
         public string FileName { get; set; }
         [Display(Name ="文件类型")]
-        [Required(ErrorMessage ="选择正确的文件类型")]
+        [DataType(DataType.Text)]
+     
         public FileType Filetype { get; set; }
         [Display(Name ="店铺名称")]
         public string StoreName { get; set; }
@@ -30,18 +31,25 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Text)]
         [Required]
         public int DesignId { get; set; }
-    
+  
     }
-    public enum FileType
+      public enum FileType
     {
-        CAD图 = 0,
-        效果3D图 = 1,
-        对比图 = 2,
-        PDF文件 = 3,
-        PPT文件 = 4,
-        Excel文件 = 5,
-        其它 = 6,
-        完成效果文件 = 7
-
+        [Display(Name = "CAD图")]
+        CAD图,
+        [Display(Name = "效果3D图")]
+        效果3D图,
+        [Display(Name = "对比图")]
+        对比图,
+        [Display(Name = "PDF文件")]
+        PDF文件,
+        [Display(Name = "PPT文件")]
+        PPT文件,
+        [Display(Name = "Excel文件")]
+        Excel文件,
+        [Display(Name = "完成文件")]
+        完成文件,
+        [Display(Name = "其它")]
+        其它   
     }
 }

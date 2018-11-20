@@ -258,8 +258,9 @@
                     <input name="装修情况" type="radio" value="待交房" />待交房 &nbsp;
                     <input name="装修情况" type="radio" value="已交房（精装）" />已交房（精装） &nbsp;
                     <input name="装修情况" type="radio" value="正在装修" />正在装修 &nbsp;
-                    @Html.LabelFor(Model => Model.装修进度)
-                    @Html.EditorFor(Model => Model.装修进度, new { htmlAttributes = new { @class = "form-control" } })
+                    <br />
+                  
+                    <label>装修进度:</label><input type="text"  name="装修进度" value="@Model.装修进度" class="form-control" />
 
 
                 </td>
@@ -280,10 +281,10 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(Model => Model.设计师)
+                    <label>携带设计师</label>
                 </td>
                 <td>
-                    @Html.DropDownListFor(Model => Model.设计师, ViewBag.EmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    @Html.EditorFor(Model=>Model.设计师, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
             </tr>
             <tr>

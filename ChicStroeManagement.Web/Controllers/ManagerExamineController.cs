@@ -208,9 +208,31 @@ namespace ChicStoreManagement.Controllers
                     跟进内容 = item.跟进内容,
                     跟进方式 = item.跟进方式,
                     跟进时间 = item.跟进时间,
-                    跟进结果 = item.跟进结果,
+                   
+                   
                     店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称
                 };
+                switch (item.跟进结果)
+                {
+                    case "成交":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.成交;
+                        break;
+                    case "申请设计":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.申请设计;
+                        break;
+                    case "观察":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.观察;
+                        break;
+                    case "放弃":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.放弃;
+                        break;
+                    case "继续跟进":
+                        customerTrackingModel.跟进结果 = CustomerTrackResult.继续跟进;
+                        break;
+                    default:
+                        break;
+                }
+                
                 customerTrackingModels.Add(customerTrackingModel);
             }
 

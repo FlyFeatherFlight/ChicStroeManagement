@@ -1,4 +1,5 @@
 ﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
 using PagedList;
 using System;
@@ -109,24 +110,28 @@ namespace ChicStoreManagement.WEB.Controllers
             }
        
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
-            var phoneNumber = designSubmitBLL.GetModel(w => w.id == subid).联系方式;
-            try
+            if (subid!=null&&subid!=0)
             {
 
-           
-            designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).合同编号;//合同编号
+                var phoneNumber = designSubmitBLL.GetModel(w => w.id == subid).联系方式;
+                try
+                {
 
-            designResultViewModel.设计案提交表ID = subid;
-            designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID ==storeID).订单编号;//订单编号
-            designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).单据编号;//单据编号
 
+                    designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).合同编号;//合同编号
+
+                    designResultViewModel.设计案提交表ID = subid;
+                    designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).订单编号;//订单编号
+                    designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).单据编号;//单据编号
+
+                }
+                catch (Exception)
+                {
+                    return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
+                }
+                designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
+                designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
             }
-            catch (Exception)
-            {
-                return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
-            }
-            designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
-            designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
             return View(designResultViewModel);
         }
 

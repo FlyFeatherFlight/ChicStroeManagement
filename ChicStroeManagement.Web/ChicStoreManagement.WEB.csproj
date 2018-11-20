@@ -191,7 +191,6 @@
     <Compile Include="Controllers\DesignFileController.cs" />
     <Compile Include="Controllers\DesignResultController.cs" />
     <Compile Include="Controllers\DesignTrackLogController.cs" />
-    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\ManagerGoalController.cs" />
     <Compile Include="CustomAttributes\AuthorizationFilterAttribute.cs" />
     <Compile Include="App_Start\AutoFacConfig.cs" />
@@ -215,6 +214,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Utils\UploadManager.cs" />
+    <Compile Include="ViewModel\BaseCustomerInfo.cs" />
     <Compile Include="ViewModel\CustomerExceptedBuyModel.cs" />
     <Compile Include="ViewModel\CustomerTrackingModel.cs" />
     <Compile Include="ViewModel\DesignFileViewModel.cs" />
@@ -1069,7 +1069,7 @@
     <Content Include="Views\CustomerTrackLog\AddTrackLogView.cshtml" />
     <Content Include="Views\CustomerTrackLog\EditTrackLogView.cshtml" />
     <Content Include="Views\DesignScheme\DesignSchemeIndex.cshtml" />
-    <Content Include="Views\DesignScheme\AddDesignView.cshtml" />
+    <Content Include="Views\DesignScheme\DoingApplyDesignView.cshtml" />
     <Content Include="Views\DesignScheme\ApplyDesignView.cshtml" />
     <Content Include="Views\DesignScheme\AddDesignTrackLogView.cshtml" />
     <Content Include="Views\ManagerExamine\Index.cshtml" />

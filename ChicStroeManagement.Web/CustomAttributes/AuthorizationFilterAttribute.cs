@@ -95,7 +95,7 @@ namespace ChicStoreManagement.CustomAttributes
             string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
             ///检查操作权限
-            CheckAuth(Employees.职务, actionName, contollerName);
+            CheckAuth(Employees.职务,Employees.停用标志, actionName, contollerName);
 
             if (isState)//如果满足
             {
@@ -135,8 +135,15 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="positionName">职位</param>
         /// <param name="actionName">action名字</param>
         /// <param name="contollerName">control名</param>
-        private void CheckAuth(string positionName, string actionName, string contollerName)
+        private void CheckAuth(string positionName,bool stopFlag, string actionName, string contollerName)
         {
+
+            if (stopFlag == true)
+            {  
+                //停用之后，不可登陆
+                isState = false;
+                return;
+            }
             if (contollerName != "ManagerExamine" && contollerName != "Manager"&& contollerName!= "ManagerGoal")
             {
                 isState = true;

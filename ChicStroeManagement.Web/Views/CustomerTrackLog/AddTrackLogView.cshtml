@@ -14,24 +14,15 @@
                     <label>当前店铺</label>
                     <input name="店铺" type="text" value="@Model.店铺" readonly="readonly" class="form-control" />
                     <label>接待序号</label>
-                    @{
-                        if (Model.客户电话 != null)
-                        {
-                            <input type="text" name="客户电话" value="@Model.客户电话" readonly="readonly" />
-                        }
-                        else
-                        {
-                            @Html.DropDownListFor(Model => Model.客户电话, ViewBag.ReceptionOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
-                        }
-                    }
+                    <input type="text" name="接待序号" value="@Model.接待序号" readonly="readonly" class="form-control"/>
                     <lable>跟进时间</lable>
-                    @Html.EditorFor(Model => Model.跟进时间, new { htmlAttributes = new { @class = "form-control" } })
+                    <input type="date" name="跟进时间" class="form-control" />
                     <lable>跟进方式</lable>
                     @Html.EditorFor(Model => Model.跟进方式, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>跟进内容</lable>
                     <textarea name="跟进内容" class="form-control" rows="3"></textarea>
                     <lable>跟进结果</lable>
-                    @Html.EditorFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EnumDropDownListFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>备注</lable>
                     @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
                     @*<lable>店长审核</lable>

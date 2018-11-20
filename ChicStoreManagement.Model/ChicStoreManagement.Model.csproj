@@ -73,6 +73,9 @@
       <DependentUpon>ChicEntity.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="商品档案_SKU.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="商品档案_型号.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>

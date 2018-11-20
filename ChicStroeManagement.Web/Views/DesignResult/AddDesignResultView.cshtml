@@ -6,8 +6,8 @@
 
 <h2>提交设计案完结单</h2>
 
-<form action="/" method="post">
-    <table>
+<form action="AddDesignResult" method="post">
+    <table class="table">
         <tr>
             <td>客户单号</td>
             <td><input type="text" name="客户编号" value="@Model.客户编号" readonly="readonly"/> </td>
@@ -65,23 +65,29 @@
                         <td></td>
                     </tr>
                     @{
-                        var n = 0;
-                        foreach (var item in Model.设计_设计案完结单_家具成交单)
+
+                        if (Model.设计_设计案完结单_家具成交单 != null && Model.设计_设计案完结单_家具成交单.Count != 0)
                         {
-                            <tr>
-                                <td>@item.空间</td>
-                                <td>@item.产品型号</td>
-                                <td>@item.单位</td>
-                                <td>@item.数量</td>
-                                <td>@item.成交价</td>
-                            </tr>
-                            n = n + int.Parse(item.成交价.Value.ToString());
+                            var n = 0;
+                            foreach (var item in Model.设计_设计案完结单_家具成交单)
+                            {
+                                <tr>
+                                    <td>@item.空间</td>
+                                    <td>@item.产品型号</td>
+                                    <td>@item.单位</td>
+                                    <td>@item.数量</td>
+                                    <td>@item.成交价</td>
+                                </tr>
+                                n = n + int.Parse(item.成交价.Value.ToString());
+                                <tr>
+                                    <td>合计成交金额</td>
+                                    <td><input type="text" name="合计成交金额" value="@n" /></td>
+                                </tr>
+                            }
+
                         }
 
-                        <tr>
-                            <td>合计成交金额</td>
-                            <td><input type="text" name="合计成交金额" value="@n" /></td>
-                        </tr>
+
                     }
                 </table>
             </td>
@@ -92,4 +98,6 @@
         </tr>
 
     </table>
+    <input type="submit" name="提交" value="提交" />
 </form>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

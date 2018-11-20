@@ -128,7 +128,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             if (designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员==null)
             {
-                return Content("设计或店长未确认，非法操作!");
+                return Content("设计未确认，非法操作!");
             }
             销售_设计案跟进日志 model = new 销售_设计案跟进日志
             {
@@ -289,6 +289,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 designTackLogViewModel.销售人员 = item.销售人员;
                 designTackLogViewModel.需要的支持 = item.需要的支持;
                 designTackLogViewModel.预计签约时间 = item.预计签约时间;
+                    designTackLogViewModel.楼盘具体位置 = designSubmitBLL.GetModel(p => p.id == id).楼盘具体位置;
                 designTackLogViewModels.Add(designTackLogViewModel);
             }
 

@@ -51,8 +51,8 @@ namespace ChicStoreManagement.Controllers
             Session["method"] = "N";
             SetEmployee();
             ViewBag.CustomerCurrentSort = sortOrder;
-            ViewBag.CustomerDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
-            ViewBag.CustomerName = sortOrder == "last" ? "last_desc" : "last";
+            ViewBag.CustomerDate = sortOrder =="first"? "first_desc" : "first";//该排序作废
+            ViewBag.CustomerID = sortOrder == "last" ? "last_desc" : "last";
             BuildCustomerInfo();//将顾客接待信息数据优化
             if (searchString != null)
             {
@@ -76,10 +76,10 @@ namespace ChicStoreManagement.Controllers
                     customerInfoModels = customerInfoModels.OrderByDescending(w => w.接待日期);
                     break;
                 case "last_desc":
-                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.客户姓名);
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID);
                     break;
                 case "last":
-                    customerInfoModels = customerInfoModels.OrderBy(w => w.客户姓名);
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.ID);
                     break;
                 default:
                     customerInfoModels = customerInfoModels.OrderBy(w => w.接待日期);
@@ -138,7 +138,6 @@ namespace ChicStoreManagement.Controllers
                 string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
                 return Content(str);
             }
-          
 
             SetEmployee();
             var employee = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName);
@@ -184,7 +183,12 @@ namespace ChicStoreManagement.Controllers
                 model.装修进度 = customerInfoModel.装修进度;
                 model.装修风格 = customerInfoModel.装修风格;
                 model.设计师 = customerInfoModel.设计师;
-                model.跟进人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;//初次添加，跟进人为当前接待人员。
+                var recPersonID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;
+                if (storeEmployeesBLL.GetModel(p=>p.姓名== customerInfoModel.接待人).跟进目标计划数>customerInfoBLL.GetModels(p=>p.跟进人ID== recPersonID).Count())
+                {
+                    model.跟进人ID = storeEmployeesBLL.GetModel(p => p.姓名 == customerInfoModel.接待人).ID;//初次添加且当前接待人员跟进指标未满，跟进人为当前接待人员。否则为空。
+                }
+               
                
 
                 model.返点 = customerInfoModel.返点;

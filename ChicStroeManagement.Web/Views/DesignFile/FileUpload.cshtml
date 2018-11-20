@@ -1,6 +1,6 @@
-﻿
+﻿@using ChicStoreManagement.WEB.ViewModel
 @model  ChicStoreManagement.WEB.ViewModel.FileViewModel
-@using ChicStoreManagement.WEB.ViewModel
+
 @{
     ViewBag.Title = "上传文件";
 }
@@ -53,13 +53,22 @@
                 <h4 class="modal-title" id="myModalLabel">请选择文件</h4>
             </div>
             <div class="modal-body">
-                @if (ViewBag.Filetype == "Result")
+                @if (ViewBag.content == "Result")
                 {
-                    <input type="text" name="FileType" value="@FileType.完成效果文件" readonly="readonly" />
+                    <input type="text" name="FileType" value="@FileType.完成文件" readonly="readonly" />
                 }
                 else
                 {
-                    @Html.EnumDropDownListFor(Model => Model.Filetype)
+                    try
+                    {
+                        @Html.EnumDropDownListFor(Model => Model.Filetype, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw e;
+                    }
+
                 }
                 <input type="file" name="UploadStream" id="cad_file" multiple class="file-loading" />
             </div>
