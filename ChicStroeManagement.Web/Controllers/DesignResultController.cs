@@ -97,7 +97,7 @@ namespace ChicStoreManagement.WEB.Controllers
 
 
         /// <summary>
-        /// 添加设计案完结清单-未完结设计案
+        /// 添加设计案完结清单-未确认完结
         /// </summary>
         /// <param name="subid">设计案提交ID</param>
         /// <returns></returns>

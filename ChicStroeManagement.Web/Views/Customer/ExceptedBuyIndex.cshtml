@@ -15,15 +15,19 @@
     <script src="~/Scripts/jquery-3.0.0.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
 </head>
-<body>
+<body onload="startOn()">
     
     <script>
+        function startOn() {
+            $("exinfo").load(location.href + " #exinfo");
+        }
         function edit(otr) {
             document.getElementById("edit").style.display = "block";
             var rows = otr.parentNode.parentNode.rowIndex;
             var id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
             $("#editid").val(id);
             var receptionid = $("#product tr:eq(" + rows + ") td:eq(1)").html();
+           
             var product = $("#product tr:eq(" + rows + ") td:eq(2)").html();
             var remarks = $("#product tr:eq(" + rows + ") td:eq(3)").html();
             $("#editreception").val(receptionid);
@@ -41,7 +45,7 @@
             datatype: "json",
             async: false,//异步
                 success: function (data) {
-                    alert(data);
+                    alert("删除成功！");
                     window.location.reload();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -77,7 +81,7 @@
 
     </div>
 
-    <div class="container body-content">
+    <div class="container body-content" id="exinfo">
         <h3>@ViewBag.CustomerName 的预购信息</h3>
         <div class="table-responsive container">
 
@@ -96,7 +100,7 @@
                     <tr>
                         <td style="display:none">@item.ID</td>
                         <td>@item.接待</td>
-                        <td>@item.商品型号</td>
+                        <td>@item.型号</td>
                         <td>@item.备注</td>
                         <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
                     </tr>

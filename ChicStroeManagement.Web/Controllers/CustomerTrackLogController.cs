@@ -493,7 +493,7 @@ namespace ChicStoreManagement.Controllers
                 {
                     CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel();
                     exceptedBuyModel.ID = item.ID;
-                    exceptedBuyModel.商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号;
+                    exceptedBuyModel.型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号;
                     exceptedBuyModel.备注 = item.备注;
                     exceptedBuyModel.接待 = id;
                     models.Add(exceptedBuyModel);

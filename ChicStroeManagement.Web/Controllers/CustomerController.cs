@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using ChicStoreManagement.IBLL;
 using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
+using Newtonsoft.Json;
 using PagedList;
 
 namespace ChicStoreManagement.Controllers
@@ -498,31 +499,34 @@ namespace ChicStoreManagement.Controllers
         /// <param name="remarks"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddExceptedBuyAction(string 型号, string 备注, int 接待) {
+         public ActionResult ExceptedBuyAdd(string exceptModel) {
             if (Session["method"].ToString() == "Y")
             {
                 string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
-                return Content(str);
+                return Json(str);
             }
-            if (接待==0)
+            List<CustomerExceptedBuyModel> list = JsonConvert.DeserializeObject<List<CustomerExceptedBuyModel>>(exceptModel);
+            if (list.Count==0)
             {
-                return Content("<script>alert('不存在你跟进的客户，你不能执行预购操作！');window.history.go(-1);</script>");
+                return Json("<script>alert('不存在你跟进的客户，你不能执行预购操作！');window.history.go(-1);</script>");
             }
-            销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
+            foreach (var item in list)
             {
-                商品型号ID = productCodeBLL.GetModel(p => p.型号 == 型号).ID,
-                备注 = 备注,
-                接待ID = 接待
-            };
-            if (ModelState.IsValid)
-            {
-                exceptedBuyBLL.Add(model);
-                Session["method"] = "Y";
+                销售_接待记录_意向明细 model = new 销售_接待记录_意向明细
+                {
+                    商品型号ID = productCodeBLL.GetModel(p => p.型号 == item.型号).ID,
+                    备注 = item.备注,
+                    接待ID = item.接待
+                };
+                if (ModelState.IsValid)
+                {
+                    exceptedBuyBLL.Add(model);
+                    Session["method"] = "Y";
 
-            }
-            
-                   else
-            {
+                }
+
+                else
+                {
                     List<string> sb = new List<string>();
                     //获取所有错误的Key
                     List<string> Keys = ModelState.Keys.ToList();
@@ -536,21 +540,23 @@ namespace ChicStoreManagement.Controllers
                             sb.Add(error.ErrorMessage);
                         }
                     }
-                string s=null;
-                foreach (var item in sb)
-                {
-                    s += item.ToString()+";";
+                    string s = null;
+                    foreach (var it in sb)
+                    {
+                        s += it.ToString() + ";";
+                    }
+                    return Json("<script>alert('" + s + "');window.history.go(-1);</script>");
                 }
-                    return Content("<script>alert('"+s+ "');window.history.go(-1);</script>");
-                }
-          
-            BuildExceptedBuy(model.接待ID);
-            ViewBag.receptionid = model.接待ID;
-            var productList = productCodeBLL.GetModels(p => true).ToList();
-            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
-            ViewBag.ProductOptions = productSelectListItems;
-            
-            return RedirectToAction("ExceptedBuyIndex",new {id= model.接待ID } );
+            }
+
+
+            //BuildExceptedBuy(model.接待ID);
+            //ViewBag.receptionid = model.接待ID;
+            //var productList = productCodeBLL.GetModels(p => true).ToList();
+            //SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+            //ViewBag.ProductOptions = productSelectListItems;
+            //return RedirectToAction("ExceptedBuyIndex", new { id = list.FirstOrDefault().接待 });
+            return Json("success");
         }
         public ViewResult AddExceptedBuyView(int receptionid) {
             Session["method"] = "N";
@@ -559,6 +565,12 @@ namespace ChicStoreManagement.Controllers
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.AddProductOptions = productSelectListItems;
             return View();
+        }
+        public JsonResult GetSelect() {
+            var productList = productCodeBLL.GetModels(p => true).ToList();
+            SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
+            
+            return Json(productSelectListItems);
         }
         /// <summary>
         /// 更新预购
@@ -741,7 +753,7 @@ namespace ChicStoreManagement.Controllers
                     CustomerExceptedBuyModel exceptedBuyModel = new CustomerExceptedBuyModel
                     {
                         ID = item.ID,
-                        商品型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号,
+                        型号 = productCodeBLL.GetModel(p => p.ID == item.商品型号ID).型号,
                         备注 = item.备注,
                         接待 = id
                     };
