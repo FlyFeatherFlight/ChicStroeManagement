@@ -9,7 +9,7 @@
         var table = $("#tb");
       @*var sd = JSON.parse(@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>));*@
         var tr = $("<tr>" +
-            "<td><input type='text' name='接待' value='@ViewBag.AddReceptionid' class='form-control'/>" +
+            "<td><input type='text' name='接待' value='@ViewBag.AddReceptionid' class='form-control'readonly='readonly' />" +
             "</td>" + "<td onclick='Setselect(this)'>" +
             "<select class='form-control'></selcet><input type='text' name='型号' value=''style='display: none'/>"+"</td>" +
             "<td><input type='text' name='备注' value=''class='form-control'/>" +

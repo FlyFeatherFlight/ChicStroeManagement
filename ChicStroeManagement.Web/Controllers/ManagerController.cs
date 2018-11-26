@@ -17,8 +17,12 @@ namespace ChicStoreManagement.Controllers
         private readonly IStoreEmployeesBLL storeEmployeesBLL;
         private readonly IStoreBLL storeBLL;
         private readonly IPositionBLL positionBLL;
-       private IQueryable<Employees> workers;
+        private IQueryable<Employees> workers;
 
+        private int employeeID;
+        private string employeeName;
+        private string store;
+        private int storeID;
 
         public ManagerController(IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IPositionBLL positionBLL) 
         {
@@ -332,6 +336,23 @@ namespace ChicStoreManagement.Controllers
             }
             return lis;
 
+        }
+
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private void SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                employeeID = employees.ID;
+                employeeName = employees.姓名;
+                store = employees.店铺;
+                storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+            }
         }
     }
 }

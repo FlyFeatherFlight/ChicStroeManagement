@@ -55,7 +55,7 @@ namespace ChicStoreManagement.Controllers
 
         // GET: ManagerExamine
         /// <summary>
-        /// 显示意向客户名录
+        ///店长操作首页
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
@@ -63,6 +63,57 @@ namespace ChicStoreManagement.Controllers
             return View();
         }
 
+        public ActionResult CustomerExamineView(string sortOrder, string searchString, string currentFilter, int? page) {
+            List<CustomerInfoModel> customerInfoModels = new List<CustomerInfoModel>();
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
+            ViewBag.CustomerExamineCurrentSort = sortOrder;
+            ViewBag.CustomerExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
+            ViewBag.CustomerExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
+            customerInfoModels = BuildCustomerInfo().ToList();
+
+            ViewBag.CustomerExaminePeopleName = employeeName;//将当前操作人员传到前端
+            ViewBag.storeName = store;//将当前店铺名字传到前端
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.TrackingCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                customerInfoModels = customerInfoModels.Where(w => w.客户电话 == searchString).ToList();//通过客户电话查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "last_desc":
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.跟进人).ThenBy(w => w.ID).ToList();
+                    break;
+                case "first":
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.ID).ToList();
+                    break;
+                case "first_desc":
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID).ToList();
+                    break;
+                default:
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.跟进人).ThenBy(w=>w.ID).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.CustomerExaminePosition = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
+            return View(customerInfoModels.ToPagedList(pageNumber, pageSize));
+
+            
+        }
         /// <summary>
         /// 客户追踪日志审查
         /// </summary>
@@ -241,9 +292,9 @@ namespace ChicStoreManagement.Controllers
         }
 
         /// <summary>
-        /// 构建客户基本信息
+        /// 构建客户信息
         /// </summary>
-        private void BuildCustomerInfo()
+        private IQueryable<CustomerInfoModel> BuildCustomerInfo()
         {
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
 
@@ -321,11 +372,9 @@ namespace ChicStoreManagement.Controllers
                         customerInfoModelsList.Add(customerInfo);
                     }
                 }
-
-
-                customerInfoModels = customerInfoModelsList.AsEnumerable().AsQueryable();
             }
-
+            return customerInfoModelsList.AsEnumerable().AsQueryable();
         }
+       
     }
 }
