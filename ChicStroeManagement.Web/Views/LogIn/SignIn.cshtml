@@ -2,25 +2,39 @@
 @{
     ViewBag.Title = "CHIC门店管理登录页面";
 }
+<link href="~/Content/Loader.css" rel="stylesheet" />
 
+<script type="text/javascript">   
+    // 等待所有加载
+    $(window).on("load", function (){
+        $('body').addClass('loaded');
+        $('#loader-wrapper .load_title').remove();
+    });
+</script>
+<div id="loader-wrapper">
+    <div id="loader"></div>
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+    <div class="load_title">正在加载ChicCasa-CRM <br><span>V1.0</span></div>
+</div>
 <div class="jumbotron">
     <h1>CHIC</h1>
 
     <p>Chic Casa 希可家居</p>
-   
+
 </div>
 
-@using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new {@class="form-inline", @role = "form" }))
+@using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new { @class = "form-inline", @role = "form" }))
 {
     <p>请登陆系统：<br /></p>
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
     <div class="form-group">
         <hr />
         @Html.ValidationSummary(true)
 
-        @Html.LabelFor(model => model.姓名)
+        @Html.LabelFor(model => model.编号)
 
-        @Html.TextBoxFor(model => model.姓名, new { @class = "form-control", @placeholder = "请填写登录名" })
+        @Html.TextBoxFor(model => model.编号, new { @class = "form-control", @placeholder = "请填写登录名" })
         @Html.ValidationMessageFor(model => model.姓名)
 
 
@@ -37,14 +51,14 @@
     </div>
 }
 @*<form class="form-inline" role="form" action="@Url.Action("Login") " method="post">
-    
-            <div class="form-group">
-                <label for="password" class="sr-only"> 密码</label>
-                <input name="password" class="form-control" type="password" placeholder="请填写密码" />
-            </div>
 
-            <input id="Submit1" type="submit" value="登录" />
+                <div class="form-group">
+                    <label for="password" class="sr-only"> 密码</label>
+                    <input name="password" class="form-control" type="password" placeholder="请填写密码" />
+                </div>
 
-            <div style="color:#ff0000"> @ViewBag.ErrorMessage</div>
-          
-</form>*@
+                <input id="Submit1" type="submit" value="登录" />
+
+                <div style="color:#ff0000"> @ViewBag.ErrorMessage</div>
+
+    </form>*@

@@ -1,0 +1,21 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+
+@{
+    ViewBag.Title = "CustomerTrackCustomerEditView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>客户:@ViewBag.TrackPeople 跟进人修改</h2>
+<form action="~/ManagerExamine/CustomerTrackCustomerEdit" method="post">
+    <table>
+        <tr><td>ID</td><td><input type="text" name="ID" value="@Model.ID"class = "form-control" readonly="readonly"/></td></tr>
+        <tr><td>接待序号</td><td><label class = "form-control"> @Model.接待序号 </label></td></tr>
+        <tr><td>客户</td><td><label class="form-control"> @Model.客户姓名 </label></td></tr>
+        <tr><td>电话号码</td><td><label class="form-control"> @Model.客户电话 </label></td></tr>
+        <tr><td>接待时间</td><td> <label class="form-control"> @Model.接待日期 </label></td></tr>
+        <tr><td>当前跟进人</td><td><label class="form-control"> @Model.跟进人 </label ></td></tr>
+        <tr><td>变更跟进人</td><td>@Html.DropDownListFor(Model=>Model.跟进人, ViewBag.ExamineEmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })</td></tr>
+    </table>
+    <input type="submit" name="name" value="提交" class="btn btn-primary btn-sm"/>
+    <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn btn-primary btn-sm"/>
+</form>

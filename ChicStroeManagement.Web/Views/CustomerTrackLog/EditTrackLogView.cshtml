@@ -30,7 +30,7 @@
 
                         var s = @Model.跟进时间.ToShortDateString();
 
-                       <input type="date" name="跟进时间" value="@s" class="form-control" />
+                        <input type="date" name="跟进时间" value="@s" class="form-control" />
 
                     }
 
@@ -39,7 +39,7 @@
                     <lable>跟进内容</lable>
                     <textarea name="跟进内容" class="form-control" rows="3">@Model.跟进内容</textarea>
                     <lable>跟进结果</lable>
-                    @Html.EditorFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EnumDropDownListFor(Model => Model.跟进结果, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>备注</lable>
                     @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
                     <lable>店长审核</lable>

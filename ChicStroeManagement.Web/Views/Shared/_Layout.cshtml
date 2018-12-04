@@ -9,9 +9,8 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    
+
     @Scripts.Render("~/bundles/jqueryui")
-   
 
 </head>
 <body>
@@ -23,21 +22,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" }) 
+                @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse" id="two">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("主页", "Index", "Home")</li>
                     @*<li>@Html.ActionLink("关于", "About", "Home")</li>
-                    <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                        <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
                     <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
-                    <li>@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog",new { id=0},new { @style="font-size:12px"})</li>
-                    <li>@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme",new {id=0 },new { @style = "font-size:12px"})</li>
+                    <li>@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                    <li>@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { @style = "font-size:12px" })</li>
                     <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
 
                 </ul>
 
-               
+
 
             </div>
         </div>
@@ -52,7 +51,7 @@
         </footer>
     </div>
 
-  
+
 
 
 </body>

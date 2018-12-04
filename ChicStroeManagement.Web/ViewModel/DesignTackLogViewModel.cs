@@ -48,6 +48,9 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Required(ErrorMessage = "设计案提交表id 不能为空！")]
         public int 设计案提交表id { get; set; }
 
+        [DataType(DataType.Text)]
+        [Required(ErrorMessage = "店铺id 不能为空！")]
+        public int 店铺ID { get; set; }
       
     }
 }

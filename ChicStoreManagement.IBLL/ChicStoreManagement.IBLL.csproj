@@ -53,11 +53,14 @@
     <Compile Include="IExceptedBuyBLL.cs" />
     <Compile Include="IFileTypeBLL.cs" />
     <Compile Include="IPositionBLL.cs" />
+    <Compile Include="IProductBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />
     <Compile Include="IProductSkuBLL.cs" />
+    <Compile Include="IProduct_SeriesBLL.cs" />
     <Compile Include="ISalesOrderBLL.cs" />
     <Compile Include="IStoreBLL.cs" />
     <Compile Include="ISystemAccountBLL.cs" />
+    <Compile Include="ITrackGoalBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IStoreEmployeesBLL.cs" />
   </ItemGroup>

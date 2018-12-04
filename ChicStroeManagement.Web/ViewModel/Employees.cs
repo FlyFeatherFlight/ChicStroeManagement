@@ -55,6 +55,10 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Password)]
         public string 密码 { get; set; }
 
+        [Display(Name = "跟进目标数")]
+        [DataType(DataType.Text)]
+        public int? 跟进目标数 { get; set; }
+
         public List<Employees> ListEmployees { get; set; }
         public IQueryable<Employees> IQueryEmployees { get; set; }
 

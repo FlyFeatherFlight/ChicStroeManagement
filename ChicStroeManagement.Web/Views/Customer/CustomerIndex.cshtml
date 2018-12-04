@@ -1,7 +1,27 @@
 ﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
 @using PagedList.Mvc;
-
 <link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<script>
+    function applyGoal() {
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("ApplyGoals", "Customer")',
+            data: {},
+            datatype: "json",
+            async: true,//异步
+                success: function (data) {
+                    //alert("申请已提交！");
+                    alert(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.responseText);
+            }
+
+        })
+    }
+
+</script>
 @{
     ViewBag.Title = "客户接待信息";
 }
@@ -17,8 +37,9 @@
         <input id="Submit1" type="submit" value="查询" class="btn" />
     </p>
 }
-<pre style="color:red"> 如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</pre>
+<pre style="color:red">如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</pre>
 <hr />
+<p>当前操作人:@ViewBag.employeeName 总共跟进数:@ViewBag.Goals 剩余跟进数:@ViewBag.AvailableGoals <a onclick="applyGoal()">申请跟进数</a></p>
 @{
     if (Model == null)
     {

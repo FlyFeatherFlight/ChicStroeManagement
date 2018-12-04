@@ -41,14 +41,16 @@ namespace ChicStoreManagement.Model
         public string 销售人员 { get; set; }
         public string 设计人员 { get; set; }
         public string 店长 { get; set; }
-        public Nullable<bool> 店长确认 { get; set; }
-        public Nullable<bool> 设计人员确认 { get; set; }
         public System.DateTime 项目提交时间 { get; set; }
         public System.DateTime 项目量房时间 { get; set; }
         public System.DateTime 项目预计完成时间 { get; set; }
         public string 备注 { get; set; }
         public string 更新人 { get; set; }
         public Nullable<System.DateTime> 更新日期 { get; set; }
+        public Nullable<bool> 店长审核 { get; set; }
+        public Nullable<bool> 设计人员审核 { get; set; }
+        public Nullable<System.DateTime> 店长审核时间 { get; set; }
+        public Nullable<System.DateTime> 设计人员审核时间 { get; set; }
     
         public virtual 销售_接待记录 销售_接待记录 { get; set; }
         public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }

@@ -21,15 +21,17 @@ namespace ChicStoreManagement.Controllers
         private readonly IStoreBLL storeBLL;
         private readonly IProductCodeBLL productCodeBLL;
         private readonly ICustomerTrackingBLL customerTrackingBLL;
+        private readonly ITrackGoalBLL trackGoalBLL;
 
         private int employeeID;//员工id
         private string employeeName;//员工姓名
         private string store;//当前店铺
         private int storeID;//当前店铺id
-                            // private IQueryable<Employees> workers;//所有员工信息
+        private int? goals;
+        // private IQueryable<Employees> workers;//所有员工信息
         private IQueryable<CustomerInfoModel> customerInfoModels;
         private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;
-        public CustomerController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL)
+        public CustomerController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL,ITrackGoalBLL trackGoalBLL)
         {
             this.customerInfoBLL = customerInfoBLL;
             this.exceptedBuyBLL = exceptedBuyBLL;
@@ -37,6 +39,7 @@ namespace ChicStoreManagement.Controllers
             this.storeBLL = storeBLL;
             this.productCodeBLL = productCodeBLL;
             this.customerTrackingBLL = customerTrackingBLL;
+            this.trackGoalBLL = trackGoalBLL;
         }
 
        
@@ -92,8 +95,10 @@ namespace ChicStoreManagement.Controllers
             int pageNumber = (page ?? 1);
             ViewBag.employeeName = employeeName;//给前端传入当前操作人
             ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
-        
-           
+            ViewBag.Goals = goals;//总共跟进数目
+            ViewBag.AvailableGoals = goals - customerInfoBLL.GetModels(p=>p.跟进人ID==employeeID).Count();//剩余跟进数目
+
+
             return View(customerInfoModels.ToPagedList(pageNumber, pageSize));
 
         }
@@ -400,7 +405,38 @@ namespace ChicStoreManagement.Controllers
             return RedirectToAction("CustomerIndex");
         }
 
-  
+        /// <summary>
+        /// 申请跟进数
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost] 
+        public ActionResult ApplyGoals()
+        {
+            SetEmployee();
+            TrackGoalsViewModel tmodel = new TrackGoalsViewModel
+            {
+                员工姓名 = employeeName,
+                店铺 = store,
+                申请跟进数 = 1//默认为1
+            };
+            销售_跟进目标数申请表 model = new 销售_跟进目标数申请表
+            {
+                申请跟进数 = tmodel.申请跟进数,
+                员工ID = employeeID,
+                店铺ID = storeID
+            };
+            try
+            {
+                trackGoalBLL.Add(model);
+            }
+            catch (Exception e)
+            {
+
+                return Json(e.Message);
+            }
+           
+            return Json("申请已提交！");
+        }
         /// <summary>
         /// 显示详细信息
         /// </summary>
@@ -425,7 +461,6 @@ namespace ChicStoreManagement.Controllers
         /// 预计购买
         /// </summary>
         /// <param name="id">接待id</param>
-       
         /// <returns></returns>
         public ActionResult ExceptedBuyIndex(int id)
         {
@@ -631,12 +666,12 @@ namespace ChicStoreManagement.Controllers
         }
         #endregion
       
+        
         /// <summary>
         /// 设置当前操作人员及店铺信息
         /// </summary>
         private void SetEmployee()
         {
-           
             string userName = HttpContext.User.Identity.Name;
             if (userName!=null)
             {
@@ -645,6 +680,7 @@ namespace ChicStoreManagement.Controllers
                 employeeName = employees.姓名;
                 store = employees.店铺;
                 storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+                goals = employees.跟进目标数;
             }
         }
 

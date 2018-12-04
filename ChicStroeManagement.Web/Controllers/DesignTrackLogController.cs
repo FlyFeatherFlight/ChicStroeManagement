@@ -49,7 +49,7 @@ namespace ChicStoreManagement.WEB.Controllers
         {
             if (id == 0 || id == null)
             {
-                return Content("非法操作");
+                return Content("非法操作!");
             }
             ViewBag.DesignTrackSubmitID = id;
             Session["method"] = "N";

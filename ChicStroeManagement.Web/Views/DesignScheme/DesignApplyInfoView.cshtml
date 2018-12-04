@@ -79,21 +79,32 @@
     
         <td colspan="3">
             <table class="table table-hover ">
-                <tr>
-                    <td>商品型号</td>
-                    <td>备注</td>
-                </tr>
-                @if (Model.销售_设计案提交表_客户意向产品明细!=null)
-                {
-                    foreach (var item in Model.销售_设计案提交表_客户意向产品明细)
+                <thead>
+                    <tr>
+                        <td>空间</td>
+                        <td>系列</td>
+                        <td>产品名称</td>
+                        <td>单位</td>
+                        <td>尺寸</td>
+                        <td>数量</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.销售_设计案提交表_客户意向产品明细 != null)
                     {
-                        <tr>
-                            <td>@item.型号</td>
-                            <td>@item.备注</td>
-                        </tr>
+                        foreach (var item in Model.销售_设计案提交表_客户意向产品明细)
+                        {
+                            <tr>
+                                <td>@item.空间</td>
+                                <td>@item.系列</td>
+                                <td>@item.产品名称</td>
+                                <td>@item.单位</td>
+                                <td>@item.尺寸</td>
+                                <td>@item.数量</td>
+                            </tr>
+                        }
                     }
-                }
-
+                </tbody>
             </table>
         </td>
     </tr>
@@ -115,7 +126,7 @@
     </tr>
     <tr>
         <td>软装设计师</td>
-        @if (Model.设计人员确认 == true)
+        @if (Model.设计人员审核 == true)
         {
             <td colspan="3">@Html.DisplayFor(Model => Model.设计人员)|已确认</td>
         }
@@ -127,7 +138,7 @@
     </tr>
     <tr>
         <td>店长</td>
-        @if (Model.店长确认 == true)
+        @if (Model.店长审核 == true)
         {
             <td colspan="3">@Html.DisplayFor(Model => Model.店长)|已确认</td>
         }
@@ -147,7 +158,7 @@
         <td>@Html.DisplayFor(Model => Model.更新日期)</td>
     </tr>
     <tr>
-        <td colspan="4" align="center">@Html.ActionLink("修改信息", "EditDesignApply", new { id = Model.Id }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", "Customer",new { id = Model.接待记录ID },new { @Style = "font-size:12px" }) </td>
+        <td colspan="4" align="center">@Html.ActionLink("修改信息", "EditDesignApply", new { id = Model.Id }) |@Html.ActionLink("修改客户意向产品", "ExceptedBuyIndex", "Customer",new { id = Model.接待记录ID },new { @Style = "font-size:12px" }) </td>
     </tr>
 </table>
 <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn" />

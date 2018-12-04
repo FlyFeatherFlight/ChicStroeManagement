@@ -26,7 +26,11 @@ namespace ChicStoreManagement.Model
         public Nullable<bool> 店长审查 { get; set; }
         public string 备注 { get; set; }
         public int 设计案提交表id { get; set; }
+        public Nullable<System.DateTime> 更新日期 { get; set; }
+        public string 更新人 { get; set; }
+        public int 店铺ID { get; set; }
     
+        public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
         public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
     }
 }

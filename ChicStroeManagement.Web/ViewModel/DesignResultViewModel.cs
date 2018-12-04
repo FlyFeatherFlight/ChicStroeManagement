@@ -34,7 +34,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string 店长 { get; set; }
         public DateTime? 销售人员确认日期 { get; set; }
         public DateTime? 设计师确认日期 { get; set; }
-        public DateTime? 店长确认日期 { get; set; }
+        public DateTime? 店长审核日期 { get; set; }
         public bool? 完成效果图 { get; set; }
 
         public string 完成效果图路径 { get; set; }

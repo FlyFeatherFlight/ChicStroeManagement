@@ -20,6 +20,9 @@ namespace ChicStoreManagement.Model
         }
     
         public int id { get; set; }
+        public string 客户单号 { get; set; }
+        public string 销售单号 { get; set; }
+        public string 单据编号 { get; set; }
         public Nullable<System.DateTime> 计划完成时间 { get; set; }
         public string 实际完成时间 { get; set; }
         public string 计划完成空间 { get; set; }
@@ -38,9 +41,8 @@ namespace ChicStoreManagement.Model
         public Nullable<System.DateTime> 制单日期 { get; set; }
         public Nullable<int> 设计案提交表ID { get; set; }
         public string 制单人 { get; set; }
-        public string 客户单号 { get; set; }
-        public string 销售单号 { get; set; }
-        public string 单据编号 { get; set; }
+        public Nullable<bool> 店长审核 { get; set; }
+        public Nullable<bool> 销售审核 { get; set; }
     
         public virtual ICollection<设计_设计案完结单_家具成交单> 设计_设计案完结单_家具成交单 { get; set; }
         public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }

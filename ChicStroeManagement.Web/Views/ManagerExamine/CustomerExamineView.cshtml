@@ -5,10 +5,11 @@
     ViewBag.Title = "客户审查";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
 }
+
 <div style="background-color:white">
     <h2>客户审查</h2>
     <hr />
-
+    @Html.ActionLink("跟进日志", "CustomerTrackLogExamineView", new { })
     @using (Html.BeginForm("CustomerExamineView", "ManagerExamine", FormMethod.Get))
     {
         <p>
@@ -91,13 +92,17 @@
                                     if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExaminePosition == 3)
                                     {
 
-                                        <td>
-                                            @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @Style = "font-size:12px" })
-                                            @if (item.跟进人 != null)
-                                            {
-                                                <b>|</b> @Html.ActionLink("跟进", "TrackLogIndex", "CustomerTrackLog", new { id = item.ID }, new { @Style = "font-size:12px" })
-                                            }
-                                        </td>
+                                    <td>
+                                        @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                        @if (item.跟进人 != null)
+                                        {
+                                            <b>|</b> @Html.ActionLink("修改跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                        }
+                                        else
+                                        {
+                                            <b>|</b> @Html.ActionLink("指定跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                                            }
+                                                        </td>
                                     }
 
                                     else
@@ -115,9 +120,9 @@
 
                                     if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.CustomerExaminePosition == 3)
                                     {
-                                        <td>
-                                            @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @style = "font-size:12px" })
-                                        </td>
+                                    <td>
+                                        @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @style = "font-size:12px" })
+                                    </td>
                                     }
 
                                     else

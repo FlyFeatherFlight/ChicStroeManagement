@@ -233,7 +233,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 审批状态 = model.审批状态,
                 客户编号 = model.客户单号,
                 店长 = model.店长,
-                店长确认日期 = model.店长确认日期,
+                店长审核日期 = model.店长确认日期,
                 延期或无法完成原因 = model.延期或无法完成原因,
                 建议 = model.建议,
                 更新人 = model.更新人,
@@ -274,7 +274,7 @@ namespace ChicStoreManagement.WEB.Controllers
             model.审批状态 = designResultViewModel.审批状态;
             model.客户单号 = designResultViewModel.客户编号;
             model.店长 = designResultViewModel.店长;
-            model.店长确认日期 = designResultViewModel.店长确认日期;
+            model.店长确认日期 = designResultViewModel.店长审核日期;
             model.延期或无法完成原因 = designResultViewModel.延期或无法完成原因;
             model.建议 = designResultViewModel.建议;
             model.更新人 = designResultViewModel.更新人;
@@ -352,7 +352,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式 && p.店铺ID == customerInfoBLL.GetModel(r => r.ID == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).接待记录ID).店铺ID).单据编号;//单据编号
 
                 designResultViewModel.店长 = item.店长;
-                designResultViewModel.店长确认日期 = item.店长确认日期;
+                designResultViewModel.店长审核日期 = item.店长确认日期;
                 designResultViewModel.延期或无法完成原因 = item.延期或无法完成原因;
                 designResultViewModel.建议 = item.建议;
                 designResultViewModel.更新人 = item.更新人;

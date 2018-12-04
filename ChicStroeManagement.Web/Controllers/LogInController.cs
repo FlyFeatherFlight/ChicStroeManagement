@@ -63,18 +63,21 @@ namespace ChicStoreManagement.Controllers
         public ActionResult Login(Employees employees)
         {
             employees.IQueryEmployees = workers;
-            if (workers.FirstOrDefault(p=>p.姓名==employees.姓名)!=null&& workers.FirstOrDefault(p => p.姓名 == employees.姓名).密码==employees.密码)
+            
+            if (workers.FirstOrDefault(p=>p.编号==employees.编号)!=null&& workers.FirstOrDefault(p => p.编号 == employees.编号).密码==employees.密码)
 
             {
                 //Session["CurrentUser"] = Database.Users.Find(u => u.Name == user);
-                FormsAuthentication.SetAuthCookie(employees.姓名, false);
+                FormsAuthentication.SetAuthCookie(employees.编号, false);
                 HttpCookie aCookie = new HttpCookie("userName")
                 {
-                    Value = employees.姓名,
+                    Value = employees.编号,
                     Expires = DateTime.Now.AddDays(1)
                 };
                 Response.Cookies.Add(aCookie);
-                Session["Employee"] = workers.First(p => p.姓名 == employees.姓名);
+                var model = workers.FirstOrDefault(p => p.编号 == employees.编号);
+                model.密码 = null;//密码不存入Session
+                Session["Employee"] = model;
                 return RedirectToAction("Index", "Home");
 
             }
@@ -127,15 +130,14 @@ namespace ChicStoreManagement.Controllers
                     {
                         ID = item.ID,
                         停用标志 = item.停用标志,
-                        制单人 = item.制单人,
-                        制单日期 = item.制单日期,
                         姓名 = item.姓名,
-                        密码 = item.密码,
                         性别 = item.性别,
                         编号 = item.编号,
+                        密码=item .密码,
                         职务 = positionBLL.GetModel(p => p.ID == item.职务ID).职务,
                         店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称,
-                        联系方式 = item.联系方式
+                        联系方式 = item.联系方式,
+                        跟进目标数=item.跟进目标计划数
                     };
                     employeesList.Add(employees);
                 }

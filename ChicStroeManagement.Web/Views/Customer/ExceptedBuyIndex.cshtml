@@ -11,8 +11,9 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>预购信息</title>
-    <script src="~/Scripts/jquery-3.0.0.js"></script>
-    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
 </head>
 <body onload="startOn()">
@@ -43,10 +44,11 @@
             url: '@Url.Action("DelExceptedBuyAction", "Customer")',
             data: { ExceptedBuyID: Id, receptionId: receptionid},
             datatype: "json",
-            async: false,//异步
+            async: true,//异步
                 success: function (data) {
                     alert("删除成功！");
-                    window.location.reload();
+                    var td = $(otr);
+                    td.parents("tr").remove();
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 alert("系统繁忙！");

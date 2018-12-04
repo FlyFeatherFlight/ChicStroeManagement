@@ -1,10 +1,13 @@
 ﻿using ChicStoreManagement.IBLL;
 using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
+using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -28,13 +31,15 @@ namespace ChicStoreManagement.Controllers
         private readonly IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL;
         private readonly IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL;
 
-        private  int employeeID;//员工id
-        private  string employeeName;//员工姓名
-        private  string store;//当前店铺名称
-        private  int storeID;//当前店铺id
+        private int employeeID;//员工id
+        private string employeeName;//员工姓名
+        private string store;//当前店铺名称
+        private int storeID;//当前店铺id
+        private int positionID;
+
         // private IQueryable<Employees> workers;//所有员工信息
-        private IQueryable<CustomerInfoModel> customerInfoModels;//所有接待信息
-        private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;//预计购买
+        //private IQueryable<CustomerInfoModel> customerInfoModels;//所有接待信息
+        //private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;//预计购买
 
         public ManagerExamineController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, IPositionBLL positionBLL, IDesignSubmitBLL designSubmitBLL, IDesignTrackingLogBLL designTrackingLogBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL)
         {
@@ -63,6 +68,16 @@ namespace ChicStoreManagement.Controllers
             return View();
         }
 
+
+        #region 客户审查操作
+        /// <summary>
+        /// 客户信息审查
+        /// </summary>
+        /// <param name="sortOrder"></param>
+        /// <param name="searchString"></param>
+        /// <param name="currentFilter"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         public ActionResult CustomerExamineView(string sortOrder, string searchString, string currentFilter, int? page) {
             List<CustomerInfoModel> customerInfoModels = new List<CustomerInfoModel>();
             Session["method"] = "N";
@@ -102,7 +117,7 @@ namespace ChicStoreManagement.Controllers
                     customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID).ToList();
                     break;
                 default:
-                    customerInfoModels = customerInfoModels.OrderBy(w => w.跟进人).ThenBy(w=>w.ID).ToList();
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.跟进人).ThenBy(w => w.ID).ToList();
                     break;
             }
 
@@ -112,13 +127,70 @@ namespace ChicStoreManagement.Controllers
             ViewBag.CustomerExaminePosition = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
             return View(customerInfoModels.ToPagedList(pageNumber, pageSize));
 
-            
+
+        }
+
+        /// <summary>
+        /// 审查客户档案，指定跟进人
+        /// </summary>
+        /// <param name="id">客户接待ID</param>
+        /// <returns></returns>
+        public ActionResult CustomerTrackCustomerEditView(int id) {
+
+            Session["method"] = "N";
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            SetEmployee();
+
+            var customerInfo = BuildCustomerInfo().First(p => p.ID == id);
+
+            if (customerInfo.接待人 == employeeName || customerInfo.跟进人 == employeeName || storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID == 3)
+            {
+                @ViewBag.TrackPeople = customerInfo.客户姓名;
+                customerInfo.更新人 = employeeName;
+                customerInfo.更新日期 = DateTime.Now;
+                ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;
+                var storeEmployees = storeEmployeesBLL.GetModels(p => p.店铺ID == storeID).ToList();
+
+                SelectList EmployeeListList = new SelectList(storeEmployees, "姓名", "姓名");
+                ViewBag.ExamineEmployeeOptions = EmployeeListList;
+                return View(customerInfo);
+            }
+
+            return Content("<script>alert('无操作权限！！');window.history.go(-1);</script>");
+
+
+        }
+
+        /// <summary>
+        /// 指定跟进人
+        /// </summary>
+        /// <param name="id">客户接待ID</param>
+        /// <param name="跟进人">跟进人名</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CustomerTrackCustomerEdit(int id, string 跟进人) {
+            SetEmployee();
+            if (positionID != 3)
+            {
+                return Content("违规操作！");
+            }
+            string[] property = new string[1];
+            property[0] = "跟进人ID";
+            var model = customerInfoBLL.GetModel(p => p.ID == id);
+            model.跟进人ID = storeEmployeesBLL.GetModel(w => w.姓名 == 跟进人).ID;
+            Session["method"] = "Y";
+            customerInfoBLL.Modify(model, property);
+            return RedirectToAction("CustomerExamineView");
         }
         /// <summary>
         /// 客户追踪日志审查
         /// </summary>
         /// <returns></returns>
-        public ActionResult CustomerTrackLogExamineView(int? id, string sortOrder, string searchString, string currentFilter, int? page) {
+        public ActionResult CustomerTrackLogExamineView(int? id, string sortOrder, string PhoneSearchString, string NameSearchString, string currentFilter, int? page) {
             List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
@@ -142,6 +214,15 @@ namespace ChicStoreManagement.Controllers
             BuildCustomerInfo();//将顾客接待信息数据优化
             ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.storeName = store;//将当前店铺名字传到前端
+            string searchString = null;
+            if (PhoneSearchString != null)
+            {
+                searchString = PhoneSearchString;
+            }
+            if (NameSearchString != null)
+            {
+                searchString = NameSearchString;
+            }
             if (searchString != null)
             {
                 page = 1;
@@ -152,9 +233,13 @@ namespace ChicStoreManagement.Controllers
             }
             ViewBag.TrackingCurrentFilter = searchString;//获得前端传回来的搜索关键词
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString) && PhoneSearchString != null)
             {
-                customerTrackingModels = customerTrackingModels.Where(w => w.客户电话 == searchString).ToList();//通过客户电话查找
+                customerTrackingModels = customerTrackingModels.Where(w => w.客户电话 == searchString && w.店铺 == store).ToList();//通过客户电话查找
+            }
+            if (!string.IsNullOrEmpty(searchString) && NameSearchString != null)
+            {
+                customerTrackingModels = customerTrackingModels.Where(w => w.跟进人 == searchString && w.店铺 == store).ToList();//通过跟进人查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
@@ -177,17 +262,238 @@ namespace ChicStoreManagement.Controllers
             #endregion
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-
+            Thread.Sleep(3000);
             return View(customerTrackingModels.ToPagedList(pageNumber, pageSize));
-            
+
+        }
+
+        /// <summary>
+        /// 客户追踪日志审查。添加审查状态
+        /// </summary>
+        /// <param name="id">追踪日志ID</param>
+        /// <param name="examineType">审查状态</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CustomerTrackLogExamine(int id, string examineType) {
+
+            var model = customerTrackingBLL.GetModel(p => p.id == id);
+            var s = JsonConvert.DeserializeObject<String>(examineType);
+            model.店长审核 = s;
+            string[] property = new string[1];
+            property[0] = "店长审核";
+            try
+            {
+                customerTrackingBLL.Modify(model, property);
+                Session["method"] = "Y";
+            }
+            catch (Exception e)
+            {
+
+                return Json(e.Message);
+            }
+
+            return Json(model.店长审核);
+        }
+
+
+
+        #endregion
+
+
+        #region 设计案审查操作
+        /// <summary>
+        /// 设计跟踪日志审查
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DesignTrackLogExamineView(string sortOrder, string searchString, string currentFilter, int? page)
+        {
+           
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
+            ViewBag.DesignTrackExamineCurrentSort = sortOrder;
+            ViewBag.DesignTrackExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
+            ViewBag.DesignTrackExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
+            var DesignTrackInfoModels = BuildDesignTrackLogInfo(null).ToList();
+
+            ViewBag.DesignTrackExaminePeopleName = employeeName;//将当前操作人员传到前端
+            ViewBag.storeName = store;//将当前店铺名字传到前端
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.DesignTrackCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                DesignTrackInfoModels = DesignTrackInfoModels.Where(w => w.联系方式 == searchString).ToList();//通过客户电话查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "last_desc":
+                    DesignTrackInfoModels = DesignTrackInfoModels.OrderByDescending(w => w.店长审查).ThenBy(w => w.Id).ToList();
+                    break;
+                case "first":
+                    DesignTrackInfoModels = DesignTrackInfoModels.OrderBy(w => w.Id).ToList();
+                    break;
+                case "first_desc":
+                    DesignTrackInfoModels = DesignTrackInfoModels.OrderByDescending(w => w.Id).ToList();
+                    break;
+                default:
+                    DesignTrackInfoModels = DesignTrackInfoModels.OrderBy(w => w.店长审查).ThenBy(w => w.Id).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.DesignTrackExaminePosition = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
+            return View(DesignTrackInfoModels.ToPagedList(pageNumber, pageSize));
+
+
+
+
         }
 
         /// <summary>
         /// 设计跟踪日志审查
         /// </summary>
         /// <returns></returns>
-        public ActionResult DesignTrackLogExamineView()
-        {
+       [HttpPost]
+        public ActionResult DesignTrackExamine(int id, string examineType) {
+            Session["method"] = "Y";
+            try
+            {
+                var model = designTrackingLogBLL.GetModel(p => p.id == id);
+                var str = JsonConvert.DeserializeObject<String>(examineType);
+                if (str == "true")
+                {
+                    model.店长审查 = true;
+                }
+                else if (str == "false")
+                {
+                    model.店长审查 = false;
+                }
+                else
+                {
+                    return Json("非法数据传输！操作失败");
+                }
+                model.更新人 = employeeName;
+                model.更新日期 = DateTime.Now;
+                designTrackingLogBLL.Modify(model);
+            }
+            catch (Exception e)
+            {
+
+                return Json("设计案跟进日志操作异常，操作失败！");
+            }
+           
+            return Json("提交成功！");
+        }
+
+        /// <summary>
+        /// 设计案申请审查
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DesignApplyExamineView(string sortOrder, string searchString, string currentFilter, int? page) {
+            List<DesignSubmitModel> customersubModels = new List<DesignSubmitModel>();
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
+            ViewBag.DesignApplyrExamineCurrentSort = sortOrder;
+            ViewBag.DesignApplyExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
+            ViewBag.DesignApplyExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
+            var DesignApplyInfoModels = BuildDesignSubInfo(null).ToList();
+
+            ViewBag.DesignApplyExaminePeopleName = employeeName;//将当前操作人员传到前端
+            ViewBag.storeName = store;//将当前店铺名字传到前端
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.DesignApplyCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                DesignApplyInfoModels = DesignApplyInfoModels.Where(w => w.联系方式 == searchString).ToList();//通过客户电话查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "last_desc":
+                    DesignApplyInfoModels = DesignApplyInfoModels.OrderByDescending(w => w.审批状态).ThenBy(w => w.Id).ToList();
+                    break;
+                case "first":
+                    DesignApplyInfoModels = DesignApplyInfoModels.OrderBy(w => w.Id).ToList();
+                    break;
+                case "first_desc":
+                    DesignApplyInfoModels = DesignApplyInfoModels.OrderByDescending(w => w.Id).ToList();
+                    break;
+                default:
+                    DesignApplyInfoModels = DesignApplyInfoModels.OrderBy(w => w.审批状态).ThenBy(w => w.Id).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            ViewBag.DesignApplyExaminePosition = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
+            return View(DesignApplyInfoModels.ToPagedList(pageNumber, pageSize));
+
+
+        }
+
+        /// <summary>
+        /// 设计案申请审查
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DesignApplyExamine(int id,string examineType) {
+            Session["method"] = "Y";
+            SetEmployee();
+            try
+            {
+                var model = designSubmitBLL.GetModel(p => p.id == id);
+                var str = JsonConvert.DeserializeObject<String>(examineType);
+                if (str == "true")
+                {
+                    model.店长审核 = true;
+                }
+                else if (str == "false")
+                {
+                    model.店长审核 = false;
+                }
+                else
+                {
+                    return Json("发现非法数据,操作失败！");
+                }
+                model.店长 = employeeName;
+                model.店长审核时间 = DateTime.Now;
+                model.更新人 = employeeName;
+                model.更新日期 = DateTime.Now;
+                designSubmitBLL.Modify(model);
+            }
+            catch (Exception e)
+            {
+
+                return Json("店长设计案审查，数据更新异常！");
+            }
+           
+            return Json("操作成功！");
+        }
+        /// <summary>
+        /// 设计案完结审查
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult DesignResultView() {
             return View();
         }
         /// <summary>
@@ -200,6 +506,7 @@ namespace ChicStoreManagement.Controllers
 
         }
 
+        #endregion
         /// <summary>
         /// 设置当前操作人员及店铺信息
         /// </summary>
@@ -214,6 +521,7 @@ namespace ChicStoreManagement.Controllers
                 employeeName = employees.姓名;
                 store = employees.店铺;
                 storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+                positionID = storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID;
             }
         }
 
@@ -298,8 +606,7 @@ namespace ChicStoreManagement.Controllers
         {
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
 
-            if (customerInfoModels == null)
-            {
+           
                 var customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺所有顾客接待信息
                 if (customer != null)
                 {
@@ -372,9 +679,131 @@ namespace ChicStoreManagement.Controllers
                         customerInfoModelsList.Add(customerInfo);
                     }
                 }
-            }
+           
             return customerInfoModelsList.AsEnumerable().AsQueryable();
         }
-       
+
+        /// <summary>
+        /// /// <summary>
+        /// 构建软装服务设计提交信息
+        /// </summary>
+        /// </summary>
+        /// <param name="id">接待id</param>
+        /// <returns>设计案提交表信息</returns>
+        public IQueryable<DesignSubmitModel> BuildDesignSubInfo(int? id)
+        {
+            List<销售_设计案提交表> designSubModelList = new List<销售_设计案提交表>();
+            if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
+            {   //店长可以查看所有信息
+                designSubModelList = designSubmitBLL.GetModels(p => true).ToList();
+            }
+
+            else if (id != 0 && id != null)
+            {   //根据接待ID查询当前客户的设计提交表
+                designSubModelList = designSubmitBLL.GetModels(p => p.接待记录ID == id).ToList();
+            }
+            else
+            {
+                //查询当前销售人员的设计提交表
+                designSubModelList = designSubmitBLL.GetModels(p => p.销售人员 == employeeName).ToList();
+            }
+            List<DesignSubmitModel> designSubmitModelList = new List<DesignSubmitModel>();
+            foreach (var item in designSubModelList)
+            {
+                DesignSubmitModel designSubmitModel = new DesignSubmitModel();
+                designSubmitModel.Id = item.id;
+                designSubmitModel.客户喜好 = item.客户喜好或忌讳;
+                designSubmitModel.客户在意品牌或已购买品牌 = item.客户在意品牌或已购买品牌;
+                designSubmitModel.客户姓名 = item.客户姓名;
+                designSubmitModel.客户提问与要求 = item.客户提问与要求;
+                designSubmitModel.家具空间 = item.家具空间;
+                designSubmitModel.家庭成员 = item.家庭成员;
+                designSubmitModel.店长 = item.店长;
+                designSubmitModel.店长审核 = item.店长审核;
+                designSubmitModel.接待记录ID = item.接待记录ID;
+                if (item.整体软装配饰 == null)
+                {
+                    item.整体软装配饰 = false;
+                }
+                designSubmitModel.整体软装配饰 = item.整体软装配饰.Value;
+                designSubmitModel.楼盘具体位置 = item.楼盘具体位置;
+                designSubmitModel.职业 = item.职业;
+                designSubmitModel.联系方式 = item.联系方式;
+                designSubmitModel.装修进度 = item.装修进度;
+                designSubmitModel.装修风格 = item.装修风格;
+                designSubmitModel.设计人员 = item.设计人员;
+                designSubmitModel.设计人员审核 = item.设计人员审核;
+                designSubmitModel.销售人员 = item.销售人员;
+                designSubmitModel.面积大小 = item.面积大小;
+
+                designSubmitModel.预算 = item.预算;
+                designSubmitModel.项目提交时间 = item.项目提交时间;
+                designSubmitModel.项目量房时间 = item.项目量房时间;
+                designSubmitModel.项目预计完成时间 = item.项目预计完成时间;
+                designSubmitModel.备注 = item.备注;
+                if (item.店长 != null && item.店长审核 == true && item.设计人员 != null && item.设计人员审核 == true && item.销售人员 != null)
+                {
+                    designSubmitModel.审批状态 = true;
+                }
+                designSubmitModelList.Add(designSubmitModel);
+            }
+            return designSubmitModelList.AsQueryable();
+        }
+
+
+        /// <summary>
+        /// 初始化设计案跟进日志
+        /// </summary>
+        /// <returns></returns>
+        private List<DesignTackLogViewModel> BuildDesignTrackLogInfo(int? id)
+        {
+           
+           
+            List<DesignTackLogViewModel> designTackLogViewModels = new List<DesignTackLogViewModel>();
+            try
+            {
+               List<销售_设计案跟进日志> designTackLogList =new List<销售_设计案跟进日志>() ;
+             if (positionID==3)
+              {
+                    designTackLogList = designTackLogList = designTrackingLogBLL.GetModels(p => p.店铺ID==storeID).ToList();
+               }
+                else if (id == 0 || id == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    designTackLogList = designTrackingLogBLL.GetModels(p => p.设计案提交表id == id).ToList();
+                }
+                foreach (var item in designTackLogList)
+                {
+                    DesignTackLogViewModel designTackLogViewModel = new DesignTackLogViewModel();
+                    designTackLogViewModel.Id = item.id;
+                    designTackLogViewModel.参与人员 = item.参与人员;
+                    designTackLogViewModel.备注 = item.备注;
+                    designTackLogViewModel.客户姓名 = designSubmitBLL.GetModel(p => p.id == item.设计案提交表id).客户姓名;
+                    designTackLogViewModel.联系方式 = designSubmitBLL.GetModel(p => p.id == item.设计案提交表id).联系方式;
+                    designTackLogViewModel.设计师 = item.设计师;
+                    designTackLogViewModel.设计案提交表id = item.设计案提交表id;
+                    designTackLogViewModel.设计案需求提交时间 = item.设计案需求提交时间;
+                    designTackLogViewModel.跟进日期 = item.跟进日期;
+                    designTackLogViewModel.进度描述 = item.进度描述;
+                    designTackLogViewModel.销售人员 = item.销售人员;
+                    designTackLogViewModel.需要的支持 = item.需要的支持;
+                    designTackLogViewModel.预计签约时间 = item.预计签约时间;
+                    designTackLogViewModel.楼盘具体位置 = designSubmitBLL.GetModel(p => p.id == item.设计案提交表id).楼盘具体位置;
+                    designTackLogViewModel.店长审查 = item.店长审查;
+                    designTackLogViewModels.Add(designTackLogViewModel);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+            return designTackLogViewModels;
+
+        }
     }
 }

@@ -76,7 +76,13 @@
     <Compile Include="商品档案_SKU.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="商品档案_商品.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="商品档案_型号.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_系列.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="系统用户.cs">
@@ -128,6 +134,9 @@
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
     <Compile Include="销售_设计案跟进日志.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_跟进目标数申请表.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
   </ItemGroup>
