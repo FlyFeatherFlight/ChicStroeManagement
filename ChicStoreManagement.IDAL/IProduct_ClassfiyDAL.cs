@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace ChicStoreManagement.IDAL
 {
     /// <summary>
-    /// 商品档案
+    /// 商品档案_分类s
     /// </summary>
-    public partial  interface IProductDAL:IBaseDAL<商品档案_商品>
+    public partial interface IProduct_ClassfiyDAL:IBaseDAL<商品档案_分类>
     {
     }
 }

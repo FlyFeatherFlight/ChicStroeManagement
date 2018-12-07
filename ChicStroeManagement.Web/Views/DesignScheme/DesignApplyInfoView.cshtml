@@ -5,7 +5,7 @@
 }
 
 <h2>@Html.DisplayFor(Model => Model.客户姓名)</h2>
-@Html.ActionLink("图纸", "Index","DesignFile", new {id=Model.Id}, new { @Style = "font-size:12px" })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待记录ID }, new { @Style = "font-size:12px" })
+@Html.ActionLink("图纸", "Index","DesignFile", new {id=Model.Id}, new { @Style = "font-size:12px" })|@Html.ActionLink("预购", "Design_ExceptedBuyIndex", "DesignScheme", new { id = Model.Id}, new { @Style = "font-size:12px" })
 <table class="table table-bordered">
     <thead>
         <tr><td colspan="4" align="center"><b style="font-size:large">软装服务设计案提交表-@Model.客户姓名</b></td></tr>
@@ -97,7 +97,7 @@
                             <tr>
                                 <td>@item.空间</td>
                                 <td>@item.系列</td>
-                                <td>@item.产品名称</td>
+                                <td>@item.名称</td>
                                 <td>@item.单位</td>
                                 <td>@item.尺寸</td>
                                 <td>@item.数量</td>

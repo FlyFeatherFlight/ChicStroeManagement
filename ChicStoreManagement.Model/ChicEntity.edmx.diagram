@@ -52,6 +52,10 @@
         <EntityTypeShape EntityType="chicModel.商品档案_商品" Width="1.5" PointX="8.375" PointY="3.25" />
         <EntityTypeShape EntityType="chicModel.商品档案_系列" Width="1.5" PointX="0.75" PointY="5.75" />
         <AssociationConnector Association="chicModel.FK_商品档案_商品_商品档案_型号" />
+        <EntityTypeShape EntityType="chicModel.商品档案_分类" Width="1.5" PointX="3.5" PointY="0.75" />
+        <EntityTypeShape EntityType="chicModel.商品档案_品牌" Width="1.5" PointX="10.375" PointY="2.625" />
+        <AssociationConnector Association="chicModel.FK_商品档案_型号_商品档案_分类" />
+        <AssociationConnector Association="chicModel.FK_销售_店铺档案_商品档案_品牌" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

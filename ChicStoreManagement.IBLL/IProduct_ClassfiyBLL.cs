@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChicStoreManagement.IDAL
+namespace ChicStoreManagement.IBLL
 {
     /// <summary>
-    /// 商品档案
+    /// 商品档案_分类
     /// </summary>
-    public partial  interface IProductDAL:IBaseDAL<商品档案_商品>
+    public partial interface IProduct_ClassfiyBLL:IBaseService<商品档案_分类>
     {
     }
 }

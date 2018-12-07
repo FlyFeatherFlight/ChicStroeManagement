@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace ChicStoreManagement.BLL
 {
-   public partial class ProductBLL:BaseService<商品档案_商品>,IProductBLL
+    /// <summary>
+    /// 商品档案
+    /// </summary>
+    public partial class ProductBLL:BaseService<商品档案_商品>,IProductBLL
     {
         private IProductDAL productDAL;
 

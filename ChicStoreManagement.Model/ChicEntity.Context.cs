@@ -47,5 +47,7 @@ namespace ChicStoreManagement.Model
         public DbSet<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
         public DbSet<商品档案_商品> 商品档案_商品 { get; set; }
         public DbSet<商品档案_系列> 商品档案_系列 { get; set; }
+        public DbSet<商品档案_分类> 商品档案_分类 { get; set; }
+        public DbSet<商品档案_品牌> 商品档案_品牌 { get; set; }
     }
 }

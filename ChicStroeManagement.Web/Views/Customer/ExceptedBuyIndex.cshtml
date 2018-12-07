@@ -91,7 +91,8 @@
             <hr />
             <table id="product" class="table table-striped">
                 <tr>
-                    <th>接待单</th>
+                    <th>接待记录ID</th>
+                    <th>空间</th>
                     <th>商品型号</th>
                     <th>备注</th>
                     <th>操作</th>
@@ -99,13 +100,15 @@
                 </tr>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td style="display:none">@item.ID</td>
-                        <td>@item.接待</td>
-                        <td>@item.型号</td>
-                        <td>@item.备注</td>
-                        <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
-                    </tr>
+                <tr>
+                    <td style="display:none">@item.ID</td>
+                    <td>@item.接待</td>
+                    <td>@item.空间</td>
+                    <td>@item.型号</td>
+
+                    <td>@item.备注</td>
+                    <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
+                </tr>
                 }
             </table>
 
@@ -114,6 +117,7 @@
                 <form action="@Url.Action("UpdateExceptedBuyAction", "Customer")" method="POST">
                     Id:<input name="id" id="editid" class="form-control" readonly="readonly" />
                     接待id:<input name="接待" id="editreception" value="@ViewBag.receptionid" readonly="readonly" class="form-control" />
+                    空间：<select name="空间"><option value='客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select>
                     商品型号:@Html.DropDownList("型号", ViewBag.ProductOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })
                     备注:<input name="备注" id="editremark" class="form-control" />
                     <button type="submit" class="btn">提交</button>

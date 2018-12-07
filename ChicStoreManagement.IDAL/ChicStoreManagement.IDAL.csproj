@@ -58,6 +58,8 @@
     <Compile Include="IProductDAL.cs" />
     <Compile Include="IProductSkuDAL.cs" />
     <Compile Include="IProducts_SeriesDAL.cs" />
+    <Compile Include="IProduct_BrandDAL.cs" />
+    <Compile Include="IProduct_ClassfiyDAL.cs" />
     <Compile Include="ISalesOrderDAL.cs" />
     <Compile Include="IStoreDAL.cs" />
     <Compile Include="IPositionDAL.cs" />

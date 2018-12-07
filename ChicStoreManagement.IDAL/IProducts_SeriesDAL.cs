@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ChicStoreManagement.IDAL
 {
-   public partial interface IProducts_SeriesDAL:IBaseDAL<商品档案_系列>
+    /// <summary>
+    /// 商品_系列
+    /// </summary>
+    public partial interface IProducts_SeriesDAL:IBaseDAL<商品档案_系列>
     {
     }
 }

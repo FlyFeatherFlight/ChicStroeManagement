@@ -1,53 +1,15 @@
-﻿@model  List<ChicStoreManagement.WEB.ViewModel.Design_CustomerExceptedBuyViewModel>
+﻿
 @{
-    ViewBag.Title = "Design_ExceptedBuyIndex";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "添加客户意向产品信息";
 }
-<script>
-        function startOn() {
-            $("exinfo").load(location.href + " #exinfo");
-    }
 
-    function edit(otr) {
-        var tr = document.getElementById("tb");
-        if (tr.rows.length > 1) {
-            tr.deleteRow(tr.rows.length-1);
-        }
-        var rows = otr.parentNode.parentNode.rowIndex;
-        var Id = otr.parentNode.parentNode.childNodes[1].innerText;
-        addrow(Id);
-        document.getElementById("edit").style.display = "block";
-        
-    }
-
-        function del(otr) {
-            var rows = otr.parentNode.parentNode.rowIndex;
-            var Id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
-            $.ajax({
-            type: "POST",
-                url: '@Url.Action("DelDesign_ExceptedBuy", "DesignScheme")',
-                data: { id: Id },
-            datatype: "json",
-            async: true,//异步
-                success: function (data) {
-                    alert("删除成功！");
-                    var td = $(otr);
-                    td.parents("tr").remove();
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                alert("系统繁忙！");
-            }
-
-        });
-        }
-</script>
 <script>
     //添加行
-    function addrow(id) {
+    function addrow() {
         var table = $("#tb");
       @*var sd = JSON.parse(@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>));*@
-        var tr = $("<tr id='t1'>" +
-            "<td><input type='text' name='Id' value='" + id + "' class='form-control'readonly='readonly' />" +
+        var tr = $("<tr>" +
+            "<td style='display: none'><input type='text' name='设计提交案' value='@Model.设计提交案' class='form-control'readonly='readonly' />" +
             "</td>" +
             "<td onclick='selectfunc(this)'><select><option value= '客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select><input type='text' name='空间' value='客厅' style='display:none' readonly='readonly'/></td>"+
             "<td onclick='SetselectClassfiy(this)'>" +
@@ -73,11 +35,18 @@
             "<td><input type='text' name='数量' value=''class='form-control'/>" +
             "</td>" +
             "<td><input type='text' name='配置' value=''class='form-control'/>" +
-            "</td>" 
-            );
+            "</td>" +
+            "<td  align='center' onclick='deletetr(this)'><button type='button'  class='btn btn-xs btn-link' >" +
+            "删除" + "</button></td></tr>");
         table.append(tr);
     }
- 
+    //删除当前行
+
+    function deletetr(otr) {
+        var td = $(otr);
+        td.parents("tr").remove();
+    }
+
     function selectfunc(otr) {
         var se = otr.getElementsByTagName("select");
         var index = se[0].selectedIndex;
@@ -95,7 +64,7 @@
 
         var se = otr.getElementsByTagName("select");
         var index = se[0].selectedIndex; // 选中索引
-
+     
         if (se[0].length > 0) {
             if (index != null) {
                 var text = se[0].options[index].text; // 选中文本
@@ -118,16 +87,16 @@
                     tr.getElementsByTagName("input")[7].value = "";
                     tr.getElementsByTagName("input")[8].value = "";
                     }
-
+                       
                 else {
                     otr.getElementsByTagName("input")[0].value = value;
                 }
-
+                   
                     return;
                 }
-
+                
             }
-
+      
         else {
             $.ajax({
                 url: '@Url.Action("GetClassfiySelect", "DesignScheme")',
@@ -296,7 +265,7 @@
                         //}
                     }
                     $.each(data, function (i, item) {
-
+                       
                         $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
 
                     });
@@ -305,7 +274,7 @@
                 error: function (data) {
                     alert(JSON.stringify(data));
                     alert("连接失败，请刷新，或稍后访问，谢谢！");
-
+                 
                     window.location.reload();
                 },
             })
@@ -344,9 +313,9 @@
             }
 
         }
-
-
-
+       
+         
+       
 
     }
 
@@ -378,7 +347,7 @@
                         //}
                     }
                     $.each(data, function (i, item) {
-
+                       
                         $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
 
                     });
@@ -387,85 +356,92 @@
                 error: function (data) {
                     alert(JSON.stringify(data));
                     alert("连接失败，请刷新，或稍后访问，谢谢！");
-
+                 
                     window.location.reload();
                 },
         })
-
+        
     }
 
-    
+    function subtt() {
+        var mytable = document.getElementById("tb");
+        var datat = [];
+        for (var i = 1, rows = mytable.rows.length; i < rows; i++)  {
+            //类似存储一个对象,包括了与student对相应的属性
+            let postdata = {
+                "设计提交案": mytable.rows[i].cells[0].getElementsByTagName("input")[0].value,
+                "空间": mytable.rows[i].cells[1].getElementsByTagName("input")[0].value,
+                "分类": mytable.rows[i].cells[2].getElementsByTagName("input")[0].value,
+                "系列": mytable.rows[i].cells[3].getElementsByTagName("input")[0].value,
+                "品牌": mytable.rows[i].cells[4].getElementsByTagName("input")[0].value,
+                "编号": mytable.rows[i].cells[5].getElementsByTagName("input")[0].value,
+                "名称": mytable.rows[i].cells[6].getElementsByTagName("input")[0].value,
+                "尺寸": mytable.rows[i].cells[7].getElementsByTagName("input")[0].value,
+                "单位": mytable.rows[i].cells[8].getElementsByTagName("input")[0].value,
+                "数量": mytable.rows[i].cells[9].getElementsByTagName("input")[0].value,
+                "配置": mytable.rows[i].cells[10].getElementsByTagName("input")[0].value
+            };
+            datat.push(postdata);//添加到数组
+
+        }
+        try {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddDesign_ExceptedBuy", "DesignScheme")',
+                data: { design_exceptedBuy: JSON.stringify(datat) },//将对象转化JSON字符串格式并传出
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data =="failure") {
+                        alert("操作失败！请刷新页面，或重新进入！");
+                        window.location.reload();
+                    }
+                alert("添加成功");
+                window.history.go(-1);
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    window.location.reload();
+                //window.history.go(-1);
+                }
+
+            });
+        } catch (e) {
+            alert(e.name + ": " + e.message);
+        }
+
+         }
 
 </script>
-<h2>客户意向产品明细</h2>
 
-<div class="table-responsive container">
-
-    @Html.ActionLink("添加客户意向明细信息", "AddDesign_ExceptedBuyView", new { id = @ViewBag.DesignSubid, @class = "form-control", @Style = "font-size:12px" })
+<div id="add" class="table-responsive">
     <hr />
-    <table id="product" class="table table-striped">
-        <thead>
-            <tr>
-                <td>序号</td>
-                <td>空间</td>
-                <td>系列</td>
-                <td>编号</td>
-                <td>产品名称</td>
-                <td>单位</td>
-                <td>尺寸</td>
-                <td>数量</td>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null)
-            {
-                foreach (var item in Model)
-                {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.空间</td>
-                <td>@item.系列</td>
-                <td>@item.编号</td>
-                <td>@item.名称</td>
-                <td>@item.单位</td>
-                <td>@item.尺寸</td>
-                <td>@item.数量</td>
-                <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
-            </tr>
-                }
-            }
-        </tbody>
-       
-    </table>
-
-    <div id="edit" style="display:none" class="form-group">
-        <h3>修改</h3>
-        <form action="@Url.Action("EditDesign_ExceptedBuy", "DesignScheme")" method="POST">
-            <table class="table table-condensed " id="tb">
-                <thead>
-                    <tr>
-                        <td>ID</td>
-                        <td width="4%">空间</td>
-                        <td width="5%">分类</td>
-                        <td>系列</td>
-                        <td>品牌</td>
-                        <td>编号</td>
-                        <td width="10%">产品</td>
-                        <td width="12%">尺寸</td>
-                        <td width="5%">单位</td>
-                        <td width="5%">数量</td>
-                        <td width="10%">配置</td>
-                        <td>操作</td>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <button type="submit" class="btn">提交</button>
-        </form>
+    <h1>添加预购</h1>
+    <form method="post">
+        <table class="table table-condensed " id="tb">
+            <thead>
+                <tr>
+                    <td style="display:none">提交案ID</td>
+                    <td width="4%">空间</td>
+                    <td width="5%">分类</td>
+                    <td>系列</td>
+                    <td>品牌</td>
+                    <td>编号</td>
+                    <td width="10%">产品</td>
+                    <td width="12%">尺寸</td>
+                    <td width="5%">单位</td>
+                    <td width="5%">数量</td>
+                    <td width="10%">配置</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
         <hr />
-    </div>
-
-    <br />
+        <input type="button" onclick="addrow()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px" />
+        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg"  style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px" />
+        
+    </form>
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
-    <hr />
+
 </div>

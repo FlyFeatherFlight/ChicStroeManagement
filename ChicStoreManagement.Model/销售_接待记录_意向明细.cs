@@ -18,6 +18,7 @@ namespace ChicStoreManagement.Model
         public int 接待ID { get; set; }
         public string 备注 { get; set; }
         public int 商品型号ID { get; set; }
+        public string 空间 { get; set; }
     
         public virtual 销售_接待记录 销售_接待记录 { get; set; }
     }

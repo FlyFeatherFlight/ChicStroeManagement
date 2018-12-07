@@ -6,11 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ChicStoreManagement.IBLL
-{
-    /// <summary>
-    /// 商品档案
-    /// </summary>
-    public partial  interface IProductBLL:IBaseService<商品档案_商品>
+{/// <summary>
+ /// 商品档案_品牌
+ /// </summary>
+    public partial  interface IProduct_BrandBLL:IBaseService<商品档案_品牌>
     {
     }
 }

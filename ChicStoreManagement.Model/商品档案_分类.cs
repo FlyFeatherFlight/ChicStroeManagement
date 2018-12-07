@@ -12,23 +12,20 @@ namespace ChicStoreManagement.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class 商品档案_型号
+    public partial class 商品档案_分类
     {
-        public 商品档案_型号()
+        public 商品档案_分类()
         {
-            this.商品档案_商品 = new HashSet<商品档案_商品>();
+            this.商品档案_型号 = new HashSet<商品档案_型号>();
         }
     
         public int ID { get; set; }
-        public int 分类ID { get; set; }
-        public Nullable<int> 品牌ID { get; set; }
-        public Nullable<int> 系列ID { get; set; }
-        public string 型号 { get; set; }
+        public string 分类代码 { get; set; }
+        public string 分类名称 { get; set; }
         public Nullable<int> 制单人 { get; set; }
         public Nullable<System.DateTime> 制单日期 { get; set; }
-        public Nullable<bool> 停用标志 { get; set; }
+        public Nullable<int> 排序 { get; set; }
     
-        public virtual ICollection<商品档案_商品> 商品档案_商品 { get; set; }
-        public virtual 商品档案_分类 商品档案_分类 { get; set; }
+        public virtual ICollection<商品档案_型号> 商品档案_型号 { get; set; }
     }
 }

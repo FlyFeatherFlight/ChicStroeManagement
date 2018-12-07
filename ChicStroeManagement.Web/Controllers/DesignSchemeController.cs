@@ -21,25 +21,34 @@ namespace ChicStoreManagement.Controllers
         private readonly IStoreBLL storeBLL;
         private readonly IPositionBLL positionBLL;
         private readonly IStoreEmployeesBLL storeEmployeesBLL;
-
+        private readonly IProductBLL productBLL;
+        private readonly IProduct_SeriesBLL product_SeriesBLL;
+        private readonly IProduct_BrandBLL product_BrandBLL;
+        private readonly IProduct_ClassfiyBLL product_ClassfiyBLL;
 
         private int employeeID;
         private string employeeName;
         private string store;
         private int storeID;
 
-        public DesignSchemeController(ICustomerInfoBLL customerInfoIBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL, IExceptedBuyBLL exceptedBuyBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL)
+        public DesignSchemeController(ICustomerInfoBLL customerInfoBLL, ICustomerTrackingBLL customerTrackingBLL, IDesign_CustomerExceptedBuyBLL design_CustomerExceptedBuyBLL, IDesignSubmitBLL designSubmitBLL, IExceptedBuyBLL exceptedBuyBLL, IProductCodeBLL productCodeBLL, IStoreBLL storeBLL, IPositionBLL positionBLL, IStoreEmployeesBLL storeEmployeesBLL, IProductBLL productBLL, IProduct_SeriesBLL product_SeriesBLL, IProduct_BrandBLL product_BrandBLL, IProduct_ClassfiyBLL product_ClassfiyBLL)
         {
-            this.customerInfoBLL = customerInfoIBLL;
+            this.customerInfoBLL = customerInfoBLL;
+            this.customerTrackingBLL = customerTrackingBLL;
             this.design_CustomerExceptedBuyBLL = design_CustomerExceptedBuyBLL;
             this.designSubmitBLL = designSubmitBLL;
+            this.exceptedBuyBLL = exceptedBuyBLL;
+            this.productCodeBLL = productCodeBLL;
             this.storeBLL = storeBLL;
             this.positionBLL = positionBLL;
             this.storeEmployeesBLL = storeEmployeesBLL;
-            this.exceptedBuyBLL = exceptedBuyBLL;
-            this.productCodeBLL = productCodeBLL;
-            this.customerTrackingBLL = customerTrackingBLL;
+            this.productBLL = productBLL;
+            this.product_SeriesBLL = product_SeriesBLL;
+            this.product_BrandBLL = product_BrandBLL;
+            this.product_ClassfiyBLL = product_ClassfiyBLL;
         }
+
+
 
         /// <summary>
         /// 设计方案
@@ -526,77 +535,178 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             var lis = BuildDesign_ExceptedBuy(id);
+            ViewBag.DesignSubid = id;
             return View(lis);
         }
+
+        /// <summary>
+        /// 得到产品编号下拉数据
+        /// </summary>
+        /// <param name="classfiy">分类</param>
+        /// <param name="series">系列</param>
+        /// <param name="brand">品牌</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetProductNumber(string classfiy, string series, string brand)
+        {
+            var classfiyID = product_ClassfiyBLL.GetModel(p => p.分类名称 == classfiy).ID;//分类ID（沙发、床。。。）
+            var seriesID = product_SeriesBLL.GetModel(p => p.系列 == series).ID;//系列ID（时光，绽放。。）
+            var brandID = product_BrandBLL.GetModel(p => p.品牌名称 == brand).ID;//品牌ID（CHIC CASA,CHIC HOME，CHIC ALIVAR。。）
+            SelectList productSelectListItems;
+            try
+            {
+                var producCodetID = productCodeBLL.GetModel(p => p.分类ID == classfiyID && p.品牌ID == brandID && p.系列ID == seriesID).ID;//型号ID
+                var productList = productBLL.GetModels(p => p.型号ID == producCodetID).ToList();//商品集合
+                productSelectListItems = new SelectList(productList, "编号", "编号");
+            }
+            catch (Exception)
+            {
+
+                return Json("null");
+            }
+
+            return Json(productSelectListItems);
+        }
+        [HttpPost]
+        public ActionResult GetProductOther(string productNum)
+        {
+            商品档案_商品 model = new 商品档案_商品();
+            model = productBLL.GetModel(p => p.编号 == productNum);
+            List<String> lis = new List<String>();
+            var name = model.名称.Replace(" ", "");
+            var size = model.规格.Replace(" ", "");
+            var unit = model.计量单位.Replace(" ", "");
+            lis.Add(name);
+            lis.Add(size);
+            lis.Add(unit);
+            return Json(lis);
+        }
+        /// <summary>
+        /// 获取系列下拉数据
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [HttpPost]
+        public ActionResult GetSeriesSelect()
+        {
+            var productSeriesList = product_SeriesBLL.GetModels(p => true).ToList();
+            SelectList selectListItems = new SelectList(productSeriesList, "系列", "系列");
+            return Json(selectListItems);
+        }
+
+        /// <summary>
+        /// 获取分类数据
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [HttpPost]
+        public ActionResult GetClassfiySelect()
+        {
+
+            var classfiyList = product_ClassfiyBLL.GetModels(p => true).ToList();
+            SelectList selectListItems = new SelectList(classfiyList, "分类名称", "分类名称");
+            return Json(selectListItems);
+        }
+
+        /// <summary>
+        /// 获取品牌数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetBrandSelect()
+        {
+            var brandList = product_BrandBLL.GetModels(p => true).ToList();
+            SelectList selectListItems = new SelectList(brandList, "品牌名称", "品牌名称");
+            return Json(selectListItems);
+
+        }
+
         /// <summary>
         /// 添加客户意向明细
         /// </summary>
         /// <param name="id">设计案提交表ID</param>
         /// <returns></returns>
-        public ActionResult AddDesign_ExceptedBuyView(int id) {
+        public ActionResult AddDesign_ExceptedBuyView(int id)
+        {
             Session["method"] = "N";
-            Design_CustomerExceptedBuy model = new Design_CustomerExceptedBuy
+            Design_CustomerExceptedBuyViewModel model = new Design_CustomerExceptedBuyViewModel
             {
                 设计提交案 = id
             };
-            return View();
+            return View(model);
         }
 
-        public ActionResult AddDesign_ExceptedBuy(string design_exceptedBuy) {
+        public ActionResult AddDesign_ExceptedBuy(string design_exceptedBuy)
+        {
             Session["method"] = "Y";
-            List<Design_CustomerExceptedBuy> list =JsonConvert.DeserializeObject<List<Design_CustomerExceptedBuy>>(design_exceptedBuy);
-            if (list.Count==0)
+            List<Design_CustomerExceptedBuyViewModel> list = JsonConvert.DeserializeObject<List<Design_CustomerExceptedBuyViewModel>>(design_exceptedBuy);
+            if (list.Count == 0)
             {
                 return Json("<script>alert('不存在你跟进的客户，你不能执行预购操作！');window.history.go(-1);</script>");
             }
 
-
-            foreach (var item in list)
+            try
             {
-                销售_设计案提交表_客户意向产品明细 model = new 销售_设计案提交表_客户意向产品明细();
-                model.产品名称 = item.产品;
-                model.尺寸 = item.尺寸;
-                model.接待记录ID = designSubmitBLL.GetModel(p => p.id == item.设计提交案).接待记录ID;
-                model.数量 = item.数量;
-                model.更新人 = employeeName;
-                model.更新日期 = DateTime.Now;
-                model.空间 = item.空间;
-                model.系列 = item.系列;
-                model.设计提交案 = item.设计提交案;
-                model.配置 = item.配置;
-                model.单位 = item.单位;
-                if (ModelState.IsValid)
-                {
-                    design_CustomerExceptedBuyBLL.Add(model);
-                    Session["method"] = "Y";
+                SetEmployee();
 
-                }
-                else
+                foreach (var item in list)
                 {
-                    List<string> sb = new List<string>();
-                    //获取所有错误的Key
-                    List<string> Keys = ModelState.Keys.ToList();
-                    //获取每一个key对应的ModelStateDictionary
-                    foreach (var key in Keys)
+                    销售_设计案提交表_客户意向产品明细 model = new 销售_设计案提交表_客户意向产品明细();
+                    model.名称 = item.名称;
+                    model.尺寸 = item.尺寸;
+                    model.接待记录ID = designSubmitBLL.GetModel(p => p.id == item.设计提交案).接待记录ID;
+                    model.数量 = item.数量;
+                    model.更新人 = employeeName;
+                    model.更新日期 = DateTime.Now;
+                    model.空间 = item.空间;
+                    model.系列 = item.系列;
+                    model.设计提交案 = item.设计提交案;
+                    model.配置 = item.配置;
+                    model.单位 = item.单位;
+                    model.品牌 = item.品牌;
+                    model.分类 = item.分类;
+                    model.编号 = item.编号;
+                    model.更新人 = employeeName;
+                    model.更新日期 = DateTime.Now;
+                    if (ModelState.IsValid)
                     {
-                        var errors = ModelState[key].Errors.ToList();
-                        //将错误描述添加到sb中
-                        foreach (var error in errors)
+                        design_CustomerExceptedBuyBLL.Add(model);
+                        Session["method"] = "Y";
+
+                    }
+                    else
+                    {
+                        List<string> sb = new List<string>();
+                        //获取所有错误的Key
+                        List<string> Keys = ModelState.Keys.ToList();
+                        //获取每一个key对应的ModelStateDictionary
+                        foreach (var key in Keys)
                         {
-                            sb.Add(error.ErrorMessage);
+                            var errors = ModelState[key].Errors.ToList();
+                            //将错误描述添加到sb中
+                            foreach (var error in errors)
+                            {
+                                sb.Add(error.ErrorMessage);
+                            }
                         }
+                        string s = null;
+                        foreach (var it in sb)
+                        {
+                            s += it.ToString() + ";";
+                        }
+                        return Json(s);
                     }
-                    string s = null;
-                    foreach (var it in sb)
-                    {
-                        s += it.ToString() + ";";
-                    }
-                    return Json(s);
                 }
+            }
+            catch (Exception e)
+            {
+
+                return Json("failure");
             }
             return Json("操作成功！");
         }
-        public ActionResult DelDesign_ExceptedBuy(int id) {
+        public ActionResult DelDesign_ExceptedBuy(int id)
+        {
             try
             {
                 design_CustomerExceptedBuyBLL.DelBy(p => p.id == id);
@@ -606,9 +716,68 @@ namespace ChicStoreManagement.Controllers
 
                 return Json("操作异常！");
             }
-            
+
 
             return Json("删除成功！");
+        }
+
+        public ActionResult EditDesign_ExceptedBuy(Design_CustomerExceptedBuyViewModel model)
+        {
+            //if (Session["method"].ToString() == "Y")
+            //{
+            //    string str = string.Format("<script>alert('重复操作！');window.history.go(-1);</script>");
+            //    return Content(str);
+            //}
+            SetEmployee();
+            销售_设计案提交表_客户意向产品明细 m = new 销售_设计案提交表_客户意向产品明细();
+            m.id = model.Id;
+            m.分类 = model.分类;
+            m.单位 = model.单位;
+            m.名称 = model.名称;
+            m.品牌 = model.品牌;
+            m.尺寸 = model.尺寸;
+            m.接待记录ID = design_CustomerExceptedBuyBLL.GetModel(p => p.id == model.Id).接待记录ID;
+            m.数量 = model.数量;
+            m.更新人 = employeeName;
+            m.更新日期 = DateTime.Now;
+            m.空间 = model.空间;
+            m.系列 = model.系列;
+            m.编号 = model.编号;
+            m.设计提交案 = design_CustomerExceptedBuyBLL.GetModel(p => p.id == model.Id).设计提交案;
+            m.配置 = model.配置;
+
+            if (ModelState.IsValid)
+            {
+
+                design_CustomerExceptedBuyBLL.Modify(m);
+                Session["method"] = "Y";
+
+            }
+            else
+            {
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+                string s = null;
+                foreach (var item in sb)
+                {
+                    s += item.ToString() + ";";
+                }
+                return Content("<script>alert('" + s + "');window.history.go(-1);</script>");
+            }
+
+            return RedirectToAction("Design_ExceptedBuyIndex", new { id = model.设计提交案 });
+
         }
         #endregion
         /// <summary>
@@ -794,13 +963,13 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 根据接待id查询产品信息
         /// </summary>
-        private List<Design_CustomerExceptedBuy> BuildDesign_ExceptedBuy(int id)
+        private List<Design_CustomerExceptedBuyViewModel> BuildDesign_ExceptedBuy(int id)
         {
             if (id == 0)
             {
                 return null;
             }
-            List<Design_CustomerExceptedBuy> models = new List<Design_CustomerExceptedBuy>();
+            List<Design_CustomerExceptedBuyViewModel> models = new List<Design_CustomerExceptedBuyViewModel>();
             List<销售_设计案提交表_客户意向产品明细> exceptedBuy = new List<销售_设计案提交表_客户意向产品明细>();
             try
             {
@@ -816,10 +985,10 @@ namespace ChicStoreManagement.Controllers
             {
                 foreach (var item in exceptedBuy)
                 {
-                    Design_CustomerExceptedBuy exceptedBuyModel = new Design_CustomerExceptedBuy
+                    Design_CustomerExceptedBuyViewModel exceptedBuyModel = new Design_CustomerExceptedBuyViewModel
                     {
                         Id = item.id,
-                        产品 = item.产品名称,
+                        名称 = item.名称,
                         尺寸 = item.尺寸,
                         单位 = item.单位,
                         数量 = item.数量,
@@ -829,9 +998,11 @@ namespace ChicStoreManagement.Controllers
                         更新人 = item.更新人,
                         更新日期 = item.更新日期,
                         空间 = item.空间,
-                        系列 = item.系列
+                        系列 = item.系列,
+                        分类 = item.分类,
+                        品牌 = item.品牌
                     };
-                    //exceptedBuyModel.编号 = productCodeBLL
+                    exceptedBuyModel.编号 = item.编号;
                     models.Add(exceptedBuyModel);
                 }
                 return models;

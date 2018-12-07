@@ -21,7 +21,10 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Text)]
         [Required]
         public string  型号{ get; set; }
-
+        [Display(Name = "空间")]
+        [DataType(DataType.Text)]
+        [Required]
+        public string 空间 { get; set; }
        
         public virtual 销售_接待记录 销售_接待记录 { get; set; }
     }

@@ -11,7 +11,8 @@
         var tr = $("<tr>" +
             "<td><input type='text' name='接待' value='@ViewBag.AddReceptionid' class='form-control'readonly='readonly' />" +
             "</td>" + "<td onclick='Setselect(this)'>" +
-            "<select class='form-control'></selcet><input type='text' name='型号' value=''style='display: none'/>"+"</td>" +
+            "<select class='form-control'></selcet><input type='text' name='型号' value=''style='display: none'/>" + "</td>" +
+            "<td><select name='空间'><option value='客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select></td>"+
             "<td><input type='text' name='备注' value=''class='form-control'/>" +
             "</td>" +
             "<td  align='center' onclick='deletetr(this)'><button type='button'  class='btn btn-xs btn-link' >" +
@@ -44,6 +45,7 @@
                 cache: false,
                 type: "post",
                 dataType: "json",
+                async: true,
                 success: function (data) {
                     $.each(data, function (i, item) {
                         $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
@@ -63,10 +65,12 @@
         var datat = [];
         for (var i = 1, rows = mytable.rows.length; i < rows; i++)  {
             //类似存储一个对象,包括了与student对相应的属性
+            var index=mytable.rows[i].cells[2].getElementsByTagName("select")[0].selectedIndex;
             let postdata = {
                 "接待": mytable.rows[i].cells[0].getElementsByTagName("input")[0].value,
                 "型号": mytable.rows[i].cells[1].getElementsByTagName("input")[0].value,
-                "备注": mytable.rows[i].cells[2].getElementsByTagName("input")[0].value
+                "备注": mytable.rows[i].cells[3].getElementsByTagName("input")[0].value,
+                "空间": mytable.rows[i].cells[2].getElementsByTagName("select")[0].options[index].value,
             };
             datat.push(postdata);//添加到数组
 

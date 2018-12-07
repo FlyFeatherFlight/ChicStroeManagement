@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace ChicStoreManagement.BLL
 {
+    /// <summary>
+    /// 商品_系列
+    /// </summary>
    public partial class Product_SeriesBLL:BaseService<商品档案_系列>,IProduct_SeriesBLL
     {
         private IProducts_SeriesDAL product_SeriesDAL;

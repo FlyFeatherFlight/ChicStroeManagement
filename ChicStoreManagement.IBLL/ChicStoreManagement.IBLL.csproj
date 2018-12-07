@@ -56,6 +56,8 @@
     <Compile Include="IProductBLL.cs" />
     <Compile Include="IProductCodeBLL.cs" />
     <Compile Include="IProductSkuBLL.cs" />
+    <Compile Include="IProduct_BrandBLL.cs" />
+    <Compile Include="IProduct_ClassfiyBLL.cs" />
     <Compile Include="IProduct_SeriesBLL.cs" />
     <Compile Include="ISalesOrderBLL.cs" />
     <Compile Include="IStoreBLL.cs" />

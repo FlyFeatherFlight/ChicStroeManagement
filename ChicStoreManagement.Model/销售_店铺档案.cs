@@ -53,5 +53,6 @@ namespace ChicStoreManagement.Model
         public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
         public virtual ICollection<销售_跟进目标数申请表> 销售_跟进目标数申请表 { get; set; }
         public virtual ICollection<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
+        public virtual 商品档案_品牌 商品档案_品牌 { get; set; }
     }
 }

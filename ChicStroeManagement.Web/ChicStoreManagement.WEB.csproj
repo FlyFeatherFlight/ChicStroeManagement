@@ -227,7 +227,7 @@
     <Compile Include="ViewModel\FileViewModel.cs" />
     <Compile Include="ViewModel\ProductCodeModel.cs" />
     <Compile Include="ViewModel\TrackGoalsViewModel.cs" />
-    <Compile Include="ViewModel\Design_CustomerExceptedBuy.cs" />
+    <Compile Include="ViewModel\Design_CustomerExceptedBuyViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -1122,6 +1122,7 @@
     <Content Include="Views\ManagerExamine\DesignApplyExamineView.cshtml" />
     <Content Include="Views\ManagerExamine\DesignResultView.cshtml" />
     <Content Include="Views\DesignScheme\Design_ExceptedBuyIndex.cshtml" />
+    <Content Include="Views\DesignScheme\AddDesign_ExceptedBuyView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
