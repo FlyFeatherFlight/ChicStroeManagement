@@ -71,8 +71,11 @@
     <Compile Include="Product_BrandDAL.cs" />
     <Compile Include="Product_ClassfiyDAL.cs" />
     <Compile Include="Product_SeriesDAL.cs" />
+    <Compile Include="Product_SKUDAL.cs" />
+    <Compile Include="Product_SPUDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesOrderDAL.cs" />
+    <Compile Include="SalesOrder_detailsDAL.cs" />
     <Compile Include="StoreDAL.cs" />
     <Compile Include="StoreEmployeesDAL.cs" />
     <Compile Include="SystemAccountDAL.cs" />

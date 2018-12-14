@@ -509,7 +509,7 @@ namespace ChicStoreManagement.Controllers
 
 
 
-            // submitModel.销售_设计案提交表_客户意向产品明细 = BuildExceptedBuy(submitModel.接待记录ID);
+            submitModel.Design_CustomerExceptedBuyViewModel = BuildDesign_ExceptedBuy(submitModel.Id);
             return View(submitModel);
         }
         /// <summary>
@@ -532,10 +532,15 @@ namespace ChicStoreManagement.Controllers
         /// <param name="id">设计案提交表ID</param>
         /// <returns></returns>
         public ActionResult Design_ExceptedBuyIndex(int id)
-        {
+         {
             Session["method"] = "N";
             var lis = BuildDesign_ExceptedBuy(id);
             ViewBag.DesignSubid = id;
+            var model = designSubmitBLL.GetModel(p => p.id == id);
+            if (model.设计人员审核 != false && model.设计人员审核 != null && model.设计人员 != null && model.店长 != null && model.店长审核 != false && model.店长审核 != null)
+            {
+                ViewBag.CheckState = true;
+            }
             return View(lis);
         }
 

@@ -42,6 +42,12 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+            SetEmployee();
+           var pid = storeEmployeesBLL.GetModel(p=>p.ID==employeeID).职务ID;
+            if (pid==6)//功能待定
+            {
+                return RedirectToAction("ManagerAction");
+            }
             return View();
         }
 

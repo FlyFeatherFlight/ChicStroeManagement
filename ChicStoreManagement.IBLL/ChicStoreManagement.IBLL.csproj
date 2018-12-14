@@ -59,7 +59,10 @@
     <Compile Include="IProduct_BrandBLL.cs" />
     <Compile Include="IProduct_ClassfiyBLL.cs" />
     <Compile Include="IProduct_SeriesBLL.cs" />
+    <Compile Include="IProduct_SKUBLL.cs" />
+    <Compile Include="IProduct_SPUBLL.cs" />
     <Compile Include="ISalesOrderBLL.cs" />
+    <Compile Include="ISalesOrder_detailsBLL.cs" />
     <Compile Include="IStoreBLL.cs" />
     <Compile Include="ISystemAccountBLL.cs" />
     <Compile Include="ITrackGoalBLL.cs" />

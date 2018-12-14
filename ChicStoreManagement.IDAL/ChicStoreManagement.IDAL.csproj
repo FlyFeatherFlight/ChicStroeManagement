@@ -60,7 +60,10 @@
     <Compile Include="IProducts_SeriesDAL.cs" />
     <Compile Include="IProduct_BrandDAL.cs" />
     <Compile Include="IProduct_ClassfiyDAL.cs" />
+    <Compile Include="IProduct_SKUDAL.cs" />
+    <Compile Include="IProduct_SPUDAL.cs" />
     <Compile Include="ISalesOrderDAL.cs" />
+    <Compile Include="ISalesOrder_detailsDAL.cs" />
     <Compile Include="IStoreDAL.cs" />
     <Compile Include="IPositionDAL.cs" />
     <Compile Include="ISystemAccountDAL.cs" />

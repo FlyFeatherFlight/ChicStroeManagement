@@ -69,12 +69,12 @@ namespace ChicStoreManagement.Controllers
             ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
             if (id != null && id != 0)
             {
-                customerTrackingModels = BuildTrackingInfo(id);//获取当前人员可查看的跟进信息
+                customerTrackingModels = BuildTrackingInfo(id);//获取当前客户的跟进信息
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
             }
             else
             {
-                customerTrackingModels = BuildTrackingInfo(0);
+                customerTrackingModels = BuildTrackingInfo(0);//获取当前人员可查看的跟进信息
             }
             if (customerTrackingModels == null)
             {

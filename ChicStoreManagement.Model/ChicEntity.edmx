@@ -17,6 +17,31 @@
           <Property Name="制单日期" Type="datetime" />
           <Property Name="停用标志" Type="bit" />
         </EntityType>
+        <EntityType Name="商品档案_SPU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="编号" Type="nvarchar" MaxLength="50" />
+          <Property Name="名称1" Type="nchar" MaxLength="10" />
+          <Property Name="规格1" Type="nvarchar" MaxLength="50" />
+          <Property Name="SPU描述" Type="nvarchar" MaxLength="50" />
+          <Property Name="计量单位1" Type="nvarchar" MaxLength="10" />
+          <Property Name="商品ID" Type="int" />
+          <Property Name="型号ID" Type="int" />
+          <Property Name="停用标志" Type="bit" />
+          <Property Name="交货周期1" Type="int" />
+          <Property Name="是否进口1" Type="bit" />
+          <Property Name="制单人" Type="int" />
+          <Property Name="制单日期" Type="datetime" />
+          <Property Name="零售价" Type="money" />
+          <Property Name="经销价" Type="money" />
+          <Property Name="成本价" Type="money" />
+          <Property Name="审核标志" Type="bit" />
+          <Property Name="审核人" Type="int" />
+          <Property Name="审核日期" Type="date" />
+          <Property Name="处理标识" Type="bit" />
+        </EntityType>
         <EntityType Name="商品档案_分类">
           <Key>
             <PropertyRef Name="ID" />
@@ -447,6 +472,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_商品档案_SKU_商品档案_SPU">
+          <End Role="商品档案_SPU" Type="Self.商品档案_SPU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="商品档案_SKU" Type="Self.商品档案_SKU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_SPU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="商品档案_SKU">
+              <PropertyRef Name="SPU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_商品档案_SPU_商品档案_商品">
+          <End Role="商品档案_商品" Type="Self.商品档案_商品" Multiplicity="0..1" />
+          <End Role="商品档案_SPU" Type="Self.商品档案_SPU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_商品">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="商品档案_SPU">
+              <PropertyRef Name="商品ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_商品档案_商品_商品档案_型号">
           <End Role="商品档案_型号" Type="Self.商品档案_型号" Multiplicity="1" />
           <End Role="商品档案_商品" Type="Self.商品档案_商品" Multiplicity="*" />
@@ -769,6 +820,7 @@
         </Association>
         <EntityContainer Name="chicModelStoreContainer">
           <EntitySet Name="商品档案_SKU" EntityType="Self.商品档案_SKU" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="商品档案_SPU" EntityType="Self.商品档案_SPU" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="商品档案_分类" EntityType="Self.商品档案_分类" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="商品档案_品牌" EntityType="Self.商品档案_品牌" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="商品档案_商品" EntityType="Self.商品档案_商品" Schema="dbo" store:Type="Tables" />
@@ -795,6 +847,14 @@
           <AssociationSet Name="FK_家具成交明细_设计案完结单" Association="Self.FK_家具成交明细_设计案完结单">
             <End Role="设计_设计案完结单" EntitySet="设计_设计案完结单" />
             <End Role="设计_设计案完结单_家具成交单" EntitySet="设计_设计案完结单_家具成交单" />
+          </AssociationSet>
+          <AssociationSet Name="FK_商品档案_SKU_商品档案_SPU" Association="Self.FK_商品档案_SKU_商品档案_SPU">
+            <End Role="商品档案_SPU" EntitySet="商品档案_SPU" />
+            <End Role="商品档案_SKU" EntitySet="商品档案_SKU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_商品档案_SPU_商品档案_商品" Association="Self.FK_商品档案_SPU_商品档案_商品">
+            <End Role="商品档案_商品" EntitySet="商品档案_商品" />
+            <End Role="商品档案_SPU" EntitySet="商品档案_SPU" />
           </AssociationSet>
           <AssociationSet Name="FK_商品档案_商品_商品档案_型号" Association="Self.FK_商品档案_商品_商品档案_型号">
             <End Role="商品档案_型号" EntitySet="商品档案_型号" />
@@ -1223,6 +1283,15 @@
             <End Role="商品档案_品牌" EntitySet="商品档案_品牌" />
             <End Role="销售_店铺档案" EntitySet="销售_店铺档案" />
           </AssociationSet>
+          <EntitySet Name="商品档案_SPU" EntityType="chicModel.商品档案_SPU" />
+          <AssociationSet Name="FK_商品档案_SKU_商品档案_SPU" Association="chicModel.FK_商品档案_SKU_商品档案_SPU">
+            <End Role="商品档案_SPU" EntitySet="商品档案_SPU" />
+            <End Role="商品档案_SKU" EntitySet="商品档案_SKU" />
+          </AssociationSet>
+          <AssociationSet Name="FK_商品档案_SPU_商品档案_商品" Association="chicModel.FK_商品档案_SPU_商品档案_商品">
+            <End Role="商品档案_商品" EntitySet="商品档案_商品" />
+            <End Role="商品档案_SPU" EntitySet="商品档案_SPU" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="销售_设计案提交表_客户意向产品明细">
           <Key>
@@ -1558,6 +1627,7 @@
           <Property Name="制单日期" Type="DateTime" Precision="3" />
           <Property Name="停用标志" Type="Boolean" />
           <NavigationProperty Name="销售_订单明细" Relationship="chicModel.FK_销售_订单明细_商品档案_SKU" FromRole="商品档案_SKU" ToRole="销售_订单明细" />
+          <NavigationProperty Name="商品档案_SPU" Relationship="chicModel.FK_商品档案_SKU_商品档案_SPU" FromRole="商品档案_SKU" ToRole="商品档案_SPU" />
         </EntityType>
         <Association Name="FK_销售_订单明细_商品档案_SKU">
           <End Type="chicModel.商品档案_SKU" Role="商品档案_SKU" Multiplicity="1" />
@@ -1783,6 +1853,7 @@
           <Property Name="制单日期" Type="DateTime" Precision="3" />
           <Property Name="OLD_ID" Type="Int32" />
           <NavigationProperty Name="商品档案_型号" Relationship="chicModel.FK_商品档案_商品_商品档案_型号" FromRole="商品档案_商品" ToRole="商品档案_型号" />
+          <NavigationProperty Name="商品档案_SPU" Relationship="chicModel.FK_商品档案_SPU_商品档案_商品" FromRole="商品档案_商品" ToRole="商品档案_SPU" />
         </EntityType>
         <EntityType Name="商品档案_系列">
           <Key>
@@ -1852,6 +1923,58 @@
             </Principal>
             <Dependent Role="销售_店铺档案">
               <PropertyRef Name="品牌ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="商品档案_SPU">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="编号" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="名称1" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="规格1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SPU描述" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="计量单位1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="商品ID" Type="Int32" />
+          <Property Name="型号ID" Type="Int32" />
+          <Property Name="停用标志" Type="Boolean" />
+          <Property Name="交货周期1" Type="Int32" />
+          <Property Name="是否进口1" Type="Boolean" />
+          <Property Name="制单人" Type="Int32" />
+          <Property Name="制单日期" Type="DateTime" Precision="3" />
+          <Property Name="零售价" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="经销价" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="审核标志" Type="Boolean" />
+          <Property Name="审核人" Type="Int32" />
+          <Property Name="审核日期" Type="DateTime" Precision="0" />
+          <Property Name="处理标识" Type="Boolean" />
+          <NavigationProperty Name="商品档案_SKU" Relationship="chicModel.FK_商品档案_SKU_商品档案_SPU" FromRole="商品档案_SPU" ToRole="商品档案_SKU" />
+          <NavigationProperty Name="商品档案_商品" Relationship="chicModel.FK_商品档案_SPU_商品档案_商品" FromRole="商品档案_SPU" ToRole="商品档案_商品" />
+        </EntityType>
+        <Association Name="FK_商品档案_SKU_商品档案_SPU">
+          <End Type="chicModel.商品档案_SPU" Role="商品档案_SPU" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="chicModel.商品档案_SKU" Role="商品档案_SKU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_SPU">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="商品档案_SKU">
+              <PropertyRef Name="SPU_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_商品档案_SPU_商品档案_商品">
+          <End Type="chicModel.商品档案_商品" Role="商品档案_商品" Multiplicity="0..1" />
+          <End Type="chicModel.商品档案_SPU" Role="商品档案_SPU" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="商品档案_商品">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="商品档案_SPU">
+              <PropertyRef Name="商品ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2311,6 +2434,31 @@
                 <ScalarProperty Name="品牌LOGO" ColumnName="品牌LOGO" />
                 <ScalarProperty Name="品牌介绍" ColumnName="品牌介绍" />
                 <ScalarProperty Name="品牌名称" ColumnName="品牌名称" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="商品档案_SPU">
+            <EntityTypeMapping TypeName="chicModel.商品档案_SPU">
+              <MappingFragment StoreEntitySet="商品档案_SPU">
+                <ScalarProperty Name="处理标识" ColumnName="处理标识" />
+                <ScalarProperty Name="审核日期" ColumnName="审核日期" />
+                <ScalarProperty Name="审核人" ColumnName="审核人" />
+                <ScalarProperty Name="审核标志" ColumnName="审核标志" />
+                <ScalarProperty Name="经销价" ColumnName="经销价" />
+                <ScalarProperty Name="零售价" ColumnName="零售价" />
+                <ScalarProperty Name="制单日期" ColumnName="制单日期" />
+                <ScalarProperty Name="制单人" ColumnName="制单人" />
+                <ScalarProperty Name="是否进口1" ColumnName="是否进口1" />
+                <ScalarProperty Name="交货周期1" ColumnName="交货周期1" />
+                <ScalarProperty Name="停用标志" ColumnName="停用标志" />
+                <ScalarProperty Name="型号ID" ColumnName="型号ID" />
+                <ScalarProperty Name="商品ID" ColumnName="商品ID" />
+                <ScalarProperty Name="计量单位1" ColumnName="计量单位1" />
+                <ScalarProperty Name="SPU描述" ColumnName="SPU描述" />
+                <ScalarProperty Name="规格1" ColumnName="规格1" />
+                <ScalarProperty Name="名称1" ColumnName="名称1" />
+                <ScalarProperty Name="编号" ColumnName="编号" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

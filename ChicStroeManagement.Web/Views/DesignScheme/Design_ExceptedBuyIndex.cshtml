@@ -17,7 +17,7 @@
         var Id = otr.parentNode.parentNode.childNodes[1].innerText;
         addrow(Id);
         document.getElementById("edit").style.display = "block";
-        
+
     }
 
         function del(otr) {
@@ -73,11 +73,11 @@
             "<td><input type='text' name='数量' value=''class='form-control'/>" +
             "</td>" +
             "<td><input type='text' name='配置' value=''class='form-control'/>" +
-            "</td>" 
+            "</td>"
             );
         table.append(tr);
     }
- 
+
     function selectfunc(otr) {
         var se = otr.getElementsByTagName("select");
         var index = se[0].selectedIndex;
@@ -394,14 +394,18 @@
 
     }
 
-    
+
 
 </script>
 <h2>客户意向产品明细</h2>
 
 <div class="table-responsive container">
-
-    @Html.ActionLink("添加客户意向明细信息", "AddDesign_ExceptedBuyView", new { id = @ViewBag.DesignSubid, @class = "form-control", @Style = "font-size:12px" })
+    @if (!@ViewBag.CheckState)
+    {<p style="color:red">该订单已审核完毕.</p>}
+    else
+    {
+        @Html.ActionLink("添加客户意向明细信息", "AddDesign_ExceptedBuyView", new { id = @ViewBag.DesignSubid, @class = "form-control", @Style = "font-size:12px" })
+    }
     <hr />
     <table id="product" class="table table-striped">
         <thead>
@@ -421,21 +425,25 @@
             {
                 foreach (var item in Model)
                 {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.空间</td>
-                <td>@item.系列</td>
-                <td>@item.编号</td>
-                <td>@item.名称</td>
-                <td>@item.单位</td>
-                <td>@item.尺寸</td>
-                <td>@item.数量</td>
-                <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
-            </tr>
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.空间</td>
+                        <td>@item.系列</td>
+                        <td>@item.编号</td>
+                        <td>@item.名称</td>
+                        <td>@item.单位</td>
+                        <td>@item.尺寸</td>
+                        <td>@item.数量</td>
+                        @if (!@ViewBag.CheckState)
+                        {
+                            <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
+                        }
+
+                    </tr>
                 }
             }
         </tbody>
-       
+
     </table>
 
     <div id="edit" style="display:none" class="form-group">

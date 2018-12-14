@@ -28,5 +28,6 @@ namespace ChicStoreManagement.Model
         public Nullable<bool> 停用标志 { get; set; }
     
         public virtual ICollection<销售_订单明细> 销售_订单明细 { get; set; }
+        public virtual 商品档案_SPU 商品档案_SPU { get; set; }
     }
 }

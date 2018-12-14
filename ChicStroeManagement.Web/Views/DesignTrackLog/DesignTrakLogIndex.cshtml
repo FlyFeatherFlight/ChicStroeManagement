@@ -17,12 +17,12 @@
             <hr />
 
             <div>
-                <pre style="text-align:left;font-size:12px">客户名称:@Model.FirstOrDefault().客户姓名  联系方式:@Model.FirstOrDefault().联系方式 销售人员:@Model.FirstOrDefault().销售人员 设计师:@Model.FirstOrDefault().设计师 设计案需求提交时间:@Model.FirstOrDefault().设计案需求提交时间 楼盘具体位置:@Model.FirstOrDefault().楼盘具体位置</pre>
+                <pre style="text-align:left;font-size:12px">客户名称:@Model.FirstOrDefault().客户姓名  联系方式:@Model.FirstOrDefault().联系方式 销售人员:@Model.FirstOrDefault().销售人员 设计师:@Model.FirstOrDefault().设计师 设计案需求提交时间:@Model.FirstOrDefault().设计案需求提交时间 楼盘具体位置:@Model.FirstOrDefault().楼盘具体位置.ToString().Replace(" ","")</pre>
             </div>
         }
      
-        <div>
-            <table class="table">
+        <div class="table">
+            <table class="table table-responsive  table-striped">
                 <tr>
 
                     <th>@Html.ActionLink("日期", "DesignTrackLogIndex", new { sortOrder = ViewBag.DesignTrackLogDate })</th>
@@ -50,7 +50,6 @@
                     </tr>
                 }
             </table>
-
             Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignTrackLogCurrentSort, currentFilter = ViewBag.DesignTrackLogCurrentFilter }))
 

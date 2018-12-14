@@ -56,6 +56,9 @@
         <EntityTypeShape EntityType="chicModel.商品档案_品牌" Width="1.5" PointX="10.375" PointY="2.625" />
         <AssociationConnector Association="chicModel.FK_商品档案_型号_商品档案_分类" />
         <AssociationConnector Association="chicModel.FK_销售_店铺档案_商品档案_品牌" />
+        <EntityTypeShape EntityType="chicModel.商品档案_SPU" Width="1.5" PointX="10.625" PointY="30.5" />
+        <AssociationConnector Association="chicModel.FK_商品档案_SKU_商品档案_SPU" />
+        <AssociationConnector Association="chicModel.FK_商品档案_SPU_商品档案_商品" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

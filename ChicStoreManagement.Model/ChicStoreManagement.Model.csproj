@@ -76,6 +76,9 @@
     <Compile Include="商品档案_SKU.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="商品档案_SPU.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="商品档案_分类.cs">
       <DependentUpon>ChicEntity.tt</DependentUpon>
     </Compile>

@@ -49,5 +49,6 @@ namespace ChicStoreManagement.Model
         public DbSet<商品档案_系列> 商品档案_系列 { get; set; }
         public DbSet<商品档案_分类> 商品档案_分类 { get; set; }
         public DbSet<商品档案_品牌> 商品档案_品牌 { get; set; }
+        public DbSet<商品档案_SPU> 商品档案_SPU { get; set; }
     }
 }

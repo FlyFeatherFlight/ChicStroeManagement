@@ -5,7 +5,7 @@
 }
 
 <h2>@Html.DisplayFor(Model => Model.客户姓名)</h2>
-@Html.ActionLink("图纸", "Index","DesignFile", new {id=Model.Id}, new { @Style = "font-size:12px" })|@Html.ActionLink("预购", "Design_ExceptedBuyIndex", "DesignScheme", new { id = Model.Id}, new { @Style = "font-size:12px" })
+@Html.ActionLink("图纸", "Index","DesignFile", new {id=Model.Id}, new { @Style = "font-size:12px" })|@Html.ActionLink("软装服务预购", "Design_ExceptedBuyIndex", "DesignScheme", new { id = Model.Id}, new { @Style = "font-size:12px" })
 <table class="table table-bordered">
     <thead>
         <tr><td colspan="4" align="center"><b style="font-size:large">软装服务设计案提交表-@Model.客户姓名</b></td></tr>
@@ -84,20 +84,22 @@
                         <td>空间</td>
                         <td>系列</td>
                         <td>产品名称</td>
+                        <td>编号</td>
                         <td>单位</td>
                         <td>尺寸</td>
                         <td>数量</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.销售_设计案提交表_客户意向产品明细 != null)
+                    @if (Model.Design_CustomerExceptedBuyViewModel != null)
                     {
-                        foreach (var item in Model.销售_设计案提交表_客户意向产品明细)
+                        foreach (var item in Model.Design_CustomerExceptedBuyViewModel)
                         {
                             <tr>
                                 <td>@item.空间</td>
                                 <td>@item.系列</td>
                                 <td>@item.名称</td>
+                                <td>@item.编号</td>
                                 <td>@item.单位</td>
                                 <td>@item.尺寸</td>
                                 <td>@item.数量</td>
@@ -158,7 +160,7 @@
         <td>@Html.DisplayFor(Model => Model.更新日期)</td>
     </tr>
     <tr>
-        <td colspan="4" align="center">@Html.ActionLink("修改信息", "EditDesignApply", new { id = Model.Id }) |@Html.ActionLink("修改客户意向产品", "ExceptedBuyIndex", "Customer",new { id = Model.接待记录ID },new { @Style = "font-size:12px" }) </td>
+        <td colspan="4" align="center">@Html.ActionLink("修改信息", "EditDesignApply", new { id = Model.Id }) @*|@Html.ActionLink("修改客户意向产品", "ExceptedBuyIndex", "Customer",new { id = Model.接待记录ID },new { @Style = "font-size:12px" }) </td>*@
     </tr>
 </table>
 <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn" />

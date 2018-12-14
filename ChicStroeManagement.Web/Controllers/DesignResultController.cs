@@ -19,13 +19,16 @@ namespace ChicStoreManagement.WEB.Controllers
         private IStoreBLL storeBLL;
         private IStoreEmployeesBLL storeEmployeesBLL;
         private ISalesOrderBLL salesOrderBLL;
+        private ISalesOrder_detailsBLL salesOrder_DetailsBLL;
+        private IProduct_SPUBLL product_SPUBLL;
+        private IProduct_SKUBLL product_SKUBLL;
 
 
         private int employeeID;
         private string employeeName;
         private string store;
         private int storeID;
-        public DesignResultController(IDesignResultBLL designResultBLL, IDesignResult_DealListingBLL designResult_DealListingBLL, IDesignSubmitBLL designSubmitBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, ICustomerInfoBLL customerInfoBLL, IStoreBLL storeBLL, IStoreEmployeesBLL storeEmployeesBLL, ISalesOrderBLL salesOrderBLL)
+        public DesignResultController(IDesignResultBLL designResultBLL, IDesignResult_DealListingBLL designResult_DealListingBLL, IDesignSubmitBLL designSubmitBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, ICustomerInfoBLL customerInfoBLL, IStoreBLL storeBLL, IStoreEmployeesBLL storeEmployeesBLL, ISalesOrderBLL salesOrderBLL, ISalesOrder_detailsBLL salesOrder_DetailsBLL, IProduct_SPUBLL product_SPUBLL, IProduct_SKUBLL product_SKUBLL)
         {
             this.designResultBLL = designResultBLL;
             this.designResult_DealListingBLL = designResult_DealListingBLL;
@@ -35,13 +38,16 @@ namespace ChicStoreManagement.WEB.Controllers
             this.storeBLL = storeBLL;
             this.storeEmployeesBLL = storeEmployeesBLL;
             this.salesOrderBLL = salesOrderBLL;
+            this.salesOrder_DetailsBLL = salesOrder_DetailsBLL;
+            this.product_SPUBLL = product_SPUBLL;
+            this.product_SKUBLL = product_SKUBLL;
         }
 
         public ActionResult DesignResultIndex( string sortOrder, string searchString, string currentFilter, int? page)
         {
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
-            var costomerModels = BuildCustomerInfo();
+            
             
             ViewBag.EmployeesID = employeeID;
             ViewBag.DesignResultCurrentSort = sortOrder;
@@ -106,31 +112,44 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=3)
             {
-                return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
+                return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
        
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
+            int salsID;
             if (subid!=null&&subid!=0)
             {
 
                 var phoneNumber = designSubmitBLL.GetModel(w => w.id == subid).联系方式;
                 try
                 {
+                    salsID = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).ID;//根据联系方式查找相应的客户的订单
 
-
-                    designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).合同编号;//合同编号
+                    designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.ID == salsID).合同编号;//合同编号
 
                     designResultViewModel.设计案提交表ID = subid;
-                    designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).订单编号;//订单编号
-                    designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).单据编号;//单据编号
+                    designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == salsID).订单编号;//订单编号
+                    designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == salsID).单据编号;//单据编号
 
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
                 }
                 designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
                 designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
+                设计_设计案完结单_家具成交单 model = new 设计_设计案完结单_家具成交单();
+                /*designResultViewModel.设计_设计案完结单_家具成交单 =*/
+                var lis=salesOrder_DetailsBLL.GetModels(p => p.单据ID == salsID).ToList();
+                foreach (var item in lis)
+                {
+                    var spuid = product_SKUBLL.GetModel(p => p.ID == item.SKU_ID).SPU_ID;
+                    var productid = product_SPUBLL.GetModel(p => p.ID == spuid).商品ID;
+                   ///
+                   ////
+                   ///
+                  
+                }
             }
             return View(designResultViewModel);
         }
@@ -145,7 +164,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 3)
             {
-                return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
+                return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
             设计_设计案完结单 model = new 设计_设计案完结单
             {
@@ -209,7 +228,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 3)
             {
-                return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
+                return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
             设计_设计案完结单 model = new 设计_设计案完结单();
             try
@@ -261,7 +280,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 3)
             {
-                return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
+                return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
             设计_设计案完结单 model = new 设计_设计案完结单();
             model.id = designResultViewModel.Id;
@@ -368,92 +387,6 @@ namespace ChicStoreManagement.WEB.Controllers
         }
 
 
-        /// <summary>
-        /// 构建客户信息
-        /// </summary>
-        /// <returns></returns>
-        public IQueryable<CustomerInfoModel> BuildCustomerInfo()
-        {
-
-            List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
-
-            var customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺所有顾客接待信息
-            if (customer != null)
-            {
-                foreach (var item in customer)
-                {
-                    CustomerInfoModel customerInfo = new CustomerInfoModel();
-                    try
-                    {
-
-
-                        customerInfo.ID = item.ID;
-                        customerInfo.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
-                        customerInfo.接待人 = storeEmployeesBLL.GetModel(p => p.ID == item.接待人ID).姓名;
-                        customerInfo.接待序号 = item.接待序号;
-                        customerInfo.接待日期 = item.接待日期.ToString("d");
-                        customerInfo.主导者 = item.主导者;
-                        customerInfo.主导者喜好风格 = item.主导者喜好风格;
-                        customerInfo.使用空间 = item.使用空间;
-                        customerInfo.出店时间 = item.出店时间;
-                        customerInfo.制单日期 = item.制单日期;
-                        customerInfo.同行人 = item.同行人;
-                        customerInfo.如何得知品牌 = item.如何得知品牌;
-                        customerInfo.安装地址 = item.安装地址;
-                        customerInfo.客户姓名 = item.客户姓名;
-                        customerInfo.客户建议 = item.客户建议;
-                        customerInfo.客户来源 = item.客户来源;
-                        customerInfo.客户电话 = item.客户电话;
-                        customerInfo.客户着装 = item.客户着装;
-                        customerInfo.客户类别 = item.客户类别;
-                        customerInfo.客户类型 = item.客户类型;
-                        customerInfo.客户职业 = item.客户职业;
-                        customerInfo.家庭成员 = item.家庭成员;
-                        customerInfo.年龄段 = item.年龄段;
-                        customerInfo.性别 = item.性别;
-                        customerInfo.是否有意向 = item.是否有意向;
-                        if (item.更新人 != null)
-                        {
-                            customerInfo.更新人 = storeEmployeesBLL.GetModel(p => p.ID == item.更新人).姓名;
-                        }
-
-                        customerInfo.更新日期 = item.更新日期;
-                        customerInfo.来店次数 = item.来店次数;
-                        customerInfo.比较品牌 = item.比较品牌;
-                        customerInfo.特征 = item.特征;
-                        customerInfo.社交软件 = item.社交软件;
-                        customerInfo.装修情况 = item.装修情况;
-                        customerInfo.装修进度 = item.装修进度;
-                        customerInfo.装修风格 = item.装修风格;
-                        customerInfo.设计师 = item.设计师;
-                        if (item.跟进人ID != null)
-                        {
-                            customerInfo.跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人ID).姓名;
-                        }
-
-                        customerInfo.返点 = item.返点;
-                        customerInfo.进店时长 = item.进店时长;
-                        customerInfo.进店时间 = item.进店时间;
-                        customerInfo.预报价折扣 = item.预报价折扣;
-                        customerInfo.预算金额 = item.预算金额;
-                        customerInfo.预计使用时间 = item.预计使用时间;
-
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw ex;
-                    }
-
-                    customerInfoModelsList.Add(customerInfo);
-                }
-            }
-
-
-            return customerInfoModelsList.AsEnumerable().AsQueryable();
-
-        }
 
         /// <summary>
         /// 设置当前的用户信息

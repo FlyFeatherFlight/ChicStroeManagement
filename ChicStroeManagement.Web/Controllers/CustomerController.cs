@@ -29,9 +29,7 @@ namespace ChicStoreManagement.Controllers
         private int storeID;//当前店铺id
         private int positionID;
         private int? goals;
-        // private IQueryable<Employees> workers;//所有员工信息
-        private IQueryable<CustomerInfoModel> customerInfoModels;
-        private IQueryable<CustomerExceptedBuyModel> exceptedBuyModels;
+  
         public CustomerController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL,ITrackGoalBLL trackGoalBLL)
         {
             this.customerInfoBLL = customerInfoBLL;
@@ -58,7 +56,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.CustomerCurrentSort = sortOrder;
             ViewBag.CustomerDate = sortOrder =="first"? "first_desc" : "first";//该排序作废
             ViewBag.CustomerID = sortOrder == "last" ? "last_desc" : "last";
-            BuildCustomerInfo();//将顾客接待信息数据优化
+           var customerInfoModels=BuildCustomerInfo();//将顾客接待信息数据优化
             if (searchString != null)
             {
                 page = 1;
@@ -71,7 +69,7 @@ namespace ChicStoreManagement.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                customerInfoModels = customerInfoModels.Where(w => w.客户电话==searchString);//通过姓名查找
+                customerInfoModels = customerInfoModels.Where(w => w.客户电话==searchString);//通过电话查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
@@ -182,7 +180,7 @@ namespace ChicStoreManagement.Controllers
                 }
 
                 model.更新日期 = DateTime.Now;
-                model.来店次数 = customerInfoModel.来店次数;
+                model.来店次数 = 1;
                 model.比较品牌 = customerInfoModel.比较品牌;
                 model.特征 = customerInfoModel.特征;
                 model.社交软件 = customerInfoModel.社交软件;
@@ -240,21 +238,28 @@ namespace ChicStoreManagement.Controllers
             {
                 return Content("<script>alert('数据已存在！，请勿重复提交');parent.location.href='CustomerIndex';</script>");
             }
-            #region 如果跟进指标超标
-            //if (customerTrackingBLL.GetModels(p=>p.跟进人==employee.姓名).Count >= employee.指标)
-            //{
-            //    model.接待人ID = 0;
-            //    customerInfoBLL.Add(model);
+            #region 如果客户已在当前店铺登记过
+            try
+            {
+                var lis1 = customerInfoBLL.GetModels(p => p.客户姓名 == model.客户姓名 || p.客户电话 == model.客户电话);
+                int num1 = lis1.Count();
+                if (num1 >= 0) //统计客户来店登记次数
+                {
+                    model.来店次数 += num1;
+                }
+            }
+            catch (Exception e)
+            {
 
-            //}
-            //else
-            //{
+                return  Content(e.Message);
+            }
+          
              customerInfoBLL.Add(model); ;
-            //}
+             Session["method"] = "Y";
             #endregion
            
             
-               Session["method"] = "Y";
+             
                 var id=customerInfoBLL.GetModel(p=>p.接待序号==model.接待序号).接待人ID;
                 return RedirectToAction("CustomerIndex");
            
@@ -275,11 +280,11 @@ namespace ChicStoreManagement.Controllers
            
             SetEmployee();
             BuildCustomerInfo();
-            var customerInfo = customerInfoModels.First(p => p.ID == id);
+            var customerInfo = BuildCustomerInfo().First(p => p.ID == id);
 
             if (customerInfo.接待人==employeeName||customerInfo.跟进人==employeeName||storeEmployeesBLL.GetModel(p=>p.姓名==employeeName).职务ID==3)
             {
-                BuildExceptedBuy(id);
+               var exceptedBuyModels=BuildExceptedBuy(id);
                 customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
                 customerInfo.更新人 = employeeName;
                 customerInfo.更新日期 = DateTime.Now;
@@ -450,8 +455,8 @@ namespace ChicStoreManagement.Controllers
             }
             SetEmployee();
             BuildCustomerInfo();
-           var customerInfo=customerInfoModels.First(p => p.ID == id);
-            BuildExceptedBuy(id);
+           var customerInfo= BuildCustomerInfo().First(p => p.ID == id);
+           var exceptedBuyModels= BuildExceptedBuy(id);
             customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
             return View(customerInfo);
 
@@ -470,12 +475,12 @@ namespace ChicStoreManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             SetEmployee();
-            BuildCustomerInfo();
-            BuildExceptedBuy(id);
+       
+           var exceptedBuyModels=BuildExceptedBuy(id);
 
 
             ViewBag.receptionid = id;
-            var customerInfo = customerInfoModels.Where(p => p.ID == id).FirstOrDefault();
+            var customerInfo = BuildCustomerInfo().Where(p => p.ID == id).FirstOrDefault();
             ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             try
@@ -520,7 +525,7 @@ namespace ChicStoreManagement.Controllers
 
             exceptedBuyBLL.DelBy(p => p.ID == ExceptedBuyID);
             Session["method"] = "Y";
-            BuildExceptedBuy(receptionId);
+           var exceptedBuyModels=BuildExceptedBuy(receptionId);
             ViewBag.receptionid = receptionId;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
@@ -690,12 +695,11 @@ namespace ChicStoreManagement.Controllers
         /// <summary>
         /// 初始化客户接待信息
         /// </summary>
-        private void BuildCustomerInfo()
+        private IQueryable<CustomerInfoModel> BuildCustomerInfo()
         {
             List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
            
-            if (customerInfoModels == null)
-            {
+            
                 List<销售_接待记录> customer = new List<销售_接待记录>();
                 if (positionID == 3)
                 {
@@ -775,20 +779,16 @@ namespace ChicStoreManagement.Controllers
 
                         customerInfoModelsList.Add(customerInfo);
                     }
-               
-
-                customerInfoModels = customerInfoModelsList.AsEnumerable().AsQueryable();
-            }
-
+               return customerInfoModelsList.AsEnumerable().AsQueryable();
         }
 
         /// <summary>
         /// 根据接待id查询产品信息
         /// </summary>
-        private void BuildExceptedBuy(int id) {
+        private IQueryable<CustomerExceptedBuyModel> BuildExceptedBuy(int id) {
             if (id==0)
             {
-                return;
+                return null;
             }
             List<CustomerExceptedBuyModel> models = new List<CustomerExceptedBuyModel>();
             var exceptedBuy = exceptedBuyBLL.GetListBy(p=>p.接待ID==id);
@@ -806,9 +806,9 @@ namespace ChicStoreManagement.Controllers
                     };
                     models.Add(exceptedBuyModel);
                 }
-               exceptedBuyModels= models.AsEnumerable().AsQueryable();
-            }
             
+            }
+              return models.AsEnumerable().AsQueryable();
 
         }
     }

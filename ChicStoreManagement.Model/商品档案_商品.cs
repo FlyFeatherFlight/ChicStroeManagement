@@ -14,6 +14,11 @@ namespace ChicStoreManagement.Model
     
     public partial class 商品档案_商品
     {
+        public 商品档案_商品()
+        {
+            this.商品档案_SPU = new HashSet<商品档案_SPU>();
+        }
+    
         public int ID { get; set; }
         public int 型号ID { get; set; }
         public string 编号 { get; set; }
@@ -28,5 +33,6 @@ namespace ChicStoreManagement.Model
         public Nullable<int> OLD_ID { get; set; }
     
         public virtual 商品档案_型号 商品档案_型号 { get; set; }
+        public virtual ICollection<商品档案_SPU> 商品档案_SPU { get; set; }
     }
 }

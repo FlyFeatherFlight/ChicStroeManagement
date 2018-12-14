@@ -1,37 +1,19 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+﻿@*<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @{
         ViewBag.Title = "CHIC门店管理首页";
+
     }
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 
-    <script src="~/Scripts/jquery-3.0.0.js"></script>
-    @Scripts.Render("~/Scripts/jquery.cookie.js")
-    <script src="~/Scripts/jquery-3.0.0.js">
-        function checkCookie() {
-           
-           var username = $.cookie('userName');
-
-          alert('Welcome again ' + username + '!');
-
-           
-        }
-    </script>
-</head>
-<body>
     <div class="jumbotron">
         <h1>CHIC</h1>
         <p class="lead">
             <br />
         </p>
         <p>Chic Casa 希可家居</p>
-      
-    
+
+
     </div>
     <div>当前店铺:@ViewBag.StoreName</div>
     <div class="row">
@@ -61,62 +43,119 @@
             </div>
         }
 
-    </div>
-</body>
-</html>
-@*<body style="text-align:center;">
-    <div class="jumbotron">
-        <h1>CHIC</h1>
-        <p class="lead">
-            <br />
-        </p>
-        <p>Chic Casa 希可家居</p>
+    </div>*@
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/themes/skies.js"></script>
+
+<script type="text/javascript">
+
+    var chart;
+    $(document).ready(function () {
+        var Time = new Array();//存储时间
+        var Count = new Array();//存储数量
+        //获取数据
+        $.ajax({
+            async: false,
+            type: 'post',
+            datatype: 'json',
+            url: '/Report/GetDataList',
+            data: { BeformDays: 7, Type: 1 },//获取前七天的数据，
+            success: function (Data) {
+                console.log(Data.Times);
+                console.log(Data.Counts);
+                Time = Data.Times;
+                Count = Data.Counts;
+            }
+
+        })
+
+        //highchants样式渲染
+        chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',//放置图表的容器
+                plotBackgroundColor: null,//绘图背景颜色
+                plotBorderWidth: null,//绘图边框宽度
+                defaultSeriesType: 'line'//我在这里选折曲线//图表类型样式line, spline, area, areaspline, column, bar, pie , scatter这些样式随你选
+            },
+            title: {
+                text: '曲线图统计'
+            },
+            subtitle: {
+                text: ''//副标题
+            },
+            xAxis: {//X轴数据
+                categories: StitchingData(Time),//存储数组格式的那么我们自己拼接一下数据格式吧
+                rotation: -45, //字体倾斜
+                align: 'right',
+                style: { font: 'normal 13px 宋体' }
+            }
+        },
+            yAxis: {//Y轴显示文字
+                title: {
+                    text: '产量/百万'
+                }
+            },
+            //点击事件
+            tooltip: {
+                enabled: true,
+                formatter: function () {
+                    return '<b>' + this.x + '</b><br/>' + this.series.name + ': ' + Highcharts.numberFormat(this.y, 1);
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: true//是否显示title
+                }
+            },
+            series: [{
+                name: '产量统计报表',
+                data: StitchingData(Count), //这里也是一样的需要自己拼接数组对象
+            });
+
+        //数据拼接
+        function StitchingData(data) {
+            var Datas = new Array();
+            for (var i = 0; i < data.length; i++) {
+                Datas[i] = data[i];//将数据添加到数据中
+            }
+            console.log(Datas);
+            return Datas;
+        }
+    });
+</script>
 
 
-    </div>
-    <div>当前店铺:@ViewBag.StoreName</div>
-    <div style="margin:0,auto; width:500px;">
-        <table>
-            <tr>
-                <td width="200" height="200">
-                    <div style="position:relative;">
-                        <img src="~/images/index-左上.png" width="200" height="200" class="img-responsive  img-rounded " />
-                        <div>
-                            <p><a href="@Url.Action("CustomerIndex","Customer")" style="font-size:larger; font-family:STSong; font-weight:600; position:absolute; z-index:2; left:100px; top:100px"> 客户管理</a></p>
-                        </div>
-                    </div>
-                </td>
-                <td width="200" height="200">
-                    <div style="position:relative;">
-                        <img src="~/images/index-右上.png" width="200" height="200" class="img-responsive  img-rounded " />
-                        <div>
-                            <p><a href="@Url.Action("DesignSchemeIndex","DesignScheme")" style="font-size:larger; font-family:STSong; font-weight:600; position:absolute; z-index:2; left:100px; top:100px">设计日志</a></p>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td width="200" height="200">
-                    <div style="position:relative;">
-                        <img src="~/images/index-左下.png" width="200" height="200" class="img-responsive  img-rounded " />
-                        <div>
-                            <p><a href="@Url.Action("TrackLogIndex","CustomerTrackLog")" style="font-size:larger; font-family:STSong; font-weight:600; position:absolute; z-index:2; left:100px; top:100px">意向日志</a></p>
-                        </div>
-                    </div>
-                </td>
-                <td width="200" height="200">
-
-                    <div style="position:relative;">
-                        <img src="~/images/index-右下.png" width="200" height="200" class="img-responsive  img-rounded " />
-                        <div>
-                            <p><a href="@Url.Action("ManagerAction","Manager")" style="font-size:larger; font-family:STSong; font-weight:600; position:absolute; z-index:2; left:100px; top:100px">店长管理</a></p>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
 
 
 
-    </div>
-</body>*@
+<div>
+    @((DotNet.Highcharts.Highcharts)ViewBag.ChartModel)
+</div>
+
+@*@if (ViewBag == "store")
+    {
+    <h1>店铺数据：</h1>
+    }
+    else {
+        <h1>当前店员数据</h1>
+    }*@
+<!--内容存放处-->
+<div id="container">
+
+</div>
+
+<div>
+    接待总数：
+</div>
+<div>
+    意向跟进数：
+</div>
+<div>软装设计申请数：</div>
+<div>软装设计跟进数：</div>
+<div>软装完结数据：</div>
+

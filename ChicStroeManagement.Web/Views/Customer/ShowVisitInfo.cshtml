@@ -174,11 +174,18 @@
             </td>
 
 
-            <td>
-                <table class="table-responsive table-condensed">
+            <td align="center">
+                <table class="table table-responsive  ">
+                    <tr>
+                        <th>空间</th>
+                        <th>型号</th>
+                        <th>备注</th>
+
+                    </tr>
                     @foreach (var ite in @Model.CustomerExceptedBuyModels)
                     {
                         <tr>
+                            <td>空间:@ite.空间</td>
                             <td>型号： @Html.DisplayFor(m => ite.型号)</td>
                             <td>备注：@Html.DisplayFor(m => ite.备注)</td>
                         </tr>
