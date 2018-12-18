@@ -57,14 +57,18 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <param name="searchString"></param>
         /// <param name="currentFilter"></param>
         /// <param name="page"></param>
+        /// <param name="content">文件类型</param>
         /// <returns></returns>
         // GET: DesignFile
-        public ActionResult Index(int? id, string sortOrder, string searchString, string currentFilter, int? page)
+        public ActionResult Index(int? id, string sortOrder, string searchString, string currentFilter, int? page,int? content)
         {
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
-            Session["DesignID"] = id;
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.DesignID = id;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.DesignFileCurrentSort = sortOrder;
             ViewBag.DesignFileDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignFileResult = sortOrder == "last" ? "last_desc" : "last";
@@ -74,7 +78,7 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             List<DesignFileViewModel> designFileModels = new List<DesignFileViewModel>();
             //构建设计表信息  
-            designFileModels = BuildFileInfo(id).ToList();
+            designFileModels = BuildFileInfo(id,content).ToList();
             ViewBag.DesignPeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.DesignstoreName = store;//将当前店铺名字传到前端
             if (searchString != null)
@@ -128,14 +132,17 @@ namespace ChicStoreManagement.WEB.Controllers
             Session["method"] = "N";
             ViewBag.content = content;
             FileViewModel model = new FileViewModel();
+            SetEmployee();
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             var lis=fileTypeBLL.GetModels(p => true);
-
-
-           
             if (id == 0||id==null)
             {
                 return Content("<script>alert('设计案ID获取出错！');window.history.go(-1);</script>");
             }
+            model.DesignId = id.Value;
             return View(model);
         }
 
@@ -146,7 +153,7 @@ namespace ChicStoreManagement.WEB.Controllers
         public JsonResult UploadFile(FileViewModel fileModel)
         {
             string msg = "true";
-            fileModel.DesignId = Int32.Parse(Session["DesignID"].ToString());
+           
             if (fileModel.DesignId == 0)
             {
                 msg = "设计案ID获取出错！";
@@ -173,7 +180,7 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             var path = UploadManager.SaveFile(fileModel.UploadStream, fileModel.FileName, fileModel.StoreName, fileModel.DesignId.ToString(), fileModel.Filetype.ToString());//获得上传路径
             fileModel.Path = path;
-            if (path == null || design_ProjectDrawingsBLL.GetModel(p => p.存储路径 == path) != null)
+            if (path == null )/*|| design_ProjectDrawingsBLL.GetModel(p => p.存储路径 == path) != null)*/
             {
                 return Json("false");
             }
@@ -186,7 +193,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 设计案提交表ID = fileModel.DesignId,
                 文件名 = fileModel.FileName
             };
-
+            model.设计案提交表ID = fileModel.DesignId;
             var s = "";
             switch (fileModel.Filetype)
             {
@@ -222,6 +229,11 @@ namespace ChicStoreManagement.WEB.Controllers
                     model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
                     break;
                 case FileType.其它:
+                    model.存储路径 = fileModel.Path;
+                    s = fileModel.Filetype.ToString();
+                    model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
+                    break;
+                case FileType.完成效果文件:
                     model.存储路径 = fileModel.Path;
                     s = fileModel.Filetype.ToString();
                     model.文件类型 = fileTypeBLL.GetModel(p => p.文件类型 == s).ID;
@@ -376,108 +388,23 @@ namespace ChicStoreManagement.WEB.Controllers
             }
         }
 
-        /// <summary>
-        /// 构建客户信息
-        /// </summary>
-        /// <returns>客户信息</returns>
-        public IQueryable<CustomerInfoModel> BuildCustomerInfo()
-        {
-
-            List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
-
-            var customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺所有顾客接待信息
-            if (customer != null)
-            {
-                foreach (var item in customer)
-                {
-                    CustomerInfoModel customerInfo = new CustomerInfoModel();
-                    try
-                    {
-
-
-                        customerInfo.ID = item.ID;
-                        customerInfo.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
-                        customerInfo.接待人 = storeEmployeesBLL.GetModel(p => p.ID == item.接待人ID).姓名;
-                        customerInfo.接待序号 = item.接待序号;
-                        customerInfo.接待日期 = item.接待日期.ToString("d");
-                        customerInfo.主导者 = item.主导者;
-                        customerInfo.主导者喜好风格 = item.主导者喜好风格;
-                        customerInfo.使用空间 = item.使用空间;
-                        customerInfo.出店时间 = item.出店时间;
-                        customerInfo.制单日期 = item.制单日期;
-                        customerInfo.同行人 = item.同行人;
-                        customerInfo.如何得知品牌 = item.如何得知品牌;
-                        customerInfo.安装地址 = item.安装地址;
-                        customerInfo.客户姓名 = item.客户姓名;
-                        customerInfo.客户建议 = item.客户建议;
-                        customerInfo.客户来源 = item.客户来源;
-                        customerInfo.客户电话 = item.客户电话;
-                        customerInfo.客户着装 = item.客户着装;
-                        customerInfo.客户类别 = item.客户类别;
-                        customerInfo.客户类型 = item.客户类型;
-                        customerInfo.客户职业 = item.客户职业;
-                        customerInfo.家庭成员 = item.家庭成员;
-                        customerInfo.年龄段 = item.年龄段;
-                        customerInfo.性别 = item.性别;
-                        customerInfo.是否有意向 = item.是否有意向;
-                        if (item.更新人 != null)
-                        {
-                            customerInfo.更新人 = storeEmployeesBLL.GetModel(p => p.ID == item.更新人).姓名;
-                        }
-
-                        customerInfo.更新日期 = item.更新日期;
-                        customerInfo.来店次数 = item.来店次数;
-                        customerInfo.比较品牌 = item.比较品牌;
-                        customerInfo.特征 = item.特征;
-                        customerInfo.社交软件 = item.社交软件;
-                        customerInfo.装修情况 = item.装修情况;
-                        customerInfo.装修进度 = item.装修进度;
-                        customerInfo.装修风格 = item.装修风格;
-                        customerInfo.设计师 = item.设计师;
-                        if (item.跟进人ID != null)
-                        {
-                            customerInfo.跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人ID).姓名;
-                        }
-
-                        customerInfo.返点 = item.返点;
-                        customerInfo.进店时长 = item.进店时长;
-                        customerInfo.进店时间 = item.进店时间;
-                        customerInfo.预报价折扣 = item.预报价折扣;
-                        customerInfo.预算金额 = item.预算金额;
-                        customerInfo.预计使用时间 = item.预计使用时间;
-
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw ex;
-                    }
-
-                    customerInfoModelsList.Add(customerInfo);
-                }
-            }
-
-
-            return customerInfoModelsList.AsEnumerable().AsQueryable();
-
-        }
-
-        private IQueryable<DesignFileViewModel> BuildFileInfo(int? id)
+     
+        
+        private IQueryable<DesignFileViewModel> BuildFileInfo(int? id,int? content)
         {
             List<DesignFileViewModel> models = new List<DesignFileViewModel>();
             List<销售_设计案提交表_项目相关图纸> fileModel = new List<销售_设计案提交表_项目相关图纸>();
             try
             {
-                if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
-                {   //店长可以查看所有图纸信息
-                    fileModel = design_ProjectDrawingsBLL.GetModels(p => true).ToList();
-                }
-                else if (id != 0 && id != null)
+                if (id != 0 && id != null)
                 {   //根据接待ID查询当前客户的设计提交表图纸
                     fileModel = design_ProjectDrawingsBLL.GetModels(p => p.设计案提交表ID == id).ToList();
                 }
-                else
+               else  if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
+                {   //店长可以查看所有图纸信息
+                    fileModel = design_ProjectDrawingsBLL.GetModels(p => true).ToList();
+                }
+               else
                 {
                     //查询当前销售人员的设计提交表图纸
                     fileModel = design_ProjectDrawingsBLL.GetModels(p => p.提交人 == employeeName).ToList();
@@ -489,7 +416,10 @@ namespace ChicStoreManagement.WEB.Controllers
 
                 fileModel = null;
             }
-
+            if (content==8)
+            {
+               fileModel=fileModel.Where(p => p.文件类型 == 8).ToList();
+            }
             if (fileModel != null)
             {
                 foreach (var item in fileModel)
@@ -601,6 +531,9 @@ namespace ChicStoreManagement.WEB.Controllers
                     }
                     break;
                 case FileType.其它:
+                    isAllow = "true";
+                    break;
+                case FileType.完成效果文件:
                     isAllow = "true";
                     break;
                 default:

@@ -63,7 +63,10 @@ namespace ChicStoreManagement.Controllers
             List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
-
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.TrackingCurrentSort = sortOrder;
             ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
@@ -135,6 +138,10 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             CustomerTrackingModel customerTrackingModel = new CustomerTrackingModel
             {
                 店铺 = store,
@@ -231,6 +238,11 @@ namespace ChicStoreManagement.Controllers
         public ActionResult EditTrackLogView(int id)
         {
             Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             var model = customerTrackingBLL.GetModel(p => p.id == id);
             if (model == null)
             {

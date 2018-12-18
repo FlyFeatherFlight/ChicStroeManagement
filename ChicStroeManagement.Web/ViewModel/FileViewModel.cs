@@ -14,7 +14,6 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string FileName { get; set; }
         [Display(Name ="文件类型")]
         [DataType(DataType.Text)]
-     
         public FileType Filetype { get; set; }
         [Display(Name ="店铺名称")]
         public string StoreName { get; set; }
@@ -48,7 +47,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name = "Excel文件")]
         Excel文件,
         [Display(Name = "完成文件")]
-        完成文件,
+        完成效果文件,
         [Display(Name = "其它")]
         其它   
     }

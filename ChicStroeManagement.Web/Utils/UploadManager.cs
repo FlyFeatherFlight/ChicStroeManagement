@@ -59,7 +59,7 @@ namespace ChicStoreManagement.WEB.Utils
         /// <param name="stream">文件流</param>
         /// <param name="fileName">文件名字</param>
         /// <param name="storeName">店铺名字</param>
-        /// <param name="guid">提交id</param>
+        /// <param name="guid">提交案id</param>
         /// <param name="fileType">文件类型</param>
         /// <returns>存储的路径</returns>
         [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
@@ -77,7 +77,7 @@ namespace ChicStoreManagement.WEB.Utils
                     var contentId = id;
 
                     tempPath = GetTempFilePath(fileName);//获取临时文件路径
-                    targetPath = GetTargetFilePath(fileName, storename, contentId, fileType);//获取目标文件路径
+                    targetPath = GetTargetFilePath(fileName, storename, contentId, fileType);//获取目标文件路径("盘符:\\\\存放的最上层文件夹名字\\店铺名字\\提交案ID\\文件类型\\日期\\文件")
 
 
                     //若上传文件夹中子文件夹未存在则创建
@@ -158,7 +158,7 @@ namespace ChicStoreManagement.WEB.Utils
         {
             fileName = fileName + TempExtension;
             //Path.Combine(@HostingEnvironment.ApplicationPhysicalPath, Path.Combine(UploadFolderPhysicalPath, fileName));
-            return Path.Combine(UploadFolderPhysicalPath,"temp", fileName);
+            return Path.Combine(UploadFolderPhysicalPath,"temp",DateTime.Now.Date.ToString("yyyy-MM-dd"),fileName);
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace ChicStoreManagement.WEB.Utils
         /// <returns></returns>
         public static string GetTargetFilePath(string fileName, string storeName, string contentId ,string fileType)
         {
-            return Path.Combine(UploadFolderPhysicalPath, storeName, contentId,fileType,
+            return Path.Combine(UploadFolderPhysicalPath, storeName, contentId,fileType,DateTime.Now.Date.ToString("yyyy-mm-dd"),
                                  fileName);
         }
 

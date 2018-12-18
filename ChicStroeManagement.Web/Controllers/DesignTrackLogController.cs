@@ -54,8 +54,11 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.DesignTrackSubmitID = id;
             Session["method"] = "N";
             SetEmployee();
-            
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.DesignTrackLogCurrentSort = sortOrder;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.DesignSubmitDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.CustomerName = sortOrder == "last" ? "last_desc" : "last";
             List<DesignTackLogViewModel> designTackLogViewModels = new List<DesignTackLogViewModel>();
@@ -118,7 +121,11 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             Session["method"] = "N";
             ViewBag.DesignSubmitID = id;
-
+            SetEmployee();
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             return View();
         }
 
@@ -135,7 +142,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 参与人员 = designTackLogViewModel.参与人员,
                 备注 = designTackLogViewModel.备注,
 
-                设计师 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员,
+         
                 设计案提交表id = designTackLogViewModel.设计案提交表id,
                 设计案需求提交时间 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).更新日期,
                 跟进日期 = designTackLogViewModel.跟进日期,
@@ -144,6 +151,8 @@ namespace ChicStoreManagement.WEB.Controllers
                 需要的支持 = designTackLogViewModel.需要的支持,
                 预计签约时间 = designTackLogViewModel.预计签约时间
             };
+            var did = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员;
+            model.设计师 = storeEmployeesBLL.GetModel(p => p.ID == did).姓名;
             if (ModelState.IsValid)
             {
               
@@ -182,6 +191,11 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns></returns>
         public ActionResult EditDesignTrackView(int? id) {
             Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             if (id==0||id==null)
             {
                 return Content("非法操作！");
@@ -219,7 +233,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 id = designTackLogViewModel.Id.Value,
                 参与人员 = designTackLogViewModel.参与人员,
                 备注 = designTackLogViewModel.备注,
-                设计师 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员,
+                
                 设计案提交表id = designTackLogViewModel.设计案提交表id,
                 设计案需求提交时间 = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).更新日期,
                 跟进日期 = designTackLogViewModel.跟进日期,
@@ -228,6 +242,8 @@ namespace ChicStoreManagement.WEB.Controllers
                 需要的支持 = designTackLogViewModel.需要的支持,
                 预计签约时间 = designTackLogViewModel.预计签约时间
             };
+            var did = designSubmitBLL.GetModel(p => p.id == designTackLogViewModel.设计案提交表id).设计人员;
+            model.设计师 = storeEmployeesBLL.GetModel(p => p.ID == did).姓名;
             if (ModelState.IsValid)
             {
                 designTrackingLogBLL.Modify(model);

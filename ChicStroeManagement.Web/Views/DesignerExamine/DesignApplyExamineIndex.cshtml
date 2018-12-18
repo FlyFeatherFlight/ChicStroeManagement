@@ -1,0 +1,49 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignSubmitModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "DesignApplyExamineIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>设计师审查设计案申请</h2>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>客户姓名</td>
+            <td>客户联系方式</td>
+            <td>安装地址</td>
+            <td>提交时间</td>
+            <td>设计师审批状态</td>
+            <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.客户姓名</td>
+                <td>@item.联系方式</td>
+                <td>@item.楼盘具体位置</td>
+                <td>@item.项目提交时间</td>
+                <td>
+                    @if (@item.设计人员审核 == true)
+                    {
+                        <label>通过</label>
+                    }
+                    else if (@item.设计人员审核 == false)
+                    {
+                        <label>驳回</label>
+                    }
+                    else
+                    {
+                        <label>未审批</label>
+                    }
+                </td>
+                <td>@Html.ActionLink("详情", "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

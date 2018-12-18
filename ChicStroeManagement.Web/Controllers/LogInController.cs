@@ -137,7 +137,10 @@ namespace ChicStoreManagement.Controllers
                         职务 = positionBLL.GetModel(p => p.ID == item.职务ID).职务,
                         店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称,
                         联系方式 = item.联系方式,
-                        跟进目标数=item.跟进目标计划数
+                        跟进目标数=item.跟进目标计划数,
+                        是否销售=item.是否销售,
+                        是否店长 =item.是否店长,
+                        是否设计师=item.是否设计师
                     };
                     employeesList.Add(employees);
                 }

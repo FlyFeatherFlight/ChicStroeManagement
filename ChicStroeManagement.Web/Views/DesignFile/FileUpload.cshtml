@@ -26,6 +26,7 @@
             uploadExtraData: function (previewId, index) {
                 var data = {
                     FileType: findType(),
+                    DesignId: @Model.DesignId,
                 };
                 return data;
             }
@@ -33,13 +34,22 @@
         //导入文件上传完成之后的事件
         $("#cad_file").on("fileuploaded", function (event, data, previewId, index) {
             alert(JSON.stringify(data.response));
+            if ("@ViewBag.content" == "Result" && data.response == "上传成功！") {
+                window.history.back(-1);
+                return;
+            }
             window.location.reload();
         });
 
         //获得文件类型
         findType = function () {
-
-            return $("#FileType option:selected").text();
+            if ("@ViewBag.content" == "Result") {
+                return "完成效果文件";
+            }
+            else {
+                return $("#FileType option:selected").text();
+            }
+           
         }
 
 
@@ -55,7 +65,7 @@
             <div class="modal-body">
                 @if (ViewBag.content == "Result")
                 {
-                    <input type="text" name="FileType" value="@FileType.完成文件" readonly="readonly" />
+                    <input type="text" name="FileType" value="@FileType.完成效果文件" readonly="readonly" />
                 }
                 else
                 {

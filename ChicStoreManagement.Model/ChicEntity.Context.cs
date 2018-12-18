@@ -35,7 +35,6 @@ namespace ChicStoreManagement.Model
         public DbSet<销售_职务> 销售_职务 { get; set; }
         public DbSet<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
         public DbSet<销售_接待记录> 销售_接待记录 { get; set; }
-        public DbSet<销售_设计案提交表> 销售_设计案提交表 { get; set; }
         public DbSet<设计_文件类型> 设计_文件类型 { get; set; }
         public DbSet<销售_设计案提交表_项目相关图纸> 销售_设计案提交表_项目相关图纸 { get; set; }
         public DbSet<销售_订单> 销售_订单 { get; set; }
@@ -43,12 +42,13 @@ namespace ChicStoreManagement.Model
         public DbSet<商品档案_SKU> 商品档案_SKU { get; set; }
         public DbSet<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
         public DbSet<销售_跟进目标数申请表> 销售_跟进目标数申请表 { get; set; }
-        public DbSet<设计_设计案完结单> 设计_设计案完结单 { get; set; }
         public DbSet<销售_设计案跟进日志> 销售_设计案跟进日志 { get; set; }
         public DbSet<商品档案_商品> 商品档案_商品 { get; set; }
         public DbSet<商品档案_系列> 商品档案_系列 { get; set; }
         public DbSet<商品档案_分类> 商品档案_分类 { get; set; }
         public DbSet<商品档案_品牌> 商品档案_品牌 { get; set; }
         public DbSet<商品档案_SPU> 商品档案_SPU { get; set; }
+        public DbSet<设计_设计案完结单> 设计_设计案完结单 { get; set; }
+        public DbSet<销售_设计案提交表> 销售_设计案提交表 { get; set; }
     }
 }

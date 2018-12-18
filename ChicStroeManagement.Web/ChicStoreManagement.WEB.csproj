@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DesignerExamineController.cs" />
     <Compile Include="Controllers\DesignFileController.cs" />
     <Compile Include="Controllers\DesignResultController.cs" />
     <Compile Include="Controllers\DesignTrackLogController.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="ViewModel\CustomerTrackingModel.cs" />
     <Compile Include="ViewModel\DesignFileViewModel.cs" />
     <Compile Include="ViewModel\DesignResultViewModel.cs" />
+    <Compile Include="ViewModel\DesignResult_OrderDetailViewModel.cs" />
     <Compile Include="ViewModel\DesignSubmitModel.cs" />
     <Compile Include="ViewModel\DesignTackLogViewModel.cs" />
     <Compile Include="ViewModel\Employees.cs" />
@@ -1433,9 +1435,13 @@
     <Content Include="Views\ManagerExamine\CustomerExamineView.cshtml" />
     <Content Include="Views\ManagerExamine\CustomerTrackCustomerEditView.cshtml" />
     <Content Include="Views\ManagerExamine\DesignApplyExamineView.cshtml" />
-    <Content Include="Views\ManagerExamine\DesignResultView.cshtml" />
+    <Content Include="Views\ManagerExamine\DesignResultExamineView.cshtml" />
     <Content Include="Views\DesignScheme\Design_ExceptedBuyIndex.cshtml" />
     <Content Include="Views\DesignScheme\AddDesign_ExceptedBuyView.cshtml" />
+    <Content Include="Views\DesignResult\DesignResultInfoView.cshtml" />
+    <Content Include="Views\DesignerExamine\DesignApplyExamineIndex.cshtml" />
+    <Content Include="Views\DesignerExamine\DesignResultExamineIndex.cshtml" />
+    <Content Include="Views\ManagerExamine\ChangeApplyDesignerView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

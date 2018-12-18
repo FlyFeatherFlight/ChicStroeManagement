@@ -59,6 +59,9 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.Text)]
         public int? 跟进目标数 { get; set; }
 
+        public bool? 是否销售 { get; set; }
+        public bool? 是否设计师 { get; set; }
+        public bool? 是否店长 { get; set; }
         public List<Employees> ListEmployees { get; set; }
         public IQueryable<Employees> IQueryEmployees { get; set; }
 

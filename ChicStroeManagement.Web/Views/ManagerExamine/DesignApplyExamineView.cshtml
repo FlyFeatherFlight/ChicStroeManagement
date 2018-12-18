@@ -109,7 +109,7 @@
                                 <td>@item.审批状态</td>
                                 <td>@item.设计人员审核</td>
                                 <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
                                 <td>
                                     <select class="form-control" id="trackselect">
                                         <option value="true">通过</option>
@@ -131,7 +131,7 @@
                                 <td>@item.审批状态</td>
                                 <td>@item.设计人员审核</td>
                                 <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
                                 <td>
                                     <select class="form-control" id="trackselect">
                                         <option value="true">通过</option>
@@ -152,7 +152,7 @@
                                 <td>@item.审批状态</td>
                                 <td>@item.设计人员审核</td>
                                 <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "AddDesignResultView", "DesignResult", new { subid = item.Id }, new { @Style = "font-size:12px" })</td>
+                                <td>@Html.ActionLink("详情", "DesignApplyInfoView","DesignScheme", new { id = item.Id },new { })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "AddDesignResultView", "DesignResult", new { subid = item.Id }, new { @Style = "font-size:12px" })</td>
                                 <td>
                                     <select class="form-control" id="trackselect">
                                         <option value="true">通过</option>

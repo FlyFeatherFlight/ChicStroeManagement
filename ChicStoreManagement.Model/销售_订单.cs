@@ -7,52 +7,49 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ChicStoreManagement.Model
+using System;
+using System.Collections.Generic;
+
+public partial class 销售_订单
 {
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class 销售_订单
+    public 销售_订单()
     {
-        public 销售_订单()
-        {
-            this.销售_订单明细 = new HashSet<销售_订单明细>();
-        }
-    
-        public int ID { get; set; }
-        public Nullable<int> 单据类别ID { get; set; }
-        public string 合同编号 { get; set; }
-        public string 单据编号 { get; set; }
-        public string 订单编号 { get; set; }
-        public System.DateTime 单据日期 { get; set; }
-        public int 店铺ID { get; set; }
-        public Nullable<int> 员工ID { get; set; }
-        public string 客户姓名 { get; set; }
-        public string 客户联系方式 { get; set; }
-        public string 客户地址 { get; set; }
-        public Nullable<decimal> 零售合计 { get; set; }
-        public Nullable<decimal> 预付金额 { get; set; }
-        public string 单据备注 { get; set; }
-        public Nullable<int> 制单人 { get; set; }
-        public Nullable<System.DateTime> 制单日期 { get; set; }
-        public Nullable<bool> 确认标志 { get; set; }
-        public Nullable<int> 确认人 { get; set; }
-        public Nullable<System.DateTime> 确认日期 { get; set; }
-        public Nullable<bool> 审核标志 { get; set; }
-        public Nullable<int> 审核人 { get; set; }
-        public Nullable<System.DateTime> 审核日期 { get; set; }
-        public Nullable<bool> 复核标志 { get; set; }
-        public Nullable<int> 复核人 { get; set; }
-        public Nullable<System.DateTime> 复核日期 { get; set; }
-        public Nullable<bool> 批准标志 { get; set; }
-        public Nullable<int> 批准人 { get; set; }
-        public Nullable<System.DateTime> 批准日期 { get; set; }
-        public string 收货人 { get; set; }
-        public string 收货地址 { get; set; }
-        public string 收货人联系方式 { get; set; }
-    
-        public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
-        public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
-        public virtual ICollection<销售_订单明细> 销售_订单明细 { get; set; }
+        this.销售_订单明细 = new HashSet<销售_订单明细>();
     }
+
+    public int ID { get; set; }
+    public Nullable<int> 单据类别ID { get; set; }
+    public string 合同编号 { get; set; }
+    public string 单据编号 { get; set; }
+    public string 订单编号 { get; set; }
+    public System.DateTime 单据日期 { get; set; }
+    public int 店铺ID { get; set; }
+    public Nullable<int> 员工ID { get; set; }
+    public string 客户姓名 { get; set; }
+    public string 客户联系方式 { get; set; }
+    public string 客户地址 { get; set; }
+    public Nullable<decimal> 零售合计 { get; set; }
+    public Nullable<decimal> 预付金额 { get; set; }
+    public string 单据备注 { get; set; }
+    public Nullable<int> 制单人 { get; set; }
+    public Nullable<System.DateTime> 制单日期 { get; set; }
+    public Nullable<bool> 确认标志 { get; set; }
+    public Nullable<int> 确认人 { get; set; }
+    public Nullable<System.DateTime> 确认日期 { get; set; }
+    public Nullable<bool> 审核标志 { get; set; }
+    public Nullable<int> 审核人 { get; set; }
+    public Nullable<System.DateTime> 审核日期 { get; set; }
+    public Nullable<bool> 复核标志 { get; set; }
+    public Nullable<int> 复核人 { get; set; }
+    public Nullable<System.DateTime> 复核日期 { get; set; }
+    public Nullable<bool> 批准标志 { get; set; }
+    public Nullable<int> 批准人 { get; set; }
+    public Nullable<System.DateTime> 批准日期 { get; set; }
+    public string 收货人 { get; set; }
+    public string 收货地址 { get; set; }
+    public string 收货人联系方式 { get; set; }
+
+    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
+    public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
+    public virtual ICollection<销售_订单明细> 销售_订单明细 { get; set; }
 }

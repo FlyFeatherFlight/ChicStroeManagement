@@ -54,7 +54,7 @@
 
                         string fontColor = "";
 
-                        if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExaminePosition == 3)
+                        if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExamineManager == true)
                         {
                             fontColor = "color:black";
                         }
@@ -89,7 +89,7 @@
 
                                     <td>是</td>
 
-                                    if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExaminePosition == 3)
+                                    if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExamineManager == true)
                                     {
 
                                     <td>
@@ -118,7 +118,7 @@
 
                                     <td>否</td>
 
-                                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.CustomerExaminePosition == 3)
+                                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.CustomerExamineManager == true)
                                     {
                                     <td>
                                         @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @style = "font-size:12px" })

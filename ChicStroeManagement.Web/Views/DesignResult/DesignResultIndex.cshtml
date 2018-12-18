@@ -19,7 +19,7 @@
 <hr />
 <label>当前店铺:</label>
 <div class="table-responsive">
-    <table>
+    <table class="table table-bordered">
         <tr>
             <th>Id</th>
             <th>设计案提交表ID</th>
@@ -68,6 +68,7 @@
             <td>@item.审批状态</td>
             <td>@item.更新人</td>
             <td>@item.制单日期</td>
+            <td>@Html.ActionLink("查看","DesignResultInfoView",new { id=item.Id})</td>
         </tr>
        }
 

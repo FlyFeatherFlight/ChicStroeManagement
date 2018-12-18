@@ -95,7 +95,7 @@ namespace ChicStoreManagement.CustomAttributes
             string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
             ///检查操作权限
-            CheckAuth(Employees.职务,Employees.停用标志, actionName, contollerName);
+            CheckAuth(Employees, actionName, contollerName);
 
             if (isState)//如果满足
             {
@@ -135,28 +135,33 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="positionName">职位</param>
         /// <param name="actionName">action名字</param>
         /// <param name="contollerName">control名</param>
-        private void CheckAuth(string positionName,bool stopFlag, string actionName, string contollerName)
+        private void CheckAuth(Employees employees, string actionName, string contollerName)
         {
 
-            if (stopFlag == true)
+            if (employees.停用标志 == true)
             {  
                 //停用之后，不可登陆
                 isState = false;
                 return;
             }
-            if (contollerName != "ManagerExamine" && contollerName != "Manager"&& contollerName!= "ManagerGoal")
-            {
-                isState = true;
-                return;//如果是非管理者页面 任何人都可以访问
-            }
             if (contollerName == "Manager" || contollerName == "ManagerExamine"|| contollerName== "ManagerGoal")
             {
-                if (positionName=="店长"||positionName=="老板")
+                if (employees.是否店长==true||employees.职务=="老板")
                 {
                 isState = true;//店长或者老板操作
                 return;
                 }
-               
+             }
+            if (contollerName=="Designer"&&employees.是否设计师==true)
+            {
+                isState = true;
+                return;
+                
+            }
+            if (contollerName != "ManagerExamine" && contollerName != "Manager"&& contollerName!= "ManagerGoal"&&contollerName!="Designer")
+            {
+                isState = true;
+                return;//如果是非管理者页面 任何人都可以访问
             }
             else
             {

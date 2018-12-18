@@ -1,0 +1,21 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignSubmitModel
+
+@{
+    ViewBag.Title = "ChangeApplyDesignerView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>客户:@ViewBag.DesignPeople 设计师修改</h2>
+<form action="~/ManagerExamine/ApllyDesignerEdit" method="post">
+    <table>
+        <tr><td>ID</td><td><input type="text" name="ID" value="@Model.Id" class="form-control" readonly="readonly" /></td></tr>
+      
+        <tr><td>客户</td><td><label class="form-control"> @Model.客户姓名 </label></td></tr>
+        <tr><td>电话号码</td><td><label class="form-control"> @Model.联系方式 </label></td></tr>
+        <tr><td>接待时间</td><td> <label class="form-control"> @Model.项目提交时间 </label></td></tr>
+        <tr><td>楼盘地址</td><td><label class="form-control"> @Model.楼盘具体位置 </label></td></tr>
+        <tr><td>变更设计师</td><td>@Html.DropDownListFor(Model => Model.设计人员, ViewBag.ExamineEmployeeOptions as IEnumerable<SelectListItem>, new { @class = "form-control" })</td></tr>
+    </table>
+    <input type="submit" name="name" value="提交" class="btn btn-primary btn-sm" />
+    <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn btn-primary btn-sm" />
+</form>

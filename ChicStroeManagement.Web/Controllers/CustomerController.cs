@@ -42,7 +42,7 @@ namespace ChicStoreManagement.Controllers
         }
 
        
-
+        
 
         // GET: Customer
         /// <summary>
@@ -53,7 +53,11 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.CustomerCurrentSort = sortOrder;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.CustomerDate = sortOrder =="first"? "first_desc" : "first";//该排序作废
             ViewBag.CustomerID = sortOrder == "last" ? "last_desc" : "last";
            var customerInfoModels=BuildCustomerInfo();//将顾客接待信息数据优化
@@ -93,7 +97,7 @@ namespace ChicStoreManagement.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             ViewBag.employeeName = employeeName;//给前端传入当前操作人
-            ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;//给前端传入当前操作人职位
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).是否店长;//给前端传入当前操作人职位
             ViewBag.Goals = goals;//总共跟进数目
             ViewBag.AvailableGoals = goals - customerInfoBLL.GetModels(p=>p.跟进人ID==employeeID).Count();//剩余跟进数目
 
@@ -111,8 +115,12 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             List<销售_店铺员工档案> employeeList = storeEmployeesBLL.GetModels(p => true).ToList();
-            SelectList EmployeeListList = new SelectList(employeeList, "姓名", "姓名");
+            SelectList EmployeeListList = new SelectList(employeeList, "ID", "姓名");
             ViewBag.EmployeeOptions = EmployeeListList;
 
             var selectAgeList = new List<SelectListItem>() { new SelectListItem() { Value = "90后", Text = "90后" }, new SelectListItem() { Value = "85-90年代", Text = "85-90年代" }, new SelectListItem() { Value = "80-85年代", Text = "80-85年代" }, new SelectListItem() { Value = "70后", Text = "70后" }, new SelectListItem() { Value = "70前", Text = "70前" } };
@@ -273,6 +281,11 @@ namespace ChicStoreManagement.Controllers
         public ActionResult EditCustomerView(int id)
         {
             Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -288,7 +301,7 @@ namespace ChicStoreManagement.Controllers
                 customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
                 customerInfo.更新人 = employeeName;
                 customerInfo.更新日期 = DateTime.Now;
-                ViewBag.Position = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID;
+                ViewBag.IsManager  = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).是否店长;
                 return View(customerInfo);
             }
            
@@ -454,8 +467,11 @@ namespace ChicStoreManagement.Controllers
                 return View("查询ID不存在！");
             }
             SetEmployee();
-            BuildCustomerInfo();
-           var customerInfo= BuildCustomerInfo().First(p => p.ID == id);
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            var customerInfo= BuildCustomerInfo().First(p => p.ID == id);
            var exceptedBuyModels= BuildExceptedBuy(id);
             customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
             return View(customerInfo);
@@ -477,7 +493,8 @@ namespace ChicStoreManagement.Controllers
             SetEmployee();
        
            var exceptedBuyModels=BuildExceptedBuy(id);
-
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
 
             ViewBag.receptionid = id;
             var customerInfo = BuildCustomerInfo().Where(p => p.ID == id).FirstOrDefault();
@@ -603,6 +620,8 @@ namespace ChicStoreManagement.Controllers
         public ViewResult AddExceptedBuyView(int receptionid) {
             Session["method"] = "N";
             ViewBag.AddReceptionid = receptionid;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.AddProductOptions = productSelectListItems;

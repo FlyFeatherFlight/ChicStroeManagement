@@ -1,0 +1,52 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignResultViewModel>
+
+@{
+    ViewBag.Title = "设计案完结审查-设计师";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>设计案完结审查-设计师</h2>
+<table class="table table-hover table-responsive">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>客户姓名</td>
+            <td>联系方式</td>
+            <td>楼盘位置</td>
+            <td>完结提交时间</td>
+            <td>审核状态</td>
+            <td>操作</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.客户姓名</td>
+                <td>@item.联系方式</td>
+                <td>@item.楼盘具体位置</td>
+                <td>@item.制单日期</td>
+                <td>
+                    @if (@item.设计师确认 == true)
+                    {
+                        <label>通过</label>
+                    }
+                    else if (@item.设计师确认 == false)
+                    {
+                        <label>驳回</label>
+                    }
+                    else
+                    {
+                        <label>未审批</label>
+                    }
+                </td>
+                <td>@Html.ActionLink("查看", "DesignResultInfoView", "DesignResult", new { id = item.Id }, new { })</td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+

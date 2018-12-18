@@ -35,6 +35,19 @@
             <td>@Html.EditorFor(Model => Model.延期或无法完成原因)</td>
             </tr>
             <tr>
+                <td>修改效果图</td>
+                <td>
+                    @if (Model.完成效果图 == true)
+                    {
+                        @Html.ActionLink("修改", "Index", "DesignFile", new { id = Model.设计案提交表ID, content = 8 }, new { @Style = "font-size:12px" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("上传", "FileUpload", "DesignFile", new { id = Model.设计案提交表ID, content = "Result" }, new { @Style = "font-size:12px" })
+                    }
+                </td>
+            </tr>
+            <tr>
             <td>建议</td>
             <td>@Html.EditorFor(Model => Model.建议)</td>
             </tr>

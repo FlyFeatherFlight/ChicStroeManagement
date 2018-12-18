@@ -22,13 +22,14 @@ namespace ChicStoreManagement.WEB.Controllers
         private ISalesOrder_detailsBLL salesOrder_DetailsBLL;
         private IProduct_SPUBLL product_SPUBLL;
         private IProduct_SKUBLL product_SKUBLL;
-
+        private IProductBLL productBLL;
+      
 
         private int employeeID;
         private string employeeName;
         private string store;
         private int storeID;
-        public DesignResultController(IDesignResultBLL designResultBLL, IDesignResult_DealListingBLL designResult_DealListingBLL, IDesignSubmitBLL designSubmitBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, ICustomerInfoBLL customerInfoBLL, IStoreBLL storeBLL, IStoreEmployeesBLL storeEmployeesBLL, ISalesOrderBLL salesOrderBLL, ISalesOrder_detailsBLL salesOrder_DetailsBLL, IProduct_SPUBLL product_SPUBLL, IProduct_SKUBLL product_SKUBLL)
+        public DesignResultController(IDesignResultBLL designResultBLL, IDesignResult_DealListingBLL designResult_DealListingBLL, IDesignSubmitBLL designSubmitBLL, IDesign_ProjectDrawingsBLL design_ProjectDrawingsBLL, ICustomerInfoBLL customerInfoBLL, IStoreBLL storeBLL, IStoreEmployeesBLL storeEmployeesBLL, ISalesOrderBLL salesOrderBLL, ISalesOrder_detailsBLL salesOrder_DetailsBLL, IProduct_SPUBLL product_SPUBLL, IProduct_SKUBLL product_SKUBLL, IProductBLL productBLL)
         {
             this.designResultBLL = designResultBLL;
             this.designResult_DealListingBLL = designResult_DealListingBLL;
@@ -41,15 +42,18 @@ namespace ChicStoreManagement.WEB.Controllers
             this.salesOrder_DetailsBLL = salesOrder_DetailsBLL;
             this.product_SPUBLL = product_SPUBLL;
             this.product_SKUBLL = product_SKUBLL;
+            this.productBLL = productBLL;
         }
 
         public ActionResult DesignResultIndex( string sortOrder, string searchString, string currentFilter, int? page)
         {
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
-            
-            
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.EmployeesID = employeeID;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.DesignResultCurrentSort = sortOrder;
             ViewBag.DesignResultDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignResult = sortOrder == "last" ? "last_desc" : "last";
@@ -110,46 +114,78 @@ namespace ChicStoreManagement.WEB.Controllers
         public ActionResult AddDesignResultView(int? subid) {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=3)
             {
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
        
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
-            int salsID;
+            designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
+            designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
+
+            int sellID;//销售订单ID
             if (subid!=null&&subid!=0)
             {
 
                 var phoneNumber = designSubmitBLL.GetModel(w => w.id == subid).联系方式;
                 try
                 {
-                    salsID = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).ID;//根据联系方式查找相应的客户的订单
+                    sellID = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).ID;//根据联系方式查找相应的客户的订单ID
 
-                    designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.ID == salsID).合同编号;//合同编号
+                    designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.ID == sellID).合同编号;//合同编号
 
                     designResultViewModel.设计案提交表ID = subid;
-                    designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == salsID).订单编号;//订单编号
-                    designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == salsID).单据编号;//单据编号
+                    designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == sellID).订单编号;//订单编号
+                    designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == sellID).单据编号;//单据编号
 
                 }
                 catch (Exception e)
                 {
                     return Content("<script>alert('没有与客户相关订单信息！不能进行完结操作！请仔细查阅！');window.history.go(-1);</script>");
                 }
-                designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
-                designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
-                设计_设计案完结单_家具成交单 model = new 设计_设计案完结单_家具成交单();
+
+                
                 /*designResultViewModel.设计_设计案完结单_家具成交单 =*/
-                var lis=salesOrder_DetailsBLL.GetModels(p => p.单据ID == salsID).ToList();
+                var lis=salesOrder_DetailsBLL.GetModels(p => p.单据ID == sellID).ToList();//根据订单ID查询订单详细
+                List<DesignResult_OrderDetailViewModel> list = new List<DesignResult_OrderDetailViewModel>();
                 foreach (var item in lis)
                 {
+                    DesignResult_OrderDetailViewModel model = new DesignResult_OrderDetailViewModel();
                     var spuid = product_SKUBLL.GetModel(p => p.ID == item.SKU_ID).SPU_ID;
                     var productid = product_SPUBLL.GetModel(p => p.ID == spuid).商品ID;
-                   ///
-                   ////
-                   ///
-                  
+                    var product = productBLL.GetModel(p => p.ID == productid);
+                    model.产品型号 = product.编号;
+                    model.单位 = product.计量单位;
+                    model.成交价 = item.零售小计;
+                    model.数量 = item.数量;
+                    model.空间 = "";
+                    list.Add(model);
                 }
+                designResultViewModel.DesignResult_OrderDetailViewModel = list;
+                var files = design_ProjectDrawingsBLL.GetModels(p => p.设计案提交表ID == subid && p.文件类型 == 8);
+                if (files.Count()>0)
+                {
+                    designResultViewModel.完成效果图 = true;
+                    List<String> listPath = new List<string>();
+                    foreach (var item in files)
+                    {
+                        listPath.Add(item.存储路径);
+                    }
+                    designResultViewModel.完成效果图路径 = listPath;
+                }
+                else
+                {
+                    designResultViewModel.完成效果图 = false;
+                }
+                var mid = designSubmitBLL.GetModel(p => p.id == subid).店长;
+                designResultViewModel.店长 =storeEmployeesBLL.GetModel(p=>p.ID==mid).姓名 ;
+                var emid = designSubmitBLL.GetModel(p => p.id == subid).销售人员;
+                designResultViewModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == emid).姓名;
+               
             }
             return View(designResultViewModel);
         }
@@ -176,15 +212,19 @@ namespace ChicStoreManagement.WEB.Controllers
                 审批状态 = designResultViewModel.审批状态,
                 延期或无法完成原因 = designResultViewModel.延期或无法完成原因,
                 建议 = designResultViewModel.建议,
-                更新人 = designResultViewModel.更新人,
+                更新人 = employeeName,
                 计划完成时间 = designResultViewModel.计划完成时间,
                 计划完成空间 = designResultViewModel.计划完成空间,
-                设计师 = employeeName,
-                设计师确认日期 = DateTime.Now,
+                销售人员 = employeeID,
+                销售人员确认日期 = DateTime.Now,
+                店长 = designSubmitBLL.GetModel(p => p.id == designResultViewModel.设计案提交表ID).店长,
+                设计师= designSubmitBLL.GetModel(p => p.id == designResultViewModel.设计案提交表ID).设计人员,
                 设计案提交表ID = designResultViewModel.设计案提交表ID,
                 销售单号 = designResultViewModel.销售单号,
                 客户单号 = designResultViewModel.客户编号,
-                单据编号 = designResultViewModel.单据编号
+                单据编号 = designResultViewModel.单据编号,
+                更新日期 = DateTime.Now
+
             };
             if (ModelState.IsValid)
             {
@@ -219,6 +259,86 @@ namespace ChicStoreManagement.WEB.Controllers
         }
 
         /// <summary>
+        /// 设计案完结详细
+        /// </summary>
+        /// <param name="id">完结单ID</param>
+        /// <returns></returns>
+        public ActionResult DesignResultInfoView(int id) {
+            Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            var model =designResultBLL.GetModel(p => p.id == id);
+            DesignResultViewModel designResultViewModel = new DesignResultViewModel();
+            designResultViewModel.Id = model.id;
+            designResultViewModel.制单人 = model.制单人;
+            designResultViewModel.制单日期 = model.制单日期;
+            designResultViewModel.单据编号 = model.单据编号;
+            designResultViewModel.合计成交金额 = model.合计成交金额;
+            designResultViewModel.实际完成时间 = model.实际完成时间;
+            designResultViewModel.实际完成空间 = model.实际完成空间;
+            designResultViewModel.审批状态 = model.审批状态;
+            designResultViewModel.客户编号 = model.客户单号;
+            designResultViewModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名;
+            designResultViewModel.店长审核日期 = model.店长确认日期;
+            designResultViewModel.延期或无法完成原因 = model.延期或无法完成原因;
+            designResultViewModel.建议 = model.建议;
+            designResultViewModel.更新人 = model.更新人;
+            designResultViewModel.计划完成时间 = model.计划完成时间;
+            designResultViewModel.计划完成空间 = model.计划完成空间;
+            designResultViewModel.设计师 = storeEmployeesBLL.GetModel(p => p.ID == model.设计师).姓名;
+            designResultViewModel.设计师确认日期 = model.设计师确认日期;
+            designResultViewModel.设计案提交表ID = model.设计案提交表ID;
+            designResultViewModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名;
+            designResultViewModel.销售人员确认日期 = model.销售人员确认日期;
+            designResultViewModel.销售单号 = model.销售单号;
+            designResultViewModel.更新日期 = model.更新日期;
+            
+            var phoneNumber = designSubmitBLL.GetModel(w => w.id == model.设计案提交表ID).联系方式;
+            var  sellID = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).ID;
+            var lis = salesOrder_DetailsBLL.GetModels(p => p.单据ID == sellID).ToList();//根据订单ID查询订单详细
+            List<DesignResult_OrderDetailViewModel> list = new List<DesignResult_OrderDetailViewModel>();
+            foreach (var item in lis)
+            {
+                DesignResult_OrderDetailViewModel m = new DesignResult_OrderDetailViewModel();
+                var spuid = product_SKUBLL.GetModel(p => p.ID == item.SKU_ID).SPU_ID;
+                var productid = product_SPUBLL.GetModel(p => p.ID == spuid).商品ID;
+                var product = productBLL.GetModel(p => p.ID == productid);
+                m.产品型号 = product.编号;
+                m.单位 = product.计量单位;
+                m.成交价 = item.零售小计;
+                m.数量 = item.数量;
+                m.空间 = "";
+                list.Add(m);
+            }
+            designResultViewModel.DesignResult_OrderDetailViewModel = list;
+            var files = design_ProjectDrawingsBLL.GetModels(p => p.设计案提交表ID == model.设计案提交表ID && p.文件类型 == 8);
+            if (files.Count() > 0)
+            {
+                designResultViewModel.完成效果图 = true;
+                List<String> listPath = new List<string>();
+                foreach (var item in files)
+                {
+                    listPath.Add(item.存储路径);
+                }
+                designResultViewModel.完成效果图路径 = listPath;
+            }
+            else
+            {
+                designResultViewModel.完成效果图 = false;
+            }
+
+            var submodel = designSubmitBLL.GetModel(p => p.id == model.设计案提交表ID);
+            designResultViewModel.楼盘具体位置 = submodel.楼盘具体位置;
+            designResultViewModel.客户姓名 = submodel.客户姓名;
+            designResultViewModel.联系方式 = submodel.联系方式;
+            ViewBag.Person = submodel.客户姓名;
+            return View(designResultViewModel);
+        }
+
+        /// <summary>
         /// 修改设计案完结单
         /// </summary>
         /// <param name="id">设计案完结单ID</param>
@@ -226,6 +346,10 @@ namespace ChicStoreManagement.WEB.Controllers
         public ActionResult EditDesignResultView(int id) {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 3)
             {
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
@@ -251,22 +375,26 @@ namespace ChicStoreManagement.WEB.Controllers
                 实际完成空间 = model.实际完成空间,
                 审批状态 = model.审批状态,
                 客户编号 = model.客户单号,
-                店长 = model.店长,
+                店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名,
                 店长审核日期 = model.店长确认日期,
                 延期或无法完成原因 = model.延期或无法完成原因,
                 建议 = model.建议,
                 更新人 = model.更新人,
                 计划完成时间 = model.计划完成时间,
                 计划完成空间 = model.计划完成空间,
-                设计师 = model.设计师,
+                设计师 = storeEmployeesBLL.GetModel(p => p.ID == model.设计师).姓名,
                 设计师确认日期 = model.设计师确认日期,
                 设计案提交表ID = model.设计案提交表ID,
-                销售人员 = model.销售人员,
+                销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名,
                 销售人员确认日期 = model.销售人员确认日期,
                 销售单号 = model.销售单号
             };
-
-            return View(designResultViewModel);
+            var files = design_ProjectDrawingsBLL.GetModels(p => p.设计案提交表ID == model.设计案提交表ID && p.文件类型 == 8);
+            if (files.Count() > 0)
+            {
+                designResultViewModel.完成效果图 = true;
+            }
+                return View(designResultViewModel);
         }
 
         /// <summary>
@@ -283,6 +411,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
             设计_设计案完结单 model = new 设计_设计案完结单();
+            model = designResultBLL.GetModel(p => p.id == designResultViewModel.Id);
             model.id = designResultViewModel.Id;
             model.制单人 = designResultViewModel.制单人;
             model.制单日期 = designResultViewModel.制单日期;
@@ -292,19 +421,21 @@ namespace ChicStoreManagement.WEB.Controllers
             model.实际完成空间 = designResultViewModel.实际完成空间;
             model.审批状态 = designResultViewModel.审批状态;
             model.客户单号 = designResultViewModel.客户编号;
-            model.店长 = designResultViewModel.店长;
+            model.店长 = storeEmployeesBLL.GetModel(p=>p.停用标志==false&&p.店铺ID==storeID&&p.是否店长==true).ID;
+            
             model.店长确认日期 = designResultViewModel.店长审核日期;
             model.延期或无法完成原因 = designResultViewModel.延期或无法完成原因;
             model.建议 = designResultViewModel.建议;
-            model.更新人 = designResultViewModel.更新人;
+            model.更新人 = employeeName;
             model.计划完成时间 = designResultViewModel.计划完成时间;
             model.计划完成空间 = designResultViewModel.计划完成空间;
-            model.设计师 = designResultViewModel.设计师;
+            model.设计师 = storeEmployeesBLL.GetModel(p => p.停用标志 == false && p.店铺ID == storeID && p.是否设计师 == true).ID; ;
             model.设计师确认日期 = designResultViewModel.设计师确认日期;
             model.设计案提交表ID = designResultViewModel.设计案提交表ID;
-            model.销售人员 = designResultViewModel.销售人员;
+            model.销售人员 = employeeID;
             model.销售人员确认日期 = designResultViewModel.销售人员确认日期;
             model.销售单号 = designResultViewModel.销售单号;
+            model.更新日期 = DateTime.Now;
             if (ModelState.IsValid)
             {
                 designResultBLL.Modify(model);
@@ -342,11 +473,20 @@ namespace ChicStoreManagement.WEB.Controllers
         /// <returns></returns>
         private IQueryable<DesignResultViewModel> BuildResultInfo(int employeeID)
         {
-            var positionid=storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID;
-            List<DesignResultViewModel> designResultViews = new List<DesignResultViewModel>(); List<设计_设计案完结单> models = new List<设计_设计案完结单>();
-            if (positionid==4||positionid==5)
+            var role=storeEmployeesBLL.GetModel(p => p.ID == employeeID);
+            List<DesignResultViewModel> designResultViews = new List<DesignResultViewModel>();
+            List<设计_设计案完结单> models = new List<设计_设计案完结单>();
+            if (role.是否销售==true)
             {
-                models = designResultBLL.GetModels(p => p.设计师 == employeeName).ToList();
+                models = designResultBLL.GetModels(p => p.销售人员==employeeID).ToList();
+            }
+            if (role.是否店长==true)
+            {
+                models = designResultBLL.GetModels(p => p.店长 == employeeID).ToList();
+            }
+            else
+            {
+                return null;
             }
             foreach (var item in models)
             {
@@ -354,34 +494,79 @@ namespace ChicStoreManagement.WEB.Controllers
                 designResultViewModel.Id = item.id;
                 designResultViewModel.制单日期 = item.制单日期;
                 designResultViewModel.合计成交金额 = item.合计成交金额;
-
-                if (design_ProjectDrawingsBLL.GetModel(p => p.设计案提交表ID == item.设计案提交表ID && p.文件类型 == 8) != null)
-                {
-                    designResultViewModel.完成效果图路径 = design_ProjectDrawingsBLL.GetModel(p => p.设计案提交表ID == item.设计案提交表ID && p.文件类型 == 8).存储路径;
+                var files = design_ProjectDrawingsBLL.GetModels(p => p.设计案提交表ID == item.设计案提交表ID && p.文件类型 == 8);
+                List<String> listPath = new List<string>();
+                if (files.Count()>0)
+                { 
+                    foreach (var ite in files)
+                    {
+                        listPath.Add(ite.存储路径);
+                    }
+                    designResultViewModel.完成效果图路径 = listPath;
                 }
                 designResultViewModel.实际完成时间 = item.实际完成时间;
                 designResultViewModel.实际完成空间 = item.实际完成空间;
                 designResultViewModel.审批状态 = item.审批状态;
-                designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式 && p.店铺ID == customerInfoBLL.GetModel(r => r.ID == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).接待记录ID).店铺ID).合同编号;//合同编号
+                designResultViewModel.客户编号 = item.客户单号;//合同编号
 
                 designResultViewModel.设计案提交表ID = item.设计案提交表ID;
-                designResultViewModel.销售人员 = item.销售人员;
+                designResultViewModel.销售人员 = storeEmployeesBLL.GetModel(p=>p.ID==item.销售人员).姓名;
                 designResultViewModel.销售人员确认日期 = item.销售人员确认日期;
-                designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.客户联系方式 == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式 && p.店铺ID == customerInfoBLL.GetModel(r => r.ID == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).接待记录ID).店铺ID).订单编号;//订单编号
-                designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.客户联系方式 == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式 && p.店铺ID == customerInfoBLL.GetModel(r => r.ID == designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).接待记录ID).店铺ID).单据编号;//单据编号
-
-                designResultViewModel.店长 = item.店长;
+                designResultViewModel.销售单号 = item.销售单号;//订单编号
+                designResultViewModel.单据编号 = item.单据编号;//单据编号
+                designResultViewModel.店长审核 = item.店长审核;
+                designResultViewModel.设计师确认 = item.设计师确认;
+                designResultViewModel.销售审核 = item.销售审核;
+                designResultViewModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == item.店长).姓名;
                 designResultViewModel.店长审核日期 = item.店长确认日期;
                 designResultViewModel.延期或无法完成原因 = item.延期或无法完成原因;
                 designResultViewModel.建议 = item.建议;
                 designResultViewModel.更新人 = item.更新人;
                 designResultViewModel.计划完成时间 = item.计划完成时间;
                 designResultViewModel.计划完成空间 = item.计划完成空间;
-                designResultViewModel.设计师 = item.设计师;
+                designResultViewModel.设计师 = storeEmployeesBLL.GetModel(p => p.ID == item.设计师).姓名;
+                designResultViewModel.设计师确认 = item.设计师确认;
                 designResultViewModel.设计师确认日期 = item.设计师确认日期;
-                designResultViewModel.设计_设计案完结单_家具成交单 = designResult_DealListingBLL.GetModels(p => p.设计案完结单 == item.id).ToList();
+                designResultViewModel.更新日期 = item.更新日期;
+                int sellID;//销售订单ID
+                if (item.设计案提交表ID != null && item.设计案提交表ID != 0)
+                {
 
-                designResultViews.Add(designResultViewModel);
+                    var phoneNumber = designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式;
+                    try
+                    {
+                        sellID = salesOrderBLL.GetModel(p => p.客户联系方式 == phoneNumber && p.店铺ID == storeID).ID;//根据联系方式查找相应的客户的订单ID
+
+                        designResultViewModel.客户编号 = salesOrderBLL.GetModel(p => p.ID == sellID).合同编号;//合同编号
+
+                        designResultViewModel.设计案提交表ID = item.设计案提交表ID;
+                        designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == sellID).订单编号;//订单编号
+                        designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == sellID).单据编号;//单据编号
+
+                    }
+                    catch (Exception e)
+                    {
+                        return null;
+                    }
+
+                    var lis = salesOrder_DetailsBLL.GetModels(p => p.单据ID == sellID).ToList();//根据订单ID查询订单详细
+                    List<DesignResult_OrderDetailViewModel> list = new List<DesignResult_OrderDetailViewModel>();
+                    foreach (var ite in lis)
+                    {
+                        DesignResult_OrderDetailViewModel model = new DesignResult_OrderDetailViewModel();
+                        var spuid = product_SKUBLL.GetModel(p => p.ID == ite.SKU_ID).SPU_ID;
+                        var productid = product_SPUBLL.GetModel(p => p.ID == spuid).商品ID;
+                        var product = productBLL.GetModel(p => p.ID == productid);
+                        model.产品型号 = product.编号;
+                        model.单位 = product.计量单位;
+                        model.成交价 = ite.零售小计;
+                        model.数量 = ite.数量;
+                        model.空间 = "";
+                        list.Add(model);
+                    }
+                    designResultViewModel.DesignResult_OrderDetailViewModel = list;
+                }
+                    designResultViews.Add(designResultViewModel);
             }
             return designResultViews.AsQueryable();
         }

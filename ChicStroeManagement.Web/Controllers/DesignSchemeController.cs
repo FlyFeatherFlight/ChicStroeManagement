@@ -62,8 +62,12 @@ namespace ChicStoreManagement.Controllers
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
             var costomerModels = BuildCustomerInfo();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.EmployeesID = employeeID;
             ViewBag.DesignSubCurrentSort = sortOrder;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.DesignSubDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignSubResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignSubmitModel> designSubmitModels = new List<DesignSubmitModel>();
@@ -196,6 +200,10 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             List<销售_接待记录> customerInfos = new List<销售_接待记录>();
             DesignSubmitModel designSubmitModel = new DesignSubmitModel();
             if (recepitonID != null && recepitonID != 0)
@@ -270,11 +278,13 @@ namespace ChicStoreManagement.Controllers
                     项目提交时间 = designSubmitModel.项目提交时间,
                     项目量房时间 = designSubmitModel.项目量房时间,
                     项目预计完成时间 = designSubmitModel.项目预计完成时间,
-                    销售人员 = designSubmitModel.销售人员,
+                    销售人员 = employeeID,
                     备注 = designSubmitModel.备注,
                     更新人 = designSubmitModel.更新人,
                     更新日期 = designSubmitModel.更新日期
                 };
+
+                model.店长 = storeEmployeesBLL.GetModel(p => p.店铺ID == storeID && p.职务ID == 3 && p.停用标志 != false).ID;
                 if (ModelState.IsValid)
                 {
                     designSubmitBLL.Add(model);
@@ -320,6 +330,11 @@ namespace ChicStoreManagement.Controllers
         public ActionResult EditDesignApply(int id)
         {
             Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             if (designSubmitBLL.GetModel(p => p.id == id).店长审核 != null && designSubmitBLL.GetModel(p => p.id == id).店长审核 == true)
             {
                 return Content("该记录已被审核通过，不可修改！");
@@ -335,7 +350,7 @@ namespace ChicStoreManagement.Controllers
                 客户提问与要求 = model.客户提问与要求,
                 家具空间 = model.家具空间,
                 家庭成员 = model.家庭成员,
-                店长 = model.店长,
+                店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名,
                 店长审核 = model.店长审核,
                 接待记录ID = model.接待记录ID,
 
@@ -344,9 +359,9 @@ namespace ChicStoreManagement.Controllers
                 联系方式 = model.联系方式,
                 装修进度 = model.装修进度,
                 装修风格 = model.装修风格,
-                设计人员 = model.设计人员,
+                设计人员 = storeEmployeesBLL.GetModel(p => p.ID == model.设计人员).姓名,
                 设计人员审核 = model.设计人员审核,
-                销售人员 = model.销售人员,
+                销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名,
                 面积大小 = model.面积大小,
                 预算 = model.预算,
                 项目提交时间 = model.项目提交时间,
@@ -406,7 +421,7 @@ namespace ChicStoreManagement.Controllers
                     项目提交时间 = designSubmitModel.项目提交时间,
                     项目量房时间 = designSubmitModel.项目量房时间,
                     项目预计完成时间 = designSubmitModel.项目预计完成时间,
-                    销售人员 = employeeName,
+                    销售人员 = employeeID,
                     备注 = designSubmitModel.备注,
                     更新人 = employeeName,
                     更新日期 = DateTime.Now,
@@ -461,6 +476,11 @@ namespace ChicStoreManagement.Controllers
         {
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息\
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.employeeIsDesign = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师; 
             销售_设计案提交表 model = new 销售_设计案提交表();
             model = designSubmitBLL.GetModel(p => p.id == id);
             DesignSubmitModel submitModel = new DesignSubmitModel
@@ -473,10 +493,9 @@ namespace ChicStoreManagement.Controllers
                 客户提问与要求 = model.客户提问与要求,
                 家具空间 = model.家具空间,
                 家庭成员 = model.家庭成员,
-                店长 = model.店长,
+                店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名,
                 店长审核 = model.店长审核,
                 接待记录ID = model.接待记录ID,
-
                 更新人 = model.更新人,
                 更新日期 = model.更新日期,
                 楼盘具体位置 = model.楼盘具体位置,
@@ -484,9 +503,9 @@ namespace ChicStoreManagement.Controllers
                 联系方式 = model.联系方式,
                 装修进度 = model.装修进度,
                 装修风格 = model.装修风格,
-                设计人员 = model.设计人员,
+                设计人员 = storeEmployeesBLL.GetModel(p => p.ID == model.设计人员).姓名,
                 设计人员审核 = model.设计人员审核,
-                销售人员 = model.销售人员,
+                销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名,
                 面积大小 = model.面积大小,
                 项目提交时间 = model.项目提交时间,
                 项目量房时间 = model.项目量房时间,
@@ -518,7 +537,13 @@ namespace ChicStoreManagement.Controllers
         /// <returns></returns>
         public ActionResult AddDesignTrackLogView()
         {
+            SetEmployee();
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             return View();
+            
         }
         #endregion
 
@@ -535,7 +560,12 @@ namespace ChicStoreManagement.Controllers
          {
             Session["method"] = "N";
             var lis = BuildDesign_ExceptedBuy(id);
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.DesignSubid = id;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             var model = designSubmitBLL.GetModel(p => p.id == id);
             if (model.设计人员审核 != false && model.设计人员审核 != null && model.设计人员 != null && model.店长 != null && model.店长审核 != false && model.店长审核 != null)
             {
@@ -634,6 +664,11 @@ namespace ChicStoreManagement.Controllers
         public ActionResult AddDesign_ExceptedBuyView(int id)
         {
             Session["method"] = "N";
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             Design_CustomerExceptedBuyViewModel model = new Design_CustomerExceptedBuyViewModel
             {
                 设计提交案 = id
@@ -907,20 +942,22 @@ namespace ChicStoreManagement.Controllers
         /// <returns>设计案提交表信息</returns>
         private IQueryable<DesignSubmitModel> BuildDesignSubInfo(int? id)
         {
-            List<销售_设计案提交表> designSubModelList = new List<销售_设计案提交表>();
-            if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
-            {   //店长可以查看所有信息
-                designSubModelList = designSubmitBLL.GetModels(p => true).ToList();
-            }
-
-            else if (id != 0 && id != null)
+            List<销售_设计案提交表> designSubModelList = new List<销售_设计案提交表>();if (id != 0 && id != null)
             {   //根据接待ID查询当前客户的设计提交表
                 designSubModelList = designSubmitBLL.GetModels(p => p.接待记录ID == id).ToList();
+            }
+            else  if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
+            {   //店长可以查看所有信息
+                designSubModelList = designSubmitBLL.GetModels(p => true).ToList();
             }
             else
             {
                 //查询当前销售人员的设计提交表
-                designSubModelList = designSubmitBLL.GetModels(p => p.销售人员 == employeeName).ToList();
+                designSubModelList = designSubmitBLL.GetModels(p => p.销售人员 == employeeID).ToList();
+            }
+            if (designSubModelList==null||designSubModelList.Count==0)
+            {
+                return null;
             }
             List<DesignSubmitModel> designSubmitModelList = new List<DesignSubmitModel>();
             foreach (var item in designSubModelList)
@@ -933,7 +970,7 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.客户提问与要求 = item.客户提问与要求;
                 designSubmitModel.家具空间 = item.家具空间;
                 designSubmitModel.家庭成员 = item.家庭成员;
-                designSubmitModel.店长 = item.店长;
+                designSubmitModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == item.店长).姓名;
                 designSubmitModel.店长审核 = item.店长审核;
                 designSubmitModel.接待记录ID = item.接待记录ID;
                 if (item.整体软装配饰 == null)
@@ -946,9 +983,12 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.联系方式 = item.联系方式;
                 designSubmitModel.装修进度 = item.装修进度;
                 designSubmitModel.装修风格 = item.装修风格;
-                designSubmitModel.设计人员 = item.设计人员;
+                if (item.设计人员 != null)
+                {
+                    designSubmitModel.设计人员 = storeEmployeesBLL.GetModel(p => p.ID == item.设计人员).姓名;
+                }
                 designSubmitModel.设计人员审核 = item.设计人员审核;
-                designSubmitModel.销售人员 = item.销售人员;
+                designSubmitModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == item.销售人员).姓名;
                 designSubmitModel.面积大小 = item.面积大小;
 
                 designSubmitModel.预算 = item.预算;
@@ -956,7 +996,7 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.项目量房时间 = item.项目量房时间;
                 designSubmitModel.项目预计完成时间 = item.项目预计完成时间;
                 designSubmitModel.备注 = item.备注;
-                if (item.店长 != null && item.店长审核 == true && item.设计人员 != null && item.设计人员审核 == true && item.销售人员 != null)
+                if (item.店长 != null && item.店长审核 == true && item.设计人员 != null && item.设计人员审核 == true)
                 {
                     designSubmitModel.审批状态 = true;
                 }

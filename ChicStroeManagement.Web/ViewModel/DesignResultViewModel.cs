@@ -37,15 +37,22 @@ namespace ChicStoreManagement.WEB.ViewModel
         public DateTime? 店长审核日期 { get; set; }
         public bool? 完成效果图 { get; set; }
 
-        public string 完成效果图路径 { get; set; }
+        public List<string> 完成效果图路径 { get; set; }
         public bool? 审批状态 { get; set; }
         public string 更新人 { get; set; }
         public DateTime? 制单日期 { get; set; }
-       
+       public DateTime? 更新日期 { get; set; }
         public int? 设计案提交表ID { get; set; }
-
+        public Nullable<bool> 店长审核 { get; set; }
+        public Nullable<bool> 销售审核 { get; set; }
+       
+        public Nullable<bool> 设计师确认 { get; set; }
         public string 制单人 { get; set; }
-        public virtual List<设计_设计案完结单_家具成交单> 设计_设计案完结单_家具成交单 { get; set; }
+        public string 客户姓名 { get; set; }
+        public string 联系方式 { get; set; }
+        public string 楼盘具体位置 { get; set; }
+       
+        public IEnumerable<DesignResult_OrderDetailViewModel> DesignResult_OrderDetailViewModel { get; set; }
         public virtual 销售_设计案提交表 销售_设计案提交表 { get; set; }
     }
 }

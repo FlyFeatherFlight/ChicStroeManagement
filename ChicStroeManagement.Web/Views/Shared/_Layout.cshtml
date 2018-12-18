@@ -15,7 +15,7 @@
 
         .row1 {
             display: table;
-            
+            height: 92%;
         }
 
         [class*="col-"] {
@@ -27,123 +27,167 @@
         .demo {
             position: absolute;
             width: 100%;
-            height: 50px;
+            height: 8%;
             border: 1px solid #333;
             background-color: #333;
         }
+
         .p1 {
             position: absolute;
             width: 600px;
             top: 60%;
-            left:20%;
+            left: 20%;
             transform: translate(-50%,-50%);
             border: 1px solid #333;
             color: white;
         }
+       
     </style>
 </head>
 <body>
     @*<div class="container-fluid">*@
-        <div class="row1" style="height:880px;">
-            <div class="navbar navbar-inverse nav-stacked navbar-fixed-top col-xs-12" id="fir">
-                <div class="container-fluid">
-                    <div class="nav navbar-nav navbar-left">
-                        @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                    </div>
-                    <div class="nav navbar-nav navbar-right">
-                        <a href="#" style="vertical-align:middle;display: inline;font-size: 20px;border: 1px dashed #000;">
-                            @ViewBag.Store : @ViewBag.Employee &nbsp;&nbsp;
-                        </a>
-                    </div>
+    <div class="row1" style="height:880px;">
+        <div class="navbar navbar-inverse nav-stacked navbar-fixed-top col-xs-12" id="fir">
+            <div class="container-fluid">
+                <div class="nav navbar-nav navbar-left">
+                    @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
                 </div>
-                </div>
-                <div class="col-sm-1" style="background-color:#333 ">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li>
-                            <a href="@Url.Action("Index","Manager")">
-                                <i class="glyphicon glyphicon-th-large"></i>
-                                首页
-                            </a>
-                        </li>
-                        @*<li>@Html.ActionLink("关于", "About", "Home")</li>
-                <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
-                        <li>
-                            @*@Html.ActionLink("客户管理", "CustomerIndex", "Customer")*@
-                            <a href="#userSetting" class="nav-header collapsed" data-toggle="collapse">
-                                <i class="glyphicon glyphicon-user"></i>
-                                客户管理
-                                <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-                            </a>
-                            <ul id="userSetting" class="nav nav-list collapse secondmenu">
-                                <li>
-                                    <a href="@Url.Action("CustomerIndex","Customer")">
-                                        <i class="glyphicon glyphicon-minus"></i>
-                                        客户信息
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            @*@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { })*@
-                            <a href="@Url.Action("TrackLogIndex","CustomerTrackLog", new { id = 0 })">
-                                <i class="glyphicon glyphicon-tasks"></i>
-                                意向跟进日志
-                            </a>
-                        </li>
-                        <li>
-                            @*@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { })*@
-                            <a href="@Url.Action("DesignSchemeIndex","DesignScheme",new {id = 0 })">
-                                <i class="glyphicon glyphicon-list-alt"></i>
-                                设计案管理
-                            </a>
-                        </li>
-                        @*@if (ViewBag.position==3)
-	{*@
-                        <li>
-                            <a href="@Url.Action("Index","Manager")">
-                                <i class="glyphicon glyphicon-list-alt"></i>
-                                店长管理
-                            </a>
-                        </li>
-	@*}*@   
-                        
-                        <li>
-                            <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
-                                <i class="glyphicon glyphicon-cog"></i>
-                                系统设置
-                                <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-                            </a>
-                            <ul id="systemSetting" class="nav nav-list collapse secondmenu">
-                                <li id="logOut">
-                                    @*@Html.ActionLink("注销", "SignOut", "LogIn")*@
-                                    <a href="@Url.Action("SignOut","LogIn")">
-                                        <i class="glyphicon glyphicon-log-out"></i>
-                                        注销
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <hr class="hidden-sm hidden-md hidden-lg">
-                </div>
-
-                <div class="col-xs-11">
-                    <br />
-                    @RenderBody()
-                    <br />
-                    <br />
+                <div class="nav navbar-nav navbar-right">
+                    <a href="#" style="vertical-align:middle;display: inline;font-size: 20px;border: 1px dashed #000;">
+                        @ViewBag.Store : @ViewBag.Employee &nbsp;&nbsp;
+                    </a>
                 </div>
             </div>
-   
-            <div class="demo">
-                <footer>
-                    <div class="p1">
-                        <p>Copyright &copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
-                    </div>
-                </footer>
-           
         </div>
-   
-  
+        <div class="col-sm-1" style="background-color:#333 ">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    <a href="@Url.Action("Index","Home")">
+                        <i class="glyphicon glyphicon-th-large"></i>
+                        首页
+                    </a>
+                </li>
+                @*<li>@Html.ActionLink("关于", "About", "Home")</li>
+        <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                @if (ViewBag.IsDesigner == true)
+                {
+                    <li>
+                        <a href="#DesignerSetting" class="nav-header collapsed" data-toggle="collapse">
+                            <i class="glyphicon glyphicon-cog"></i>
+                            设计审查
+                            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="DesignerSetting" class="nav nav-list collapse secondmenu">
+                            <li>
+                                <a href="@Url.Action("DesignApplyExamineIndex", "DesignerExamine")">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                    设计案申请审查
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("DesignResultExamineIndex", "DesignerExamine")">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                    设计案完结审查
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                @if (true)
+                {
+
+                    <li>
+                        @*@Html.ActionLink("客户管理", "CustomerIndex", "Customer")*@
+                        <a href="#userSetting" class="nav-header collapsed" data-toggle="collapse">
+                            <i class="glyphicon glyphicon-user"></i>
+                            客户管理
+                            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="userSetting" class="nav nav-list collapse secondmenu">
+                            <li>
+                                <a href="@Url.Action("CustomerIndex","Customer")">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                    客户信息
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        @*@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { })*@
+                        <a href="@Url.Action("TrackLogIndex","CustomerTrackLog", new { id = 0 })">
+                            <i class="glyphicon glyphicon-tasks"></i>
+                            意向跟进日志
+                        </a>
+                    </li>
+                    <li>
+                        @*@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { })*@
+                        <a href="@Url.Action("DesignSchemeIndex","DesignScheme",new {id = 0 })">
+                            <i class="glyphicon glyphicon-list-alt"></i>
+                            设计案管理
+                        </a>
+                    </li>
+                }
+
+
+
+                @if (ViewBag.IsManager == true)
+                {
+
+                    <li>
+                        <a href="#ManagerSetting" class="nav-header collapsed" data-toggle="collapse">
+                            <i class="glyphicon glyphicon-cog"></i>
+                            店长管理
+                            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                        <ul id="ManagerSetting" class="nav nav-list collapse secondmenu">
+                            <li id="logOut">
+                                @*@Html.ActionLink("注销", "SignOut", "LogIn")*@
+                                <a href="@Url.Action("Index","Manager")">
+                                    <i class="glyphicon glyphicon-log-out"></i>
+                                    店长审查
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+                <li>
+                    <a href="#systemSetting" class="nav-header collapsed" data-toggle="collapse">
+                        <i class="glyphicon glyphicon-cog"></i>
+                        系统设置
+                        <span class="pull-right glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul id="systemSetting" class="nav nav-list collapse secondmenu">
+                        <li id="logOut">
+                            @*@Html.ActionLink("注销", "SignOut", "LogIn")*@
+                            <a href="@Url.Action("SignOut","LogIn")">
+                                <i class="glyphicon glyphicon-log-out"></i>
+                                注销
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+
+        <div class="col-xs-11">
+            <br />
+            @RenderBody()
+            <br />
+            <br />
+        </div>
+    </div>
+
+    <div class="demo">
+        <footer>
+            <div class="p1">
+                <p>Copyright &copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
+            </div>
+        </footer>
+
+    </div>
+
+
 </body>
 </html>

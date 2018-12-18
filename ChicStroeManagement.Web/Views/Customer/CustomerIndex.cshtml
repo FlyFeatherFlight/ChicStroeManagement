@@ -81,7 +81,7 @@
 
                     string fontColor = "";
 
-                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
+                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.IsManager == true)
                     {
                         fontColor = "color:black";
                     }
@@ -120,7 +120,7 @@
 
                             <td>是</td>
                             
-                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
+                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.IsManager == true)
                                 {
                                    
                             <td>
@@ -145,7 +145,7 @@
 
                             <td>否</td>
                            
-                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.Position == 3)
+                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.IsManager == true)
                                 {
                                     <td>
                                         @Html.ActionLink("详细", "ShowVisitInfo", new { id = item.ID })

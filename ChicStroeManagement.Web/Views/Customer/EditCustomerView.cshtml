@@ -69,7 +69,7 @@
             </tr>
 
             @{
-                if (ViewBag.Position != 3)
+                if (ViewBag.IsManager != true)
                 {
                     <tr>
                         <td>@Html.LabelFor(Model => Model.跟进人)</td>

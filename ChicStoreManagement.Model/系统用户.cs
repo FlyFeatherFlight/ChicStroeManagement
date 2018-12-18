@@ -7,24 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ChicStoreManagement.Model
+using System;
+using System.Collections.Generic;
+
+public partial class 系统用户
 {
-    using System;
-    using System.Collections.Generic;
-    
-    public partial class 系统用户
-    {
-        public int ID { get; set; }
-        public string 编号 { get; set; }
-        public string 姓名 { get; set; }
-        public string 密码 { get; set; }
-        public string 邮箱 { get; set; }
-        public bool 停用标志 { get; set; }
-        public Nullable<System.DateTime> 注册日期 { get; set; }
-        public string 注册IP { get; set; }
-        public Nullable<int> 经销商ID { get; set; }
-        public Nullable<int> 店铺ID { get; set; }
-    
-        public virtual 销售_经销商档案 销售_经销商档案 { get; set; }
-    }
+    public int ID { get; set; }
+    public string 编号 { get; set; }
+    public string 姓名 { get; set; }
+    public string 密码 { get; set; }
+    public string 邮箱 { get; set; }
+    public bool 停用标志 { get; set; }
+    public Nullable<System.DateTime> 注册日期 { get; set; }
+    public string 注册IP { get; set; }
+    public Nullable<int> 经销商ID { get; set; }
+    public Nullable<int> 店铺ID { get; set; }
+
+    public virtual 销售_经销商档案 销售_经销商档案 { get; set; }
 }

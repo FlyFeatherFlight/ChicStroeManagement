@@ -10,13 +10,20 @@ using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Helpers;
 using System.Collections.Generic;
 using System;
+using ChicStoreManagement.IBLL;
 
 namespace ChicStoreManagement.Controllers
 {
     
     public class HomeController: Controller
     {
-      
+
+     private    IStoreEmployeesBLL storeEmployeesBLL;
+
+        public HomeController(IStoreEmployeesBLL storeEmployeesBLL)
+        {
+            this.storeEmployeesBLL = storeEmployeesBLL;
+        }
 
         /// <summary>
         /// 门店管理首页
@@ -30,8 +37,10 @@ namespace ChicStoreManagement.Controllers
                 var employees = HttpContext.Session["Employee"] as Employees;
 
                 ViewBag.Store = employees.店铺;
-                ViewBag.Position = employees.职务;
+                ViewBag.IsManager = employees.是否店长;
                 ViewBag.Employee = employees.姓名;
+                ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employees.ID).是否店长;
+                ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employees.ID).是否设计师;
             }
 
             //创建区域1
