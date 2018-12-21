@@ -54,12 +54,17 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.EmployeesID = employeeID;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignResultCurrentSort = sortOrder;
             ViewBag.DesignResultDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignResultViewModel> designResultModels = new List<DesignResultViewModel>();
             //构建设计表信息  
-            designResultModels = BuildResultInfo(employeeID).ToList();
+            if (BuildResultInfo(employeeID)!=null)
+            {
+designResultModels = BuildResultInfo(employeeID).ToList();
+            }
+            
             if (designResultModels == null)
             {
                 return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
@@ -118,6 +123,7 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID!=3)
             {
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
@@ -223,7 +229,8 @@ namespace ChicStoreManagement.WEB.Controllers
                 销售单号 = designResultViewModel.销售单号,
                 客户单号 = designResultViewModel.客户编号,
                 单据编号 = designResultViewModel.单据编号,
-                更新日期 = DateTime.Now
+                更新日期 = DateTime.Now,
+                 店铺ID=storeID
 
             };
             if (ModelState.IsValid)
@@ -270,6 +277,7 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             var model =designResultBLL.GetModel(p => p.id == id);
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
             designResultViewModel.Id = model.id;
@@ -350,6 +358,7 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 4 && storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID != 3)
             {
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
@@ -482,7 +491,19 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             if (role.是否店长==true)
             {
-                models = designResultBLL.GetModels(p => p.店长 == employeeID).ToList();
+                //var rec=customerInfoBLL.GetModels(p => p.店铺ID == storeID);//客户
+                //var sub = designSubmitBLL.GetModels(p => true);
+                //foreach (var item in rec)
+                //{
+                //    foreach (var ite in sub)
+                //    {
+                //        if (item.ID==ite.接待记录ID)
+                //        {
+                //            models.Add(designResultBLL.GetModel(p => p.设计案提交表ID == ite.id));
+                //        }
+                //    }
+                //}
+                models = designResultBLL.GetModels(p => p.店铺ID == storeID).ToList();
             }
             else
             {

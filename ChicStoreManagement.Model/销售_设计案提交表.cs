@@ -46,10 +46,12 @@ public partial class 销售_设计案提交表
     public Nullable<System.DateTime> 更新日期 { get; set; }
     public Nullable<System.DateTime> 店长审核时间 { get; set; }
     public Nullable<System.DateTime> 设计人员审核时间 { get; set; }
+    public Nullable<int> 店铺ID { get; set; }
 
     public virtual ICollection<设计_设计案完结单> 设计_设计案完结单 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案1 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案2 { get; set; }
+    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
     public virtual 销售_接待记录 销售_接待记录 { get; set; }
 }

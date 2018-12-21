@@ -7,18 +7,18 @@
 
 <div class="container table-responsive">
     <h3>@Model.客户姓名 详细信息</h3>
-    @if (Model.是否有意向!=false&&Model.是否有意向!=null)
+    @if (Model.是否有意向 != false && Model.是否有意向 != null)
     {
-        if (Model.跟进人==null)
+        if (Model.跟进人 == null)
         {
             <label style="font-size:10px;color:red">当前客户无跟进人</label>
         }
         else
         {
-            @Html.ActionLink("直接申请设计案","DesignSchemeIndex","DesignScheme",new { id=Model.ID},new {@style="font-size:12px" })
+            @Html.ActionLink("直接申请设计案", "DesignSchemeIndex", "DesignScheme", new { id = Model.ID }, new { @style = "font-size:12px" })
         }
     }
-   
+
     <div style="text-align:center">
         <pre>
          店铺：@Html.DisplayFor(m => Model.店铺)
@@ -29,7 +29,7 @@
          时长：@Html.DisplayFor(m => Model.进店时长)分钟
          客户类别：@Html.DisplayFor(m => Model.客户类别)</pre>
     </div>
-    <table class="table table-bordered table-striped " >
+    <table class="table table-bordered table-striped ">
 
         <tr>
             <td width="12%">
@@ -100,6 +100,10 @@
             </td>
         </tr>
         <tr>
+            <td>客户的目的：</td>
+            <td>@Model.目的</td>
+        </tr>
+        <tr>
             <td>同行人：</td>
             <td>@Html.DisplayFor(m => Model.同行人)</td>
         </tr>
@@ -119,15 +123,35 @@
             <td>特征：</td>
             <td>@Html.DisplayFor(m => Model.特征)</td>
         </tr>
-
+        <tr>
+            <td>客户喜欢的产品</td>
+            <td>@Model.喜欢产品</td>
+        </tr>
+        <tr>
+            <td>
+                客户喜欢产品的元素
+            </td>
+            <td>@Model.喜欢元素</td>
+        </tr>
+        <tr>
+            <td>客户不喜欢产品</td>
+            <td>@Model.不喜欢产品</td>
+        </tr>
+        <tr>
+            <td>客户不喜欢产品元素</td>
+            <td>@Model.不喜欢元素</td>
+        </tr>
         <tr>
             <td> 使用的空间：</td>
             <td>
                 @Html.DisplayFor(m => Model.使用空间) </ td >
         </tr>
         <tr>
+            <td>户型大小：</td>
+            <td>@Model.户型大小</td>
+        </tr>
+        <tr>
             <td>
-
                 装修情况：
             </td>
             <td>
@@ -157,6 +181,7 @@
                 @Html.DisplayFor(m => Model.预计使用时间)
             </td>
         </tr>
+        @*/////////////////////////////////////////////////////*@
         <tr>
             <td>
                 如何得知品牌：
@@ -169,8 +194,110 @@
         </tr>
 
         <tr>
+            <td>比较品牌产品：</td>
+            <td>@Model.比较品牌产品</td>
+        </tr>
+        <tr>
+            <td>比较产品备注：</td>
+            <td>@Model.比较品牌产品备注</td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">客户预算</td>
+        </tr>
+        <tr>
+            <td>客厅预算家具类型</td>
+            <td>@Model.客厅预算家具</td>
+        </tr>
+        <tr>
+            <td>客厅预算金额</td>
+            <td>@Model.客厅预算金额</td>
+        </tr>
+        <tr>
+            <td>客厅预算备注</td>
+            <td>@Model.客厅预算备注</td>
+        </tr>
+        <tr>
+            <td>餐厅预算家具类型</td>
+            <td>@Model.餐厅预算家具</td>
+        </tr>
+        <tr>
+            <td>餐厅预算金额</td>
+            <td>@Model.餐厅预算金额</td>
+        </tr>
+        <tr>
+            <td>餐厅预算备注：</td>
+            <td>@Model.餐厅预算备注</td>
+        </tr>
+        <tr>
+            <td>主卧预算家具类型</td>
+            <td>@Model.主卧预算家具</td>
+        </tr>
+        <tr>
+            <td>主卧预算金额</td>
+            <td>@Model.主卧预算金额</td>
+        </tr>
+        <tr>
+            <td>主卧预算备注</td>
+            <td>@Model.主卧预算备注</td>
+        </tr>
+        <tr>
+            <td>次卧预算家具类型</td>
+            <td>@Model.次卧预算家具</td>
+        </tr>
+        <tr>
             <td>
-                预计购买的产品：
+                次卧预算金额
+            </td>
+            <td>@Model.次卧预算金额</td>
+        </tr>
+        <tr>
+            <td>次卧预算备注：</td>
+            <td>@Model.次卧预算备注</td>
+        </tr>
+        <tr>
+            <td>婴儿或儿童房预算家具类型</td>
+            <td>@Model.婴儿或儿童房预算家具</td>
+        </tr>
+
+        <tr>
+            <td>婴儿或儿童房预算金额</td>
+            <td>@Model.婴儿或儿童房预算金额</td>
+        </tr>
+        <tr>
+            <td>婴儿或儿童房预算备注</td>
+            <td>@Model.婴儿或儿童房预算备注</td>
+        </tr>
+        <tr>
+            <td>书房预算家具类型</td>
+            <td>@Model.书房预算家具</td>
+        </tr>
+        <tr>
+            <td>书房预算金额</td>
+            <td>@Model.书房预算金额</td>
+        </tr>
+        <tr>
+            <td>书房预算备注</td>
+            <td>@Model.书房预算备注</td>
+        </tr>
+        <tr>
+            <td>其它空间预算家具类型：</td>
+            <td>@Model.其它空间家具</td>
+        </tr>
+        <tr>
+            <td>其它空间预算金额：</td>
+            <td>@Model.其它空间预算</td>
+        </tr>
+        <tr>
+            <td>其它空间预算备注</td>
+            <td>@Model.其它空间备注</td>
+        </tr>
+        <tr>
+            <td colspan="2">预算总共金额: @Html.DisplayFor(m => Model.预算金额)</td>
+        </tr>
+
+        <tr>
+            <td style="text-align:center">
+                预<br />计<br />购<br />买<br />的<br />产<br />品
             </td>
 
 
@@ -202,10 +329,7 @@
                 @Html.DisplayFor(m => Model.安装地址)
             </td>
         </tr>
-        <tr>
-            <td>预算：</td>
-            <td>@Html.DisplayFor(m => Model.预算金额)</td>
-        </tr>
+
         <tr>
             <td>预报价折扣：</td>
             <td>@Html.DisplayFor(m => Model.预报价折扣)</td>
@@ -227,6 +351,10 @@
             <td width="200px">
                 @Html.DisplayFor(m => Model.客户建议)
             </td>
+        </tr>
+        <tr>
+            <td>销售讲解：</td>
+            <td>@Model.销售讲解</td>
         </tr>
         <tr>
             <td>是否有意向：</td>
@@ -258,12 +386,12 @@
             <td>更新时间</td>
             <td>@Html.DisplayFor(m => Model.更新日期)</td>
         </tr>
-        <tr >
+        <tr>
             <td colspan="2" align="center">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
         </tr>
     </table>
 
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
-    <br/>
+    <br />
 </div>
 

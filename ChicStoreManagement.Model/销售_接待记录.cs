@@ -14,9 +14,6 @@ public partial class 销售_接待记录
 {
     public 销售_接待记录()
     {
-        this.销售_接待记录_意向明细 = new HashSet<销售_接待记录_意向明细>();
-        this.销售_设计案提交表_客户意向产品明细 = new HashSet<销售_设计案提交表_客户意向产品明细>();
-        this.销售_意向追踪日志 = new HashSet<销售_意向追踪日志>();
         this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
     }
 
@@ -53,6 +50,8 @@ public partial class 销售_接待记录
     public Nullable<System.DateTime> 预计使用时间 { get; set; }
     public string 如何得知品牌 { get; set; }
     public string 比较品牌 { get; set; }
+    public string 比较品牌产品 { get; set; }
+    public string 比较品牌产品备注 { get; set; }
     public Nullable<decimal> 预算金额 { get; set; }
     public string 预报价折扣 { get; set; }
     public string 返点 { get; set; }
@@ -62,11 +61,35 @@ public partial class 销售_接待记录
     public Nullable<System.DateTime> 制单日期 { get; set; }
     public Nullable<int> 更新人 { get; set; }
     public Nullable<System.DateTime> 更新日期 { get; set; }
+    public string 喜欢产品 { get; set; }
+    public string 喜欢元素 { get; set; }
+    public string 不喜欢产品 { get; set; }
+    public string 不喜欢元素 { get; set; }
+    public string 客户目的 { get; set; }
+    public string 户型大小 { get; set; }
+    public string 销售讲解 { get; set; }
+    public string 客厅预算家具 { get; set; }
+    public string 客厅预算金额 { get; set; }
+    public string 客厅预算备注 { get; set; }
+    public string 餐厅预算家具 { get; set; }
+    public string 餐厅预算金额 { get; set; }
+    public string 餐厅预算备注 { get; set; }
+    public string 主卧预算家具 { get; set; }
+    public string 主卧预算金额 { get; set; }
+    public string 主卧预算备注 { get; set; }
+    public string 次卧预算家具 { get; set; }
+    public string 次卧预算金额 { get; set; }
+    public string 次卧预算备注 { get; set; }
+    public string 婴儿或儿童房预算家具 { get; set; }
+    public string 婴儿或儿童房预算金额 { get; set; }
+    public string 婴儿或儿童房预算备注 { get; set; }
+    public string 书房预算家具 { get; set; }
+    public string 书房预算金额 { get; set; }
+    public string 书房预算备注 { get; set; }
+    public string 其它空间家具 { get; set; }
+    public string 其它空间预算 { get; set; }
+    public string 其它空间备注 { get; set; }
 
-    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
-    public virtual ICollection<销售_接待记录_意向明细> 销售_接待记录_意向明细 { get; set; }
-    public virtual ICollection<销售_设计案提交表_客户意向产品明细> 销售_设计案提交表_客户意向产品明细 { get; set; }
-    public virtual ICollection<销售_意向追踪日志> 销售_意向追踪日志 { get; set; }
     public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
 }

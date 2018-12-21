@@ -47,6 +47,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             var pid = storeEmployeesBLL.GetModel(p=>p.ID==employeeID).职务ID;
             if (pid==6)//功能待定
             {

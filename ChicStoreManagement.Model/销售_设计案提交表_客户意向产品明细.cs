@@ -27,6 +27,4 @@ public partial class 销售_设计案提交表_客户意向产品明细
     public string 编号 { get; set; }
     public string 品牌 { get; set; }
     public string 分类 { get; set; }
-
-    public virtual 销售_接待记录 销售_接待记录 { get; set; }
 }

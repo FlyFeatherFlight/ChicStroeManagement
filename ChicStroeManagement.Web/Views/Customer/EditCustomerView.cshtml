@@ -36,7 +36,7 @@
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.ID)
     <div class="table-responsive ">
-        <table class="table table-condensed ">
+        <table class="table table-condensed table-hover table-striped">
             <tr>
                 <td style="width:10%"> @Html.LabelFor(Model => Model.店铺)</td>
                 <td><input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly" class="form-control" /> </td>
@@ -120,6 +120,12 @@
                     <label style="color:red">*</label>
                 </td>
             </tr>
+            <tr>
+                <td>来店目的:</td>
+                <td>
+                    @Html.EditorFor(Model=>Model.目的,new { htmlAttributes =new { @class="form-control" }
+            })
+                </td>
             <tr>
                 <td>@Html.LabelFor(Model => Model.进店时间)</td>
                 <td>
@@ -235,6 +241,26 @@
                 </td>
             </tr>
             <tr>
+                <td>客户喜欢的产品</td>
+                <td>@Html.EditorFor(Model => Model.喜欢产品, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>客户喜欢的元素</td>
+                <td>
+                    @Html.EditorFor(Model => Model.喜欢元素, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+                <td>客户不喜欢的产品</td>
+                <td>@Html.EditorFor(Model => Model.不喜欢产品, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>
+                    客户不喜欢的元素
+                </td>
+                <td>@Html.EditorFor(Model => Model.不喜欢元素, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
                 <td> @Html.LabelFor(model => model.使用空间)</td>
                 <td>
                     @Html.EditorFor(model => model.使用空间, new { htmlAttributes = new { @class = "form-control" } })
@@ -258,6 +284,10 @@
                 </td>
             </tr>
             <tr>
+                <td>户型大小</td>
+                <td>@Html.EditorFor(Model => Model.户型大小, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
                 <td> @Html.LabelFor(model => model.装修风格)</td>
                 <td>
                     @Html.EditorFor(model => model.装修风格, new { htmlAttributes = new { @class = "form-control" } })
@@ -274,7 +304,7 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
-                        
+
                     </div>
 
                 </td>
@@ -294,6 +324,14 @@
                 </td>
             </tr>
             <tr>
+                <td>比较品牌产品</td>
+                <td>@Html.EditorFor(Model => Model.比较品牌产品, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>比较品牌产品备注</td>
+                <td>@Html.EditorFor(Model => Model.比较品牌产品备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
                 <td>@Html.LabelFor(model => model.安装地址)</td>
                 <td>
                     @Html.EditorFor(model => model.安装地址, new { htmlAttributes = new { @class = "form-control" } })
@@ -301,10 +339,102 @@
                 </td>
             </tr>
             <tr>
-                <td> @Html.LabelFor(model => model.预算金额)</td>
+                <td align="center" colspan="2"><label>客户预算</label></td>
+            </tr>
+            <tr>
+                <td><label>客厅预算家具类型</label></td>
+                <td>@Html.EditorFor(Model => Model.客厅预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td><label>客厅预算金额</label></td>
                 <td>
-                    @Html.EditorFor(model => model.预算金额, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.预算金额)
+                    @Html.EditorFor(Model => Model.客厅预算金额, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+                <td><label>客厅预算备注</label></td>
+                <td>@Html.EditorFor(Model => Model.客厅预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td><label>餐厅预算家具类型</label></td>
+                <td>@Html.EditorFor(Model => Model.餐厅预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td><label>餐厅预算金额</label></td>
+                <td>@Html.EditorFor(Model => Model.餐厅预算金额, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td><label>餐厅预算备注</label></td>
+                <td>@Html.EditorFor(Model => Model.餐厅预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>主卧预算家具类型</td>
+                <td>@Html.EditorFor(Model => Model.主卧预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+
+            </tr>
+            <tr>
+                <td>主卧预算金额</td>
+                <td>@Html.EditorFor(Model => Model.主卧预算金额, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>主卧预算备注</td>
+                <td>@Html.EditorFor(Model => Model.主卧预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>次卧预算家具类型</td>
+                <td>@Html.EditorFor(Model => Model.次卧预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>次卧预算金额</td>
+                <td>@Html.EditorFor(Model => Model.次卧预算金额, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>次卧预算备注</td>
+                <td>@Html.EditorFor(Model => Model.次卧预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>婴儿或儿童房预算家具类型</td>
+                <td>@Html.EditorFor(Model => Model.婴儿或儿童房预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>婴儿或儿童房预算金额</td>
+                <td>@Html.EditorFor(Model => Model.婴儿或儿童房预算金额, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>婴儿或儿童杠预算备注</td>
+                <td>@Html.EditorFor(Model => Model.婴儿或儿童房预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>书房预算家具类型</td>
+                <td>@Html.EditorFor(Model => Model.书房预算家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>书房预算金额</td>
+                <td>@Html.EditorFor(Model => Model.书房预算金额, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>书房预算备注</td>
+                <td>@Html.EditorFor(Model => Model.书房预算备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>其它空间家具类型</td>
+                <td>@Html.EditorFor(Model => Model.其它空间家具, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>其它空间预算金额</td>
+                <td>@Html.EditorFor(Model => Model.其它空间预算, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+                <td>其它空间预算备注</td>
+                <td>@Html.EditorFor(Model => Model.其它空间备注, new { htmlAttributes = new { @class = "form-control" } })</td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.LabelFor(Model => Model.预算金额)
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.预算金额, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
             </tr>
             <tr>
@@ -345,7 +475,10 @@
                     @Html.ValidationMessageFor(model => model.客户建议)
                 </td>
             </tr>
-
+            <tr>
+                <td>销售讲解</td>
+                <td>@Html.TextAreaFor(Model => Model.销售讲解, new { @class = "form-control" })</td>
+            </tr>
         </table>
         <input id="Submit1" type="submit" value="提交" class="btn" />|<input type="button" onclick="javascript:window.history.go(-1);" value="取消" class="btn">
     </div>

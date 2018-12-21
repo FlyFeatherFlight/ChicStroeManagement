@@ -1,4 +1,5 @@
 ﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
 using ChicStoreManagement.WEB.ViewModel;
 using Newtonsoft.Json;
 using PagedList;
@@ -85,6 +86,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();//获取当前人员信息
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.Store = store;
             ViewBag.Employee = employeeName;
             ViewBag.EmployeesID = employeeID;
@@ -93,8 +95,12 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.DesignSubResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignSubmitModel> designSubmitModels = new List<DesignSubmitModel>();
             //构建设计表信息  
-            designSubmitModels = BuildDesignSubInfo(employeeID).ToList();
-           
+            if (BuildDesignSubInfo(employeeID)!=null)
+            {
+                designSubmitModels = BuildDesignSubInfo(employeeID).ToList();
+
+            }
+
             if (designSubmitModels == null)
             {
                 return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
@@ -202,12 +208,16 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.EmployeesID = employeeID;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignResultCurrentSort = sortOrder;
             ViewBag.DesignResultDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignResultViewModel> designResultModels = new List<DesignResultViewModel>();
             //构建设计表信息  
-            designResultModels = BuildResultInfo(employeeID).ToList();
+            if (BuildResultInfo(employeeID)!=null)
+            {
+                designResultModels = BuildResultInfo(employeeID).ToList();
+            }
             if (designResultModels == null)
             {
                 return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
@@ -394,7 +404,6 @@ namespace ChicStoreManagement.WEB.Controllers
                     }
                    
                 }
-               
             }
             else
             {

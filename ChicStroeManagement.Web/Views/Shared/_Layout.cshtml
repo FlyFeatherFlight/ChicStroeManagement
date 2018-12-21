@@ -27,7 +27,7 @@
         .demo {
             position: absolute;
             width: 100%;
-            height: 8%;
+            height: 5%;
             border: 1px solid #333;
             background-color: #333;
         }
@@ -69,6 +69,32 @@
                 </li>
                 @*<li>@Html.ActionLink("关于", "About", "Home")</li>
         <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                @if (ViewBag.IsEmployee == true)
+                {
+
+                    <li> 
+                        <a href="@Url.Action("CustomerIndex","Customer")">
+                            <i class="glyphicon glyphicon-user"></i>
+                            客户管理
+                        </a>
+                   
+                    </li>
+                    <li>
+                        @*@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { })*@
+                        <a href="@Url.Action("TrackLogIndex","CustomerTrackLog", new { id = 0 })">
+                            <i class="glyphicon glyphicon-tasks"></i>
+                            意向跟进日志
+                        </a>
+                    </li>
+                    <li>
+                        @*@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { })*@
+                        <a href="@Url.Action("DesignSchemeIndex","DesignScheme",new {id = 0 })">
+                            <i class="glyphicon glyphicon-list-alt"></i>
+                            设计案管理
+                        </a>
+                    </li>
+                }
+
                 @if (ViewBag.IsDesigner == true)
                 {
                     <li>
@@ -91,40 +117,6 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                }
-                @if (true)
-                {
-
-                    <li>
-                        @*@Html.ActionLink("客户管理", "CustomerIndex", "Customer")*@
-                        <a href="#userSetting" class="nav-header collapsed" data-toggle="collapse">
-                            <i class="glyphicon glyphicon-user"></i>
-                            客户管理
-                            <span class="pull-right glyphicon glyphicon-chevron-down"></span>
-                        </a>
-                        <ul id="userSetting" class="nav nav-list collapse secondmenu">
-                            <li>
-                                <a href="@Url.Action("CustomerIndex","Customer")">
-                                    <i class="glyphicon glyphicon-minus"></i>
-                                    客户信息
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        @*@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { })*@
-                        <a href="@Url.Action("TrackLogIndex","CustomerTrackLog", new { id = 0 })">
-                            <i class="glyphicon glyphicon-tasks"></i>
-                            意向跟进日志
-                        </a>
-                    </li>
-                    <li>
-                        @*@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { })*@
-                        <a href="@Url.Action("DesignSchemeIndex","DesignScheme",new {id = 0 })">
-                            <i class="glyphicon glyphicon-list-alt"></i>
-                            设计案管理
-                        </a>
                     </li>
                 }
 

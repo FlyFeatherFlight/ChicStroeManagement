@@ -102,10 +102,13 @@ namespace ChicStoreManagement.Controllers
             ViewBag.CustomerExamineCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.CustomerExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
             ViewBag.CustomerExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
-            customerInfoModels = BuildCustomerInfo().ToList();
-
+            if (BuildCustomerInfo()!=null)
+            {
+                customerInfoModels = BuildCustomerInfo().ToList();
+            }
             ViewBag.CustomerExaminePeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.storeName = store;//将当前店铺名字传到前端
             if (searchString != null)
@@ -167,7 +170,13 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
-            var customerInfo = BuildCustomerInfo().First(p => p.ID == id);
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
+            CustomerInfoModel customerInfo = new CustomerInfoModel();
+            if (BuildCustomerInfo()!=null)
+            {
+               customerInfo = BuildCustomerInfo().First(p => p.ID == id);
+            }
+           
 
             if (customerInfo.接待人 == employeeName || customerInfo.跟进人 == employeeName || storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).职务ID == 3)
             {
@@ -231,22 +240,31 @@ namespace ChicStoreManagement.Controllers
             ViewBag.TrackingCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
             if (id != null && id != 0)
             {
+                if (BuildTrackingInfo(id, employeeID)!=null)
+                {
                 customerTrackingModels = BuildTrackingInfo(id, employeeID);//获取当前人员可查看的跟进信息
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
+                }
+                
             }
             else
             {
+                if (BuildTrackingInfo(0, employeeID)!=null)
+                {
                 customerTrackingModels = BuildTrackingInfo(0, employeeID);
+                }
+               
             }
             if (customerTrackingModels == null)
             {
                 return Content("当前操作人并无关联的跟进信息或无进入权限！");
             }
-            BuildCustomerInfo();//将顾客接待信息数据优化
+            
             ViewBag.trackingPeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.storeName = store;//将当前店铺名字传到前端
             string searchString = null;
@@ -350,9 +368,15 @@ namespace ChicStoreManagement.Controllers
             ViewBag.DesignTrackExamineCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignTrackExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
             ViewBag.DesignTrackExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
-            var DesignTrackInfoModels = BuildDesignTrackLogInfo(null).ToList();
+            List<DesignTackLogViewModel> DesignTrackInfoModels = new List<DesignTackLogViewModel>();
+            if (BuildDesignTrackLogInfo(null)!=null)
+            {
+            DesignTrackInfoModels = BuildDesignTrackLogInfo(null).ToList();
+            }
+            
 
             ViewBag.DesignTrackExaminePeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.storeName = store;//将当前店铺名字传到前端
@@ -448,9 +472,15 @@ namespace ChicStoreManagement.Controllers
             ViewBag.DesignApplyrExamineCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignApplyExamineTrackingResult = String.IsNullOrEmpty(sortOrder) ? "last_desc" : "";
             ViewBag.DesignApplyExamineID = String.IsNullOrEmpty(sortOrder) ? "first" : "first_desc";
-            var DesignApplyInfoModels = BuildDesignSubInfo(null).ToList();
+            List<DesignSubmitModel> DesignApplyInfoModels = new List<DesignSubmitModel>();
+            if (BuildDesignSubInfo(null)!=null)
+            {
+          DesignApplyInfoModels = BuildDesignSubInfo(null).ToList();
+            }
+           
 
             ViewBag.DesignApplyExaminePeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.storeName = store;//将当前店铺名字传到前端
@@ -544,12 +574,17 @@ namespace ChicStoreManagement.Controllers
             ViewBag.EmployeesID = employeeID;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignResultCurrentSort = sortOrder;
             ViewBag.DesignResultDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignResultViewModel> designResultModels = new List<DesignResultViewModel>();
             //构建设计表信息  
-            designResultModels = BuildResultInfo(employeeID).ToList();
+            if (BuildResultInfo(employeeID)!=null)
+            {
+              designResultModels = BuildResultInfo(employeeID).ToList();
+            }
+           
             if (designResultModels == null)
             {
                 return Content("<script>alert('当前操作人并无关联的设计信息或无进入权限！');window.history.go(-1);</script>");
@@ -646,6 +681,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             DesignSubmitModel model = new DesignSubmitModel();
             var m = designSubmitBLL.GetModel(p => p.id == id);
             model.Id = m.id;
@@ -900,7 +936,7 @@ namespace ChicStoreManagement.Controllers
             List<销售_设计案提交表> designSubModelList = new List<销售_设计案提交表>();
             if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
             {   //店长可以查看所有信息
-                designSubModelList = designSubmitBLL.GetModels(p => true).ToList();
+                designSubModelList = designSubmitBLL.GetModels(p => p.店铺ID==storeID).ToList();
             }
 
             else if (id != 0 && id != null)
@@ -1032,7 +1068,7 @@ namespace ChicStoreManagement.Controllers
           
             if (role.是否店长 == true)
             {
-                models = designResultBLL.GetModels(p => p.店长 == employeeID).ToList();
+                models = designResultBLL.GetModels(p => p.店铺ID == storeID).ToList();
             }
             else
             {

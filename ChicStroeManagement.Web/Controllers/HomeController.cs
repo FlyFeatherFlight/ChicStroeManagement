@@ -11,6 +11,7 @@ using DotNet.Highcharts.Helpers;
 using System.Collections.Generic;
 using System;
 using ChicStoreManagement.IBLL;
+using System.Linq;
 
 namespace ChicStoreManagement.Controllers
 {
@@ -18,12 +19,29 @@ namespace ChicStoreManagement.Controllers
     public class HomeController: Controller
     {
 
-     private    IStoreEmployeesBLL storeEmployeesBLL;
+        private IStoreEmployeesBLL storeEmployeesBLL;
+        private ICustomerInfoBLL customerInfoBLL;
+        private ICustomerTrackingBLL CustomerTrackingBLL;
+        private IDesignSubmitBLL DesignSubmitBLL;
+        private IDesignTrackingLogBLL DesignTrackingLogBLL;
+        private IDesignResultBLL DesignResultBLL;
+        private IStoreBLL storeBLL;
 
-        public HomeController(IStoreEmployeesBLL storeEmployeesBLL)
+        private int employeeID;//员工id
+        private string employeeName;//员工姓名
+        private string store;//当前店铺名称
+        private int storeID;//当前店铺id
+        public HomeController(IStoreEmployeesBLL storeEmployeesBLL, ICustomerInfoBLL customerInfoBLL, ICustomerTrackingBLL customerTrackingBLL, IDesignSubmitBLL designSubmitBLL, IDesignTrackingLogBLL designTrackingLogBLL, IDesignResultBLL designResultBLL, IStoreBLL storeBLL)
         {
             this.storeEmployeesBLL = storeEmployeesBLL;
+            this.customerInfoBLL = customerInfoBLL;
+            CustomerTrackingBLL = customerTrackingBLL;
+            DesignSubmitBLL = designSubmitBLL;
+            DesignTrackingLogBLL = designTrackingLogBLL;
+            DesignResultBLL = designResultBLL;
+            this.storeBLL = storeBLL;
         }
+
 
         /// <summary>
         /// 门店管理首页
@@ -41,8 +59,14 @@ namespace ChicStoreManagement.Controllers
                 ViewBag.Employee = employees.姓名;
                 ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employees.ID).是否店长;
                 ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employees.ID).是否设计师;
+                ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employees.ID).是否销售;
             }
+            SetEmployee();
+            ViewBag.CustomerCount = ""+customerInfoBLL.GetModels(p=>p.店铺ID==storeID).Count();
+           var n= customerInfoBLL.GetModels(p => p.店铺ID == storeID).Count(); 
+            ViewBag.DesignApplyCount = ""+DesignSubmitBLL.GetModels(p=>p.店铺ID==storeID).Count();
 
+            ViewBag.DesignResultCount = "" + DesignResultBLL.GetModels(p => p.店铺ID == storeID).Count() ;
             //创建区域1
             var series1 = new Series();
             series1.Name = "区域一";
@@ -156,5 +180,22 @@ namespace ChicStoreManagement.Controllers
             return Json(Obj, JsonRequestBehavior.AllowGet);
         }
 
+
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private void SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                employeeID = employees.ID;
+                employeeName = employees.姓名;
+                store = employees.店铺;
+                storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+            }
+        }
     }
 }

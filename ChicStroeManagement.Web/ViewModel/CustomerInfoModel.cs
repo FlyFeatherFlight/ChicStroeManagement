@@ -164,6 +164,8 @@ namespace ChicStoreManagement.WEB.ViewModel
         
         public string 比较品牌 { get; set; }
 
+
+       
         [Display(Name = "预算金额")]
         [DataType(DataType.Text)]
         
@@ -205,6 +207,40 @@ namespace ChicStoreManagement.WEB.ViewModel
         [DataType(DataType.DateTime)]
     
         public DateTime? 更新日期 { get; set; }
+
+        public string 比较品牌产品 { get; set; }
+
+
+        public string 比较品牌产品备注 { get; set; }
+
+        public string 喜欢产品 { get; set; }
+        public string 喜欢元素 { get; set; }
+        public string 不喜欢产品 { get; set; }
+        public string 不喜欢元素 { get; set; }
+        public string 目的 { get; set; }
+        public string 户型大小 { get; set; }
+        public string 销售讲解 { get; set; }
+        public string 客厅预算家具 { get; set; }
+        public string 客厅预算金额 { get; set; }
+        public string 客厅预算备注 { get; set; }
+        public string 餐厅预算家具 { get; set; }
+        public string 餐厅预算金额 { get; set; }
+        public string 餐厅预算备注 { get; set; }
+        public string 主卧预算家具 { get; set; }
+        public string 主卧预算金额 { get; set; }
+        public string 主卧预算备注 { get; set; }
+        public string 次卧预算家具 { get; set; }
+        public string 次卧预算金额 { get; set; }
+        public string 次卧预算备注 { get; set; }
+        public string 婴儿或儿童房预算家具 { get; set; }
+        public string 婴儿或儿童房预算金额 { get; set; }
+        public string 婴儿或儿童房预算备注 { get; set; }
+        public string 书房预算家具 { get; set; }
+        public string 书房预算金额 { get; set; }
+        public string 书房预算备注 { get; set; }
+        public string 其它空间家具 { get; set; }
+        public string 其它空间预算 { get; set; }
+        public string 其它空间备注 { get; set; }
 
         public IEnumerable<CustomerExceptedBuyModel> CustomerExceptedBuyModels { set; get; }
         public virtual 销售_店铺档案 销售_店铺档案 { get; set; }

@@ -69,6 +69,7 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.DesignID = id;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignFileCurrentSort = sortOrder;
             ViewBag.DesignFileDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignFileResult = sortOrder == "last" ? "last_desc" : "last";
@@ -78,7 +79,11 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             List<DesignFileViewModel> designFileModels = new List<DesignFileViewModel>();
             //构建设计表信息  
-            designFileModels = BuildFileInfo(id,content).ToList();
+            if (BuildFileInfo(id, content)!=null)
+            {
+                designFileModels = BuildFileInfo(id, content).ToList();
+            }
+          
             ViewBag.DesignPeopleName = employeeName;//将当前操作人员传到前端
             ViewBag.DesignstoreName = store;//将当前店铺名字传到前端
             if (searchString != null)
@@ -135,6 +140,7 @@ namespace ChicStoreManagement.WEB.Controllers
             SetEmployee();
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.Store = store;
             ViewBag.Employee = employeeName;
             var lis=fileTypeBLL.GetModels(p => true);

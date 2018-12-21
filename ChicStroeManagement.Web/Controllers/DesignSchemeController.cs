@@ -61,18 +61,23 @@ namespace ChicStoreManagement.Controllers
 
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
-            var costomerModels = BuildCustomerInfo();
+            
             ViewBag.Store = store;
             ViewBag.Employee = employeeName;
             ViewBag.EmployeesID = employeeID;
             ViewBag.DesignSubCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.DesignSubDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.DesignSubResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignSubmitModel> designSubmitModels = new List<DesignSubmitModel>();
             //构建设计表信息  
-            designSubmitModels = BuildDesignSubInfo(id).ToList();
+            if (BuildDesignSubInfo(id)!=null)
+            {
+                designSubmitModels = BuildDesignSubInfo(id).ToList();
+            }
+           
             if (id != 0 && id != null)
             {
                 ViewBag.DreceptionID = id;
@@ -204,6 +209,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             List<销售_接待记录> customerInfos = new List<销售_接待记录>();
             DesignSubmitModel designSubmitModel = new DesignSubmitModel();
             if (recepitonID != null && recepitonID != 0)
@@ -281,7 +287,8 @@ namespace ChicStoreManagement.Controllers
                     销售人员 = employeeID,
                     备注 = designSubmitModel.备注,
                     更新人 = designSubmitModel.更新人,
-                    更新日期 = designSubmitModel.更新日期
+                    更新日期 = designSubmitModel.更新日期,
+                    店铺ID = storeID
                 };
 
                 model.店长 = storeEmployeesBLL.GetModel(p => p.店铺ID == storeID && p.职务ID == 3 && p.停用标志 != false).ID;
@@ -335,6 +342,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             if (designSubmitBLL.GetModel(p => p.id == id).店长审核 != null && designSubmitBLL.GetModel(p => p.id == id).店长审核 == true)
             {
                 return Content("该记录已被审核通过，不可修改！");
@@ -480,7 +488,8 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
-            ViewBag.employeeIsDesign = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师; 
+            ViewBag.employeeIsDesign = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             销售_设计案提交表 model = new 销售_设计案提交表();
             model = designSubmitBLL.GetModel(p => p.id == id);
             DesignSubmitModel submitModel = new DesignSubmitModel
@@ -527,8 +536,11 @@ namespace ChicStoreManagement.Controllers
             }
 
 
-
-            submitModel.Design_CustomerExceptedBuyViewModel = BuildDesign_ExceptedBuy(submitModel.Id);
+            if (BuildDesign_ExceptedBuy(submitModel.Id)!=null)
+            {
+                submitModel.Design_CustomerExceptedBuyViewModel = BuildDesign_ExceptedBuy(submitModel.Id);
+            }
+           
             return View(submitModel);
         }
         /// <summary>
@@ -540,6 +552,7 @@ namespace ChicStoreManagement.Controllers
             SetEmployee();
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.Store = store;
             ViewBag.Employee = employeeName;
             return View();
@@ -559,13 +572,19 @@ namespace ChicStoreManagement.Controllers
         public ActionResult Design_ExceptedBuyIndex(int id)
          {
             Session["method"] = "N";
-            var lis = BuildDesign_ExceptedBuy(id);
+            List<Design_CustomerExceptedBuyViewModel> lis = new List<Design_CustomerExceptedBuyViewModel>();
+            if (BuildDesign_ExceptedBuy(id)!=null)
+            {
+                lis = BuildDesign_ExceptedBuy(id);
+            }
+           
             SetEmployee();
             ViewBag.Store = store;
             ViewBag.Employee = employeeName;
             ViewBag.DesignSubid = id;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             var model = designSubmitBLL.GetModel(p => p.id == id);
             if (model.设计人员审核 != false && model.设计人员审核 != null && model.设计人员 != null && model.店长 != null && model.店长审核 != false && model.店长审核 != null)
             {
@@ -669,6 +688,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             Design_CustomerExceptedBuyViewModel model = new Design_CustomerExceptedBuyViewModel
             {
                 设计提交案 = id
@@ -837,102 +857,7 @@ namespace ChicStoreManagement.Controllers
             }
         }
 
-        /// <summary>
-        /// 构建客户信息
-        /// </summary>
-        /// <returns>客户信息</returns>
-        private IQueryable<CustomerInfoModel> BuildCustomerInfo()
-        {
-
-            List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
-            List<销售_接待记录> customer = new List<销售_接待记录>();
-            if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
-            {
-                customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID).ToList();//查询当前店铺所有顾客接待信息
-            }
-            else
-            {
-                customer = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.跟进人ID == employeeID).ToList();//查询当前跟进顾客接待信息
-            }
-
-            if (customer != null)
-            {
-                foreach (var item in customer)
-                {
-                    CustomerInfoModel customerInfo = new CustomerInfoModel();
-                    try
-                    {
-
-
-                        customerInfo.ID = item.ID;
-                        customerInfo.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
-                        customerInfo.接待人 = storeEmployeesBLL.GetModel(p => p.ID == item.接待人ID).姓名;
-                        customerInfo.接待序号 = item.接待序号;
-                        customerInfo.接待日期 = item.接待日期.ToString("d");
-                        customerInfo.主导者 = item.主导者;
-                        customerInfo.主导者喜好风格 = item.主导者喜好风格;
-                        customerInfo.使用空间 = item.使用空间;
-                        customerInfo.出店时间 = item.出店时间;
-                        customerInfo.制单日期 = item.制单日期;
-                        customerInfo.同行人 = item.同行人;
-                        customerInfo.如何得知品牌 = item.如何得知品牌;
-                        customerInfo.安装地址 = item.安装地址;
-                        customerInfo.客户姓名 = item.客户姓名;
-                        customerInfo.客户建议 = item.客户建议;
-                        customerInfo.客户来源 = item.客户来源;
-                        customerInfo.客户电话 = item.客户电话;
-                        customerInfo.客户着装 = item.客户着装;
-                        customerInfo.客户类别 = item.客户类别;
-                        customerInfo.客户类型 = item.客户类型;
-                        customerInfo.客户职业 = item.客户职业;
-                        customerInfo.家庭成员 = item.家庭成员;
-                        customerInfo.年龄段 = item.年龄段;
-                        customerInfo.性别 = item.性别;
-                        customerInfo.是否有意向 = item.是否有意向;
-                        if (item.更新人 != null)
-                        {
-                            customerInfo.更新人 = storeEmployeesBLL.GetModel(p => p.ID == item.更新人).姓名;
-                        }
-
-                        customerInfo.更新日期 = item.更新日期;
-                        customerInfo.来店次数 = item.来店次数;
-                        customerInfo.比较品牌 = item.比较品牌;
-                        customerInfo.特征 = item.特征;
-                        customerInfo.社交软件 = item.社交软件;
-                        customerInfo.装修情况 = item.装修情况;
-                        customerInfo.装修进度 = item.装修进度;
-                        customerInfo.装修风格 = item.装修风格;
-                        customerInfo.设计师 = item.设计师;
-                        if (item.跟进人ID != null)
-                        {
-                            customerInfo.跟进人 = storeEmployeesBLL.GetModel(p => p.ID == item.跟进人ID).姓名;
-                        }
-
-                        customerInfo.返点 = item.返点;
-                        customerInfo.进店时长 = item.进店时长;
-                        customerInfo.进店时间 = item.进店时间;
-                        customerInfo.预报价折扣 = item.预报价折扣;
-                        customerInfo.预算金额 = item.预算金额;
-                        customerInfo.预计使用时间 = item.预计使用时间;
-
-
-                    }
-                    catch (Exception ex)
-                    {
-
-                        throw ex;
-                    }
-
-                    customerInfoModelsList.Add(customerInfo);
-                }
-            }
-
-
-            return customerInfoModelsList.AsEnumerable().AsQueryable();
-
-        }
-
-
+       
         /// <summary>
         /// /// <summary>
         /// 构建软装服务设计提交信息
@@ -948,7 +873,7 @@ namespace ChicStoreManagement.Controllers
             }
             else  if (storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID == 3)
             {   //店长可以查看所有信息
-                designSubModelList = designSubmitBLL.GetModels(p => true).ToList();
+                designSubModelList = designSubmitBLL.GetModels(p => p.店铺ID==storeID).ToList();
             }
             else
             {
@@ -970,7 +895,10 @@ namespace ChicStoreManagement.Controllers
                 designSubmitModel.客户提问与要求 = item.客户提问与要求;
                 designSubmitModel.家具空间 = item.家具空间;
                 designSubmitModel.家庭成员 = item.家庭成员;
-                designSubmitModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == item.店长).姓名;
+                if (item.店长!=null)
+                {
+                    designSubmitModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == item.店长).姓名;
+                }
                 designSubmitModel.店长审核 = item.店长审核;
                 designSubmitModel.接待记录ID = item.接待记录ID;
                 if (item.整体软装配饰 == null)

@@ -58,9 +58,15 @@ namespace ChicStoreManagement.Controllers
             ViewBag.CustomerCurrentSort = sortOrder;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.CustomerDate = sortOrder =="first"? "first_desc" : "first";//该排序作废
             ViewBag.CustomerID = sortOrder == "last" ? "last_desc" : "last";
-           var customerInfoModels=BuildCustomerInfo();//将顾客接待信息数据优化
+            List<CustomerInfoModel> customerInfoModels = new List<CustomerInfoModel>();
+            if (BuildCustomerInfo()!=null)
+            {
+                customerInfoModels = BuildCustomerInfo().ToList();//将顾客接待信息数据优化
+            }
+           
             if (searchString != null)
             {
                 page = 1;
@@ -73,23 +79,23 @@ namespace ChicStoreManagement.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                customerInfoModels = customerInfoModels.Where(w => w.客户电话==searchString);//通过电话查找
+                customerInfoModels = customerInfoModels.Where(w => w.客户电话==searchString).ToList();//通过电话查找
             }
             //Session["Name"] = customerInfoModels.FirstOrDefault();
             #region 排序，默认按ID升序
             switch (sortOrder)
             {
                 case "first_desc":
-                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.接待日期);
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.接待日期).ToList();
                     break;
                 case "last_desc":
-                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID);
+                    customerInfoModels = customerInfoModels.OrderByDescending(w => w.ID).ToList();
                     break;
                 case "last":
-                    customerInfoModels = customerInfoModels.OrderBy(w => w.ID);
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.ID).ToList();
                     break;
                 default:
-                    customerInfoModels = customerInfoModels.OrderBy(w => w.接待日期);
+                    customerInfoModels = customerInfoModels.OrderBy(w => w.接待日期).ToList();
                     break;
             }
 
@@ -119,6 +125,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             List<销售_店铺员工档案> employeeList = storeEmployeesBLL.GetModels(p => true).ToList();
             SelectList EmployeeListList = new SelectList(employeeList, "ID", "姓名");
             ViewBag.EmployeeOptions = EmployeeListList;
@@ -210,6 +217,31 @@ namespace ChicStoreManagement.Controllers
                 model.预报价折扣 = customerInfoModel.预报价折扣;
                 model.预算金额 = customerInfoModel.预算金额;
                 model.预计使用时间 = customerInfoModel.预计使用时间;
+                model.不喜欢产品 = customerInfoModel.不喜欢产品;
+                model.不喜欢元素 = customerInfoModel.不喜欢元素;
+                model.主卧预算备注 = customerInfoModel.主卧预算备注;
+                model.主卧预算家具 = customerInfoModel.主卧预算家具;
+                model.主卧预算金额 = customerInfoModel.主卧预算金额;
+                model.书房预算备注 = customerInfoModel.书房预算备注;
+                model.书房预算家具 = customerInfoModel.书房预算家具;
+                model.书房预算金额 = customerInfoModel.书房预算金额;
+                model.其它空间备注 = customerInfoModel.其它空间备注;
+                model.其它空间家具 = customerInfoModel.其它空间家具;
+                model.其它空间预算 = customerInfoModel.其它空间预算;
+                model.喜欢产品 = customerInfoModel.喜欢产品;
+                model.喜欢元素 = customerInfoModel.喜欢元素;
+                model.婴儿或儿童房预算备注 = customerInfoModel.婴儿或儿童房预算备注;
+                model.婴儿或儿童房预算家具 = customerInfoModel.婴儿或儿童房预算家具;
+                model.婴儿或儿童房预算金额 = customerInfoModel.婴儿或儿童房预算金额;
+                model.客厅预算备注 = customerInfoModel.客厅预算备注;
+                model.客厅预算家具 = customerInfoModel.客厅预算家具;
+                model.客厅预算金额 = customerInfoModel.客厅预算金额;
+                model.户型大小 = customerInfoModel.户型大小;
+                model.次卧预算备注 = customerInfoModel.次卧预算备注;
+                model.次卧预算家具 = customerInfoModel.次卧预算家具;
+                model.次卧预算金额 = customerInfoModel.次卧预算金额;
+                model.比较品牌产品 = customerInfoModel.比较品牌产品;
+                model.比较品牌产品备注 = customerInfoModel.比较品牌产品备注;
             }
             catch (Exception e)
             {
@@ -286,22 +318,28 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             if (id == 0)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
            
             SetEmployee();
-            BuildCustomerInfo();
-            var customerInfo = BuildCustomerInfo().First(p => p.ID == id);
+            CustomerInfoModel customerInfo = new CustomerInfoModel();
+            if (BuildCustomerInfo()!=null) { customerInfo = BuildCustomerInfo().First(p => p.ID == id); }
+          
 
             if (customerInfo.接待人==employeeName||customerInfo.跟进人==employeeName||storeEmployeesBLL.GetModel(p=>p.姓名==employeeName).职务ID==3)
             {
+                if (BuildExceptedBuy(id)!=null)
+                {
                var exceptedBuyModels=BuildExceptedBuy(id);
                 customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
                 customerInfo.更新人 = employeeName;
                 customerInfo.更新日期 = DateTime.Now;
                 ViewBag.IsManager  = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).是否店长;
+                }
+               
                 return View(customerInfo);
             }
            
@@ -386,7 +424,31 @@ namespace ChicStoreManagement.Controllers
                 model.预报价折扣 = customerInfoModel.预报价折扣;
                 model.预算金额 = customerInfoModel.预算金额;
                 model.预计使用时间 = customerInfoModel.预计使用时间;
-
+                model.不喜欢产品 = customerInfoModel.不喜欢产品;
+                model.不喜欢元素 = customerInfoModel.不喜欢元素;
+                model.主卧预算备注 = customerInfoModel.主卧预算备注;
+                model.主卧预算家具 = customerInfoModel.主卧预算家具;
+                model.主卧预算金额 = customerInfoModel.主卧预算金额;
+                model.书房预算备注 = customerInfoModel.书房预算备注;
+                model.书房预算家具 = customerInfoModel.书房预算家具;
+                model.书房预算金额 = customerInfoModel.书房预算金额;
+                model.其它空间备注 = customerInfoModel.其它空间备注;
+                model.其它空间家具 = customerInfoModel.其它空间家具;
+                model.其它空间预算 = customerInfoModel.其它空间预算;
+                model.喜欢产品 = customerInfoModel.喜欢产品;
+                model.喜欢元素 = customerInfoModel.喜欢元素;
+                model.婴儿或儿童房预算备注 = customerInfoModel.婴儿或儿童房预算备注;
+                model.婴儿或儿童房预算家具 = customerInfoModel.婴儿或儿童房预算家具;
+                model.婴儿或儿童房预算金额 = customerInfoModel.婴儿或儿童房预算金额;
+                model.客厅预算备注 = customerInfoModel.客厅预算备注;
+                model.客厅预算家具 = customerInfoModel.客厅预算家具;
+                model.客厅预算金额 = customerInfoModel.客厅预算金额;
+                model.户型大小 = customerInfoModel.户型大小;
+                model.次卧预算备注 = customerInfoModel.次卧预算备注;
+                model.次卧预算家具 = customerInfoModel.次卧预算家具;
+                model.次卧预算金额 = customerInfoModel.次卧预算金额;
+                model.比较品牌产品 = customerInfoModel.比较品牌产品;
+                model.比较品牌产品备注 = customerInfoModel.比较品牌产品备注;
                 if (ModelState.IsValid)
                 {
                     customerInfoBLL.Modify(model);
@@ -471,9 +533,16 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
-            var customerInfo= BuildCustomerInfo().First(p => p.ID == id);
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
+            CustomerInfoModel customerInfo = new CustomerInfoModel();
+            if (BuildCustomerInfo() != null) { customerInfo = BuildCustomerInfo().First(p => p.ID == id); }
+      
+            if (BuildExceptedBuy(id)!=null)
+            {
            var exceptedBuyModels= BuildExceptedBuy(id);
             customerInfo.CustomerExceptedBuyModels = exceptedBuyModels;
+            }
+          
             return View(customerInfo);
 
         }
@@ -491,13 +560,20 @@ namespace ChicStoreManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             SetEmployee();
-       
-           var exceptedBuyModels=BuildExceptedBuy(id);
+            List<CustomerExceptedBuyModel> exceptedBuyModels = new List<CustomerExceptedBuyModel>();
+            if (BuildExceptedBuy(id)!=null)
+            {
+                exceptedBuyModels = BuildExceptedBuy(id).ToList();
+            }
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
-
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             ViewBag.receptionid = id;
-            var customerInfo = BuildCustomerInfo().Where(p => p.ID == id).FirstOrDefault();
+            CustomerInfoModel customerInfo = new CustomerInfoModel();
+            if (BuildCustomerInfo() != null) { customerInfo = BuildCustomerInfo().Where(p => p.ID == id).FirstOrDefault(); }
+        
             ViewBag.CustomerName = customerInfoBLL.GetModel(p => p.ID == id).客户姓名;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             try
@@ -543,6 +619,7 @@ namespace ChicStoreManagement.Controllers
             exceptedBuyBLL.DelBy(p => p.ID == ExceptedBuyID);
             Session["method"] = "Y";
            var exceptedBuyModels=BuildExceptedBuy(receptionId);
+
             ViewBag.receptionid = receptionId;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
@@ -620,6 +697,9 @@ namespace ChicStoreManagement.Controllers
         public ViewResult AddExceptedBuyView(int receptionid) {
             Session["method"] = "N";
             ViewBag.AddReceptionid = receptionid;
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             var productList = productCodeBLL.GetModels(p => true).ToList();
@@ -787,7 +867,31 @@ namespace ChicStoreManagement.Controllers
                             customerInfo.预报价折扣 = item.预报价折扣;
                             customerInfo.预算金额 = item.预算金额;
                             customerInfo.预计使用时间 = item.预计使用时间;
-
+                    customerInfo.不喜欢产品 = item.不喜欢产品;
+                    customerInfo.不喜欢元素 = item.不喜欢元素;
+                    customerInfo.主卧预算备注 = item.主卧预算备注;
+                    customerInfo.主卧预算家具 = item.主卧预算家具;
+                    customerInfo.主卧预算金额 = item.主卧预算金额;
+                    customerInfo.书房预算备注 = item.书房预算备注;
+                    customerInfo.书房预算家具 = item.书房预算家具;
+                    customerInfo.书房预算金额 = item.书房预算金额;
+                    customerInfo.其它空间备注 = item.其它空间备注;
+                    customerInfo.其它空间家具 = item.其它空间家具;
+                    customerInfo.其它空间预算 = item.其它空间预算;
+                    customerInfo.喜欢产品 = item.喜欢产品;
+                    customerInfo.喜欢元素 = item.喜欢元素;
+                    customerInfo.婴儿或儿童房预算备注 = item.婴儿或儿童房预算备注;
+                    customerInfo.婴儿或儿童房预算家具 = item.婴儿或儿童房预算家具;
+                    customerInfo.婴儿或儿童房预算金额 = item.婴儿或儿童房预算金额;
+                    customerInfo.客厅预算备注 = item.客厅预算备注;
+                    customerInfo.客厅预算家具 = item.客厅预算家具;
+                    customerInfo.客厅预算金额 = item.客厅预算金额;
+                    customerInfo.户型大小 = item.户型大小;
+                    customerInfo.次卧预算备注 = item.次卧预算备注;
+                    customerInfo.次卧预算家具 = item.次卧预算家具;
+                    customerInfo.次卧预算金额 = item.次卧预算金额;
+                    customerInfo.比较品牌产品 = item.比较品牌产品;
+                    customerInfo.比较品牌产品备注 = item.比较品牌产品备注;
 
                         }
                         catch (Exception ex)

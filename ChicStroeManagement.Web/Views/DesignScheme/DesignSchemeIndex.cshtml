@@ -11,7 +11,7 @@
         @Html.ActionLink("申请设计", "ApplyDesignView", new { @recepitonID = ViewBag.DreceptionID, @Style = "font-size:12px", @align = "right" })
         <b>|</b>
     }
-    @Html.ActionLink("查看完结信息", "DesignResultIndex", "DesignResult", new { }, new { @Style = "font-size:12px", @align = "left" })
+    @Html.ActionLink("查看店铺完结信息", "DesignResultIndex", "DesignResult", new { }, new { @Style = "font-size:12px", @align = "left" })
 </div>
 @using (Html.BeginForm("DesignSchemeIndex", "DesignScheme", FormMethod.Get))
 {

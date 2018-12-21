@@ -47,8 +47,8 @@
 <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 <script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>
 <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
-<script src="~/Scripts/Highcharts-4.0.1/js/themes/skies.js"></script>
 
+<script src="~/Scripts/Highcharts-4.0.1/js/themes/dark-blue.js"></script>
 <script type="text/javascript">
 
     var chart;
@@ -150,12 +150,10 @@
 </div>
 
 <div>
-    接待总数：
+    接待总数：@ViewBag.CustomerCount
 </div>
-<div>
-    意向跟进数：
-</div>
-<div>软装设计申请数：</div>
-<div>软装设计跟进数：</div>
-<div>软装完结数据：</div>
+
+<div>软装设计申请数：@ViewBag.DesignApplyCount</div>
+
+<div>软装完结数据：@ViewBag.DesignResultCount</div>
 
