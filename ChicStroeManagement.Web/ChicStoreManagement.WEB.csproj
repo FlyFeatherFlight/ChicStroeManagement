@@ -262,6 +262,7 @@
     <Content Include="Content\bootstrap-fileinput\themes\fa\theme.min.js" />
     <Content Include="Content\bootstrap-fileinput\themes\gly\theme.js" />
     <Content Include="Content\bootstrap-fileinput\themes\gly\theme.min.js" />
+    <Content Include="Content\custom.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap4.css" />
@@ -462,6 +463,7 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\Loader.css" />
+    <Content Include="Content\style - 副本.css" />
     <Content Include="DLL\easyUI\easyloader.js" />
     <Content Include="DLL\easyUI\easyuiExt.css" />
     <Content Include="DLL\easyUI\easyuiExt.js" />
