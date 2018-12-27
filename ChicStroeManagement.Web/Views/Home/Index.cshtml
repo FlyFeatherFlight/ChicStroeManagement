@@ -47,94 +47,102 @@
 <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 <script src="~/Scripts/Highcharts-4.0.1/js/modules/exporting.js"></script>
 <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+<script src="~/Scripts/Highcharts-4.0.1/js/highcharts-all.js"></script>
+@*<script src="~/Scripts/Highcharts-4.0.1/js/themes/gray.js"></script>*@
+@*<script src="~/Scripts/Highcharts-4.0.1/js/themes/dark-unica.js"></script>*@
+@*<script src="~/Scripts/Highcharts-4.0.1/js/themes/grid-light.js"></script>*@
+<script src="~/Scripts/Highcharts-4.0.1/js/themes/sand-signika.js"></script>
+@*<script src="~/Scripts/Highcharts-4.0.1/js/themes/grid.js"></script>*@
+@*<script type="text/javascript">
 
+        var chart;
+        $(document).ready(function () {
+            var Time = new Array();//存储时间
+            var Count = new Array();//存储数量
+            //获取数据
+            $.ajax({
+                async: false,
+                type: 'post',
+                datatype: 'json',
+                url: '/Report/GetDataList',
+                data: { BeformDays: 7, Type: 1 },//获取前七天的数据，
+                success: function (Data) {
+                    console.log(Data.Times);
+                    console.log(Data.Counts);
+                    Time = Data.Times;
+                    Count = Data.Counts;
+                }
 
-<script type="text/javascript">
+            })
 
-    var chart;
-    $(document).ready(function () {
-        var Time = new Array();//存储时间
-        var Count = new Array();//存储数量
-        //获取数据
-        $.ajax({
-            async: false,
-            type: 'post',
-            datatype: 'json',
-            url: '/Report/GetDataList',
-            data: { BeformDays: 7, Type: 1 },//获取前七天的数据，
-            success: function (Data) {
-                console.log(Data.Times);
-                console.log(Data.Counts);
-                Time = Data.Times;
-                Count = Data.Counts;
-            }
-
-        })
-
-        //highchants样式渲染
-        chart = new Highcharts.Chart({
-            chart: {
-                renderTo: 'container',//放置图表的容器
-                plotBackgroundColor: null,//绘图背景颜色
-                plotBorderWidth: null,//绘图边框宽度
-                defaultSeriesType: 'line'//我在这里选折曲线//图表类型样式line, spline, area, areaspline, column, bar, pie , scatter这些样式随你选
-            },
-            title: {
-                text: '曲线图统计'
-            },
-            subtitle: {
-                text: ''//副标题
-            },
-            xAxis: {//X轴数据
-                categories: StitchingData(Time),//存储数组格式的那么我们自己拼接一下数据格式吧
-                rotation: -45, //字体倾斜
-                align: 'right',
-                style: { font: 'normal 13px 宋体' }
-            }
-        },
-            yAxis: {//Y轴显示文字
+            //highchants样式渲染
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',//放置图表的容器
+                    plotBackgroundColor: null,//绘图背景颜色
+                    plotBorderWidth: null,//绘图边框宽度
+                    defaultSeriesType: 'line'//我在这里选折曲线//图表类型样式line, spline, area, areaspline, column, bar, pie , scatter这些样式随你选
+                },
                 title: {
-                    text: '产量/百万'
+                    text: '曲线图统计'
+                },
+                subtitle: {
+                    text: ''//副标题
+                },
+                xAxis: {//X轴数据
+                    categories: StitchingData(Time),//存储数组格式的那么我们自己拼接一下数据格式吧
+                    rotation: -45, //字体倾斜
+                    align: 'right',
+                    style: { font: 'normal 13px 宋体' }
                 }
             },
-            //点击事件
-            tooltip: {
-                enabled: true,
-                formatter: function () {
-                    return '<b>' + this.x + '</b><br/>' + this.series.name + ': ' + Highcharts.numberFormat(this.y, 1);
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: true//是否显示title
-                }
-            },
-            series: [{
-                name: '产量统计报表',
-                data: StitchingData(Count), //这里也是一样的需要自己拼接数组对象
-            });
+                yAxis: {//Y轴显示文字
+                    title: {
+                        text: '产量/百万'
+                    }
+                },
+                //点击事件
+                tooltip: {
+                    enabled: true,
+                    formatter: function () {
+                        return '<b>' + this.x + '</b><br/>' + this.series.name + ': ' + Highcharts.numberFormat(this.y, 1);
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: true//是否显示title
+                    }
+                },
+                series: [{
+                    name: '产量统计报表',
+                    data: StitchingData(Count), //这里也是一样的需要自己拼接数组对象
+                });
 
-        //数据拼接
-        function StitchingData(data) {
-            var Datas = new Array();
-            for (var i = 0; i < data.length; i++) {
-                Datas[i] = data[i];//将数据添加到数据中
+            //数据拼接
+            function StitchingData(data) {
+                var Datas = new Array();
+                for (var i = 0; i < data.length; i++) {
+                    Datas[i] = data[i];//将数据添加到数据中
+                }
+                console.log(Datas);
+                return Datas;
             }
-            console.log(Datas);
-            return Datas;
-        }
-    });
-</script>
+        });
+    </script>*@
 
 
 
 
 
 <div>
-    @((DotNet.Highcharts.Highcharts)ViewBag.ChartModel)
+    @((DotNet.Highcharts.Highcharts)ViewBag.ChartModel1)
+</div>
+<hr />
+<div>
+    @((DotNet.Highcharts.Highcharts)ViewBag.ChartModel2)
 </div>
 
 @*@if (ViewBag == "store")

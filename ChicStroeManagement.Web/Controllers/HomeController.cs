@@ -63,50 +63,60 @@ namespace ChicStoreManagement.Controllers
             }
             SetEmployee();
             ViewBag.CustomerCount = ""+customerInfoBLL.GetModels(p=>p.店铺ID==storeID).Count();
-           var n= customerInfoBLL.GetModels(p => p.店铺ID == storeID).Count(); 
+           
             ViewBag.DesignApplyCount = ""+DesignSubmitBLL.GetModels(p=>p.店铺ID==storeID).Count();
 
             ViewBag.DesignResultCount = "" + DesignResultBLL.GetModels(p => p.店铺ID == storeID).Count() ;
             //创建区域1
             var series1 = new Series();
-            series1.Name = "区域一";
+            series1.Name = "全年接待数据";
 
             //Poin数组
-            Point[] series1Points =
+            Point[] series1Points = new Point[12];
+            for (int i = 1; i < 13; i++)
             {
-                new Point(){X = 0.0, Y = 0.0},
-                new Point() {X = 10.0, Y = 0.0},
-                new Point() {X = 10.0, Y = 10.0},
-                new Point() {X = 0.0, Y = 10.0}
-            };
+                var n = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.接待日期.Month == i).Count();
+                series1Points[i-1] = new Point() { X = i, Y = n *10};
+            }
+
+
             series1.Data = new Data(series1Points);
 
             //创建区域2
             var series2 = new Series();
-            series2.Name = "区域二";
+            series2.Name = "本月接待数据";
 
+            //获取本月有多少天
+            var month_days=DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
             //Point数组
-            Point[] series2Points =
-                {
-                    new Point() {X = 5.0, Y = 5.0},
-                    new Point() {X = 15.0, Y =5.0},
-                    new Point() {X = 15.0, Y = 15.0},
-                    new Point() {X = 5.0, Y = 15.0}
-                };
+            Point[] series2Points = new Point[month_days];
+            var n1 = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.接待日期.Month == DateTime.Now.Month);
+            for (int i = 0; i < month_days; i++)
+            {
+                
+                var m = n1.Where(p => p.接待日期.Day == i + 1).Count();
+                series2Points[i] = new Point() { X = i + 1, Y = m };
+            }
             series2.Data = new Data(series2Points);
 
             //把2个区域加入到Series集合中
             var chartSeries = new List<Series>();
             chartSeries.Add(series1);
-            chartSeries.Add(series2);
+            var chartSeries2=new List<Series>(); 
+            chartSeries2.Add(series2);
 
             //创建chart model
-            var chart1 = new Highcharts("我的第一个区域图表");
-            chart1.InitChart(new Chart() { DefaultSeriesType = ChartTypes.Area })
-                .SetTitle(new Title() { Text = "我的第一个区域图表" })
+            var chart1 = new Highcharts("接待年度统计");
+            chart1.InitChart(new Chart() { DefaultSeriesType = ChartTypes.Line })
+                .SetTitle(new Title() { Text = "接待年度统计" })
                 .SetSeries(chartSeries.ToArray());
+            ViewBag.ChartModel1 = chart1;
 
-            ViewBag.ChartModel = chart1;
+            var chart2 = new Highcharts("接待月统计");
+            chart2.InitChart(new Chart() { DefaultSeriesType = ChartTypes.Column })
+                .SetTitle(new Title() { Text = "接待月统计" })
+                .SetSeries(chartSeries2.ToArray());
+            ViewBag.ChartModel2 = chart2;
             return View();
 
         }

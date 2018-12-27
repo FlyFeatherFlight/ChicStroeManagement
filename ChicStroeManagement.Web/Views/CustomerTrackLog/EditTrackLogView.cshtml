@@ -8,7 +8,7 @@
 <div class="form-group">
     <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogEdit">
         <div style="text-align:right">@Html.ActionLink("修改商品预购", "ExceptedBuyIndex", "Customer", new { id = Model.接待ID }, new { @Style = "font-size:12px", @align = "right" })</div>
-        <table class="table table-responsive">
+        <table  class="table table-hover table-bordered">
             <tr>
                 <td align="center">
                     <input name="id" type="number" value="@Model.Id" style="display:none" />

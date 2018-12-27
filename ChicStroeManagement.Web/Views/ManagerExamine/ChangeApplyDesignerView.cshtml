@@ -2,12 +2,12 @@
 
 @{
     ViewBag.Title = "ChangeApplyDesignerView";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <h2>客户:@ViewBag.DesignPeople 设计师修改</h2>
 <form action="~/ManagerExamine/ApllyDesignerEdit" method="post">
-    <table>
+    <table  class="table table-hover table-bordered">
         <tr><td>ID</td><td><input type="text" name="ID" value="@Model.Id" class="form-control" readonly="readonly" /></td></tr>
       
         <tr><td>客户</td><td><label class="form-control"> @Model.客户姓名 </label></td></tr>
