@@ -1199,27 +1199,27 @@ i.fa.fa-twitter {
 .grid-form1 form {
  	margin: 1.5em 0;
 }
-.form-control {
+.form-control_self {
     box-shadow: none;
     outline: none;
     border-radius: 0px;
     font-family: 'Muli-Regular';
 }
-.form-control:focus {
+.form-control_self:focus {
     border-color: #ccc;
     box-shadow: none;
 }
-.btn {
+.btn_self {
     border-radius: 0px;
     outline: none;
 }
-.btn-default:active, .btn-default:focus, .btn-default:hover {
+.btn_self-default:active, .btn_self-default:focus, .btn_self-default:hover {
     outline: none !important;
 }
-input.form-control.input-lg ,select.form-control.input-lg{
+input.form-control_self.input-lg ,select.form-control_self.input-lg{
     margin-bottom: 1em;
 }
-input.form-control.input-sm,select.form-control.input-sm {
+input.form-control_self.input-sm,select.form-control_self.input-sm {
     margin: 1.5em 0;
 }
 input#disabledTextInput,select#disabledSelect {
@@ -1278,14 +1278,14 @@ input#disabledTextInput,select#disabledSelect {
 .has-success .input-group-addon {
   border-color:#A4E7A5 !important;
 }
-.has-feedback label~.form-control-feedback {
+.has-feedback label~.form-control_self-feedback {
   top: 28px !important;
 }
 .has-success .form-control1 {
     background-color: #f1f8e9;
     border-color: #c5e1a5 !important;
 }
-.has-feedback label~.form-control-feedback {
+.has-feedback label~.form-control_self-feedback {
     top: 28px !important;
 }
 .has-error .form-control1 {
@@ -1643,11 +1643,11 @@ label.control-label {
 .profile-fo a i{
 	margin-right:2%;
 }
-.profile-btn {
+.profile-btn_self {
 	padding: 1em 1em 0;
 	 border-top: 1px solid #F3F3F4;
 }
-.profile-btn button.btn.bg-red{
+.profile-btn_self button.btn_self.bg-red{
      border-radius: 4px;
 	 -webkit-border-radius: 4px;
 	-o-border-radius: 4px;
@@ -1860,7 +1860,7 @@ td span.mar{
     -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
 }
-.input-group-btn button.btn.btn-success{
+.input-group-btn_self button.btn_self.btn_self-success{
 	line-height: 24px;
     background-color: #FFA800;
 	 border: 1px solid transparent;
@@ -2438,7 +2438,7 @@ canvas#bar1, canvas#line1 {
 .table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     padding: 8px !important;
 }
-.btn-group-lg>.btn, .btn-lg {
+.btn_self-group-lg>.btn_self, .btn_self-lg {
     padding: 10px 8px;
 }
 .but_list h_1 {
@@ -2457,7 +2457,7 @@ canvas#bar1, canvas#line1 {
 label.hor-form{
 	padding: 7px 14px 0 !important;
 }
-.btn-send{
+.btn_self-send{
 	margin-bottom:1em;
 }
 .profile-fo h4 {
@@ -2493,7 +2493,7 @@ canvas#bar1, canvas#line1 {
 h3.head-top {
     font-size: 1.8em;
 }
-.btn{
+.btn_self{
 	margin-bottom:1em;
 }
 .modal-dialog {
@@ -2694,7 +2694,7 @@ canvas#polarArea, canvas#radar, canvas#doughnut {
 .but_list h_1 {
     font-size: 1.4em;
 }
-.btn-group-lg>.btn, .btn-lg {
+.btn_self-group-lg>.btn_self, .btn_self-lg {
     padding: 8px 8px;
     font-size: 12px;
 }

@@ -6,7 +6,7 @@
    
 }
 
-<div style="background-color:white">
+
     <h2>客户审查</h2>
     <hr />
     @Html.ActionLink("跟进日志", "CustomerTrackLogExamineView", new { })
@@ -34,8 +34,8 @@
                         <th style="display:none">
                             ID
                         </th>
-                        <th width="10%">店铺</th>
-                        <th>接待序号</th>
+                   
+                        
                         <th>@Html.ActionLink("接待日期", "CustomerExamineView", new { sortOrder = ViewBag.CustomerExamineID })</th>
                         <th>客户姓名</th>
                         <th>性别</th>
@@ -71,11 +71,13 @@
 
                         <tr style="@fontColor">
                             <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
-                            <td> @Html.DisplayFor(modelItem => item.店铺)</td>
-                            <td> @Html.DisplayFor(modelItem => item.接待序号)</td>
+                     
                             <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
 
-                            <td> @Html.DisplayFor(modelItem => item.客户姓名)</td>
+                            <td>
+                              
+                                @Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.ID }, new { @Style = "font-size:12px" })
+                            </td>
                             <td> @Html.DisplayFor(modelItem => item.性别)</td>
 
                             <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
@@ -93,14 +95,13 @@
                                     {
 
                                     <td>
-                                        @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                       
                                         @if (item.跟进人 != null)
                                         {
-                                            <b>|</b> @Html.ActionLink("修改跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                            @Html.ActionLink("修改跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px", @class = "btn btn-link" })
                                         }
                                         else
-                                        {
-                                            <b>|</b> @Html.ActionLink("指定跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                        { @Html.ActionLink("指定跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px", @class = "btn btn-link" })
                                                             }
                                                         </td>
                                     }
@@ -119,10 +120,7 @@
                                     <td>否</td>
 
                                     if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.CustomerExamineManager == true)
-                                    {
-                                    <td>
-                                        @Html.ActionLink("详细", "ShowVisitInfo", "Customer", new { id = item.ID }, new { @style = "font-size:12px" })
-                                    </td>
+                                    {                      
                                     }
 
                                     else
@@ -154,4 +152,3 @@
     @Html.PagedListPager(Model, page => Url.Action("CustomerExamineView", new { page, sortOrder = ViewBag.CustomerExamineCurrentSort, currentFilter = ViewBag.CustomerExamineCurrentFilter }))
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
 
-</div>

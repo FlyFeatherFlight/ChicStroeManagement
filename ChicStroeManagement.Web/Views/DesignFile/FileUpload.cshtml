@@ -24,6 +24,7 @@
             uploadAsync: true,
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
             uploadExtraData: function (previewId, index) {
+                //添加额外参数
                 var data = {
                     FileType: findType(),
                     DesignId: @Model.DesignId,
@@ -34,11 +35,15 @@
         //导入文件上传完成之后的事件
         $("#cad_file").on("fileuploaded", function (event, data, previewId, index) {
             alert(JSON.stringify(data.response));
-            if ("@ViewBag.content" == "Result" && data.response == "上传成功！") {
-                window.history.back(-1);
+            if (data.response == "上传成功！") {
+                window.location.href=' @Url.Action("Index","DesignFile",new {id= @Model.DesignId }) ';
                 return;
             }
-            window.location.reload();
+            if (data.response == "false") {
+                alert("文件不正确，上传失败！");
+                 window.location.href=' @Url.Action("Index", "DesignFile", new { id = @Model.DesignId }) ' ;
+            }
+            else { window.location.reload(); }
         });
 
         //获得文件类型
@@ -47,7 +52,18 @@
                 return "完成效果文件";
             }
             else {
-                return $("#FileType option:selected").text();
+                var se = document.getElementById("Filetype");
+                var index = se.selectedIndex; // 选中索引
+                if (se.length > 0) {
+                    if (index != null) {
+                        var text = se.options[index].text; // 选中文本
+                        var value = se.options[index].value; // 选中值
+                        return value;
+                    }
+                    else {
+                        return se.options[0].value;
+                    }
+                }
             }
            
         }

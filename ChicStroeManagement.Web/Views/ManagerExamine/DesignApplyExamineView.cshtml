@@ -1,13 +1,13 @@
 ﻿@using PagedList.Mvc;
 @model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignSubmitModel>
 
-    @{
-        ViewBag.Title = "设计案申请审查";
+@{
+    ViewBag.Title = "设计案申请审查";
 
-    }
+}
 
-    <h2>设计案申请审查</h2>
-    <script>
+<h2>设计案申请审查</h2>
+<script>
     // 等待所有加载
     $(window).on("load", function () {
         startLoading();
@@ -63,114 +63,118 @@
             loadingMask.parentNode.removeChild(loadingMask);
         }
     }
-    </script>
-@Html.ActionLink("设计案跟进审查", "DesignTrackLogExamineView", new { @style="font-size:12px"})
-    @using (Html.BeginForm("DesignApplyExamineView", "ManagerExamine", FormMethod.Get))
+</script>
+@Html.ActionLink("跟进日志审查", "DesignTrackLogExamineView", new { @style = "font-size:12px" })|@Html.ActionLink("完结审查", "DesignResultExamineView",new { @Style = "font-size:12px" })
+@using (Html.BeginForm("DesignApplyExamineView", "ManagerExamine", FormMethod.Get))
+{
+    <p>
+        通过客户电话查找: @Html.TextBox("SearchString", ViewBag.DesignApplyExamineCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" class="btn" />
+    </p>
+
+}
+<hr />
+<label>当前店铺:</label>
+@{
+    if (Model != null)
     {
-        <p>
-            通过客户电话查找: @Html.TextBox("SearchString", ViewBag.DesignApplyExamineCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
-            <input id="Submit1" type="submit" value="查询" class="btn" />
-        </p>
+        <div class="table-responsive">
+            <table id="tb" class="table table-hover table-bordered">
+                <tr>
+                    <th>Id</th>
+                    <th>客户姓名</th>
+                    <th>联系方式</th>
+                    <th>楼盘具体位置</th>
+                    <th>预算</th>
+                    <th>销售人员</th>
+                    <th>审批状态</th>
+                    <th>设计师审批</th>
+                    <th>店长审批</th>
+               
+                    <th>审批操作</th>
+                </tr>
 
-    }
-    <hr />
-    <label>当前店铺:</label>
-    @{
-        if (Model != null)
-        {
-            <div class="table-responsive">
-                <table id="tb"  class="table table-hover table-bordered">
-                    <tr>
-                        <th>Id</th>
-                        <th>客户姓名</th>
-                        <th>联系方式</th>
-                        <th>楼盘具体位置</th>
-                        <th>预算</th>
-                        <th>销售人员</th>
-                        <th>审批状态</th>
-                        <th>设计师审批</th>
-                        <th>店长审批</th>
-                        <th>详情</th>
-                        <th>审批操作</th>
-                    </tr>
+                @foreach (var item in Model)
+                {
 
-                    @foreach (var item in Model)
+                    if (item.审批状态 == null)
                     {
+                        <tr style="background-color:cornsilk">
+                            <td>@item.Id</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
+                            <td>@item.联系方式</td>
+                            <td>@item.楼盘具体位置</td>
+                            <td>@item.预算</td>
+                            <td>@item.销售人员</td>
+                            <td>@item.审批状态</td>
+                            <td>@item.设计人员审核</td>
+                            <td>@item.店长审核</td>
+                           
+                            <td>
 
-                        if (item.审批状态 == null)
-                        {
-                            <tr style="background-color:cornsilk">
-                                <td>@item.Id</td>
-                                <td>@item.客户姓名</td>
-                                <td>@item.联系方式</td>
-                                <td>@item.楼盘具体位置</td>
-                                <td>@item.预算</td>
-                                <td>@item.销售人员</td>
-                                <td>@item.审批状态</td>
-                                <td>@item.设计人员审核</td>
-                                <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
-                                <td>
-                                    <select class="form-control" id="trackselect">
-                                        <option value="true">通过</option>
-                                        <option value="false">驳回</option>
-                                    </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
-                                </td>
+                                <select class="form-control" id="trackselect" style="width:100px">
+                                    <option value="true">通过</option>
+                                    <option value="false">驳回</option>
+                                </select><a onclick="sub(this)" class="btn-link">确定</a>
+                            </td>
 
-                            </tr>
-                        }
-                        else if (item.审批状态 == false)
-                        {
-                            <tr style="color:darkgrey">
-                                <td>@item.Id</td>
-                                <td>@item.客户姓名</td>
-                                <td>@item.联系方式</td>
-                                <td>@item.楼盘具体位置</td>
-                                <td>@item.预算</td>
-                                <td>@item.销售人员</td>
-                                <td>@item.审批状态</td>
-                                <td>@item.设计人员审核</td>
-                                <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
-                                <td>
-                                    <select class="form-control" id="trackselect">
-                                        <option value="true">通过</option>
-                                        <option value="false">驳回</option>
-                                    </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
-                                </td>
-                            </tr>
-                        }
-                        else
-                        {
-                            <tr>
-                                <td>@item.Id</td>
-                                <td>@item.客户姓名</td>
-                                <td>@item.联系方式</td>
-                                <td>@item.楼盘具体位置</td>
-                                <td>@item.预算</td>
-                                <td>@item.销售人员</td>
-                                <td>@item.审批状态</td>
-                                <td>@item.设计人员审核</td>
-                                <td>@item.店长审核</td>
-                                <td>@Html.ActionLink("详情", "DesignApplyInfoView","DesignScheme", new { id = item.Id },new { })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "AddDesignResultView", "DesignResult", new { subid = item.Id }, new { @Style = "font-size:12px" })</td>
-                                <td>
-                                    <select class="form-control" id="trackselect">
-                                        <option value="true">通过</option>
-                                        <option value="false">驳回</option>
-                                    </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
-                                </td>
-                            </tr>
-                        }
-                        //{
-                        //var submitModel = item as ChicStoreManagement.WEB.ViewModel.DesignSubmitModel;
-                        //}
-
+                        </tr>
                     }
-                </table>
-                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignApplyExamineCurrentSort, currentFilter = ViewBag.DesignApplyExamineCurrentFilter }))
-            </div>
-        }
+                    else if (item.审批状态 == false)
+                    {
+                        <tr style="color:darkgrey">
+                            <td>@item.Id</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
+                            <td>@item.联系方式</td>
+                            <td>@item.楼盘具体位置</td>
+                            <td>@item.预算</td>
+                            <td>@item.销售人员</td>
+                            <td>@item.审批状态</td>
+                            <td>@item.设计人员审核</td>
+                            <td>@item.店长审核</td>
+                         
+                            <td>
 
+                                <select class="form-control" id="trackselect" style="width:100px">
+                                    <option value="true">通过</option>
+                                    <option value="false">驳回</option>
+                                </select><a onclick="sub(this)" class="btn-link">确定</a>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", "DesignScheme", new { id = item.Id }, new { })</td>
+                            <td>@item.联系方式</td>
+                            <td>@item.楼盘具体位置</td>
+                            <td>@item.预算</td>
+                            <td>@item.销售人员</td>
+                            <td>@item.审批状态</td>
+                            <td>@item.设计人员审核</td>
+                            <td>@item.店长审核</td>
+
+                           
+                            <td>
+
+                                <select class="form-control" id="trackselect" style="width:100px">
+                                    <option value="true">通过</option>
+                                    <option value="false">驳回</option>
+                                </select><a onclick="sub(this)" class="btn-link">确定</a>
+                            </td>
+                        </tr>
+                    }
+                    //{
+                    //var submitModel = item as ChicStoreManagement.WEB.ViewModel.DesignSubmitModel;
+                    //}
+
+                }
+            </table>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignApplyExamineCurrentSort, currentFilter = ViewBag.DesignApplyCurrentFilter }))
+        </div>
     }
-    <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+
+}
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

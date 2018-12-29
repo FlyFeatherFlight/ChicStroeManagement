@@ -492,36 +492,47 @@ namespace ChicStoreManagement.Controllers
             ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             销售_设计案提交表 model = new 销售_设计案提交表();
             model = designSubmitBLL.GetModel(p => p.id == id);
-            DesignSubmitModel submitModel = new DesignSubmitModel
-            {
-                Id = model.id,
-                备注 = model.备注,
-                客户喜好 = model.客户喜好或忌讳,
-                客户在意品牌或已购买品牌 = model.客户在意品牌或已购买品牌,
-                客户姓名 = model.客户姓名,
-                客户提问与要求 = model.客户提问与要求,
-                家具空间 = model.家具空间,
-                家庭成员 = model.家庭成员,
-                店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名,
-                店长审核 = model.店长审核,
-                接待记录ID = model.接待记录ID,
-                更新人 = model.更新人,
-                更新日期 = model.更新日期,
-                楼盘具体位置 = model.楼盘具体位置,
-                职业 = model.职业,
-                联系方式 = model.联系方式,
-                装修进度 = model.装修进度,
-                装修风格 = model.装修风格,
-                设计人员 = storeEmployeesBLL.GetModel(p => p.ID == model.设计人员).姓名,
-                设计人员审核 = model.设计人员审核,
-                销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名,
-                面积大小 = model.面积大小,
-                项目提交时间 = model.项目提交时间,
-                项目量房时间 = model.项目量房时间,
-                项目预计完成时间 = model.项目预计完成时间,
-                预算 = model.预算,
 
-            };
+            DesignSubmitModel submitModel = new DesignSubmitModel();
+            try
+            {
+                    submitModel.Id = model.id;
+                    submitModel.备注 = model.备注;
+                    submitModel.客户喜好 = model.客户喜好或忌讳;
+                    submitModel.客户在意品牌或已购买品牌 = model.客户在意品牌或已购买品牌;
+                    submitModel.客户姓名 = model.客户姓名;
+                    submitModel.客户提问与要求 = model.客户提问与要求;
+                    submitModel.家具空间 = model.家具空间;
+                    submitModel.家庭成员 = model.家庭成员;
+                    submitModel.店长 = storeEmployeesBLL.GetModel(p => p.ID == model.店长).姓名;
+                    submitModel.店长审核 = model.店长审核;
+                    submitModel.接待记录ID = model.接待记录ID;
+                    submitModel.更新人 = model.更新人;
+                    submitModel.更新日期 = model.更新日期;
+                    submitModel.楼盘具体位置 = model.楼盘具体位置;
+                    submitModel.职业 = model.职业;
+                    submitModel.联系方式 = model.联系方式;
+                    submitModel.装修进度 = model.装修进度;
+                    submitModel.装修风格 = model.装修风格;
+                if (model.设计人员!=null)
+                {
+                 submitModel.设计人员 = storeEmployeesBLL.GetModel(p => p.ID == model.设计人员).姓名;
+                }
+                    
+                    submitModel.设计人员审核 = model.设计人员审核;
+                    submitModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员).姓名;
+                    submitModel.面积大小 = model.面积大小;
+                    submitModel.项目提交时间 = model.项目提交时间;
+                    submitModel.项目量房时间 = model.项目量房时间;
+                    submitModel.项目预计完成时间 = model.项目预计完成时间;
+                    submitModel.预算 = model.预算;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+          
             if (model.整体软装配饰 == null)
             {
                 submitModel.整体软装配饰 = false;
@@ -530,7 +541,7 @@ namespace ChicStoreManagement.Controllers
             {
                 submitModel.整体软装配饰 = model.整体软装配饰;
             }
-            if (model.设计人员审核 != false && model.设计人员审核 != null && model.设计人员 != null && model.店长 != null && model.店长审核 != false && model.店长审核 != null)
+            if (model.设计人员审核 == true && model.设计人员 != null && model.店长 != null && model.店长审核 == true)
             {
                 submitModel.审批状态 = true;
             }

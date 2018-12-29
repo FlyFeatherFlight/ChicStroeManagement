@@ -70,14 +70,14 @@ namespace ChicStoreManagement.Controllers
             ViewBag.TrackingCurrentSort = sortOrder;
             ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
             ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
-            if (id != null && id != 0)
+            if (id > 0)
             {
                 customerTrackingModels = BuildTrackingInfo(id);//获取当前客户的跟进信息
                 ViewBag.Reception = customerInfoBLL.GetModel(p => p.ID == id).接待序号;//将接待序号传到前端
             }
             else
             {
-                customerTrackingModels = BuildTrackingInfo(0);//获取当前人员可查看的跟进信息
+                return RedirectToAction("TrackLogCustomer");
             }
             if (customerTrackingModels == null)
             {
@@ -124,14 +124,81 @@ namespace ChicStoreManagement.Controllers
             return View(customerTrackingModels.ToPagedList(pageNumber, pageSize));
         }
 
+        /// <summary>
+        /// 当前店铺跟进的客户名单
+        /// </summary>
+     
+        /// <param name="sortOrder"></param>
+        /// <param name="searchString"></param>
+        /// <param name="currentFilter"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public ActionResult TrackLogCustomer(string sortOrder, string searchString, string currentFilter, int? page) {
+            List<CustomerTrackingModel> customerTrackingModels = new List<CustomerTrackingModel>();
+            Session["method"] = "N";
+            SetEmployee();//获取当前人员信息
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
+            ViewBag.TrackingCurrentSort = sortOrder;
+            ViewBag.TrackingDate = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.TrackingResult = sortOrder == "last" ? "last_desc" : "last";
+            customerTrackingModels = BuildTrackingInfo(0);//获取当前客户的跟进信息
+           
+           
+            if (customerTrackingModels == null)
+            {
+                return Content("当前操作人并无关联的跟进信息或无进入权限！");
+            }
 
+            ViewBag.storeName = store;//将当前店铺名字传到前端
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.TrackingCurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                customerTrackingModels = customerTrackingModels.Where(w => w.客户电话 == searchString).ToList();//通过客户电话查找
+            }
+            //Session["Name"] = customerInfoModels.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进时间).ToList();
+                    break;
+                case "last_desc":
+                    customerTrackingModels = customerTrackingModels.OrderByDescending(w => w.跟进结果).ToList();
+                    break;
+                case "last":
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进结果).ToList();
+                    break;
+                default:
+                    customerTrackingModels = customerTrackingModels.OrderBy(w => w.跟进时间).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(customerTrackingModels.ToPagedList(pageNumber, pageSize));
+        }
 
         /// <summary>
         /// 添加跟进日志
         /// </summary>
         /// <param name="reception">接待序号</param>
         /// <param name="trackingPeopleName">跟进人姓名</param>
-     
+
         /// <returns></returns>
         public ActionResult AddTrackLogView(string reception)
         {
@@ -431,7 +498,7 @@ namespace ChicStoreManagement.Controllers
             }
             else if (e.职务ID == 3)
             {
-                mt = customerTrackingBLL.GetModels(p => p.店铺ID == e.店铺ID).ToList();//店长查看(只有自己店铺的)
+                mt = customerTrackingBLL.GetModels(p => p.店铺ID == e.店铺ID).GroupBy(p=>p.接待记录ID).Select(p=>p.FirstOrDefault()).ToList();//店长查看(只有自己店铺的)
             }
 
             else

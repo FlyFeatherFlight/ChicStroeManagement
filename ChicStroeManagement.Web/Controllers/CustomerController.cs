@@ -104,6 +104,7 @@ namespace ChicStoreManagement.Controllers
             int pageNumber = (page ?? 1);
             ViewBag.employeeName = employeeName;//给前端传入当前操作人
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.姓名 == employeeName).是否店长;//给前端传入当前操作人职位
+            goals = storeEmployeesBLL.GetModel(p => p.ID == employeeID).跟进目标计划数;
             ViewBag.Goals = goals;//总共跟进数目
             ViewBag.AvailableGoals = goals - customerInfoBLL.GetModels(p=>p.跟进人ID==employeeID).Count();//剩余跟进数目
 
@@ -702,6 +703,7 @@ namespace ChicStoreManagement.Controllers
             ViewBag.Employee = employeeName;
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
             var productList = productCodeBLL.GetModels(p => true).ToList();
             SelectList productSelectListItems = new SelectList(productList, "型号", "型号");
             ViewBag.AddProductOptions = productSelectListItems;

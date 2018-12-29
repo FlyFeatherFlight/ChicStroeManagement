@@ -71,7 +71,7 @@
     </p>
 
 }
-<div>
+<div class="table-responsive">
     <table id="tb"  class="table table-hover table-bordered">
         <tr>
             <th>ID</th>
@@ -98,10 +98,10 @@
                 <td>@item.店长审查</td>
                 <td>@item.备注</td>
                 <td>
-                    <select class="form-control" id="trackselect">
+                    <select class="form-control" id="trackselect" style="width:100px">
                         <option value="true">通过</option>
                         <option value="false">未通过</option>
-                    </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
+                    </select><a onclick="sub(this)" class="btn btn-link">确定</a>
                 </td>
             </tr>
         }

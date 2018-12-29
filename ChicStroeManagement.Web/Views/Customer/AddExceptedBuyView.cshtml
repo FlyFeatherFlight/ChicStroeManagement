@@ -84,7 +84,7 @@
                 async: true,
                 success: function (data) {
                 alert("添加成功");
-                window.history.go(-1);
+                    window.location.href = '@Url.Action("ExceptedBuyIndex",new { id=ViewBag.AddReceptionid })';
                 },
                 error: function (data) {
                     alert(JSON.stringify(data));
@@ -109,8 +109,8 @@
             <thead>
                 <tr>
                     <th>接待ID</th>
-                    <th>空间</th>
                     <th>商品型号</th>
+                    <th>空间</th>
                     <th>备注</th>
                     <th>操作</th>
                 </tr>
@@ -118,8 +118,8 @@
             <tbody></tbody>
         </table>
         <hr />
-        <input type="button" onclick="addrow()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px" />
-        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px"/>
+        <input type="button" onclick="addrow()" class="btn btn-primary btn-lg border-bottom" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px;border:none" />
+        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px;border:none"/>
     </form>
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
    

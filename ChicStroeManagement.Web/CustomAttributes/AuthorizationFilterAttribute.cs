@@ -20,7 +20,7 @@ namespace ChicStoreManagement.CustomAttributes
         /// <summary>
         /// 身份检测判断
         /// </summary>
-        private bool isState;
+        private bool isState = false;
 
         /// <summary>
         /// 当前操作人员名字
@@ -95,7 +95,7 @@ namespace ChicStoreManagement.CustomAttributes
             string contollerName = fcinfo.ControllerName;//获取 controllerName 名称
 
             ///检查操作权限
-            CheckAuth(Employees, actionName, contollerName);
+            CheckAuth(Employees, fcinfo);
 
             if (isState)//如果满足
             {
@@ -108,9 +108,9 @@ namespace ChicStoreManagement.CustomAttributes
             {
                 filterContext.Result = new ContentResult { Content = @"抱歉,你不具有当前操作的权限！" };// 直接返回 return Content("抱歉,你不具有当前操作的权限！")
             }
-          
-                #endregion
-           
+
+            #endregion
+
         }
         /// <summary>
         /// 得到当前员工信息
@@ -135,38 +135,47 @@ namespace ChicStoreManagement.CustomAttributes
         /// <param name="positionName">职位</param>
         /// <param name="actionName">action名字</param>
         /// <param name="contollerName">control名</param>
-        private void CheckAuth(Employees employees, string actionName, string contollerName)
+        private void CheckAuth(Employees employees, FilterContextInfo fac)
         {
 
             if (employees.停用标志 == true)
-            {  
+            {
                 //停用之后，不可登陆
                 isState = false;
                 return;
             }
-            if (contollerName == "Manager" || contollerName == "ManagerExamine"|| contollerName== "ManagerGoal")
+            if (fac.ControllerName == "Home")
             {
-                if (employees.是否店长==true||employees.职务=="老板")
+                isState = true;
+                return;
+            }
+
+            if (employees.是否店长 == true || employees.职务 == "老板")
+            {
+                if (fac.ControllerName == "Manager" || fac.ControllerName == "ManagerExamine" || fac.ControllerName == "ManagerGoal"||fac.ActionName=="CustomerIndex"||fac.ActionName=="ExceptedBuyIndex"||fac.ActionName=="ShowVisitInfo"||fac.ActionName=="TrackLogIndex")
                 {
-                isState = true;//店长或者老板操作
-                return;
+
+                    isState = true;//店长或者老板操作
+
                 }
-             }
-            if (contollerName=="Designer"&&employees.是否设计师==true)
+            }
+            if (employees.是否设计师 == true)
+            {
+                if (fac.ControllerName == "DesignerExamine")
+                {
+                    isState = true;//设计师操作
+                }
+            }
+            if (employees.是否销售 == true)
+            {
+                if (fac.ControllerName != "Manager" && fac.ControllerName != "ManagerExamine" && fac.ControllerName != "ManagerGoal" &&fcinfo.ControllerName != "DesignerExamine")
+                {
+                    isState = true;//销售操作
+                }
+            }
+            if (fac.ActionName == "DesignResultInfoView" || fac.ActionName == "DesignApplyInfoView" || fac.ActionName == "Design_ExceptedBuyIndex" || fac.ActionName == "Index" && fac.ControllerName == "DesignFile"||fac.ActionName== "DownLoadFile")
             {
                 isState = true;
-                return;
-                
-            }
-            if (contollerName != "ManagerExamine" && contollerName != "Manager"&& contollerName!= "ManagerGoal"&&contollerName!="Designer")
-            {
-                isState = true;
-                return;//如果是非管理者页面 任何人都可以访问
-            }
-            else
-            {
-                isState = false;
-                return;
             }
         }
 

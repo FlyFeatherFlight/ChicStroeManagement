@@ -159,7 +159,12 @@ namespace ChicStoreManagement.WEB.Controllers
         public JsonResult UploadFile(FileViewModel fileModel)
         {
             string msg = "true";
-           
+         
+            if (fileModel.UploadStream==null)
+            {
+                msg = "false";
+                return Json(msg);
+            }
             if (fileModel.DesignId == 0)
             {
                 msg = "设计案ID获取出错！";

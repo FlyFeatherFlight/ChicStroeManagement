@@ -404,7 +404,11 @@
     {<p style="color:red">该订单已审核完毕.</p>}
     else
     {
-        @Html.ActionLink("添加客户意向明细信息", "AddDesign_ExceptedBuyView", new { id = @ViewBag.DesignSubid, @class = "form-control", @Style = "font-size:12px" })
+        if (ViewBag.IsEmployee == true)
+        {
+            @Html.ActionLink("添加客户意向明细信息", "AddDesign_ExceptedBuyView", new { id = @ViewBag.DesignSubid, @class = "form-control", @Style = "font-size:12px" })
+        }
+
     }
     <hr />
     <table id="product" class="table table-striped">

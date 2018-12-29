@@ -18,13 +18,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/Content/style_1.css" rel="stylesheet" />
 
     <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
     @*<script src="js/jquery.min.js"></script>*@
-
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
     <!-- Mainly scripts -->
     @*<script src="js/jquery.metisMenu.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="~/Scripts/jquery.metisMenu.js"></script>
     <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/fileinput.min.js"></script>
+    <script src="~/Scripts/locales/zh.js"></script>
     @*<script src="js/jquery.slimscroll.min.js"></script>*@
 
     <!-- Custom and plugin javascript -->
@@ -165,7 +175,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </li>
 
                                 <li>
-                                    <a href="@Url.Action("TrackLogIndex", "CustomerTrackLog", new { id = 0 })" class=" hvr-bounce-to-right"><i class="fa fa-tasks nav_icon"></i> <span class="nav-label">意向跟进日志</span> </a>
+                                    <a href="@Url.Action("TrackLogCustomer", "CustomerTrackLog", new { id = 0 })" class=" hvr-bounce-to-right"><i class="fa fa-tasks nav_icon"></i> <span class="nav-label">意向跟进日志</span> </a>
                                 </li>
                                 <li>
                                     <a href="@Url.Action("DesignSchemeIndex", "DesignScheme", new { id = 0 })" class=" hvr-bounce-to-right"><i class="fa fa-cube nav_icon"></i> <span class="nav-label">设计案管理</span> </a>

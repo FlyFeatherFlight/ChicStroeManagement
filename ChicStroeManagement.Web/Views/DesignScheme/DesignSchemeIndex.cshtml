@@ -11,7 +11,7 @@
         @Html.ActionLink("申请设计", "ApplyDesignView", new { @recepitonID = ViewBag.DreceptionID, @Style = "font-size:12px", @align = "right" })
         <b>|</b>
     }
-    @Html.ActionLink("查看店铺完结信息", "DesignResultIndex", "DesignResult", new { }, new { @Style = "font-size:12px", @align = "left" })
+    @Html.ActionLink("查看设计完结信息", "DesignResultIndex", "DesignResult", new { }, new { @Style = "font-size:12px", @align = "left" })
 </div>
 @using (Html.BeginForm("DesignSchemeIndex", "DesignScheme", FormMethod.Get))
 {
@@ -50,7 +50,7 @@
                     {
                         <tr style="background-color:cornsilk">
                             <td>@Html.DisplayFor(Model => item.Id)</td>
-                            <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", new { id = item.Id })</td>
                             <td>@Html.DisplayFor(Model => item.联系方式)</td>
                             <td>@Html.DisplayFor(Model => item.职业)</td>
                             <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
@@ -60,7 +60,7 @@
                             <td>@Html.DisplayFor(Model => item.预算)</td>
                             <td>@Html.DisplayFor(Modle => item.销售人员)</td>
                             <td>@Html.DisplayFor(Model => item.审批状态)</td>
-                            <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+                            <td>未审批</td>
 
                         </tr>
                     }
@@ -68,7 +68,7 @@
                     {
                         <tr style="color:darkgrey">
                             <td>@Html.DisplayFor(Model => item.Id)</td>
-                            <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", new { id = item.Id })</td>
                             <td>@Html.DisplayFor(Model => item.联系方式)</td>
                             <td>@Html.DisplayFor(Model => item.职业)</td>
                             <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
@@ -78,7 +78,7 @@
                             <td>@Html.DisplayFor(Model => item.预算)</td>
                             <td>@Html.DisplayFor(Modle => item.销售人员)</td>
                             <td>@Html.DisplayFor(Model => item.审批状态)</td>
-                            <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })</td>
+                            <td>未审批通过</td>
 
                         </tr>
                     }
@@ -86,7 +86,7 @@
                     {
                         <tr>
                             <td>@Html.DisplayFor(Model => item.Id)</td>
-                            <td>@Html.DisplayFor(Model => item.客户姓名)</td>
+                            <td>@Html.ActionLink(item.客户姓名, "DesignApplyInfoView", new { id = item.Id })</td>
                             <td>@Html.DisplayFor(Model => item.联系方式)</td>
                             <td>@Html.DisplayFor(Model => item.职业)</td>
                             <td>@Html.DisplayFor(Model => item.楼盘具体位置)</td>
@@ -96,7 +96,7 @@
                             <td>@Html.DisplayFor(Model => item.预算)</td>
                             <td>@Html.DisplayFor(Modle => item.销售人员)</td>
                             <td>@Html.DisplayFor(Model => item.审批状态)</td>
-                            <td>@Html.ActionLink("详情", "DesignApplyInfoView", new { id = item.Id })|@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "AddDesignResultView", "DesignResult", new { subid = item.Id }, new { @Style = "font-size:12px" })</td>
+                            <td>@Html.ActionLink("跟进", "DesignTrakLogIndex", "DesignTrackLog", new { id = item.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("完结", "DesignResultInfoView", "DesignResult", new { applyid = item.Id }, new { @Style = "font-size:12px" })</td>
                         </tr>
                     }
                     //{

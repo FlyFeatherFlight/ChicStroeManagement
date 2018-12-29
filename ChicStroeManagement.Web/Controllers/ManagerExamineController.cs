@@ -599,7 +599,7 @@ namespace ChicStoreManagement.Controllers
             {
                 searchString = currentFilter;
             }
-            ViewBag.DesignCurrentFilter = searchString;//获得前端传回来的搜索关键词
+            ViewBag.DesignResultCurrentFilter = searchString;//获得前端传回来的搜索关键词
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -609,7 +609,7 @@ namespace ChicStoreManagement.Controllers
             switch (sortOrder)
             {
                 case "first_desc":
-                    designResultModels = designResultModels.OrderByDescending(w => w.制单日期).ToList();
+                    designResultModels = designResultModels.OrderByDescending(w => w.Id).ToList();
                     break;
                 case "last_desc":
                     designResultModels = designResultModels.OrderByDescending(w => w.审批状态).ToList();
@@ -618,7 +618,7 @@ namespace ChicStoreManagement.Controllers
                     designResultModels = designResultModels.OrderBy(w => w.审批状态).ToList();
                     break;
                 default:
-                    designResultModels = designResultModels.OrderBy(w => w.制单日期).ToList();
+                    designResultModels = designResultModels.OrderByDescending(w => w.Id).ToList();
                     break;
             }
 

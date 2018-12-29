@@ -45,7 +45,7 @@ namespace ChicStoreManagement.WEB.Controllers
             this.productBLL = productBLL;
         }
 
-        public ActionResult DesignResultIndex( string sortOrder, string searchString, string currentFilter, int? page)
+        public ActionResult DesignResultIndex( string sortOrder, string searchString, string currentFilter, int? page,int? applyid)
         {
             Session["method"] = "N";
             SetEmployee();//获取当前人员信息
@@ -60,9 +60,9 @@ namespace ChicStoreManagement.WEB.Controllers
             ViewBag.DesignResult = sortOrder == "last" ? "last_desc" : "last";
             List<DesignResultViewModel> designResultModels = new List<DesignResultViewModel>();
             //构建设计表信息  
-            if (BuildResultInfo(employeeID)!=null)
+            if (BuildResultInfo(employeeID) !=null)
             {
-designResultModels = BuildResultInfo(employeeID).ToList();
+            designResultModels = BuildResultInfo(employeeID).ToList();
             }
             
             if (designResultModels == null)
@@ -116,7 +116,7 @@ designResultModels = BuildResultInfo(employeeID).ToList();
         /// </summary>
         /// <param name="subid">设计案提交ID</param>
         /// <returns></returns>
-        public ActionResult AddDesignResultView(int? subid) {
+        public ActionResult AddDesignResultView(int subid) {
             Session["method"] = "N";
             SetEmployee();
             ViewBag.Store = store;
@@ -128,13 +128,16 @@ designResultModels = BuildResultInfo(employeeID).ToList();
             {
                 return Content("<script>alert('您不具有操作权限！不能进行完结操作！');window.history.go(-1);</script>");
             }
-       
+            if (designResultBLL.GetModel(p=>p.设计案提交表ID==subid)!=null)
+            {
+                return Content("<script>alert('该设计已经完结！不可重复提交！');window.history.go(-1);</script>");
+            }
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
             designResultViewModel.计划完成时间 = designSubmitBLL.GetModel(p => p.id == subid).项目预计完成时间;
             designResultViewModel.计划完成空间 = designSubmitBLL.GetModel(p => p.id == subid).家具空间;
 
             int sellID;//销售订单ID
-            if (subid!=null&&subid!=0)
+            if (subid>0)
             {
 
                 var phoneNumber = designSubmitBLL.GetModel(w => w.id == subid).联系方式;
@@ -270,7 +273,7 @@ designResultModels = BuildResultInfo(employeeID).ToList();
         /// </summary>
         /// <param name="id">完结单ID</param>
         /// <returns></returns>
-        public ActionResult DesignResultInfoView(int id) {
+        public ActionResult DesignResultInfoView(int ?id,int? applyid) {
             Session["method"] = "N";
             SetEmployee();
             ViewBag.Store = store;
@@ -278,7 +281,24 @@ designResultModels = BuildResultInfo(employeeID).ToList();
             ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
             ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
             ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
-            var model =designResultBLL.GetModel(p => p.id == id);
+            设计_设计案完结单 model = new 设计_设计案完结单();
+            if (id>0)
+            {
+            model =designResultBLL.GetModel(p => p.id == id);
+            }
+            else if (applyid>0)
+            {
+                model = designResultBLL.GetModel(p => p.设计案提交表ID == applyid);
+            }
+            else
+            {
+                model = null;
+                
+            }
+            if (model==null)
+            {
+                return Content("<script>alert('暂无该设计服务的完结信息！');window.history.go(-1);</script>");
+            }
             DesignResultViewModel designResultViewModel = new DesignResultViewModel();
             designResultViewModel.Id = model.id;
             designResultViewModel.制单人 = model.制单人;
@@ -485,24 +505,14 @@ designResultModels = BuildResultInfo(employeeID).ToList();
             var role=storeEmployeesBLL.GetModel(p => p.ID == employeeID);
             List<DesignResultViewModel> designResultViews = new List<DesignResultViewModel>();
             List<设计_设计案完结单> models = new List<设计_设计案完结单>();
+
             if (role.是否销售==true)
             {
                 models = designResultBLL.GetModels(p => p.销售人员==employeeID).ToList();
             }
             if (role.是否店长==true)
             {
-                //var rec=customerInfoBLL.GetModels(p => p.店铺ID == storeID);//客户
-                //var sub = designSubmitBLL.GetModels(p => true);
-                //foreach (var item in rec)
-                //{
-                //    foreach (var ite in sub)
-                //    {
-                //        if (item.ID==ite.接待记录ID)
-                //        {
-                //            models.Add(designResultBLL.GetModel(p => p.设计案提交表ID == ite.id));
-                //        }
-                //    }
-                //}
+             
                 models = designResultBLL.GetModels(p => p.店铺ID == storeID).ToList();
             }
             else
@@ -550,7 +560,7 @@ designResultModels = BuildResultInfo(employeeID).ToList();
                 designResultViewModel.设计师确认日期 = item.设计师确认日期;
                 designResultViewModel.更新日期 = item.更新日期;
                 int sellID;//销售订单ID
-                if (item.设计案提交表ID != null && item.设计案提交表ID != 0)
+                if (item.设计案提交表ID > 0)
                 {
 
                     var phoneNumber = designSubmitBLL.GetModel(w => w.id == item.设计案提交表ID).联系方式;
@@ -564,11 +574,7 @@ designResultModels = BuildResultInfo(employeeID).ToList();
                         designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == sellID).订单编号;//订单编号
                         designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == sellID).单据编号;//单据编号
 
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
+                  
 
                     var lis = salesOrder_DetailsBLL.GetModels(p => p.单据ID == sellID).ToList();//根据订单ID查询订单详细
                     List<DesignResult_OrderDetailViewModel> list = new List<DesignResult_OrderDetailViewModel>();
@@ -586,8 +592,20 @@ designResultModels = BuildResultInfo(employeeID).ToList();
                         list.Add(model);
                     }
                     designResultViewModel.DesignResult_OrderDetailViewModel = list;
+
+
+                    }
+                    catch (Exception e)
+                    {
+
+                        designResultViewModel = null;
+                    }
                 }
-                    designResultViews.Add(designResultViewModel);
+                if (designResultViewModel!=null)
+                {
+                  designResultViews.Add(designResultViewModel);
+                }
+                    
             }
             return designResultViews.AsQueryable();
         }

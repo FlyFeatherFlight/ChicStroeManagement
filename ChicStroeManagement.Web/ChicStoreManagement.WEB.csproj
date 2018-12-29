@@ -1455,6 +1455,7 @@
     <Content Include="Views\DesignerExamine\DesignApplyExamineIndex.cshtml" />
     <Content Include="Views\DesignerExamine\DesignResultExamineIndex.cshtml" />
     <Content Include="Views\ManagerExamine\ChangeApplyDesignerView.cshtml" />
+    <Content Include="Views\CustomerTrackLog\TrackLogCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

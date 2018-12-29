@@ -50,7 +50,7 @@
             <th>更新人</th>
             <th>更新日期</th>
             <th>操作</th>
-            <th>测试</th>
+           
         </tr>
     </thead>
     <tbody>
@@ -58,18 +58,18 @@
         {
             if (item.备注 == "false")
             {
-                <tr style="color:red">
-                    <td>@item.Id</td>
-                    <td>@item.设计案提交表序号</td>
-                    <td>@item.文件类型</td>
-                    <td>@item.文件名</td>
-                    <td>@item.提交人</td>
-                    <td>@item.提交时间</td>
-                    <td>@item.更新人</td>
-                    <td>@item.更新日期</td>
-                    <td>文件已删除</td>
-
-                </tr>
+        <tr style="color:red">
+            <td>@item.Id</td>
+            <td>@item.设计案提交表序号</td>
+            <td>@item.文件类型</td>
+            <td>@item.文件名</td>
+            <td>@item.提交人</td>
+            <td>@item.提交时间</td>
+            <td>@item.更新人</td>
+            <td>@item.更新日期</td>
+            <td>文件已删除</td>
+            <td></td>
+        </tr>
             }
             else
             {
@@ -82,9 +82,8 @@
                     <td>@item.提交时间</td>
                     <td>@item.更新人</td>
                     <td>@item.更新日期</td>
-                    <td style="display:none">@item.Path</td>
                     <td>@Html.ActionLink("下载", "DownLoadFile", new { path = item.Path, fileName = item.文件名 })</td>
-                    <td><a href="javascript:;" onclick="downloadFile(this)">下载</a></td>
+                  
                 </tr>
             }
 

@@ -64,7 +64,7 @@
 <h2>客户跟进日志审查</h2>
 <hr />
 
-@using (Html.BeginForm("TrackLogIndex", "CustomerTrackLogExamineView", FormMethod.Get))
+@using (Html.BeginForm("CustomerTrackLogExamineView", "ManagerExamine", FormMethod.Get))
 {
     <p>
         通过客户电话查找: @Html.TextBox("PhoneSearchString", ViewBag.TrackingCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
@@ -72,7 +72,7 @@
     </p>
 }
 
-@using (Html.BeginForm("TrackLogIndex", "CustomerTrackLogExamineView", FormMethod.Get))
+@using (Html.BeginForm("CustomerTrackLogExamineView", "ManagerExamine", FormMethod.Get))
 {
     <p>
         通过跟进人查找: @Html.TextBox("NameSearchString", ViewBag.TrackingCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
@@ -86,12 +86,9 @@
         <div class="table-responsive">
             <table  class="table table-hover table-bordered" id="tb" >
                 <tr>
-
-
                     <th>客户姓名</th>
                     <th>客户电话</th>
                     <th>@Html.ActionLink("跟进时间", "CustomerTrackLogExamineView", new { sortOrder = ViewBag.TrackingDate })</th>
-
                     <th>跟进方式</th>
                     <th>跟进内容</th>
                     <th>跟进结果</th>
@@ -99,7 +96,7 @@
                     <th>备注</th>
                     <th>是否申请设计师</th>
                     <th>跟进人</th>
-                    <th width="10%">审批操作</th>
+                    <th>审批操作</th>
 
                 </tr>
                 @foreach (var item in Model)
@@ -143,10 +140,10 @@
                     }
                     <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
                     <td>
-                        <select class="form-control" id="trackselect">
+                        <select class="form-control" id="trackselect" style="width:100px">
                             <option value="已审阅">已审阅</option>
                             <option value="无效跟进">无效跟进</option>
-                        </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
+                        </select><a onclick="sub(this)" class="btn btn-link" >确定</a>
                     </td>
 
                 </tr>
@@ -193,10 +190,10 @@
 
                             }
                             <td>
-                                <select class="form-control" id="trackselect">
+                                <select class="form-control" id="trackselect" style="width:100px">
                                     <option value="已审阅">已审阅</option>
                                     <option value="无效跟进">无效跟进</option>
-                                </select><a onclick="sub(this)" class="btn btn-primary btn-xs" style="background-color:white;color:black">确定</a>
+                                </select><a onclick="sub(this)" class="btn btn-link">确定</a>
                             </td>
                         </tr>
 

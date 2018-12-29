@@ -5,9 +5,7 @@
 }
 
 <h2>设计案完结清单</h2>
-<div>
-    @Html.ActionLink("添加完结单", "AddDesignResultView", new { @Style = "font-size:12px", @align = "right" })
-</div>
+
 @using (Html.BeginForm("DesignResultIndex", "DesignResult", FormMethod.Get))
 {
     <p>
@@ -39,6 +37,7 @@
             <th>审批状态</th>
             <th>更新人</th>
             <th>制单日期</th>
+            <th>操作</th>
         </tr>
        @foreach (var item in Model)
        {
