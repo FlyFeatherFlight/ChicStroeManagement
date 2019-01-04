@@ -7,20 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_跟进目标数申请表
+namespace ChicStoreManagement.Model
 {
-    public int ID { get; set; }
-    public int 店铺ID { get; set; }
-    public int 员工ID { get; set; }
-    public int 申请跟进数 { get; set; }
-    public Nullable<bool> 审核状态 { get; set; }
-    public string 备注 { get; set; }
-    public Nullable<System.DateTime> 更新日期 { get; set; }
-    public string 更新人 { get; set; }
-
-    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
-    public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_跟进目标数申请表
+    {
+        public int ID { get; set; }
+        public int 店铺ID { get; set; }
+        public int 员工ID { get; set; }
+        public int 申请跟进数 { get; set; }
+        public Nullable<bool> 审核状态 { get; set; }
+        public string 备注 { get; set; }
+        public Nullable<System.DateTime> 更新日期 { get; set; }
+        public string 更新人 { get; set; }
+    
+        public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
+        public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
+    }
 }

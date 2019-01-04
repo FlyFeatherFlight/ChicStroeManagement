@@ -54,12 +54,17 @@
             @if (Model.完成效果图 == true)
             {
                 <table class="table table-hover">
+                    <tr>
+                        <td>路径</td>
+                        <td>操作</td>
+                    </tr>
                     @foreach (var item in Model.完成效果图路径)
                     {
-                        <tr>
-                            <td>路径</td>
-                            <td>@item.ToString()</td>
-                        </tr>
+                    <tr>
+
+                        <td>@item.ToString()</td>
+                        <td>@Html.ActionLink("下载", "DownLoadFile", "DesignFile", new { path = item.ToString(), fileName = Guid.NewGuid().ToString() },new { })</td>
+                    </tr>
                     }
                 </table>
             }

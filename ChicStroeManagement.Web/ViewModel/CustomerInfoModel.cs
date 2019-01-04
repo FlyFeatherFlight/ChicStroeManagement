@@ -49,14 +49,14 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Required]
         public string 年龄段 { get; set; }
 
-        [Display(Name = "客户类型")]
+        [Display(Name = "客户类别")]
         [DataType(DataType.Text)]
         [Required]
         public string 客户类别 { get; set; }
 
         [Display(Name = "客户电话")]
         [DataType(DataType.PhoneNumber)]
-        [Required]
+    
         public string 客户电话 { get; set; }
 
         [Display(Name = "客户类型")]
@@ -166,10 +166,10 @@ namespace ChicStoreManagement.WEB.ViewModel
 
 
        
-        [Display(Name = "预算金额")]
+        [Display(Name = "总预算金额")]
         [DataType(DataType.Text)]
         
-        public Nullable<decimal> 预算金额 { get; set; }
+        public string 预算金额 { get; set; }
 
         [Display(Name = "预计报价折扣")]
         [DataType(DataType.Currency)]
@@ -226,22 +226,16 @@ namespace ChicStoreManagement.WEB.ViewModel
         public string 餐厅预算家具 { get; set; }
         public string 餐厅预算金额 { get; set; }
         public string 餐厅预算备注 { get; set; }
-        public string 主卧预算家具 { get; set; }
-        public string 主卧预算金额 { get; set; }
-        public string 主卧预算备注 { get; set; }
-        public string 次卧预算家具 { get; set; }
-        public string 次卧预算金额 { get; set; }
-        public string 次卧预算备注 { get; set; }
-        public string 婴儿或儿童房预算家具 { get; set; }
-        public string 婴儿或儿童房预算金额 { get; set; }
-        public string 婴儿或儿童房预算备注 { get; set; }
-        public string 书房预算家具 { get; set; }
-        public string 书房预算金额 { get; set; }
-        public string 书房预算备注 { get; set; }
+        public string 卧室预算家具 { get; set; }
+        public string 卧室预算金额 { get; set; }
+        public string 卧室预算备注 { get; set; }
+ 
         public string 其它空间家具 { get; set; }
         public string 其它空间预算 { get; set; }
         public string 其它空间备注 { get; set; }
 
+        public Nullable<bool> 是否关闭 { get; set; }
+        public string 关闭备注 { get; set; }
         public IEnumerable<CustomerExceptedBuyModel> CustomerExceptedBuyModels { set; get; }
         public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
         public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }

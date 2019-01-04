@@ -194,6 +194,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 designResultViewModel.店长 =storeEmployeesBLL.GetModel(p=>p.ID==mid).姓名 ;
                 var emid = designSubmitBLL.GetModel(p => p.id == subid).销售人员;
                 designResultViewModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == emid).姓名;
+
                
             }
             return View(designResultViewModel);
@@ -240,6 +241,8 @@ namespace ChicStoreManagement.WEB.Controllers
             {
                 designResultBLL.Add(model);
                 Session["method"] = "N";
+               var cuid= designSubmitBLL.GetModel(p => p.id == designResultViewModel.设计案提交表ID).接待记录ID;
+                RedirectToAction("CloseCustomer", "Customer", new { id = cuid, str = "完结" ,path= "DesignResultIndex",actionpath= "DesignResultIndex", control="DesignResult" });
             }
             else
             {

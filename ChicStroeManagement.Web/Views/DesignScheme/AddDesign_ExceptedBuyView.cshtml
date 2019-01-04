@@ -32,7 +32,7 @@
             "</td>" +
             "<td><input type='text'id='unit' name='单位' value=''class='form-control' readonly='readonly'style='width:80px'/>" +
             "</td>" +
-            "<td><input type='text' name='数量' value=''class='form-control'/>" +
+            "<td><input type='text' name='数量' value=''class='form-control' style='width:50px'/>" +
             "</td>" +
             "<td><input type='text' name='配置' value=''class='form-control'style='width:100px'/>" +
             "</td>" +
@@ -43,8 +43,8 @@
     //删除当前行
 
     function deletetr(otr) {
-        var td = $(otr);
-        td.parents("tr").remove();
+        var td = $(otr.parentNode);
+        td.remove();
     }
 
     function selectfunc(otr) {
@@ -64,7 +64,7 @@
 
         var se = otr.getElementsByTagName("select");
         var index = se[0].selectedIndex; // 选中索引
-     
+
         if (se[0].length > 0) {
             if (index != null) {
                 var text = se[0].options[index].text; // 选中文本
@@ -87,16 +87,16 @@
                     tr.getElementsByTagName("input")[7].value = "";
                     tr.getElementsByTagName("input")[8].value = "";
                     }
-                       
+
                 else {
                     otr.getElementsByTagName("input")[0].value = value;
                 }
-                   
+
                     return;
                 }
-                
+
             }
-      
+
         else {
             $.ajax({
                 url: '@Url.Action("GetClassfiySelect", "DesignScheme")',
@@ -247,38 +247,8 @@
             alert("请选择组合！");
             return;
         }
-           $.ajax({
-                url: '@Url.Action("GetProductNumber", "DesignScheme")',
-                data: { classfiy:cla, series:ser, brand:bra},
-                cache: false,
-                type: "post",
-                dataType: "json",
-
-                success: function (data) {
-                    if (data=="null") {
-                        alert("该组合无效，请重新输入！");
-                        return;
-                    }
-                    if (se[0].length > 0) {
-                        //for (var i = 0; i < se[0].length; i++) {
-                        se[0].options.length = 0;
-                        //}
-                    }
-                    $.each(data, function (i, item) {
-                       
-                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
-
-                    });
-                    return;
-                },
-                error: function (data) {
-                    alert(JSON.stringify(data));
-                    alert("连接失败，请刷新，或稍后访问，谢谢！");
-                 
-                    window.location.reload();
-                },
-            })
-        if (se[0].length > 0) {
+          
+            if (se[0].length > 0) {
             if (index != null&& index >=0) {
                 var text = se[0].options[index].text; // 选中文本
                 var val = se[0].options[index].value; // 选中值
@@ -313,9 +283,41 @@
             }
 
         }
-       
-         
-       
+           $.ajax({
+                url: '@Url.Action("GetProductNumber", "DesignScheme")',
+                data: { classfiy:cla, series:ser, brand:bra},
+                cache: false,
+                type: "post",
+                dataType: "json",
+
+                success: function (data) {
+                    if (data=="null") {
+                        alert("该组合无效，请重新输入！");
+                        return;
+                    }
+                    if (se[0].length > 0) {
+                        //for (var i = 0; i < se[0].length; i++) {
+                        se[0].options.length = 0;
+                        //}
+                    }
+                    $.each(data, function (i, item) {
+
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                    return;
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+
+                    window.location.reload();
+                },
+            })
+    
+
+
+
 
     }
 
@@ -347,7 +349,7 @@
                         //}
                     }
                     $.each(data, function (i, item) {
-                       
+
                         $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
 
                     });
@@ -356,11 +358,11 @@
                 error: function (data) {
                     alert(JSON.stringify(data));
                     alert("连接失败，请刷新，或稍后访问，谢谢！");
-                 
+
                     window.location.reload();
                 },
         })
-        
+
     }
 
     function subtt() {
@@ -384,7 +386,9 @@
             datat.push(postdata);//添加到数组
 
         }
-       
+        try {
+
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("AddDesign_ExceptedBuy", "DesignScheme")',
@@ -408,11 +412,12 @@
                 }
 
             });
-        } catch (e) {
+        }
+        catch (e) {
             alert(e.name + ": " + e.message);
         }
 
-         }
+    }
 
 </script>
 
@@ -420,7 +425,7 @@
     <hr />
     <h1>添加预购</h1>
     <form method="post">
-        <table  class="table table-hover table-bordered" id="tb">
+        <table class="table table-hover table-bordered" id="tb">
             <thead>
                 <tr>
                     <td style="display:none">提交案ID</td>
@@ -432,7 +437,7 @@
                     <td>产品</td>
                     <td>尺寸</td>
                     <td>单位</td>
-                    <td width="5%">数量</td>
+                    <td width="50px">数量</td>
                     <td width="10%">配置</td>
                     <td>操作</td>
                 </tr>
@@ -441,8 +446,8 @@
         </table>
         <hr />
         <input type="button" onclick="addrow()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px" />
-        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg"  style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px" />
-        
+        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px" />
+
     </form>
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
 

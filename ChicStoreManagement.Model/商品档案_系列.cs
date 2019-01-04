@@ -7,13 +7,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 商品档案_系列
+namespace ChicStoreManagement.Model
 {
-    public int ID { get; set; }
-    public string 系列 { get; set; }
-    public Nullable<int> 制单人 { get; set; }
-    public Nullable<System.DateTime> 制单日期 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 商品档案_系列
+    {
+        public int ID { get; set; }
+        public string 系列 { get; set; }
+        public Nullable<int> 制单人 { get; set; }
+        public Nullable<System.DateTime> 制单日期 { get; set; }
+    }
 }

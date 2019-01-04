@@ -34,22 +34,8 @@ namespace ChicStoreManagement
         //采用分布式的方式记录日志
         private void RecordLog()
        {
-        //    ThreadPool.QueueUserWorkItem((a) =>
-        //    {
-        //        while (true)
-        //        {
-        //            if (SystemIExceptionFilter.client.GetListCount("errorMsg") > 0)
-        //            {
-        //                string ex = SystemIExceptionFilter.client.DequeueItemFromList("errorMsg");
-        //                ILog logger = LogManager.GetLogger("errorMsg");
-        //                logger.Error(ex);
-        //            }
-        //            else
-        //            {
-        //                Thread.Sleep(3000);//如果队列中没有数据，休息避免造成CPU的占用.
-        //            }
-        //        }
-        //    });
+            //读取日志  如果使用log4net,应用程序一开始的时候，都要进行初始化配置  
+            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

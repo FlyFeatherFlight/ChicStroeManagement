@@ -7,14 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-public partial class 销售_接待记录_意向明细
+namespace ChicStoreManagement.Model
 {
-    public int ID { get; set; }
-    public int 接待ID { get; set; }
-    public string 备注 { get; set; }
-    public int 商品型号ID { get; set; }
-    public string 空间 { get; set; }
+    using System;
+    using System.Collections.Generic;
+    
+    public partial class 销售_接待记录_意向明细
+    {
+        public int ID { get; set; }
+        public int 接待ID { get; set; }
+        public string 备注 { get; set; }
+        public int 商品型号ID { get; set; }
+        public string 空间 { get; set; }
+    }
 }

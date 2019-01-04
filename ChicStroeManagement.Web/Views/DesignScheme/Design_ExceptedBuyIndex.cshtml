@@ -400,7 +400,7 @@
 <h2>客户意向产品明细</h2>
 
 <div class="table-responsive container">
-    @if (!@ViewBag.CheckState)
+    @if (@ViewBag.CheckState==true)
     {<p style="color:red">该订单已审核完毕.</p>}
     else
     {
@@ -438,7 +438,7 @@
                         <td>@item.单位</td>
                         <td>@item.尺寸</td>
                         <td>@item.数量</td>
-                        @if (!@ViewBag.CheckState)
+                        @if (@ViewBag.CheckState!=true)
                         {
                             <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
                         }

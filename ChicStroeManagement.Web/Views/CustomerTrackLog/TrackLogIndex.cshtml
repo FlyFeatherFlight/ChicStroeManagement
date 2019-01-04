@@ -71,10 +71,8 @@
                         {
 
                             <td>是</td>
-                            
-                            <td>
-                                @Html.ActionLink("编辑", "EditTrackLog", new { id = item.Id })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })
-                            </td>
+
+
                         }
                         else if (item.是否申请设计师 == false)
                         {
@@ -85,9 +83,11 @@
                         {
                             <td>待定</td>
                         }
-
+                        
                     }
-                    <td>不可操作</td>
+                            <td>
+                                @Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })
+                            </td>
                 </tr>
                        
                     }

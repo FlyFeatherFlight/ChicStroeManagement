@@ -43,25 +43,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     @*<link href="css/custom.css" rel="stylesheet">
         <script src="js/custom.js"></script>
         <script src="js/screenfull.js"></script>*@
-    <script src="~/Scripts/screenfull.js"></script>
-    <script>
-        $(function () {
-            $('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
-
-            if (!screenfull.enabled) {
-                return false;
-            }
-
-
-
-            $('#toggle').click(function () {
-                screenfull.toggle($('#container')[0]);
-            });
-
-
-
-        });
-    </script>
+  
 
     <!----->
     <!--pie-chart--->
@@ -200,7 +182,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <li>
                                     <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-list nav_icon"></i> <span class="nav-label">店长管理</span><span class="fa arrow"></span></a>
                                     <ul class="nav nav-second-level">
-                                        <li><a href="@Url.Action("Index","Manager")" class=" hvr-bounce-to-right"><i class="fa fa-align-left nav_icon"></i>店长审查</a></li>
+                                        @*<li><a href="@Url.Action("Index","Manager")" class=" hvr-bounce-to-right"><i class="fa fa-align-left nav_icon"></i>店长审查</a></li>*@
                                         @*<li><a href="#" class=" hvr-bounce-to-right"><i class="fa fa-check-square-o nav_icon"></i>Validation</a></li>*@
                                         <li><a href="@Url.Action("CustomerExamineView","ManagerExamine",new { })" class=" hvr-bounce-to-right"><i class="fa fa-codepen nav_icon"></i>客户审查</a></li>
                                         <li><a href="@Url.Action("DesignApplyExamineView","ManagerExamine",new { })" class=" hvr-bounce-to-right"><i class="fa fa-dribbble nav_icon"></i>设计案审查</a></li>

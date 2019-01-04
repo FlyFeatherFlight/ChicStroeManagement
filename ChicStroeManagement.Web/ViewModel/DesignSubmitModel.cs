@@ -52,7 +52,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name = "预算")]
         [DataType(DataType.Currency)]
         
-        public Nullable<decimal> 预算 { get; set; }
+        public string 预算 { get; set; }
         [Display(Name = "客户喜好或忌讳")]
         [DataType(DataType.Text)]
     

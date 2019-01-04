@@ -27,7 +27,8 @@
          进店时间：@Html.DisplayFor(m => Model.进店时间)
          离店时间： @Html.DisplayFor(m => Model.出店时间)
          时长：@Html.DisplayFor(m => Model.进店时长)分钟
-         客户类别：@Html.DisplayFor(m => Model.客户类别)</pre>
+         客户类别：@Html.DisplayFor(m => Model.客户类别)
+         当前接待单号状态:@Model.关闭备注</pre>
     </div>
     <table class="table table-bordered table-striped ">
 
@@ -42,14 +43,6 @@
                 |  @Html.DisplayFor(m => Model.性别)
 
             </td>
-
-        </tr>
-        <tr>
-            <td>
-                来店次数：
-            </td>
-            <td> @Html.DisplayFor(m => Model.来店次数)</td>
-
 
         </tr>
         <tr>
@@ -76,6 +69,21 @@
                 @Html.DisplayFor(m => Model.客户电话)
             </td>
         </tr>
+        <tr>
+            <td>
+                来店次数：
+            </td>
+            <td> @Html.DisplayFor(m => Model.来店次数)</td>
+        </tr>
+        <tr>
+            <td>
+                客户来源：
+            </td>
+            <td>
+                @Html.DisplayFor(m => Model.客户来源)
+            </td>
+        </tr>
+
 
         <tr>
             <td> 社交软件：</td>
@@ -91,14 +99,7 @@
             </td>
         </tr>
 
-        <tr>
-            <td>
-                客户来源：
-            </td>
-            <td>
-                @Html.DisplayFor(m => Model.客户来源)
-            </td>
-        </tr>
+
         <tr>
             <td>客户的目的：</td>
             <td>@Model.目的</td>
@@ -229,55 +230,16 @@
             <td>@Model.餐厅预算备注</td>
         </tr>
         <tr>
-            <td>主卧预算家具类型</td>
-            <td>@Model.主卧预算家具</td>
+            <td>卧室预算家具类型</td>
+            <td>@Model.卧室预算家具</td>
         </tr>
         <tr>
-            <td>主卧预算金额</td>
-            <td>@Model.主卧预算金额</td>
+            <td>卧室预算金额</td>
+            <td>@Model.卧室预算金额</td>
         </tr>
         <tr>
-            <td>主卧预算备注</td>
-            <td>@Model.主卧预算备注</td>
-        </tr>
-        <tr>
-            <td>次卧预算家具类型</td>
-            <td>@Model.次卧预算家具</td>
-        </tr>
-        <tr>
-            <td>
-                次卧预算金额
-            </td>
-            <td>@Model.次卧预算金额</td>
-        </tr>
-        <tr>
-            <td>次卧预算备注：</td>
-            <td>@Model.次卧预算备注</td>
-        </tr>
-        <tr>
-            <td>婴儿或儿童房预算家具类型</td>
-            <td>@Model.婴儿或儿童房预算家具</td>
-        </tr>
-
-        <tr>
-            <td>婴儿或儿童房预算金额</td>
-            <td>@Model.婴儿或儿童房预算金额</td>
-        </tr>
-        <tr>
-            <td>婴儿或儿童房预算备注</td>
-            <td>@Model.婴儿或儿童房预算备注</td>
-        </tr>
-        <tr>
-            <td>书房预算家具类型</td>
-            <td>@Model.书房预算家具</td>
-        </tr>
-        <tr>
-            <td>书房预算金额</td>
-            <td>@Model.书房预算金额</td>
-        </tr>
-        <tr>
-            <td>书房预算备注</td>
-            <td>@Model.书房预算备注</td>
+            <td>卧室预算备注</td>
+            <td>@Model.卧室预算备注</td>
         </tr>
         <tr>
             <td>其它空间预算家具类型：</td>
@@ -353,7 +315,7 @@
             </td>
         </tr>
         <tr>
-            <td>销售讲解：</td>
+            <td>销售常规讲解：</td>
             <td>@Model.销售讲解</td>
         </tr>
         <tr>
@@ -386,9 +348,13 @@
             <td>更新时间</td>
             <td>@Html.DisplayFor(m => Model.更新日期)</td>
         </tr>
-        <tr>
-            <td colspan="2" align="center">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
-        </tr>
+        @if (Model.是否关闭 != true && ViewBag.IsManager != true)
+        {
+            <tr>
+                <td colspan="2" align="center">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", new { id = Model.ID })</td>
+            </tr>
+        }
+
     </table>
 
     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>

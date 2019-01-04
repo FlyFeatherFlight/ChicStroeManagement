@@ -266,6 +266,10 @@ namespace ChicStoreManagement.Controllers
                 {
                     customerTrackingBLL.Add(trackLog);
                     Session["method"] = "Y";
+                    if (customerTrackingModel.跟进结果==CustomerTrackResult.成交|| customerTrackingModel.跟进结果==CustomerTrackResult.放弃)
+                    {
+                       return  RedirectToAction("CloseCustomer", "Customer",new {id=trackLog.接待记录ID, str = trackLog.跟进结果,actionpath= "TrackLogIndex" ,control="CustomerTrackLog"});
+                    }
                 }
 
                 else
@@ -503,7 +507,7 @@ namespace ChicStoreManagement.Controllers
 
             else
             {
-                mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).ToList();//店员查看(只有自己跟进的)
+                mt = customerTrackingBLL.GetModels(p => p.跟进人 == employeeID).GroupBy(p => p.接待记录ID).Select(p => p.FirstOrDefault()).ToList(); //店员查看(只有自己跟进的)
             }
 
 
