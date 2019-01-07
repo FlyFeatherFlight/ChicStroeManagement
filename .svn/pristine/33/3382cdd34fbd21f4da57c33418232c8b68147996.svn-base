@@ -1,0 +1,105 @@
+﻿@using ChicStoreManagement.WEB.ViewModel
+@model  ChicStoreManagement.WEB.ViewModel.FileViewModel
+
+@{
+    ViewBag.Title = "上传文件";
+}
+<script>
+
+    $(function () {
+        var control = $("#cad_file");
+        var uploadrul = "/DesignFile/UploadFile";
+        control.fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: uploadrul, //上传的地址
+            allowedFileExtensions: ['png', 'jpg', 'jpeg', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'ppt', 'pps', 'xml', 'zip', 'rar', '7z'],//接收的文件后缀
+            showUpload: true, //显示批量上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            dropZoneEnabled: true,//是否显示拖拽区域
+            maxFileCount: 100,
+            enctype: 'multipart/form-data',
+            validateInitialCount: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            uploadAsync: true,
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            uploadExtraData: function (previewId, index) {
+                //添加额外参数
+                var data = {
+                    FileType: findType(),
+                    DesignId: @Model.DesignId,
+                };
+                return data;
+            }
+        });
+        //导入文件上传完成之后的事件
+        $("#cad_file").on("fileuploaded", function (event, data, previewId, index) {
+            alert(JSON.stringify(data.response));
+            if (data.response == "上传成功！") {
+                window.location.href=' @Url.Action("Index","DesignFile",new {id= @Model.DesignId }) ';
+                return;
+            }
+            if (data.response == "false") {
+                alert("文件不正确，上传失败！");
+                 window.location.href=' @Url.Action("Index", "DesignFile", new { id = @Model.DesignId }) ' ;
+            }
+            else { window.location.reload(); }
+        });
+
+        //获得文件类型
+        findType = function () {
+            if ("@ViewBag.content" == "Result") {
+                return "完成效果文件";
+            }
+            else {
+                var se = document.getElementById("Filetype");
+                var index = se.selectedIndex; // 选中索引
+                if (se.length > 0) {
+                    if (index != null) {
+                        var text = se.options[index].text; // 选中文本
+                        var value = se.options[index].value; // 选中值
+                        return value;
+                    }
+                    else {
+                        return se.options[0].value;
+                    }
+                }
+            }
+           
+        }
+
+
+    });
+</script>
+<h2>文件上传</h2>
+<div>
+    <form id="addform" name="addform" action="~/DesignFile/UploadFile" method="post">
+        <div>
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">请选择文件</h4>
+            </div>
+            <div class="modal-body">
+                @if (ViewBag.content == "Result")
+                {
+                    <input type="text" name="FileType" value="@FileType.完成效果文件" readonly="readonly" />
+                }
+                else
+                {
+                    try
+                    {
+                        @Html.EnumDropDownListFor(Model => Model.Filetype, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    catch (Exception e)
+                    {
+
+                        throw e;
+                    }
+
+                }
+                <input type="file" name="UploadStream" id="cad_file" multiple class="file-loading" />
+            </div>
+        </div>
+        <input type="button" onclick="javascript:window.history.back(-1);" value="返回上一页" class="btn">
+    </form>
+</div>
+

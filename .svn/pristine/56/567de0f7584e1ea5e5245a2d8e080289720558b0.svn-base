@@ -1,0 +1,154 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "客户审查";
+   
+}
+
+
+    <h2>客户审查</h2>
+    <hr />
+    @Html.ActionLink("跟进日志", "CustomerTrackLogExamineView", new { })
+    @using (Html.BeginForm("CustomerExamineView", "ManagerExamine", FormMethod.Get))
+    {
+        <p>
+            通过客户电话查找: @Html.TextBox("SearchString", ViewBag.CustomerExamineCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+            <input id="Submit1" type="submit" value="查询" class="btn" />
+        </p>
+    }
+<pre style="color:red"> 如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</pre>
+    <hr />
+    @{
+        if (Model == null)
+        {
+            <div class="table-responsive">
+                暂无当前店铺接待或跟进的相关数据！
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th style="display:none">
+                            ID
+                        </th>
+                   
+                        
+                        <th>@Html.ActionLink("接待日期", "CustomerExamineView", new { sortOrder = ViewBag.CustomerExamineID })</th>
+                        <th>客户姓名</th>
+                        <th>性别</th>
+                        <th>客户电话</th>
+                        <th>社交软件</th>
+                        <th>来店次数</th>
+                        <th>接待人</th>
+                        <th>@Html.ActionLink("跟进人", "CustomerExamineView", new { sortOrder = ViewBag.CustomerExamineTrackingResult })</th>
+                        <th>是否有意向</th>
+                        <th width="10%">操作</th>
+
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+
+
+                        string fontColor = "";
+
+                        if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExamineManager == true)
+                        {
+                            fontColor = "color:black";
+                        }
+                        else
+                        {
+                            fontColor = "color:gray";
+                        }
+                        if (item.跟进人 == null)
+                        {
+                            fontColor = "color:red";
+                        }
+
+
+
+                        <tr style="@fontColor">
+                            <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
+                     
+                            <td> @Html.DisplayFor(modelItem => item.接待日期)</td>
+
+                            <td>
+                              
+                                @Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.ID }, new { @Style = "font-size:12px" })
+                            </td>
+                            <td> @Html.DisplayFor(modelItem => item.性别)</td>
+
+                            <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
+                            <td> @Html.DisplayFor(modelItem => item.社交软件)</td>
+                            <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
+                            <td> @Html.DisplayFor(modelItem => item.接待人)</td>
+                            <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+                            @{
+                                if (item.是否有意向 == true)
+                                {
+
+                                    <td>是</td>
+
+                                    if (item.接待人 == ViewBag.CustomerExaminePeopleName || item.跟进人 == ViewBag.CustomerExaminePeopleName || ViewBag.CustomerExamineManager == true)
+                                    {
+
+                                    <td>
+                                       
+                                        @if (item.跟进人 != null)
+                                        {
+                                            @Html.ActionLink("修改跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px", @class = "btn btn-link" })
+                                        }
+                                        else
+                                        { @Html.ActionLink("指定跟进人", "CustomerTrackCustomerEditView", "ManagerExamine", new { id = item.ID }, new { @Style = "font-size:12px", @class = "btn btn-link" })
+                                                            }
+                                                        </td>
+                                    }
+
+                                    else
+                                    {
+                                        <td>
+                                            无权限!
+                                        </td>
+                                    }
+
+                                }
+                                else if (item.是否有意向 == false)
+                                {
+
+                                    <td>否</td>
+
+                                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.CustomerExamineManager == true)
+                                    {                      
+                                    }
+
+                                    else
+                                    {
+                                        <td>
+                                            无权限!
+                                        </td>
+                                    }
+
+                                }
+                                else
+                                {
+                                    <td>待定</td>
+                                }
+
+                            }
+
+
+                        </tr>
+
+
+
+                    }
+                </table>
+            </div>
+
+        }
+    } Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("CustomerExamineView", new { page, sortOrder = ViewBag.CustomerExamineCurrentSort, currentFilter = ViewBag.CustomerExamineCurrentFilter }))
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+

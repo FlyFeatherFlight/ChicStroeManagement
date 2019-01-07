@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73609868-20E3-4042-B1E2-0A77CB59B01A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ChicStoreManagement.Model</RootNamespace>
+    <AssemblyName>ChicStoreManagement.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Entity.Design" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccountEntity.cs" />
+    <Compile Include="ChicEntity.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChicEntity.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChicEntity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ChicEntity.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ChicEntity.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="商品档案_SKU.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_SPU.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_分类.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_品牌.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_商品.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_型号.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="商品档案_系列.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="系统用户.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="设计_文件类型.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="设计_设计案完结单.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="设计_设计案完结单_家具成交单.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_店铺员工档案.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_店铺档案.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_意向追踪日志.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_接待记录.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_接待记录_意向明细.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_经销商档案.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_职务.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_订单.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_订单明细.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_设计案提交表.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_设计案提交表_客户意向产品明细.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_设计案提交表_项目相关图纸.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_设计案跟进日志.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="销售_跟进目标数申请表.cs">
+      <DependentUpon>ChicEntity.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="ChicEntity.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ChicEntity.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ChicEntity.edmx.diagram">
+      <DependentUpon>ChicEntity.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ChicEntity.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChicEntity.edmx</DependentUpon>
+      <LastGenOutput>ChicEntity.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ChicEntity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ChicEntity.edmx</DependentUpon>
+      <LastGenOutput>ChicEntity.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

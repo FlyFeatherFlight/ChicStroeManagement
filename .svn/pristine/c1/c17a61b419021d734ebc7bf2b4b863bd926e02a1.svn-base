@@ -1,0 +1,58 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList <ChicStoreManagement.WEB.ViewModel.DesignTackLogViewModel>
+
+    @{
+        ViewBag.Title = "添加设计案跟进信息";
+    }
+
+    <h2>设计案跟进日志</h2>
+
+    <div>
+        <p>
+            @Html.ActionLink("添加跟进信息", "AddDesignTrackView", new { id = @ViewBag.DesignTrackSubmitID, @class = "form-control", @Style = "font-size:12px" })
+        </p>
+        @if (Model.Count != 0)
+        {
+
+            <hr />
+
+            <div>
+                <pre style="text-align:left;font-size:12px">客户名称:@Model.FirstOrDefault().客户姓名  联系方式:@Model.FirstOrDefault().联系方式 销售人员:@Model.FirstOrDefault().销售人员 设计师:@Model.FirstOrDefault().设计师 设计案需求提交时间:@Model.FirstOrDefault().设计案需求提交时间 楼盘具体位置:@Model.FirstOrDefault().楼盘具体位置.ToString().Replace(" ","")</pre>
+            </div>
+        }
+     
+        <div class="table table-responsive">
+            <table  class="table table-hover table-bordered">
+                <tr>
+
+                    <th>@Html.ActionLink("日期", "DesignTrackLogIndex", new { sortOrder = ViewBag.DesignTrackLogDate })</th>
+                    <th>进度描述</th>
+                    <th>参与人员</th>
+                    <th>需要的支持</th>
+                    <th>预计签约时间</th>
+                    @*<th>@Html.ActionLink("提交时间", "DesignTrackLogIndex", new { sortOrder = ViewBag.DesignSubmitDate })</th>*@
+                    <th>店长审查</th>
+                    <th>备注</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>@item.跟进日期</td>
+                        <td>@item.进度描述</td>
+                        <td>@item.参与人员</td>
+                        <td>@item.需要的支持</td>
+                        <td>@item.预计签约时间</td>
+                        @*<td>@item.设计案需求提交时间</td>*@
+                        <td>@item.店长审查</td>
+                        <td>@item.备注</td>
+                        @*<td>@Url.Action("修改",new { id=item.Id})</td>*@
+                    </tr>
+                }
+            </table>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignTrackLogCurrentSort, currentFilter = ViewBag.DesignTrackLogCurrentFilter }))
+
+        </div>
+        <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+    </div>

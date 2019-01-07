@@ -1,0 +1,78 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignResultViewModel>
+@{
+    ViewBag.Title = "设计案完结单首页";
+}
+
+<h2>设计案完结清单</h2>
+
+@using (Html.BeginForm("DesignResultIndex", "DesignResult", FormMethod.Get))
+{
+    <p>
+        通过客户电话查找: @Html.TextBox("SearchString", ViewBag.DesignResultCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" class="btn" />
+    </p>
+
+}
+<hr />
+<label>当前店铺:</label>
+<div class="table-responsive">
+    <table  class="table table-hover table-bordered">
+        <tr>
+            <th>Id</th>
+            <th>设计案提交表ID</th>
+            <th>客户编号</th>
+            <th>销售单号</th>
+            <th>单据编号</th>
+            <th>实际完成时间</th>
+            <th>实际完成空间</th>
+            <th>合计成交金额</th>
+            <th>销售人员</th>
+            <th>设计师</th>
+            <th>店长</th>
+            <th>销售人员确认日期</th>
+            <th>设计师确认日期</th>
+            <th>店长审核日期</th>
+            <th>完成效果图</th>
+            <th>审批状态</th>
+            <th>更新人</th>
+            <th>制单日期</th>
+            <th>操作</th>
+        </tr>
+       @foreach (var item in Model)
+       {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.设计案提交表ID</td>
+            <td>@item.客户编号</td>
+            <td>@item.销售单号</td>
+            <td>@item.单据编号</td>
+            <td>@item.实际完成时间</td>
+            <td>@item.实际完成空间</td>
+            <td>@item.合计成交金额</td>
+            <td>@item.销售人员</td>
+            <td>@item.设计师</td>
+            <td>@item.店长</td>
+            <td>@item.销售人员确认日期</td>
+            <td>@item.设计师确认日期</td>
+            <td>@item.店长审核日期</td>
+            @if (@item.完成效果图 == null || @item.完成效果图 == false)
+            {
+                <td>无</td>
+            }
+              else{
+                @Html.ActionLink("下载","","",new { },new { }) 
+            }
+            
+            <td>@item.审批状态</td>
+            <td>@item.更新人</td>
+            <td>@item.制单日期</td>
+            <td>@Html.ActionLink("查看","DesignResultInfoView",new { id=item.Id})</td>
+        </tr>
+       }
+
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignResultCurrentSort, currentFilter = ViewBag.DesignResultCurrentFilter }))
+</div>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

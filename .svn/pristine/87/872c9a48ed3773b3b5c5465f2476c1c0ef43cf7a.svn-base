@@ -1,0 +1,8 @@
+﻿
+@{
+    ViewBag.Title = "AddDesignTrackLogView";
+}
+
+<h2>AddDesignTrackLogView</h2>
+
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

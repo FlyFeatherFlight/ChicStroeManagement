@@ -1,0 +1,214 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerTrackingModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "意向跟进日志审查";
+}
+<script>
+    // 等待所有加载
+    $(window).on("load", function () {
+        startLoading();
+        $("#loadingDiv").remove();
+    });
+    function sub(otr) {
+        var obj = otr.parentNode;
+        var se = obj.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        var rows = otr.parentNode.parentNode.rowIndex;
+        var trackid = $("#tb tr:eq(" + rows + ") td:eq(0)").html();
+        if (index != null) {
+            var text = se[0].options[index].text; // 选中文本
+            var value = se[0].options[index].value; // 选中值
+           
+           $.ajax({
+                type: "POST",
+                url: '@Url.Action("CustomerTrackLogExamine", "ManagerExamine")',
+               data: { id: trackid,examineType: JSON.stringify(value) },//将对象转化JSON字符串格式并传出 
+                dataType: "json",
+               async:true,
+               beforeSend: function () {
+                   startLoading();
+               },
+               success: function (data) {
+                   alert("操作成功!");
+                   window.location.reload();
+                },
+               error: function (XMLHttpRequest, textStatus, errorThrown) {
+                   alert("操作超时");
+                   window.location.reload();
+             
+                }
+
+            });
+           
+        }
+    }
+    function startLoading() {
+        //获取浏览器页面可见高度和宽度
+        var _PageHeight = document.documentElement.clientHeight,
+            _PageWidth = document.documentElement.clientWidth;
+        //计算loading框距离顶部和左部的距离（loading框的宽度为215px，高度为61px）
+        var _LoadingTop = _PageHeight > 61 ? (_PageHeight - 61) / 2 : 0,
+            _LoadingLeft = _PageWidth > 215 ? (_PageWidth - 215) / 2 : 0;
+        $("body").append('<div id="loadingDiv" style="position:absolute;left:0;width:100%;height:' + _PageHeight + 'px;top:0;background:#f3f8ff;opacity:1;filter:alpha(opacity=80);z-index:10000;"><div style="position: absolute; cursor1: wait; left: ' + _LoadingLeft + 'px; top:' + _LoadingTop + 'px; width: auto; height: 57px; line-height: 57px; padding-left: 50px; padding-right: 5px; background-image:  url("../../images/uploading.gif")  no-repeat scroll 5px 10px; border: 2px solid #95B8E7; color: #696969; font-family:\'Microsoft YaHei\';">正在处理...稍后...</div></div>');
+    }
+   
+    //加载状态为complete时移除loading效果
+    function completeLoading() {
+        if (document.readyState == "complete") {
+            var loadingMask = document.getElementById('loadingDiv');
+            loadingMask.parentNode.removeChild(loadingMask);
+        }
+    }
+</script>
+
+<h2>客户跟进日志审查</h2>
+<hr />
+
+@using (Html.BeginForm("CustomerTrackLogExamineView", "ManagerExamine", FormMethod.Get))
+{
+    <p>
+        通过客户电话查找: @Html.TextBox("PhoneSearchString", ViewBag.TrackingCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" class="btn" />
+    </p>
+}
+
+@using (Html.BeginForm("CustomerTrackLogExamineView", "ManagerExamine", FormMethod.Get))
+{
+    <p>
+        通过跟进人查找: @Html.TextBox("NameSearchString", ViewBag.TrackingCurrentFilter as string, new { @class = "form-control", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" class="btn" />
+    </p>
+}
+<hr />
+<label style="font-size:smaller">当前店铺：@ViewBag.storeName</label>
+@{ if (Model != null)
+    {
+        <div class="table-responsive">
+            <table  class="table table-hover table-bordered" id="tb" >
+                <tr>
+                    <th>客户姓名</th>
+                    <th>客户电话</th>
+                    <th>@Html.ActionLink("跟进时间", "CustomerTrackLogExamineView", new { sortOrder = ViewBag.TrackingDate })</th>
+                    <th>跟进方式</th>
+                    <th>跟进内容</th>
+                    <th>跟进结果</th>
+                    <th>@Html.ActionLink("店长审核", "CustomerTrackLogExamineView", new { sortOrder = ViewBag.TrackingResult })</th>
+                    <th>备注</th>
+                    <th>是否申请设计师</th>
+                    <th>跟进人</th>
+                    <th>审批操作</th>
+
+                </tr>
+                @foreach (var item in Model)
+                {
+                    //已成交或放弃
+                    if (item.跟进结果.ToString() == "放弃" || item.跟进结果.ToString() == "成交")
+                    {
+
+                <tr style="color:darkgrey ">
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.Id)</td>
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.店铺)</td>
+                    <td>@Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })</td>
+                    <td>@Html.DisplayFor(Model => item.客户电话)</td>
+                    <td>@item.跟进时间.ToShortDateString().ToString()</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进方式)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进内容)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进结果)</td>
+                    <td> @Html.DisplayFor(modelItem => item.店长审核)</td>
+                    <td> @Html.DisplayFor(modelItem => item.备注)</td>
+
+
+                    @{
+
+                        if (item.是否申请设计师 == true)
+                        {
+
+                            <td>是</td>
+
+
+                        }
+                        else if (item.是否申请设计师 == false)
+                        {
+
+                            <td>否</td>
+                        }
+                        else
+                        {
+                            <td>待定</td>
+                        }
+
+                    }
+                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+                    <td>
+                        <select class="form-control" id="trackselect" style="width:100px">
+                            <option value="已审阅">已审阅</option>
+                            <option value="无效跟进">无效跟进</option>
+                        </select><a onclick="sub(this)" class="btn btn-link" >确定</a>
+                    </td>
+
+                </tr>
+
+                    }
+                    //未成交
+                    else
+                    {
+
+                        <tr style="background-color:whitesmoke">
+                            <td style="display:none"> @Html.DisplayFor(modelItem => item.Id)</td>
+                            <td style="display:none"> @Html.DisplayFor(modelItem => item.店铺)</td>
+                            <td> @Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })</td>
+                            <td>@Html.DisplayFor(Model => item.客户电话)</td>
+                            <td> @item.跟进时间.ToShortDateString().ToString()</td>
+                            <td> @Html.DisplayFor(modelItem => item.跟进方式)</td>
+                            <td> @Html.DisplayFor(modelItem => item.跟进内容)</td>
+                            <td> @item.跟进结果</td>
+                            <td> @item.店长审核</td>
+                            <td> @Html.DisplayFor(modelItem => item.备注)</td>
+
+
+                            @{
+                                if (item.是否申请设计师 == true)
+                                {
+
+                                    <td>是</td>
+                                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                                }
+                                else if (item.是否申请设计师 == false)
+                                {
+
+                                    <td>否</td>
+                                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                                }
+                                else
+                                {
+                                    <td>待定</td>
+                                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                                }
+
+                            }
+                            <td>
+                                <select class="form-control" id="trackselect" style="width:100px">
+                                    <option value="已审阅">已审阅</option>
+                                    <option value="无效跟进">无效跟进</option>
+                                </select><a onclick="sub(this)" class="btn btn-link">确定</a>
+                            </td>
+                        </tr>
+
+                    }
+
+                }
+            </table>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("CustomerTrackLogExamineView", new { page, sortOrder = ViewBag.TrackingCurrentSort, currentFilter = ViewBag.TrackingCurrentFilter }))
+
+        </div>
+    }
+}
+
+
+
+
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

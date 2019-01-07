@@ -1,0 +1,106 @@
+﻿
+@model ChicStoreManagement.WEB.ViewModel.Employees
+@{
+    ViewBag.Title = "修改员工信息";
+}
+
+@using (Html.BeginForm("EmployeeEdit", "Manager", FormMethod.Post) )
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.姓名, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.姓名)
+            @Html.ValidationMessageFor(model => model.姓名)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.性别, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+
+            @{
+
+                List<SelectListItem> list = new List<SelectListItem>();
+
+                SelectListItem item1 = new SelectListItem();
+                item1.Text = "男";
+                item1.Value = "男";
+                SelectListItem item2 = new SelectListItem();
+                item2.Text = "女";
+                item2.Value = "女";
+                list.Add(item2);
+
+            }
+            @Html.DropDownList("性别", list,Model.性别);
+            @Html.ValidationMessageFor(model => model.性别)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.编号, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.编号)
+            @Html.ValidationMessageFor(model => model.编号)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.职务, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("职务",ViewBag.PositionList as IEnumerable<SelectListItem>,Model.职务);
+            @Html.ValidationMessageFor(model => model.职务)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.店铺, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("店铺", ViewBag.StoreList as IEnumerable<SelectListItem>);
+            @Html.ValidationMessageFor(model => model.店铺)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.联系方式, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.联系方式)
+            @Html.ValidationMessageFor(model => model.联系方式)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.停用标志, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.停用标志)
+            @Html.ValidationMessageFor(model => model.停用标志)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.制单人, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.制单人)
+            @Html.ValidationMessageFor(model => model.制单人)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.制单日期, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.制单日期)
+            @Html.ValidationMessageFor(model => model.制单日期)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.密码, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.密码)
+            @Html.ValidationMessageFor(model => model.密码)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input id="Submit1" type="submit" value="确认提交" />
+        </div>
+    </div>
+</div>
+}
+
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

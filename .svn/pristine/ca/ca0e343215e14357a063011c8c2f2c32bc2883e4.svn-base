@@ -1,0 +1,9 @@
+﻿@model PagedList.IPagedList <ChicStoreManagement.WEB.ViewModel.BaseCustomerInfo>
+@using PagedList.Mvc;
+@{         /**/
+ ViewBag.Title = "当前员工跟进的名录";
+}
+
+<h2>意向申请设计的名录</h2>
+
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

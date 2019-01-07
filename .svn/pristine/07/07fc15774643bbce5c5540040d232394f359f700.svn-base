@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "添加客户预购信息";
+}
+
+<script>
+    //添加行
+    function addrow() {
+        var table = $("#tb");
+      @*var sd = JSON.parse(@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>));*@
+        var tr = $("<tr>" +
+            "<td><input type='text' name='接待' value='@ViewBag.AddReceptionid' class='form-control'readonly='readonly' />" +
+            "</td>" + "<td onclick='Setselect(this)'>" +
+            "<select class='form-control'></selcet><input type='text' name='型号' value=''style='display: none'/>" + "</td>" +
+            "<td><select name='空间'><option value='客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select></td>"+
+            "<td><input type='text' name='备注' value=''class='form-control'/>" +
+            "</td>" +
+            "<td  align='center' onclick='deletetr(this)'><button type='button'  class='btn btn-xs btn-link' >" +
+            "删除" + "</button></td></tr>");
+        table.append(tr);
+    }
+    //删除当前行
+   
+    function deletetr(otr) {
+        var td = $(otr);
+        td.parents("tr").remove();
+    }
+
+    function Setselect(otr) {
+        
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        if (se[0].length>0) {
+            if (index != null) {
+                var text = se[0].options[index].text; // 选中文本
+                var value = se[0].options[index].value; // 选中值
+                otr.getElementsByTagName("input")[0].value = value;
+                return;
+            }
+        }
+        else {
+            $.ajax({
+                url: 'GetSelect',
+                data: {},
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                },
+                error: function (err) {
+                    alert("网络连接失败，请检查网络状态，或稍后访问，谢谢！");
+                },
+            })
+        }
+    
+    }
+   
+    function subtt() {
+        var mytable = document.getElementById("tb");
+        var datat = [];
+        for (var i = 1, rows = mytable.rows.length; i < rows; i++)  {
+            //类似存储一个对象,包括了与student对相应的属性
+            var index=mytable.rows[i].cells[2].getElementsByTagName("select")[0].selectedIndex;
+            let postdata = {
+                "接待": mytable.rows[i].cells[0].getElementsByTagName("input")[0].value,
+                "型号": mytable.rows[i].cells[1].getElementsByTagName("input")[0].value,
+                "备注": mytable.rows[i].cells[3].getElementsByTagName("input")[0].value,
+                "空间": mytable.rows[i].cells[2].getElementsByTagName("select")[0].options[index].value,
+            };
+            datat.push(postdata);//添加到数组
+
+        }
+        try {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ExceptedBuyAdd", "Customer")',
+                data: { exceptModel: JSON.stringify(datat) },//将对象转化JSON字符串格式并传出 
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                alert("添加成功");
+                    window.location.href = '@Url.Action("ExceptedBuyIndex",new { id=ViewBag.AddReceptionid })';
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    window.location.reload();
+                //window.history.go(-1);
+                }
+
+            });
+        } catch (e) {
+            alert(e.name + ": " + e.message);
+        }
+     
+         }
+
+</script>
+
+<div id="add" class="table-responsive">
+    <hr />
+    <h1>添加预购</h1>
+    <form method="post">
+        <table  class="table table-hover table-bordered" id="tb">
+            <thead>
+                <tr>
+                    <th>接待ID</th>
+                    <th>商品型号</th>
+                    <th>空间</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <hr />
+        <input type="button" onclick="addrow()" class="btn btn-primary btn-lg border-bottom" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px;border:none" />
+        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px;border:none"/>
+    </form>
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+   
+</div>

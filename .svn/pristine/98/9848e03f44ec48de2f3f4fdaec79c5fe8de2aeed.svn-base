@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "设计按跟进日志增加";
+}
+<script>
+    $(document).ready(function () {
+
+
+        $(function () {
+
+            $("#trackDate").datetimepicker({
+
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                showClose: true
+
+            });
+            $("#preDate").datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                showClose: true
+            });
+           
+        });
+    });
+</script>
+
+   
+<h2>添加跟进日志</h2>
+
+<div>
+    <form action="~/DesignTrackLog/AddDesignTrackAction" method="post">
+        <div>
+           <input type="text" name="设计案提交表id" value="@ViewBag.DesignSubmitID" class="form-control" style="display:none"/>
+        </div>
+        <table  class="table table-hover table-bordered">
+            <tr>
+                <td>日期</td>
+                <td>
+                    <div class="input-group date" id="trackDate">
+                        <input type="text" name="跟进日期" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>进度描述</td>
+                <td>
+                    <input type="text" name="进度描述" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>参与人员</td>
+                <td><input type="text" name="参与人员" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>需要的支持</td>
+                <td><input type="text" name="需要的支持" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>预计签约时间</td>
+                <td>
+                    <div class="input-group date" id="preDate">
+                        <input type="text" name="预计签约时间" class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="提交" />
+    </form>
+    <input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+</div>

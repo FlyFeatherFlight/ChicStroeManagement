@@ -1,0 +1,365 @@
+﻿@{ 
+    Layout = "";
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - CHIC CASA</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <style type="text/css">
+        body {
+
+            background-image: url('../../images/DSC07649.jpg');
+           background-repeat:no-repeat;
+           background-position:center;
+           background-size:cover;
+           height:100%;
+        }
+        .jum {
+            padding-top: 30px;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+            color: inherit;
+            background-color: rgba(128, 128, 128, 0.70);
+            font-size: 20px;
+            border-radius: 6px;
+        }
+
+        .hr1{ /*渐变*/
+            width: 100%;
+            margin: 0 auto;
+            border: 0;
+            height: 1px;
+            background: #333;
+            background-image: linear-gradient(to right,rgb(255, 0, 0,0.5),rgb(255, 216, 0,0.75),rgb(0, 255, 33,0.5));
+        }
+
+
+        .Ct {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .ywPart1 {
+            width: 310px;
+            margin: 0 auto;
+            padding: 20px 10px 20px 30px;
+        }
+        /**蜂巢样式***/
+       
+        .hex {
+            float: left;
+            margin-left: 2px;
+            margin-bottom: -18px;
+            cursor: pointer;
+        }
+
+            .hex .hex_top {
+                width: 0;
+                border-bottom: 20px solid #f0f0f0;
+                border-left: 35px solid transparent;
+                border-right: 35px solid transparent;
+                margin-top: -1px\9 \0;
+                margin-top: 0px\0;
+            }
+
+            .hex .hex_middle {
+                width: 70px;
+                height: 30px;
+                line-height: 30px;
+                background: #f0f0f0;
+                text-align: center;
+                font-family: "宋体";
+                color: #333333;
+            }
+
+            .hex .hex_bottom {
+                width: 0;
+                border-top: 20px solid #f0f0f0;
+                border-left: 35px solid transparent;
+                border-right: 35px solid transparent;
+                margin-top: -1px\9 \0;
+                margin-top: 0px\0;
+            }
+
+        .hex-row {
+            clear: left;
+        }
+
+            .hex-row.even {
+                margin-left: 38px;
+            }
+
+            .hex-row.odd {
+                margin-right: 38px;
+            }
+
+
+        .navbar1 {
+            width: 150px;
+            height: 150px;
+            line-height: 150px;
+            border-radius: 50%;
+            background-color: darkgrey;
+            margin: 70px auto;
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.75em;
+            font-weight: bold;
+            color: rgb(53, 53, 53);
+            transition: 0.24s 0.2s;
+        }
+
+            .navbar1:hover {
+                background:rgba(66, 64, 64, 0.70);
+            }
+
+            .navbar1 .menu {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                position: absolute;
+                top: -75px;
+                left: -75px;
+                border: 150px solid transparent;
+                cursor: default;
+                border-radius: 50%;
+                transform: scale(0);
+                transition: transform 1.4s 0.07s;
+                z-index: -1;
+            }
+
+            .navbar1:hover .menu {
+                transition: transform 0.4s 0.08s, z-index 0s 0.5s;
+                transform: scale(1);
+                z-index: 1;
+            }
+
+            .navbar1 .menu li {
+                position: absolute;
+                top: -120px;
+                left: -120px;
+                transform-origin: 120px 120px;
+                transition: all 0.5s 0.1s;
+            }
+
+            .navbar1:hover .menu li {
+                transition: all 0.6s;
+            }
+
+            .navbar1 .menu li a {
+                width: 75px;
+                height: 75px;
+                line-height: 75px;
+                border-radius: 50%;
+                background-color:darkgray;
+                position: absolute;
+                font-size: 60%;
+                color:rgb(53, 53, 53);
+                transition: 0.6s;
+            }
+
+            /*.navbar1:hover .menu li:nth-child(1) {
+                transition-delay: 0.02s;
+                transform: rotate(85deg);
+            }
+
+                .navbar:hover .menu li:nth-child(1) a {
+                    transition-delay: 0.04s;
+                    transform: rotate(635deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(2) {
+                transition-delay: 0.04s;
+                transform: rotate(125deg);
+            }
+
+                .navbar:hover .menu li:nth-child(2) a {
+                    transition-delay: 0.08s;
+                    transform: rotate(595deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(3) {
+                transition-delay: 0.06s;
+                transform: rotate(165deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(3) a {
+                    transition-delay: 0.12s;
+                    transform: rotate(555deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(4) {
+                transition-delay: 0.08s;
+                transform: rotate(205deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(4) a {
+                    transition-delay: 0.16s;
+                    transform: rotate(515deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(5) {
+                transition-delay: 0.1s;
+                transform: rotate(245deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(5) a {
+                    transition-delay: 0.2s;
+                    transform: rotate(475deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(6) {
+                transition-delay: 0.12s;
+                transform: rotate(285deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(6) a {
+                    transition-delay: 0.24s;
+                    transform: rotate(435deg);
+                }*/
+
+            .navbar1:hover .menu li:nth-child(1) {
+                transition-delay: 0.14s;
+                transform: rotate(165deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(1) a {
+                    transition-delay: 0.28s;
+                    transform: rotate(555deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(2) {
+                transition-delay: 0.12s;
+                transform: rotate(285deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(2) a {
+                    transition-delay: 0.32s;
+                    transform: rotate(435deg);
+                }
+
+            .navbar1:hover .menu li:nth-child(3) {
+                transition-delay: 0.18s;
+                transform: rotate(405deg);
+            }
+
+                .navbar1:hover .menu li:nth-child(3) a {
+                    transition-delay: 0.36s;
+                    transform: rotate(315deg);
+                }
+
+
+        .button1 {
+            background-color:white; 
+            border-radius: 8px;
+            text-shadow: 0px 1px 0px #3d768a;
+            -webkit-box-shadow: 0px 10px 14px -7px #276873;
+            -moz-box-shadow: 0px 10px 14px -7px #276873;
+            box-shadow: 0px 10px 14px -7px #276873;
+            font-family: Arial;
+            color:#3d768a;
+            font-size: 9px;
+            padding: 8px 16px 8px 16px;
+            text-decoration: none;
+        }
+
+            .button1:hover {
+                color:rgb(66, 64, 64);
+                background-color:darkgrey;
+                text-decoration: none;
+            }
+    </style>
+</head>
+<body>
+    <div id="bg"></div>
+    <div class="navbar navbar-inverse navbar-fixed-top" id="fir">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse" id="two">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    @*<li>@Html.ActionLink("关于", "About", "Home")</li>
+                        <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                    <li>@Html.ActionLink("客户管理", "CustomerIndex", "Customer")</li>
+                    <li>@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                    <li>@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          店长管理
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("管理主页", "Index", "Manager", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                            <li>@Html.ActionLink("客户审查", "", "ManagerExamine", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                            <li>@Html.ActionLink("设计审查", "", "ManagerExamine", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                            <li>@Html.ActionLink("目标管理", "", "", new { id = 0 }, new { @style = "font-size:12px" })</li>
+                        </ul>
+                    </li>
+                    <li id="logOut">@Html.ActionLink("注销", "SignOut", "LogIn")</li>
+
+                </ul>
+
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class ="jum">
+            <h1 style="font-size:80px">CHIC</h1>
+            <p class="lead">
+                <br />
+            </p>
+            <p style="font-size:20px">Chic Casa 希可家居</p>
+        </div>
+        </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="navbar1">
+                    店长操作
+                    <ul class="menu">
+                        @*<li><a href="#" class="fa fa-facebook">1</a></li>
+                        <li><a href="#" class="fa">2</a></li>*@
+                        @*<li><a href="#" class="btn-default">3</a></li>
+                        <li><a href="#" class="btn-default">4</a></li>
+                        <li><a href="#" class="btn-default">5</a></li>
+                        <li><a href="#" class="btn-default">6</a></li>*@
+                        <li><a href="@Url.Action("CustomerExamineView","ManagerExamine",new { })" class="btn-default">客户审查</a></li>
+                        <li><a href="@Url.Action("DesignApplyExamineView","ManagerExamine",new { })" class="btn-default">设计案审查</a></li>
+                        <li><a href="@Url.Action("","",new { })" class="btn-default">业绩目标管理</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <hr class="hr1"/>
+        <div>
+            <input type="button" onclick="javascript:window.history.go(-1);" class="btn btn-default btn-group-sm" value="返回上一页">
+        </div>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
+        </footer>
+    </div>
+</body>
+</html>

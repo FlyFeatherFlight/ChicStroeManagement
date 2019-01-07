@@ -1,0 +1,221 @@
+﻿@model  PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerExceptedBuyModel>
+
+<meta charset="utf-8">
+<title>jQuery UI 对话框（Dialog） - 模态表单</title>
+<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="jqueryui/style.css">
+
+<script>
+        $(function () {
+            var productid =null,
+                remark = null,
+                serid = null,
+
+                //allFields = $([]).add(name).add(email).add(password),
+                tips = $(".validateTips");
+
+            function updateTips(t) {
+                tips
+                    .text(t)
+                    .addClass("ui-state-highlight");
+                setTimeout(function () {
+                    tips.removeClass("ui-state-highlight", 1500);
+                }, 500);
+            }
+
+            function checkLength(o, n, min, max) {
+                if (o.val().length > max || o.val().length < min) {
+                    o.addClass("ui-state-error");
+                    updateTips("" + n + " 的长度必须在 " +
+                        min + " 和 " + max + " 之间。");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function checkRegexp(o, regexp, n) {
+                if (!(regexp.test(o.val()))) {
+                    o.addClass("ui-state-error");
+                    updateTips(n);
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            $("#dialog-form").dialog({
+                autoOpen: false,
+                height: 300,
+                width: 350,
+                modal: true,
+                draggable:false,
+                buttons: {
+                    "提交": function () {
+                        var options = $("#型号 option:selected");
+                        productid = $("#型号").find("option:selected").val();
+                      
+                        remark = $("#remarks").val();
+                        serid = $("#receptionid").val();
+                        if (methodType == "Add") {
+                                           $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddExceptedBuyAction", "Customer")',
+                 data: { productCode: productid, remarks: remark, receptionid:serid},
+            datatype: "json",
+            async: true,//异步
+            success: function (data) {
+                $('#table1').html(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+                        }
+                        //修改操作
+                        if (methodType == "Edit") {
+
+                                                             $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdateExceptedBuyAction", "Customer")',
+                 data: { productCode: productid, remarks: remark, receptionid:serid,id:recordId},
+            datatype: "json",
+            async: true,//异步
+            success: function (data) {
+                $('#table1').html(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+                        }
+                    },
+                    完成: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+                    allFields.val("").removeClass("ui-state-error");
+                }
+            });
+
+            $("#create-record")
+                .button()
+                .click(function () {
+                    $("#dialog-form").dialog("open");
+
+                    methodType = "Add";
+                });
+
+    });
+
+
+    var recordId = null;
+    var methodType = null;
+        function delone(otr) {
+        var rows = otr.parentNode.parentNode.rowIndex;
+        recordId = $("#users tr:eq(" + rows + ") td:eq(0)").html()
+        if (recId!=0) {
+             $.ajax({
+            type: "POST",
+            url: '@Url.Action("DelExceptedBuyAction", "Customer")',
+            data: { id: recordId},
+            datatype: "json",
+            async: true,//异步
+            success: function (data) {
+                $('#header').html(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+        }
+        var a = otr.parentNode.parentNode;
+        a.parentNode.removeChild(a);
+    }
+
+    function editone(otr) {
+        var rows = otr.parentNode.parentNode.rowIndex;
+        recordId = $("#users tr:eq(" + rows + ") td:eq(0)").html();
+        methodType = "Edit";
+        var productid = $("#users tr:eq(" + rows + ") td:eq(2)").html();
+        $("#productCode").val(productid);
+       var remark = $("#users tr:eq(" + rows + ") td:eq(3)").html();
+        $("#remarks").val(remark);
+        var serid = $("#users tr:eq(" + rows + ") td:eq(1)").html();
+        $("#receptionid").val(serid);
+        $("#dialog-form").dialog("open");
+        $("#dialog-form").window("center");
+
+
+    }
+</script>
+<body>
+
+    <div id="dialog-form" title="预购产品">
+        <p class="validateTips">所有的表单字段都是必填的。</p>
+
+        <form class="form-group" action="~/Customer/AddExceptedBuyAction" method="post">
+            <fieldset>
+                <table>
+                    <tr>
+                        <td><label for="receptionid">接待单id</label></td>
+                        <td> <input type="text" name="receptionid" id="receptionid" value="@ViewBag.receptionid" class="text ui-widget-content ui-corner-all" readonly="readonly" style="display:none"/></td>
+                    </tr>
+                    <tr>
+                        <td><label for="productCode">商品型号</label></td>
+                        <td>@Html.DropDownList("型号",ViewBag.ProductOptions as IEnumerable<SelectListItem>, new { @style = "width:200px;", @id="productCode" })</td>
+                    </tr>
+                    <tr>
+                        <td> <label for="remarks">备注</label></td>
+                        <td><input type="text" name="remarks" id="remarks" value="" class="text ui-widget-content ui-corner-all" /></td>
+                    </tr>
+                </table>
+                
+            </fieldset>
+            
+        </form>
+    </div>
+
+
+    <div id="users-contain" class="ui-widget">
+        <h1>预购产品</h1>
+        <table id="users" class="table-condensed">
+            <thead>
+                <tr>
+
+                    <th>产品型号</th>
+                    <th>备注</th>
+                    <th style="align-self:center">操作</th>
+                </tr>
+            </thead>
+            @if (Model != null)
+            {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none">@item.ID</td>
+                            <td style="display:none">@item.接待</td>
+                            <td>@item.商品型号</td>
+                            <td>@item.备注</td>
+                            <td>
+                                <a href="javascript:;" onclick="delone(this)">删除</a>
+                                |<a href="javascript:;" onclick="editone(this)">编辑</a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            }
+        </table>
+    </div>
+    <input type="button" name="create-record" id="create-record" value="添加新纪录" />
+
+
+</body>
