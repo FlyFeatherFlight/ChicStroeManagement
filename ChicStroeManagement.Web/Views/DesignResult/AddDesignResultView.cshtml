@@ -91,7 +91,6 @@
                         {
                             <tr>
                                 <td>@item.ToString()</td>
-                                <td>@Html.ActionLink("下载", "DownLoadFile", "DesignFile", new { path = item.ToString(), fileName = Guid.NewGuid().ToString("A") })</td>
                             </tr>
                         }
                     </table>

@@ -250,11 +250,11 @@ namespace ChicStoreManagement.Controllers
         [HttpPost]
         public ActionResult DesignApply(DesignSubmitModel designSubmitModel)
         {
-            //if (Session["method"].ToString() == "Y")
-            //{
-            //    string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
-            //    return Content(str);
-            //}
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='TrackLogIndex';</script>");
+                return Content(str);
+            }
             SetEmployee();
 
             designSubmitModel.接待记录ID = customerInfoBLL.GetModel(p => p.客户电话 == designSubmitModel.联系方式).ID;
@@ -290,12 +290,8 @@ namespace ChicStoreManagement.Controllers
                     更新日期 = designSubmitModel.更新日期,
                     店铺ID = storeID
                 };
-                var man = storeEmployeesBLL.GetModel(p => p.店铺ID == storeID && p.职务ID == 3);
-                if (man.停用标志!=true)
-                {
-                    model.店长 = man.ID;
-                }
-                
+
+                model.店长 = storeEmployeesBLL.GetModel(p => p.店铺ID == storeID && p.职务ID == 3 && p.停用标志 != false).ID;
                 if (ModelState.IsValid)
                 {
                     designSubmitBLL.Add(model);
@@ -329,7 +325,7 @@ namespace ChicStoreManagement.Controllers
             }
             catch (Exception e)
             {
-                return Content("<script>alert('信息异常：" + e.Message+ "。');window.history.go(-1);</script>");
+                return Content("<script>alert('信息异常：" + e + "。');window.history.go(-1);</script>");
             }
             return RedirectToAction("DesignSchemeIndex", new { id = designSubmitModel.接待记录ID });
         }

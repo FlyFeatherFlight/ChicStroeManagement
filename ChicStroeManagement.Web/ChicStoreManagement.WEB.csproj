@@ -1060,9 +1060,7 @@
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
-    <Content Include="Config\Log4Net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Config\Log4Net.config" />
     <Content Include="Config\FileLoad.config" />
     <Content Include="Content\bootstrap-fileinput\scss\themes\explorer\theme.scss" />
     <Content Include="Content\bootstrap-fileinput\scss\themes\explorer-fa\theme.scss" />

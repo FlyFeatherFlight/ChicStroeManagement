@@ -363,7 +363,7 @@ namespace ChicStoreManagement.WEB.Controllers
                     designSubmitModel.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == item.销售人员).姓名;
                     designSubmitModel.面积大小 = item.面积大小;
 
-                    designSubmitModel.预算 = item.预算.ToString();
+                    designSubmitModel.预算 = item.预算;
                     designSubmitModel.项目提交时间 = item.项目提交时间;
                     designSubmitModel.项目量房时间 = item.项目量房时间;
                     designSubmitModel.项目预计完成时间 = item.项目预计完成时间;

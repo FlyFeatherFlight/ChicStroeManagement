@@ -1,5 +1,4 @@
-﻿using ChicStoreManagement.CustomAttributes;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace ChicStoreManagement
@@ -10,8 +9,6 @@ namespace ChicStoreManagement
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new CustomAttributes.AuthorizeFilter());
-            //注册异常处理过滤器。  
-            filters.Add(new SystemIExceptionFilter());
         }
     }
 }
