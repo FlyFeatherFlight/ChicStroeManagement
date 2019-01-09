@@ -34,22 +34,7 @@ namespace ChicStoreManagement
         //采用分布式的方式记录日志
         private void RecordLog()
        {
-        //    ThreadPool.QueueUserWorkItem((a) =>
-        //    {
-        //        while (true)
-        //        {
-        //            if (SystemIExceptionFilter.client.GetListCount("errorMsg") > 0)
-        //            {
-        //                string ex = SystemIExceptionFilter.client.DequeueItemFromList("errorMsg");
-        //                ILog logger = LogManager.GetLogger("errorMsg");
-        //                logger.Error(ex);
-        //            }
-        //            else
-        //            {
-        //                Thread.Sleep(3000);//如果队列中没有数据，休息避免造成CPU的占用.
-        //            }
-        //        }
-        //    });
+      
         }
     }
 }

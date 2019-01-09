@@ -220,27 +220,21 @@ namespace ChicStoreManagement.Controllers
                 model.预计使用时间 = customerInfoModel.预计使用时间;
                 model.不喜欢产品 = customerInfoModel.不喜欢产品;
                 model.不喜欢元素 = customerInfoModel.不喜欢元素;
-                model.主卧预算备注 = customerInfoModel.主卧预算备注;
-                model.主卧预算家具 = customerInfoModel.主卧预算家具;
-                model.主卧预算金额 = customerInfoModel.主卧预算金额;
-                model.书房预算备注 = customerInfoModel.书房预算备注;
-                model.书房预算家具 = customerInfoModel.书房预算家具;
-                model.书房预算金额 = customerInfoModel.书房预算金额;
+                model.卧室预算备注 = customerInfoModel.主卧预算备注;
+                model.卧室预算家具 = customerInfoModel.主卧预算家具;
+                model.卧室预算金额 = customerInfoModel.主卧预算金额;
+               
                 model.其它空间备注 = customerInfoModel.其它空间备注;
                 model.其它空间家具 = customerInfoModel.其它空间家具;
                 model.其它空间预算 = customerInfoModel.其它空间预算;
                 model.喜欢产品 = customerInfoModel.喜欢产品;
                 model.喜欢元素 = customerInfoModel.喜欢元素;
-                model.婴儿或儿童房预算备注 = customerInfoModel.婴儿或儿童房预算备注;
-                model.婴儿或儿童房预算家具 = customerInfoModel.婴儿或儿童房预算家具;
-                model.婴儿或儿童房预算金额 = customerInfoModel.婴儿或儿童房预算金额;
+              
                 model.客厅预算备注 = customerInfoModel.客厅预算备注;
                 model.客厅预算家具 = customerInfoModel.客厅预算家具;
                 model.客厅预算金额 = customerInfoModel.客厅预算金额;
                 model.户型大小 = customerInfoModel.户型大小;
-                model.次卧预算备注 = customerInfoModel.次卧预算备注;
-                model.次卧预算家具 = customerInfoModel.次卧预算家具;
-                model.次卧预算金额 = customerInfoModel.次卧预算金额;
+             
                 model.比较品牌产品 = customerInfoModel.比较品牌产品;
                 model.比较品牌产品备注 = customerInfoModel.比较品牌产品备注;
             }
@@ -427,27 +421,21 @@ namespace ChicStoreManagement.Controllers
                 model.预计使用时间 = customerInfoModel.预计使用时间;
                 model.不喜欢产品 = customerInfoModel.不喜欢产品;
                 model.不喜欢元素 = customerInfoModel.不喜欢元素;
-                model.主卧预算备注 = customerInfoModel.主卧预算备注;
-                model.主卧预算家具 = customerInfoModel.主卧预算家具;
-                model.主卧预算金额 = customerInfoModel.主卧预算金额;
-                model.书房预算备注 = customerInfoModel.书房预算备注;
-                model.书房预算家具 = customerInfoModel.书房预算家具;
-                model.书房预算金额 = customerInfoModel.书房预算金额;
+                model.卧室预算备注 = customerInfoModel.主卧预算备注;
+                model.卧室预算家具 = customerInfoModel.主卧预算家具;
+                model.卧室预算金额 = customerInfoModel.主卧预算金额;
+               
                 model.其它空间备注 = customerInfoModel.其它空间备注;
                 model.其它空间家具 = customerInfoModel.其它空间家具;
                 model.其它空间预算 = customerInfoModel.其它空间预算;
                 model.喜欢产品 = customerInfoModel.喜欢产品;
                 model.喜欢元素 = customerInfoModel.喜欢元素;
-                model.婴儿或儿童房预算备注 = customerInfoModel.婴儿或儿童房预算备注;
-                model.婴儿或儿童房预算家具 = customerInfoModel.婴儿或儿童房预算家具;
-                model.婴儿或儿童房预算金额 = customerInfoModel.婴儿或儿童房预算金额;
+               
                 model.客厅预算备注 = customerInfoModel.客厅预算备注;
                 model.客厅预算家具 = customerInfoModel.客厅预算家具;
                 model.客厅预算金额 = customerInfoModel.客厅预算金额;
                 model.户型大小 = customerInfoModel.户型大小;
-                model.次卧预算备注 = customerInfoModel.次卧预算备注;
-                model.次卧预算家具 = customerInfoModel.次卧预算家具;
-                model.次卧预算金额 = customerInfoModel.次卧预算金额;
+               
                 model.比较品牌产品 = customerInfoModel.比较品牌产品;
                 model.比较品牌产品备注 = customerInfoModel.比较品牌产品备注;
                 if (ModelState.IsValid)
@@ -871,27 +859,21 @@ namespace ChicStoreManagement.Controllers
                             customerInfo.预计使用时间 = item.预计使用时间;
                     customerInfo.不喜欢产品 = item.不喜欢产品;
                     customerInfo.不喜欢元素 = item.不喜欢元素;
-                    customerInfo.主卧预算备注 = item.主卧预算备注;
-                    customerInfo.主卧预算家具 = item.主卧预算家具;
-                    customerInfo.主卧预算金额 = item.主卧预算金额;
-                    customerInfo.书房预算备注 = item.书房预算备注;
-                    customerInfo.书房预算家具 = item.书房预算家具;
-                    customerInfo.书房预算金额 = item.书房预算金额;
+                    customerInfo.主卧预算备注 = item.卧室预算备注;
+                    customerInfo.主卧预算家具 = item.卧室预算家具;
+                    customerInfo.主卧预算金额 = item.卧室预算金额;
+                 
                     customerInfo.其它空间备注 = item.其它空间备注;
                     customerInfo.其它空间家具 = item.其它空间家具;
                     customerInfo.其它空间预算 = item.其它空间预算;
                     customerInfo.喜欢产品 = item.喜欢产品;
                     customerInfo.喜欢元素 = item.喜欢元素;
-                    customerInfo.婴儿或儿童房预算备注 = item.婴儿或儿童房预算备注;
-                    customerInfo.婴儿或儿童房预算家具 = item.婴儿或儿童房预算家具;
-                    customerInfo.婴儿或儿童房预算金额 = item.婴儿或儿童房预算金额;
+                    
                     customerInfo.客厅预算备注 = item.客厅预算备注;
                     customerInfo.客厅预算家具 = item.客厅预算家具;
                     customerInfo.客厅预算金额 = item.客厅预算金额;
                     customerInfo.户型大小 = item.户型大小;
-                    customerInfo.次卧预算备注 = item.次卧预算备注;
-                    customerInfo.次卧预算家具 = item.次卧预算家具;
-                    customerInfo.次卧预算金额 = item.次卧预算金额;
+                    
                     customerInfo.比较品牌产品 = item.比较品牌产品;
                     customerInfo.比较品牌产品备注 = item.比较品牌产品备注;
 

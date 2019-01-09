@@ -86,10 +86,6 @@
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.DALSessionFactory\ChicStoreManagement.DALSessionFactory.csproj">
-      <Project>{84c5662d-01e3-48ac-98c5-e48e1e00a117}</Project>
-      <Name>ChicStoreManagement.DALSessionFactory</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

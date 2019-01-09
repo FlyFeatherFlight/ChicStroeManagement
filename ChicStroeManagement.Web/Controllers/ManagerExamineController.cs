@@ -1054,7 +1054,6 @@ namespace ChicStoreManagement.Controllers
 
         }
 
-
         /// <summary>
         /// 构建设计完结单信息
         /// </summary>
@@ -1129,11 +1128,6 @@ namespace ChicStoreManagement.Controllers
                         designResultViewModel.销售单号 = salesOrderBLL.GetModel(p => p.ID == sellID).订单编号;//订单编号
                         designResultViewModel.单据编号 = salesOrderBLL.GetModel(p => p.ID == sellID).单据编号;//单据编号
 
-                    }
-                    catch (Exception e)
-                    {
-                        return null;
-                    }
 
                     var lis = salesOrder_DetailsBLL.GetModels(p => p.单据ID == sellID).ToList();//根据订单ID查询订单详细
                     List<DesignResult_OrderDetailViewModel> list = new List<DesignResult_OrderDetailViewModel>();
@@ -1151,8 +1145,17 @@ namespace ChicStoreManagement.Controllers
                         list.Add(model);
                     }
                     designResultViewModel.DesignResult_OrderDetailViewModel = list;
+
+                    }
+                    catch (Exception e)
+                    {
+                        designResultViewModel=null;
+                    }
                 }
-                designResultViews.Add(designResultViewModel);
+                if (designResultViewModel != null)
+                {
+                    designResultViews.Add(designResultViewModel);
+                }
             }
             return designResultViews.AsQueryable();
         }

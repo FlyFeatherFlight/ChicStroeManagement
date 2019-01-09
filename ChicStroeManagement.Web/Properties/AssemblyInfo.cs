@@ -33,3 +33,5 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用 "*":
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+//异常记录
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = @"Config\Log4Net.config", Watch = true)]

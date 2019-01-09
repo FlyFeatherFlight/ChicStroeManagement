@@ -20,10 +20,10 @@ public partial class 销售_店铺员工档案
         this.设计_设计案完结单 = new HashSet<设计_设计案完结单>();
         this.设计_设计案完结单1 = new HashSet<设计_设计案完结单>();
         this.设计_设计案完结单2 = new HashSet<设计_设计案完结单>();
+        this.销售_接待记录 = new HashSet<销售_接待记录>();
         this.销售_设计案提交表 = new HashSet<销售_设计案提交表>();
         this.销售_设计案提交表1 = new HashSet<销售_设计案提交表>();
         this.销售_设计案提交表2 = new HashSet<销售_设计案提交表>();
-        this.销售_接待记录 = new HashSet<销售_接待记录>();
     }
 
     public int ID { get; set; }
@@ -50,8 +50,8 @@ public partial class 销售_店铺员工档案
     public virtual ICollection<设计_设计案完结单> 设计_设计案完结单 { get; set; }
     public virtual ICollection<设计_设计案完结单> 设计_设计案完结单1 { get; set; }
     public virtual ICollection<设计_设计案完结单> 设计_设计案完结单2 { get; set; }
+    public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
     public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }
     public virtual ICollection<销售_设计案提交表> 销售_设计案提交表1 { get; set; }
     public virtual ICollection<销售_设计案提交表> 销售_设计案提交表2 { get; set; }
-    public virtual ICollection<销售_接待记录> 销售_接待记录 { get; set; }
 }

@@ -27,7 +27,7 @@ public partial class 销售_设计案提交表
     public string 面积大小 { get; set; }
     public string 装修风格 { get; set; }
     public string 装修进度 { get; set; }
-    public Nullable<decimal> 预算 { get; set; }
+    public string 预算 { get; set; }
     public string 客户喜好或忌讳 { get; set; }
     public string 客户在意品牌或已购买品牌 { get; set; }
     public string 客户提问与要求 { get; set; }
@@ -49,9 +49,9 @@ public partial class 销售_设计案提交表
     public Nullable<int> 店铺ID { get; set; }
 
     public virtual ICollection<设计_设计案完结单> 设计_设计案完结单 { get; set; }
+    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案1 { get; set; }
     public virtual 销售_店铺员工档案 销售_店铺员工档案2 { get; set; }
-    public virtual 销售_店铺档案 销售_店铺档案 { get; set; }
     public virtual 销售_接待记录 销售_接待记录 { get; set; }
 }

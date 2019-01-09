@@ -56,7 +56,7 @@ namespace ChicStoreManagement.WEB.ViewModel
 
         [Display(Name = "客户电话")]
         [DataType(DataType.PhoneNumber)]
-        [Required]
+
         public string 客户电话 { get; set; }
 
         [Display(Name = "客户类型")]
@@ -169,7 +169,7 @@ namespace ChicStoreManagement.WEB.ViewModel
         [Display(Name = "预算金额")]
         [DataType(DataType.Text)]
         
-        public Nullable<decimal> 预算金额 { get; set; }
+        public string 预算金额 { get; set; }
 
         [Display(Name = "预计报价折扣")]
         [DataType(DataType.Currency)]

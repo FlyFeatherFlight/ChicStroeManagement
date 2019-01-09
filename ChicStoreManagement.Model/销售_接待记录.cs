@@ -52,7 +52,7 @@ public partial class 销售_接待记录
     public string 比较品牌 { get; set; }
     public string 比较品牌产品 { get; set; }
     public string 比较品牌产品备注 { get; set; }
-    public Nullable<decimal> 预算金额 { get; set; }
+    public string 预算金额 { get; set; }
     public string 预报价折扣 { get; set; }
     public string 返点 { get; set; }
     public string 安装地址 { get; set; }
@@ -74,21 +74,14 @@ public partial class 销售_接待记录
     public string 餐厅预算家具 { get; set; }
     public string 餐厅预算金额 { get; set; }
     public string 餐厅预算备注 { get; set; }
-    public string 主卧预算家具 { get; set; }
-    public string 主卧预算金额 { get; set; }
-    public string 主卧预算备注 { get; set; }
-    public string 次卧预算家具 { get; set; }
-    public string 次卧预算金额 { get; set; }
-    public string 次卧预算备注 { get; set; }
-    public string 婴儿或儿童房预算家具 { get; set; }
-    public string 婴儿或儿童房预算金额 { get; set; }
-    public string 婴儿或儿童房预算备注 { get; set; }
-    public string 书房预算家具 { get; set; }
-    public string 书房预算金额 { get; set; }
-    public string 书房预算备注 { get; set; }
+    public string 卧室预算家具 { get; set; }
+    public string 卧室预算金额 { get; set; }
+    public string 卧室预算备注 { get; set; }
     public string 其它空间家具 { get; set; }
     public string 其它空间预算 { get; set; }
     public string 其它空间备注 { get; set; }
+    public Nullable<bool> 是否关闭 { get; set; }
+    public string 关闭备注 { get; set; }
 
     public virtual 销售_店铺员工档案 销售_店铺员工档案 { get; set; }
     public virtual ICollection<销售_设计案提交表> 销售_设计案提交表 { get; set; }

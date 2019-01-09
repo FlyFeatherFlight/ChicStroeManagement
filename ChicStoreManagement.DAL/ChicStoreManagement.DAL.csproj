@@ -94,10 +94,6 @@
       <Project>{73609868-20e3-4042-b1e2-0a77cb59b01a}</Project>
       <Name>ChicStoreManagement.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj">
-      <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
-      <Name>ChicStoreManagement.IOC</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -201,7 +201,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerTrackLogController.cs" />
@@ -213,7 +212,6 @@
     <Compile Include="CustomAttributes\AuthenticationAttribute.cs" />
     <Compile Include="CustomAttributes\CompressFilterAttribute.cs" />
     <Compile Include="CustomAttributes\SystemIActionFilter.cs" />
-    <Compile Include="CustomAttributes\SystemIExceptionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1498,10 +1496,6 @@
     <ProjectReference Include="..\ChicStoreManagement.IBLL\ChicStoreManagement.IBLL.csproj">
       <Project>{6e2839a4-6ef0-4eb4-8f42-9bcf760e4a41}</Project>
       <Name>ChicStoreManagement.IBLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ChicStroeManagement.IOC\ChicStoreManagement.IOC.csproj">
-      <Project>{e5fc6ec6-3823-45cc-87bc-22f70021170b}</Project>
-      <Name>ChicStoreManagement.IOC</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using ChicStoreManagement.Controllers;
+using System.Web;
 using System.Web.Mvc;
 
 namespace ChicStoreManagement
@@ -9,6 +10,7 @@ namespace ChicStoreManagement
         {
             filters.Add(new HandleErrorAttribute());
             filters.Add(new CustomAttributes.AuthorizeFilter());
+            filters.Add(new WarningController());
         }
     }
 }
