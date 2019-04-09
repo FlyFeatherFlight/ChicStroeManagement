@@ -1,0 +1,12 @@
+﻿using ChicStoreManagement.IDAL;
+using ChicStoreManagement.Model;
+
+namespace ChicStoreManagement.DAL
+{
+    /// <summary>
+    /// 销售——接待成交记录
+    /// </summary>
+   public partial class SalesRecordDAL:BaseDAL<销售_接待成交单>, ISalesRecordDAL
+    {
+    }
+}

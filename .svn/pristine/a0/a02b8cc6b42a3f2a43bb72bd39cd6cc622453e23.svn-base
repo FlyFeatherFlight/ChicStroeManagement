@@ -1,0 +1,9 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.TrackGoalsViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "EmploeesGoalApplyView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EmploeesGoalApplyView</h2>
+

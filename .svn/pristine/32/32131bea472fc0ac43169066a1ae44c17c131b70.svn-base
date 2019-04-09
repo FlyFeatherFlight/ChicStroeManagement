@@ -1,0 +1,119 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignResultViewModel
+
+@{
+    ViewBag.Title = "DesignResultInfoView";
+  
+}
+
+<script>
+    function my_func() {
+        var items = document.getElementsByName("HomeSpace");//得到名为HomeSpace的多选框
+        var str = "";
+        for (i = 0; i < items.length; i++) {
+            if (items[i].checked) {
+                str += items[i].value; //获得选中的所有值
+            }
+           $.ajax({
+               url: '@Url.Action("DesignerResultExamine", "DesignerExamine")',
+               data: { id:@Model.Id, examine: JSON.stringify(str) },
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,//异步
+               success: function (data) {
+                       alert(data);
+                       window.history.go(-1);
+
+                },
+                error: function (err) {
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+                    window.history.go(-1);
+                },
+            })
+        }
+
+    }
+</script>
+
+<table  class="table table-hover table-bordered">
+    <tr style="text-align:center"><td colspan="6"><h2>@ViewBag.Person 软装服务设计结单表</h2></td></tr>
+    <tr><td>客户名称</td><td colspan="5">@Model.客户姓名</td></tr>
+    <tr><td>联系方式</td><td colspan="5">@Model.联系方式</td></tr>
+    <tr><td>楼盘具体位置</td><td colspan="5">@Model.楼盘具体位置</td></tr>
+    <tr><td>客户单号</td><td colspan="5">@Model.客户编号</td></tr>
+    <tr><td>销售单号</td><td colspan="5">@Model.销售单号</td></tr>
+    <tr><td>单据编号</td><td colspan="5">@Model.单据编号</td></tr>
+    <tr><td>计划完成时间</td><td colspan="5">@Model.计划完成时间</td></tr>
+    <tr><td>实际完成时间</td><td colspan="5">@Model.实际完成时间</td></tr>
+    <tr><td>计划完成空间</td><td colspan="5">@Model.计划完成空间</td></tr>
+    <tr><td>实际完成空间</td><td colspan="5">@Model.实际完成空间</td></tr>
+    <tr><td>延期或者无法完成的原因</td><td colspan="5">@Model.延期或无法完成原因</td></tr>
+    <tr>
+        <td>完成效果</td>
+        <td colspan="5" style="text-align:center">
+            @if (Model.完成效果图 == true)
+            {
+                <table class="table table-hover">
+                    @foreach (var item in Model.完成效果图路径)
+                    {
+                        <tr>
+                            <td>路径</td>
+                            <td>@item.ToString()</td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <label>无</label>
+            }
+        </td>
+    </tr>
+    <tr style="text-align:center"><td colspan="6">家居成交金额</td></tr>
+    <tr style="text-align:center">
+        <td colspan="6">
+            <table class="table table-hover">
+                <tr>
+                    <td>空间</td>
+                    <td>产品型号</td>
+                    <td>单位</td>
+                    <td>数量</td>
+                    <td>成交价</td>
+                </tr>
+                @foreach (var item in Model.DesignResult_OrderDetailViewModel)
+                {
+                    <tr>
+                        <td>@item.空间</td>
+                        <td>@item.产品型号</td>
+                        <td>@item.单位</td>
+                        <td>@item.数量</td>
+                        <td>@item.成交价</td>
+                    </tr>
+                }
+
+            </table>
+        </td>
+    </tr>
+    <tr><td>合计</td><td colspan="5">@Model.合计成交金额</td></tr>
+    <tr><td>建议</td><td colspan="5"></td>@Model.建议</tr>
+
+    <tr><td>销售</td><td>@Model.销售人员</td><td>设计</td><td>@Model.设计师</td><td>主管</td><td>@Model.店长</td></tr>
+    <tr><td>确认日期</td><td>@Model.销售人员确认日期</td><td>确认日期</td><td>@Model.设计师确认日期</td><td>确认日期</td><td>@Model.店长审核日期</td></tr>
+    <tr><td>最近更新人</td><td>@Model.更新人</td><td>更新日期</td><td>@Model.更新日期</td><td>审批状态</td><td>@Model.审批状态</td></tr>
+    @if (ViewBag.IsDesigner == true)
+    {
+        <tr>
+            <td colspan="6" align="center">
+                设计师审批:
+                <input type="radio" name="HomeSpace" value="false" onclick="my_func()" />驳回|
+                <input type="radio" name="HomeSpace" value="true" onclick="my_func()" />通过
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr><td colspan="6">@Html.ActionLink("修改完结单数据", "EditDesignResultView", new { id = Model.Id })</td></tr>
+    }
+
+</table>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">

@@ -1,0 +1,472 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
+using ChicStoreManagement.CustomAttributes;
+using ChicStoreManagement.IBLL;
+using ChicStoreManagement.Model;
+using ChicStoreManagement.WEB.ViewModel;
+using PagedList;
+
+namespace ChicStoreManagement.Controllers
+{
+    public class ManagerController : Controller
+    {
+        private readonly IStoreEmployeesBLL storeEmployeesBLL;
+        private readonly IStoreBLL storeBLL;
+        private readonly IPositionBLL positionBLL;
+        private IQueryable<Employees> workers;
+        private readonly ITrackGoalBLL trackGoalBLL;
+        private int employeeID;
+        private string employeeName;
+        private string store;
+        private int storeID;
+
+        public ManagerController(IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IPositionBLL positionBLL) 
+        {
+            this.storeEmployeesBLL = storeEmployeesBLL;
+            this.storeBLL = storeBLL;
+            this.positionBLL = positionBLL;
+        }
+
+
+
+
+
+        // GET: Manager
+        /// <summary>
+        /// 本月交易情况
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+            SetEmployee();
+            ViewBag.Store = store;
+            ViewBag.Employee = employeeName;
+            ViewBag.IsManager = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否店长;
+            ViewBag.IsDesigner = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否设计师;
+            ViewBag.IsEmployee = storeEmployeesBLL.GetModel(p => p.ID == employeeID).是否销售;
+            var pid = storeEmployeesBLL.GetModel(p=>p.ID==employeeID).职务ID;
+            if (pid==6)//功能待定
+            {
+                return RedirectToAction("ManagerAction");
+            }
+            return View();
+        }
+
+
+        /// <summary>
+        /// 员工信息首页，员工信息查询
+        /// </summary>
+        /// <returns></returns>
+       
+        public ViewResult ManagerAction(string sortOrder, string searchString, string currentFilter, int? page)
+        {
+            
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.Number = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.Name = sortOrder == "last" ? "last_desc" : "last";
+
+            BuildEmploess();//将员工数据优化
+
+          
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                workers = workers.Where(w => w.姓名.Contains(searchString));//通过姓名查找
+            }
+            //Session["Name"] = workers.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    workers = workers.OrderByDescending(w => w.ID);
+                    break;
+                case "last_desc":
+                   workers = workers.OrderByDescending(w => w.姓名); 
+                    break;
+                case "last":
+                   workers = workers.OrderBy(w => w.姓名); 
+                    break;
+                default:
+                    workers = workers.OrderBy(w => w.ID);
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+          
+            return View(workers.ToPagedList(pageNumber, pageSize));
+
+
+        }
+
+
+        #region 添加员工信息
+        /// <summary>
+        /// 员工信息添加页面
+        /// </summary>
+        /// <returns></returns>
+        [AuthorizeFilter]
+        public ActionResult AddEmploee() {
+            List<销售_职务> positionList = positionBLL.GetModels(p => true).ToList();
+            SelectList PositionList = new SelectList(positionList, "职务", "职务");
+            ViewBag.PositionList = PositionList;
+            List<销售_店铺档案> storeList = storeBLL.GetModels(p => true).ToList();
+            SelectList StoreList = new SelectList(storeList, "名称", "名称");
+            ViewBag.StoreList = StoreList;
+            return View();
+        }
+
+        /// <summary>
+        /// 提交员工信息
+        /// </summary>
+        /// <param name="models"></param>
+        /// <returns></returns>
+        [HttpPost]
+      
+        public ActionResult EmployeeAdd(Employees models) {
+
+            销售_店铺员工档案 Emodel = new 销售_店铺员工档案
+            {
+                ID = models.ID,
+                姓名=models.姓名,
+                性别=models.性别,
+                编号=models.编号,
+                联系方式=models.联系方式,
+                停用标志=models.停用标志,
+                制单人=models.制单人,
+                制单日期=models.制单日期,
+                密码=models.密码,
+                店铺ID = storeBLL.GetModel(p => p.名称 == models.店铺).ID,
+                职务ID = positionBLL.GetModel(p => p.职务 == models.职务).ID
+            };
+
+           
+            if (ModelState.IsValid)
+            {
+
+                storeEmployeesBLL.Add(Emodel);
+
+                return RedirectToAction("ManagerAction");
+            }
+            return View();
+          
+        }
+        #endregion
+
+        #region 修改员工信息
+        /// <summary>
+        /// 修改页面，传入修改的对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult EditEmploee(int id)
+        {
+            if (id == 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var model = storeEmployeesBLL.GetModel(p=>p.ID==id);
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            Employees Emodel = new Employees
+            {
+                ID = model.ID,
+                姓名 = model.姓名,
+                
+                性别 = model.性别,
+                编号 = model.编号,
+                店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称,
+                职务 = positionBLL.GetModel(p => p.ID == model.职务ID).职务,
+                联系方式 = model.联系方式,
+                停用标志 = model.停用标志,
+                制单人 = model.制单人,
+                制单日期 = model.制单日期,
+                密码 = model.密码
+            };
+            List<销售_职务> positionList = positionBLL.GetModels(p => true).ToList();       
+                SelectList PositionList = new SelectList(positionList, "职务", "职务");
+            ViewBag.PositionList = 
+                PositionList;
+            List<销售_店铺档案> storeList = storeBLL.GetModels(p => true).ToList();
+            SelectList StoreList = new SelectList(storeList, "名称", "名称");
+            ViewBag.StoreList = StoreList;
+            
+            return View(Emodel);
+        }
+        /// <summary>
+        /// 提交修改数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EmployeeEdit(Employees model)
+
+        {
+         
+            var Emodel=storeEmployeesBLL.GetModels(p => p.ID == model.ID);
+            Emodel.First().店铺ID = storeBLL.GetModel(p => p.名称 == model.店铺).ID;
+            Emodel.First().职务ID = positionBLL.GetModel(p => p.职务 == model.职务).ID;
+
+            if (ModelState.IsValid)
+            {
+                
+                storeEmployeesBLL.Modify(Emodel.First());
+               
+                return RedirectToAction("ManagerAction");
+            }
+            return View(model);
+        }
+
+        #endregion
+
+        #region 删除员工信息
+        public ActionResult DelEmploee(int id) {
+
+            try
+            {
+                storeEmployeesBLL.DelBy(p=>p.ID==id);
+            }
+            catch (DataException )
+            {
+                return RedirectToAction("ManageAction", new { id = id, saveChangesError = true });
+            }
+            return RedirectToAction("ManageAction");
+        }
+        #endregion
+
+
+        #region  业绩目标管理
+        public ActionResult StoreGoalView()
+        {
+            return View();
+        }
+
+
+        public ActionResult EditGoalView()
+        {
+            return View();
+        }
+
+        public ActionResult SplitGoalView()
+        {
+
+            return View();
+
+        }
+
+        public ActionResult DataStatisticsView()
+        {
+
+            return View();
+
+        }
+        #endregion
+
+
+
+        #region 跟进目标管理
+        public ViewResult EmploeesGoalApplyView(string sortOrder, string searchString, string currentFilter, int? page) {
+            SetEmployee();
+            var models = trackGoalBLL.GetModels(p => p.店铺ID == storeID);
+            List<TrackGoalsViewModel> trackGoalsViewModels = new List<TrackGoalsViewModel>();
+            TrackGoalsViewModel trackGoalsViewModel = new TrackGoalsViewModel();
+            foreach (var item in models)
+            {
+                trackGoalsViewModel.ID = item.ID;
+                trackGoalsViewModel.员工ID = item.员工ID;
+                trackGoalsViewModel.员工姓名 = storeEmployeesBLL.GetModel(p => p.ID == item.员工ID).姓名;
+                trackGoalsViewModel.备注 = item.备注;
+                trackGoalsViewModel.审核状态 = item.审核状态;
+                trackGoalsViewModel.店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称;
+
+                trackGoalsViewModel.申请跟进数 = item.申请跟进数;
+                trackGoalsViewModel.更新日期 = item.更新日期;
+                trackGoalsViewModels.Add(trackGoalsViewModel);
+            }
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.Number = String.IsNullOrEmpty(sortOrder) ? "first_desc" : "";
+            ViewBag.Name = sortOrder == "last" ? "last_desc" : "last";
+
+           
+
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;//获得前端传回来的搜索关键词
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                trackGoalsViewModels = trackGoalsViewModels.Where(w => w.员工姓名.Contains(searchString)).ToList();//通过姓名查找
+            }
+            //Session["Name"] = workers.FirstOrDefault();
+            #region 排序，默认按ID升序
+            switch (sortOrder)
+            {
+                case "first_desc":
+                    trackGoalsViewModels = trackGoalsViewModels.OrderBy(w => w.ID).ToList();
+                    break;
+                case "last_desc":
+                    trackGoalsViewModels = trackGoalsViewModels.OrderByDescending(w => w.审核状态).ToList();
+                    break;
+                case "last":
+                    trackGoalsViewModels = trackGoalsViewModels.OrderBy(w => w.审核状态).ToList();
+                    break;
+                default:
+                    trackGoalsViewModels = trackGoalsViewModels.OrderByDescending(w => w.ID).ToList();
+                    break;
+            }
+
+            #endregion
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            return View(trackGoalsViewModels.ToPagedList(pageNumber, pageSize));
+        
+        }
+
+        [HttpPost]
+        public ActionResult EditEmploeesGoal(int id,int  result,int emid) {
+
+            var model = trackGoalBLL.GetModel(p => p.ID == id);
+            var emodel = storeEmployeesBLL.GetModel(p => p.ID == emid);
+            if (result==0)
+            {
+                model.审核状态 = false;
+
+            }
+            if (result==1)
+            {
+                model.审核状态 = true;
+                string[] property = new string[1];
+                emodel.跟进目标计划数=emodel.跟进目标计划数+1;
+                property[0] = "审核状态";
+                storeEmployeesBLL.Modify(emodel, property);
+            }
+            try
+            {
+                string[] property = new string[1];
+                property[0] = "审核状态";
+                
+                trackGoalBLL.Modify(model, property);
+               
+            }
+            catch (Exception e)
+            {
+
+                return Json("违规操作！");
+            }
+            return RedirectToAction("EmploeesGoalApplyView");
+
+        }
+        #endregion
+        /// <summary>
+        /// 将员工数据优化
+        /// </summary>
+        public void BuildEmploess() {
+            List<Employees> employeesList = new List<Employees>();
+
+            if (workers == null)
+            {
+
+                var worker = storeEmployeesBLL.GetModels(p => true);//查询初始员工信息
+                #region 对员工信息进行数据优化
+
+
+                foreach (var item in worker)
+                {
+                    Employees employees = new Employees
+                    {
+                        ID = item.ID,
+                        停用标志 = item.停用标志,
+                        制单人 = item.制单人,
+                        制单日期 = item.制单日期,
+                        姓名 = item.姓名,
+                        密码 = item.密码,
+                        性别 = item.性别,
+                        编号 = item.编号,
+                        职务 = positionBLL.GetModel(p => p.ID == item.职务ID).职务,
+                        店铺 = storeBLL.GetModel(p => p.ID == item.店铺ID).名称,
+                        联系方式 = item.联系方式
+                    };
+                    employeesList.Add(employees);
+                }
+                #endregion
+                workers = employeesList.AsEnumerable().AsQueryable();
+            }
+        }
+
+        /// <summary>
+        /// 获得职位
+        /// </summary>
+        /// <returns></returns>
+        public List<String> GetPosition( ){
+
+            var positionList = positionBLL.GetListBy(p => true);
+            List<String> lis = new List<string>();
+            foreach (var item in positionList)
+            {
+                lis.Add(item.职务);
+
+            }
+            return lis;
+        }
+
+        /// <summary>
+        /// 获得所有店铺名字
+        /// </summary>
+        /// <returns></returns>
+        public List<String> GetStore (){
+
+            var storeList = storeBLL.GetListBy(p => true);
+            List<String> lis = new List<string>();
+            foreach (var item in storeList)
+            {
+                lis.Add(item.名称);
+
+            }
+            return lis;
+
+        }
+
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private void SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                employeeID = employees.ID;
+                employeeName = employees.姓名;
+                store = employees.店铺;
+                storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+            }
+        }
+    }
+}

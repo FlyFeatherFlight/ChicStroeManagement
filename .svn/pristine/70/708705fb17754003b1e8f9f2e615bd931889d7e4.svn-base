@@ -1,0 +1,97 @@
+﻿@model  List<ChicStoreManagement.WEB.ViewModel.CustomerExceptedBuyModel>
+
+    <title>预购信息</title>
+
+    <script>
+       
+        function edit(otr) {
+            document.getElementById("edit").style.display = "block";
+            var rows = otr.parentNode.parentNode.rowIndex;
+            var id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
+           
+            var receptionid = $("#product tr:eq(" + rows + ") td:eq(1)").html();
+           
+            var product = $("#product tr:eq(" + rows + ") td:eq(3)").html();
+            var remarks = $("#product tr:eq(" + rows + ") td:eq(4)").html();
+            $("#editid").val(id);
+            $("#editreception").val(receptionid);
+            $("#editproduct").val(product);
+            $("#editremark").val(remarks);
+        }
+        function del(otr) {
+            var rows = otr.parentNode.parentNode.rowIndex;
+            var Id = $("#product tr:eq(" + rows + ") td:eq(0)").html();
+            var receptionid = $("#product tr:eq(" + rows + ") td:eq(1)").html();
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("DelExceptedBuyAction", "Customer")',
+            data: { ExceptedBuyID: Id, receptionId: receptionid},
+            datatype: "json",
+            async: true,//异步
+                success: function (data) {
+                    alert("删除成功！");
+                    var tr = otr.parentNode.parentNode;
+                    var tb = tr.parentNode;
+                    tb.removeChild(tr);
+                    
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("系统繁忙！");
+            }
+
+        });
+        }
+    </script>
+
+
+    <div class="body-content" id="exinfo">
+        <h3>@ViewBag.CustomerName 的预购信息</h3>
+        <div class="table-responsive">
+
+            @Html.ActionLink("添加预购信息", "AddExceptedBuyView", new { receptionid = @ViewBag.receptionid, @class = "form-control", @Style = "font-size:12px" })
+            <hr />
+            <table id="product"  class="table table-hover table-bordered">
+                <tr>
+                    <th>接待记录ID</th>
+                    <th>空间</th>
+                    <th>商品型号</th>
+                    <th>备注</th>
+                    <th>操作</th>
+
+                </tr>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td style="display:none">@item.ID</td>
+                    <td>@item.接待</td>
+                    <td>@item.空间</td>
+                    <td>@item.型号</td>
+
+                    <td>@item.备注</td>
+                    <td><a href="javascript:;" onclick="edit(this)">编辑</a>|<a href="javascript:;" onclick="del(this)">删除</a></td>
+                </tr>
+                }
+            </table>
+
+            <div id="edit" style="display:none" class="form-group">
+                <h3>修改</h3>
+                <form action="@Url.Action("UpdateExceptedBuyAction", "Customer")" method="POST">
+                    Id:<input name="id" id="editid" class="form-control" readonly="readonly" />
+                    接待id:<input name="接待" id="editreception" value="@ViewBag.receptionid" readonly="readonly" class="form-control" />
+                    空间：<select name="空间"><option value='客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select>
+                    商品型号:@Html.DropDownList("型号", ViewBag.ProductOptions as IEnumerable<SelectListItem>, new { @class = "form-control" ,@id= "editproduct" })
+                    备注:<input name="备注" id="editremark" class="form-control" />
+                    <button type="submit" class="btn">提交</button>
+                </form>
+                <hr />
+            </div>
+          
+            <br />
+            <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+            <hr />
+        </div>
+
+        <footer>
+            <p>&copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
+        </footer>
+    </div>

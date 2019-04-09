@@ -1,0 +1,70 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.TrackGoalsViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "EmploeesGoalApplyView";
+   
+}
+<script type="text/javascript">
+    function valId(keyword) {
+        var idVal = $(keyword).parent().siblings("td:eq(7)").text();
+        var emVal = $(keyword).parent().siblings("td:eq(8)").text();
+        var passVal = $(keyword).val()
+        $.ajax({
+            type: "post",
+            url: "EditEmploeesGoal",
+            dataType: "json",
+            data: { id: idVal, emid: emVal, result: passVal },
+            async: true,
+            success: function () {
+                alert("操作成功！");
+            }
+            
+        })
+
+    }
+</script>
+<form method="post" action="@Url.Action("EmploessGoalApplyView")">
+    <div>
+        <label>通过员工姓名查找</label>
+        <input type="text" name="searchString" />
+        <button type="submit">查询</button>
+    </div>
+</form>
+<table class="table table-bordered table-hover"style="text-align:center">
+    <tr>
+        <td>店铺</td>
+        <td>员工姓名</td>
+        <td>申请跟进数</td>
+        <td>审核状态</td>
+        <td>备注</td>
+        <td>更新人</td>
+        <td>更新日期</td>
+        <td>审批</td>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.店铺</td>
+            <td>@item.员工姓名</td>
+            <td>@item.申请跟进数</td>
+            <td>@item.审核状态</td>
+            <td>@item.备注</td>
+            <td>@item.更新人</td>
+            <td>@item.更新日期</td>
+            <td style="display:none;">@item.ID</td>
+            <td style="display:none;">@item.员工ID</td>
+            <td>
+                <input type="radio" name="pass" value="1" onclick="valId(this)" />
+                <label>通过</label>
+                <input type="radio" name="pass" value="0" onclick="valId(this)" />
+                <label>驳回</label>
+            </td>
+
+        </tr>
+    }
+</table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("EmploeesGoalApplyView", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+<hr />
+

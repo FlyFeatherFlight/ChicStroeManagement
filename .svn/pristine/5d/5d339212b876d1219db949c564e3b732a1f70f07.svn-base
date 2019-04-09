@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Store - CHIC CASA</title>
+    <script src="~/Scripts/laydate/laydate.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/style - 副本.css" rel="stylesheet" />
+    <link href="~/Content/custom.css" rel="stylesheet" />
+
+    <style>
+
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+
+        /*.row1 {
+            display: table;
+            height: 92%;
+        }*/
+
+        /*[class*="col-"] {
+            float: none;
+            display: table-cell;
+            vertical-align: top;
+        }*/
+
+
+
+        .demo {
+            width: 100%;
+            border: 1px solid #333;
+            background-color: #333;
+        }
+
+
+        .tb1 {
+            width: 100%;
+            height: 100%;
+        }
+
+        .tb1-text {
+            font-family: 'Microsoft YaHei';
+        }
+
+        i.nav_icon {
+            color: #999;
+            padding: 15px;
+            width: 44px;
+            height: 44px;
+        }
+
+        .hvr-bounce-to-right {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+            -webkit-transition-property: color;
+            transition-property: color;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+        }
+
+        span.textsize {
+            font-size: 14px;
+            font-family: 'Microsoft YaHei';
+        }
+    </style>
+</head>
+<body>
+    @*<div class="container-fluid">*@
+    <div class="row">
+        <div class="navbar navbar-inverse nav-stacked navbar-fixed-top col-xs-12" id="fir">
+            <div class="container-fluid">
+                <div class="nav navbar-nav navbar-left " style=" background-color:orangered">
+                    @Html.ActionLink("CHIC CASA", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="nav navbar-nav navbar-right">
+
+                    <a href="#" style="font-size: 16px;">
+                        <i class="fa fa-home"></i> @ViewBag.Store <br />    <br /><i class="fa fa-user-circle"></i> @ViewBag.Employee &nbsp;&nbsp;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-responsive tb1 tb1-text">
+        <tr>
+            <td width="280px" height="95%" valign="top" style="background-color:white">
+                @*<div class="col-xs-1">*@
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav in">
+                            <li>
+                                <a href="@Url.Action("Index","Home")" class="hvr-bounce-to-right active">
+                                    <i class="fa fa-home nav_icon"></i>
+                                    <span class="navbar-link textsize">首页</span>
+                                </a>
+                            </li>
+                            @*<li>@Html.ActionLink("关于", "About", "Home")</li>
+                                <li>@Html.ActionLink("联系方式", "Contact", "Home")</li>*@
+                            @if (ViewBag.IsEmployee == true)
+                            {
+
+                                <li>
+                                    <a href="@Url.Action("CustomerIndex","Customer")" class=" hvr-bounce-to-right">
+                                        <i class="fa fa-user nav_icon"></i>
+                                        <span class="navbar-link textsize"> 客户信息管理</span>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    @*@Html.ActionLink("意向跟进日志", "TrackLogIndex", "CustomerTrackLog", new { id = 0 }, new { })*@
+                                    <a href="@Url.Action("TrackLogIndex","CustomerTrackLog", new { id = 0 })" class=" hvr-bounce-to-right">
+                                        <i class="fa fa-tasks nav_icon"></i>
+                                        <span class="navbar-link textsize"> 意向跟进日志</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    @*@Html.ActionLink("设计案管理", "DesignSchemeIndex", "DesignScheme", new { id = 0 }, new { })*@
+                                    <a href="@Url.Action("DesignSchemeIndex","DesignScheme",new {id = 0 })" class=" hvr-bounce-to-right">
+                                        <i class="fa fa-cube nav_icon"></i>
+                                        <span class="navbar-link textsize">设计案管理</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (ViewBag.IsDesigner == true)
+                            {
+                                <li class="">
+                                    <a href="#DesignerSetting" class="hvr-bounce-to-right collapsed" data-toggle="collapse">
+                                        <b>
+                                            <i class="fa fa-cubes nav_icon"></i>
+
+
+                                            <span class="navbar-link textsize">设计审查</span>
+
+                                            <span class=" fa fa-sliders" style="font-size:16px;vertical-align:text-top"></span>
+                                        </b>
+                                    </a>
+                                    <ul id="DesignerSetting" class="nav nav-second-level collapse">
+                                        <li>
+                                            <a href="@Url.Action("DesignApplyExamineIndex", "DesignerExamine")" class="hvr-bounce-to-right">
+                                                &nbsp;&nbsp; &nbsp;&nbsp;   <i class="fa fa-check-square-o nav_icon"></i>
+                                                <span class="navbar-link textsize">设计案申请审查</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("DesignResultExamineIndex", "DesignerExamine")" class="hvr-bounce-to-right">
+                                                &nbsp;&nbsp; &nbsp;&nbsp;  <i class="fa fa-check-square nav_icon"></i>
+                                                <span class="navbar-link textsize">设计案完结审查</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
+
+
+                            @if (ViewBag.IsManager == true)
+                            {
+
+                                <li>
+                                    <a href="#ManagerSetting" class="hvr-bounce-to-right collapsed" data-toggle="collapse">
+                                        <b>
+                                            <i class="fa fa-indent nav_icon"></i>
+                                            <span class="navbar-link textsize">店长管理</span>
+                                            <span class="fa fa-sliders" style="font-size:16px;vertical-align:text-top"></span>
+                                        </b>
+                                    </a>
+                                    <ul id="ManagerSetting" class="nav nav-second-level collapse">
+                                        <li>
+                                            @*@Html.ActionLink("注销", "SignOut", "LogIn")*@
+                                            <a href="@Url.Action("Index","Manager")" class="hvr-bounce-to-right">
+                                                &nbsp;&nbsp; &nbsp;&nbsp;   <i class="fa fa-cog nav_icon"></i>
+                                                <span class="navbar-link textsize">店长审查</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+
+                            <li>
+                                <a href="#systemSetting" class="hvr-bounce-to-right collapsed" data-toggle="collapse">
+                                    <b>
+                                        <i class="glyphicon glyphicon-cog nav_icon"></i>
+                                        <span class="navbar-link textsize">系统设置</span>
+                                        <span class="fa fa-sliders" style="font-size:16px;vertical-align:text-top"></span>
+
+                                </a>
+                                <ul id="systemSetting" class="nav nav-second-level collapse">
+                                    <li id="logOut">
+                                        @*@Html.ActionLink("注销", "SignOut", "LogIn")*@
+                                        <a href="@Url.Action("SignOut","LogIn")" class="hvr-bounce-to-right">
+                                            &nbsp;&nbsp; &nbsp;&nbsp;<i class="fa fa-sign-out nav_icon"></i>
+                                            <span class="navbar-link textsize">注销</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                @*</div>*@
+            </td>
+            <td valign="top" style="background-color:#F3F3F4">
+                @*<div class="col-xs-11">*@
+                <div>
+                    <br />
+                    @RenderBody()
+                    <br />
+                    <br />
+                    @*</div>*@
+
+
+                    <hr class="hidden-sm hidden-md hidden-lg">
+                    @*</div>*@
+                </div>
+            </td>
+        </tr>
+
+        @*<div class="col-md-12" style="background-color:#333">*@
+        <tr>
+            <td colspan="2" style="background-color:white">
+                <div class="copy">
+                    <p>Copyright &copy; @DateTime.Now.Year - CHIC CASA CRM.至尚至美信息部</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+   
+</body>
+</html>

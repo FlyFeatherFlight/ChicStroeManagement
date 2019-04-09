@@ -1,0 +1,120 @@
+﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.WEB.ViewModel;
+using System;
+using EncryptionHelper;
+using System.Web.Mvc;
+
+namespace ChicStoreManagement.WEB.Controllers
+{
+    public class AccountSelfController : Controller
+    {
+        private IStoreEmployeesBLL storeEmployeesBLL;
+
+        public AccountSelfController(IStoreEmployeesBLL storeEmployeesBLL)
+        {
+            this.storeEmployeesBLL = storeEmployeesBLL ?? throw new ArgumentNullException(nameof(storeEmployeesBLL));
+        }
+
+        // GET: AccountSelf
+        public ActionResult Index()
+        {
+            var model = SetEmployee();
+            return View(model);
+        }
+
+        /// <summary>
+        /// 修改用户信息页
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EditAccountInfoView() {
+           var model= BuildSelfInfo();
+            ViewBag.IsManager = model.是否店长;
+            ViewBag.IsDesigner = model.是否设计师;
+            ViewBag.IsEmployee = model.是否销售;
+            ViewBag.Store = model.店铺;
+            ViewBag.Employee = model.姓名;
+            ViewBag.EmployeesID = model.ID;
+
+            var selfInfo = BuildSelfInfo();
+            return View(selfInfo);
+
+        }
+        /// <summary>
+        /// 用户修改密码
+        /// </summary>
+        /// <param name="pw">密码</param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EditAccountInfo(int id,string pw) {
+            if (Session["method"].ToString() == "Y")
+            {
+                string str = string.Format("<script>alert('重复操作！');parent.location.href='CustomerIndex';</script>");
+                return Content(str);
+            }
+            var password = MD5Helper.MD5Encrypt(pw);
+            var model = storeEmployeesBLL.GetModel(p => p.ID == id);
+            model.密码 = pw;
+            try
+            {
+                string[] property = new string[1];
+                property[0] = "密码";
+               
+                storeEmployeesBLL.Modify(model, property);
+            }
+            catch (Exception e)
+            {
+
+                return Json("违规操作！");
+            }
+
+            return RedirectToAction("Index");
+        }
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private Employees SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            Employees model = new Employees();
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                model = employees;
+              
+                
+                //storeID = storeBLL.GetModel(p => p.名称 == store).ID;
+                //positionID = storeEmployeesBLL.GetModel(p => p.ID == employeeID).职务ID;
+            }
+            return model;
+        }
+
+
+
+        private Employees BuildSelfInfo() {
+            var model = SetEmployee();
+            if (model.ID==0||model.停用标志==true)
+            {
+                return null;
+            }
+            var seleinfo = storeEmployeesBLL.GetModel(p => p.ID == model.ID);
+            Employees employees = new Employees();
+            employees.ID = seleinfo.ID;
+            employees.停用标志 = seleinfo.停用标志;
+            employees.姓名 = seleinfo.姓名;
+            employees.店铺 = model.店铺;
+            employees.性别 = seleinfo.性别;
+            employees.是否店长 = seleinfo.是否店长;
+            employees.是否设计师 = seleinfo.是否设计师;
+            employees.是否销售 = seleinfo.是否销售;
+            employees.等级 = seleinfo.等级;
+            employees.编号 = seleinfo.编号;
+            employees.职务 = model.职务;
+            employees.联系方式 = seleinfo.联系方式;
+            employees.跟进目标数 = seleinfo.跟进目标计划数;
+            return employees;
+        }
+
+  
+    }
+}

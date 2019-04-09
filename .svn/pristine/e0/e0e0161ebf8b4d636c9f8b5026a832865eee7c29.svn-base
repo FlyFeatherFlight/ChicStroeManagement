@@ -1,0 +1,78 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.Employees
+
+@{
+    ViewBag.Title = "EditAccountInfoView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h3>修改信息</h3>
+</div>
+<form action="@Url.Action("EditAccountInfo","AccountSelf")" method="POST">
+    <table style="margin:auto; width: 500px; text-align: center;background-color: #eee; border-radius:8px; height: 400px;">
+        <tr>
+            <td>店铺</td>
+            <td>@Model.店铺</td>
+        </tr>
+        <tr>
+            <td>编号</td>
+            <td>@Model.编号</td>
+        </tr>
+        <tr>
+            <td>姓名</td>
+            <td>@Model.姓名</td>
+        </tr>
+        <tr>
+            <td>性别</td>
+            <td>@Model.性别</td>
+        </tr>
+
+        <tr>
+            <td>职务</td>
+            <td>@Model.职务</td>
+        </tr>
+        <tr>
+            <td> 联系方式</td>
+            <td>@Model.联系方式</td>
+        </tr>
+
+        <tr>
+            <td>停用标志</td>
+            <td>@Model.停用标志</td>
+        </tr>
+        <tr>
+            <td>跟进目标数</td>
+            <td>@Model.跟进目标数</td>
+        </tr>
+
+        <tr>
+            <td>是否销售</td>
+            <td>@Model.是否销售</td>
+        </tr>
+        <tr>
+            <td>是否设计师</td>
+            <td>@Model.是否设计师</td>
+        </tr>
+        <tr>
+            <td>是否店长</td>
+            <td>@Model.是否店长</td>
+        </tr>
+        <tr>
+            <td>等级</td>
+            <td>@Model.等级</td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td><input type="text" name="pw" class="form-control" style=" width: 80%" /></td>
+        </tr>
+        <tr style="display:none;">
+            <td><input type="text" name="id" value="@Model.ID"/></td>
+        </tr>
+
+    </table>
+    <div class="submit-btns" style="margin-top:15px;">
+        <input type="submit" value="提交" />
+        <input type="button" value="取消" />
+    </div>
+</form>
+

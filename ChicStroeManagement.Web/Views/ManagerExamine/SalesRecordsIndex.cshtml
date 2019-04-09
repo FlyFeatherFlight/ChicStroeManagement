@@ -1,0 +1,142 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel>
+
+@{
+    ViewBag.Title = "SalesRecordsIndex";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>SalesRecordsIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.销售日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售单号)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.合同单号)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.折扣)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.订库样)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售人员ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售人员)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单人员ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单人员)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新人ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待记录ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.是否全款)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户姓名)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户联系方式)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售单号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.合同单号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.折扣)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.订库样)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售人员ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售人员)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单人员ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单人员)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新人ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待记录ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.是否全款)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户姓名)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户联系方式)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

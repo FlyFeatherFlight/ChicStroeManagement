@@ -1,0 +1,266 @@
+﻿
+@{
+    ViewBag.Title = "客户审查";
+
+}
+
+<style>
+    form {
+        display: inline-block;
+    }
+    .spanA {
+        color: #337ab7;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    .spanA:hover {
+        color: #23527c;
+    }
+    .mask {
+        background:#fff;
+        width:100%;
+        height:100%;
+        text-align:center;
+    }
+</style>
+<h3>客户审查</h3>
+<hr />
+
+<form id="searchTab">
+   
+    <table>
+        <tr>
+            <td>
+                <select name="EmployeeID" class="form-control" id="storeMan">
+                    <option value="" class="active">请选择员工</option>
+                </select>
+            </td>
+            <td>
+
+                <div class="input-group " id="startDate">
+
+                    <input type="text" name="startDate" class="form-control" placeholder="请选择开始时间" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+
+                </div>
+            </td>
+            <td>
+                至
+            </td>
+            <td>
+                <div class="input-group " id="endTime">
+
+                    <input type="text" name="EndDate" class="form-control" placeholder="请选结束时间" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+
+                </div>
+
+            </td>
+            <td>
+                <span>有意向</span>
+                <input type="checkbox" name="IsExcept" value=true />
+                <span>已成交</span>
+                <input type="checkbox" name="IsDeal" value=true />
+                <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="searchTab()" />
+                <input type="button" name="" value="导出本页数据" onclick="Excel_export()" style="font-size: 14px;color: #333;" />
+            </td>
+        </tr>
+    </table>
+   
+</form>
+<form id="searchR">
+    
+    @Html.TextBox("SearchString", ViewBag.CustomerExamineCurrentFilter as string, new { @class = "form-control width-200", placeholder = "根据客户电话查询" })
+    <input type="button" value="查询" style="font-size:14px;color:#333;" onclick="searchR()"/>
+
+    <span>
+        @Html.ActionLink("跟进日志", "CustomerTrackLogExamineView", new { })
+    </span>
+</form>
+<div class="table-responsive">
+    <pre style="color:red"> 如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</pre>
+    <hr />
+   
+       @*<div class="table-responsive">*@
+           
+           <table class="table table-hover table-bordered" id="Table" >
+               <thead>
+                   <tr>
+                       @*<th style="display:none">
+                ID
+            </th>*@
+                       <th>@Html.ActionLink("接待日期", "CustomerExamineView", new { sortOrder = ViewBag.CustomerExamineID })</th>
+                       <th>客户姓名</th>
+                       <th>性别</th>
+                       <th>客户电话</th>
+                       <th>社交软件</th>
+                       <th>来店次数</th>
+                       <th>接待人</th>
+                       <th>@Html.ActionLink("跟进人", "CustomerExamineView", new { sortOrder = ViewBag.CustomerExamineTrackingResult })</th>
+                       <th>是否有意向</th>
+                       <th width="10%">操作</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   <tr class="mask-tr"><td colspan="10"> <div class="mask">正在加载...</div></td></tr>
+               </tbody>
+          
+           </table>
+          
+           @*</div>*@
+
+     <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+</div>
+<script>
+    loadTable('');
+    var mID = '';
+    //加载员工数据
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        data: {},
+        dataType: 'json',
+        cache: false,
+        async: true,
+        success: function (data) {
+            console.log(data)
+            $("#storeMan").append("<option value=''>全部</option>");
+            $(data).each(function (i,m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常！")
+            console.log(err)
+        }
+    })
+    //获取选中的文本
+    $("#storeMan").change(function () {
+        var Jopts = $("#storeMan");
+        var value = Jopts.val();//这个值就是你获取的值;
+        if (value != "") {
+            for (var i = 0; i < Jopts.find("option").length; i++) {
+                if (value == Jopts.find("option")[i].value) {
+                    console.log(Jopts.find("option")[i]);
+                    if ($(Jopts.find("option")[i]).hasClass("active")) {
+                        return;
+                    } else {
+                        $(Jopts.find("option")[i]).siblings().removeClass("active")
+                        $(Jopts.find("option")[i]).addClass("active");
+
+                    }
+                    break;
+                }
+            }
+        }
+    })
+    //导出表格
+    function Excel_export() {
+        var str = '';
+      
+        if ($("#storeMan").val() != "" && $("#startDate").val() != "" && $("#endDate").val() != "") {
+            str = $("#storeMan").find(".active").text() + "-" + $("#startDate").val() + "至" + ("#endDate").val();
+            btn_export(str);
+            return;
+        }
+        //if ($("#storeMan").val() == null || $("#storeMan").val() == "") {
+        //    str = $("#storeMan").find("option.active").text();
+        //    btn_export(str);
+        //    return;
+        //}
+        if ($("#storeMan").val() != "") {
+            str = "店员"+$("#storeMan").find(".active").text();
+            btn_export(str);
+            return;
+        }
+        btn_export("客户信息");
+    }
+    //组合查询
+    function searchTab() {
+        //$("#searchTab").submit();
+        loadTable($("#searchTab").serialize());
+    }
+    //电话查询
+    function searchR() {
+        //$("#searchR").submit();
+        loadTable($("#searchR").serialize());
+    }
+
+    //加载页面数据
+    function loadTable(formData) { 
+        //$("#Table").empty();
+     $.ajax({
+        url: '@Url.Action("CustomerExamineView", "ManagerExamine")',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        async: true,
+         success: function (data) {
+             console.log(data)
+             $("#Table tbody").empty();
+             var htmlStr = '';
+             $(data).each(function (i, m) {
+                 mID = m.ID;
+                 m.接待日期 = new Date(parseInt(m.接待日期.substr(6, 13))).toLocaleDateString();
+                 htmlStr = "<tr><td>" + m.接待日期 + "</td><td>" + m.客户姓名 + "</td><td>" + m.性别 + "</td><td>" + m.客户电话 + "</td><td>" + m.社交软件 + "</td><td>" + m.来店次数 + "</td><td>" + m.接待人 + "</td><td>" + m.跟进人 + "</td>"
+                 if (m.是否有意向 == true) {
+                     htmlStr+="<td>是</td>"
+
+                     if (m.跟进人 != null) {
+
+                         htmlStr += "<td><span class='spanA' onclick='editFollowMan(" + m.ID + ")'>修改跟进人</span></td>"
+                     } else {
+                         htmlStr +="<td><span class='spanA' onclick='assignFollowMan(" + m.ID + ")'>指定跟进人</span></td>"
+                     }
+
+
+
+                 } else if (m.是否有意向 == false) {
+
+                     htmlStr+="<td>否</td>"
+
+                 } else {
+                     htmlStr +="<td>待定</td><td><span>无操作</span></td></tr >"
+                 }
+                 $("#Table tbody").append(htmlStr);
+
+             })
+             $(".mask-tr").css("display","none");
+            // console.log(htmlStr)
+         },
+               
+        error: function (err) {
+            alert("点击过快或网络异常！")
+            console.log(err)
+        }
+        })
+    }
+    //时间控件
+    $("#startDate").datetimepicker({
+
+        format: 'YYYY-MM-DD HH:mm',
+        locale: moment.locale('zh-cn'),
+        showClose: true
+
+    });
+    $("#endTime").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm',
+        locale: moment.locale('zh-cn'),
+        showClose: true
+    });
+    // 修改跟进人
+    function editFollowMan(id) {
+        window.location.href = "@Url.Action("CustomerTrackCustomerEditView", "ManagerExamine")?id=" + id;
+    }
+    //指定跟进人
+    function assignFollowMan(id) {
+         window.location.href = "@Url.Action("CustomerTrackCustomerEditView", "ManagerExamine")?id=" + id;
+       
+    }
+</script>

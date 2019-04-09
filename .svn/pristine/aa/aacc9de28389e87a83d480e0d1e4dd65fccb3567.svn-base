@@ -1,0 +1,9 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.Employees
+
+@{
+    ViewBag.Title = "EditAccountInfoView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditAccountInfoView</h2>
+

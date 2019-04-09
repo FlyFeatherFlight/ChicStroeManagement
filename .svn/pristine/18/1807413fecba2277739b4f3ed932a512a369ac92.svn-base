@@ -1,0 +1,132 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @model ChicStoreManagement.WEB.ViewModel.Employees
+    @{
+        ViewBag.Title = "CHIC门店管理登录页面";
+        Layout = "";
+    }
+    <link href="~/Content/Loader.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/jqueryui")
+    <script type="text/javascript">
+        // 等待所有加载
+        $(window).on("load", function () {
+            $('body').addClass('loaded');
+            $('#loader-wrapper .load_title').remove();
+        });
+    </script>
+    <style>
+        .login-topStyle {
+            color: #ffffff;
+            left:90%;
+            top:10%;
+            position: absolute;
+            margin: 0px auto;
+        }
+
+        .login-topStyle3 {
+            background: url(../../images/login_back.png) center center repeat;
+            width: 300px;
+            height: 400px;
+            overflow: hidden;
+            top: 34px;
+            right: 50px;
+            position: absolute;
+            border-radius: 5px;
+            padding: 22px 30px;
+            text-align: left;
+        }
+        .login_reme {
+            padding-bottom: 8px;
+            margin-top: 20px 0;
+           
+        }
+            .login_reme a.reme1 {
+                font-size: 12px;
+                line-height: 18px;
+                vertical-align: top;
+              
+            }
+
+
+      
+        body {
+            /*background-color:dodgerblue;*/
+            background-image: url(../../images/log_in_back.jpg);
+           background-repeat:no-repeat;
+           background-size:100%,100%;
+        }
+        .p1 {
+            color: white;
+        }
+        .f1 {
+        
+        position:absolute;
+        right:10%;
+        top:95%;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+        <div class="load_title">正在加载ChicCasa-CRM <br><span>V1.0</span></div>
+    </div>
+    @*<div class="jumbotron">
+            <h1>CHIC</h1>
+
+            <p>Chic Casa 希可家居</p>
+
+        </div>*@
+    <div class="login-topStyle">
+
+        <!--在点击注册时出现样式login-topStyle3登录框，而login-topStyle2则消失-->
+        <div class="login-topStyle3" id="loginStyle" style="margin-top: 75px;">
+            <h3 style="text-align:center">用户登录</h3>
+            <!--输入错误提示信息，默认是隐藏的，把display:none，变成block可看到-->
+          <br />
+            @using (Html.BeginForm("Login", "LogIn", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                
+                
+                <div class="form-group">
+                    <input type="text" name="编号" class="form-control" placeholder="用户名/手机号/密码"/>
+                    <i class="fa fa-user"></i>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="password" name="密码" class="form-control" placeholder="请输入密码"/>
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="form-group"><label style="color:red;font-size:medium">@TempData["msg"]</label></div>
+                <div class="login_reme">
+                    <a class="reme1">忘记账号?</a>
+                </div>
+                <br />
+                <div style="text-align:center">
+                    <input type="submit" name="submit" value="立即登录"  class="btn btn-primary btn-large" />
+                </div>
+            }
+        </div>
+        </div>
+        <div class="f1">
+            <footer>
+                <div class="p1">
+                    <p>Copyright &copy; @DateTime.Now.Year -CHIC店面管理系统 by至尚至美信息部</p>
+                </div>
+            </footer>
+        </div>
+</body>
+</html>

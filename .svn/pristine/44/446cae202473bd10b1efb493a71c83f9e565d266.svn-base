@@ -1,0 +1,363 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+@{
+    ViewBag.Title = "接待详细";
+}
+
+
+
+<div class="container table-responsive">
+    <h3>@Model.客户姓名 详细信息</h3>
+    @if (Model.是否有意向 != false && Model.是否有意向 != null)
+    {
+        if (Model.跟进人 == null)
+        {
+            <label style="font-size:10px;color:red">当前客户无跟进人</label>
+        }
+        else
+        {
+            @Html.ActionLink("直接申请设计案", "DesignSchemeIndex", "DesignScheme", new { id = Model.ID }, new { @style = "font-size:12px" })
+        }
+    }
+
+    <div style="text-align:center">
+        <pre>
+         店铺：@Html.DisplayFor(m => Model.店铺)
+         接待人： @Html.DisplayFor(m => Model.接待人)
+         接待编号：@Html.DisplayFor(m => Model.接待序号)
+         进店时间：@Html.DisplayFor(m => Model.进店时间)
+         离店时间： @Html.DisplayFor(m => Model.出店时间)
+         时长：@Html.DisplayFor(m => Model.进店时长)分钟
+         客户类别：@Html.DisplayFor(m => Model.客户类别)</pre>
+    </div>
+    <table class="table table-bordered table-striped ">
+
+        <tr>
+            <td width="12%">
+                <label>客户名</label>
+            </td>
+            <td width="88%" colspan="4">
+                @Html.DisplayFor(m => Model.客户姓名)
+
+
+                |  @Html.DisplayFor(m => Model.性别)
+
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label>来店次数</label>
+            </td>
+            <td colspan="4"> @Html.DisplayFor(m => Model.来店次数)</td>
+
+
+        </tr>
+        <tr>
+            <td><label>年龄段</label></td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.年龄段)
+            </td>
+        </tr>
+        <tr>
+            <td><label>职业</label></td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.客户职业)
+            </td>
+        </tr>
+        <tr>
+            <td><label>着装</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.客户着装)</td>
+        </tr>
+        <tr>
+            <td>
+                <label>联系电话</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.客户电话)
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>社交软件</label></td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.社交软件)
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>客户类型</label></td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.客户类型)
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label>客户来源</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.客户来源)
+            </td>
+        </tr>
+        <tr>
+            <td><label>客户的目的</label></td>
+            <td colspan="4">@Model.目的</td>
+        </tr>
+        <tr>
+            <td><label>同行人</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.同行人)</td>
+        </tr>
+        <tr>
+            <td><label>主导者</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.主导者)</td>
+        </tr>
+        <tr>
+            <td><label>主导者喜好风格</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.主导者喜好风格)</td>
+        </tr>
+        <tr>
+            <td><label>家庭成员</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.家庭成员)</td>
+        </tr>
+        <tr>
+            <td><label>特征</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.特征)</td>
+        </tr>
+        <tr>
+            <td><label>客户喜欢的产品</label></td>
+            <td colspan="4">@Model.喜欢产品</td>
+        </tr>
+        <tr>
+            <td>
+                <label>客户喜欢产品的元素</label>
+            </td>
+            <td colspan="4">@Model.喜欢元素</td>
+        </tr>
+        <tr>
+            <td><label>客户不喜欢产品</label></td>
+            <td colspan="4">@Model.不喜欢产品</td>
+        </tr>
+        <tr>
+            <td><label>客户不喜欢产品元素</label></td>
+            <td colspan="4">@Model.不喜欢元素</td>
+        </tr>
+        <tr>
+            <td><label>使用的空间</label></td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.使用空间) </ td >
+        </tr>
+        <tr>
+            <td><label>户型大小</label></td>
+            <td colspan="4">@Model.户型大小</td>
+        </tr>
+        <tr>
+            <td>
+                <label>装修情况</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.装修情况) &nbsp; |
+                @if (@Model.装修情况 != null)
+                {
+                    /**/
+                    <b>进度 </b> @Html.DisplayFor(m => Model.装修进度);
+
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>装修风格</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.装修风格)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>预计使用时间</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.预计使用时间)
+            </td>
+        </tr>
+        @*/////////////////////////////////////////////////////*@
+        <tr>
+            <td>
+                <label>如何得知品牌</label>
+            </td>
+            <td colspan="4"> @Html.DisplayFor(m => Model.如何得知品牌)</td>
+        </tr>
+        <tr>
+            <td><label>比较品牌</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.比较品牌)</td>
+        </tr>
+
+        <tr>
+            <td><label>比较品牌产品</label></td>
+            <td colspan="4">@Model.比较品牌产品</td>
+        </tr>
+        <tr>
+            <td><label>比较产品备注</label></td>
+            <td colspan="4">@Model.比较品牌产品备注</td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center"><label>客户预算</label></td>
+        </tr>
+        <tr>
+            <td rowspan="2" id="font-stand1" class="font-stand">
+                <label>客厅预算</label>
+            </td>
+            <td style="width:13%;"><label>家具类型</label></td>
+            <td>@Model.客厅预算家具</td>
+            <td style="width:13%;"><label>客厅预算金额</label></td>
+            <td>@Model.客厅预算金额</td>
+        </tr>
+        <tr>
+            <td><label>客厅预算备注</label></td>
+            <td colspan="3">@Model.客厅预算备注</td>
+        </tr>
+        <tr>
+            <td rowspan="2" id="font-stand2" class="font-stand">
+                <label><label>餐厅预算</label></label>
+            </td>
+            <td><label>家具类型</label></td>
+            <td>@Model.餐厅预算家具</td>
+            <td><label>餐厅预算金额</label></td>
+            <td>@Model.餐厅预算金额</td>
+        </tr>
+        <tr>
+            <td><label>餐厅预算备注</label></td>
+            <td colspan="3">@Model.餐厅预算备注</td>
+        </tr>
+        <tr>
+            <td rowspan="2" id="font-stand3" class="font-stand">
+                <label>卧室预算</label>
+            </td>
+            <td><label>家具类型</label></td>
+            <td>@Model.主卧预算家具</td>
+            <td><label>卧室预算金额</label></td>
+            <td>@Model.主卧预算金额</td>
+        </tr>
+        <tr>
+            <td><label>卧室预算备注</label></td>
+            <td colspan="3">@Model.主卧预算备注</td>
+        </tr>
+        <tr>
+            <td rowspan="2" id="font-stand4" class="font-stand">
+                <label>其它空间</label>
+            </td>
+            <td><label>家具类型</label></td>
+            <td>@Model.其它空间家具</td>
+            <td><label>其它空间预算金额</label></td>
+            <td>@Model.其它空间预算</td>
+        </tr>
+        <tr>
+            <td><label>其它空间预算备注</label></td>
+            <td colspan="3">@Model.其它空间备注</td>
+        </tr>
+        <tr>
+            <td colspan="5"><label>预算总共金额</label> @Html.DisplayFor(m => Model.预算金额)</td>
+        </tr>
+
+        <tr>
+            <td id="font-stand5" class="font-stand">
+                <label>预计购买的产品</label>                               
+            </td>
+
+
+            <td align="center" colspan="4">
+                <table class="table table-responsive  ">
+                    <tr>
+                        <th>空间</th>
+                        <th>型号</th>
+                        <th>备注</th>
+
+                    </tr>
+                    @foreach (var ite in @Model.CustomerExceptedBuyModels)
+                    {
+                        <tr>
+                            <td>空间 @ite.空间</td>
+                            <td>型号 @Html.DisplayFor(m => ite.型号)</td>
+                            <td>备注 @Html.DisplayFor(m => ite.备注)</td>
+                        </tr>
+                    }
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>购买产品的安装地址</label>
+            </td>
+            <td colspan="4">
+                @Html.DisplayFor(m => Model.安装地址)
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>预报价折扣</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.预报价折扣)</td>
+        </tr>
+        <tr>
+            <td><label>返点</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.返点)</td>
+        </tr>
+        <tr>
+            <td><label>设计师</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.设计师)</td>
+        </tr>
+
+        <tr>
+            <td>
+
+                <label>顾客建议</label>
+            </td>
+            <td width="200px" colspan="4">
+                @Html.DisplayFor(m => Model.客户建议)
+            </td>
+        </tr>
+        <tr>
+            <td><label>销售讲解</label></td>
+            <td colspan="4">@Model.销售讲解</td>
+        </tr>
+        <tr>
+            <td><label>是否有意向</label></td>
+            @if (Model.是否有意向 == true)
+            {
+                <td colspan="4">是</td>
+
+            }
+            @if (Model.是否有意向 == false)
+            {
+                <td colspan="4">否</td>
+
+            }
+            @*<td>@Html.DisplayFor(m => Model.是否有意向)</td>*@
+        </tr>
+        @if (Model.是否有意向 == true)
+        {
+            <tr>
+                <td><label>跟进人</label></td>
+                <td colspan="4">@Html.DisplayFor(m => Model.跟进人)</td>
+            </tr>
+        }
+
+        <tr>
+            <td><label>最后一次更新人</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.更新人)</td>
+        </tr>
+        <tr>
+            <td><label>更新时间</label></td>
+            <td colspan="4">@Html.DisplayFor(m => Model.更新日期)</td>
+        </tr>
+        <tr>
+            <td colspan="5" align="center">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID }) |@Html.ActionLink("修改客户预购", "ExceptedBuyIndex", new { id = Model.ID }) </td>
+        </tr>
+    </table>
+
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+    <br />
+    
+</div>
+

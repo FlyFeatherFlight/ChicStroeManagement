@@ -1,0 +1,450 @@
+﻿
+@{
+    ViewBag.Title = "添加客户意向产品信息";
+}
+
+<script>
+    //添加行
+    function addrow() {
+        var table = $("#tb");
+      @*var sd = JSON.parse(@Html.DropDownList("型号", ViewBag.AddProductOptions as IEnumerable<SelectListItem>));*@
+        var tr = $("<tr>" +
+            "<td style='display: none'><input type='text' name='设计提交案' value='@Model.设计提交案' class='form-control'readonly='readonly' />" +
+            "</td>" +
+            "<td onclick='selectfunc(this)'><select><option value= '客厅'>客厅</option><option value='餐厅'>餐厅</option><option value='卧室'>卧室</option></select><input type='text' name='空间' value='客厅' style='display:none' readonly='readonly'/></td>"+
+            "<td onclick='SetselectClassfiy(this)'>" +
+            "<select></selcet>" +
+            "<input type='text' name='分类' value=''style='display:none' readonly='readonly'/>" +
+            "</td>" +
+            "<td onclick='SetselectSeries(this)'>" +
+            "<select></selcet>" +
+            "<input type='text' name='系列' value=''style='display:none' readonly='readonly'/>" +
+            "</td>" +
+            "<td onclick='SetselectBrand(this)'>" +
+            "<select></selcet>" +
+            "<input type='text' name='品牌'  style='display:none' value=''readonly='readonly'/>" + "</td>" +
+            "<td onclick='SetselectNumber(this)'>" +
+            "<select ></selcet>" +
+            "<input type='text' name='编号' value=''style='display:none' readonly='readonly'/>" + "</td>" +
+            "<td><input type='text'id='product' name='产品' value=''class='form-control' readonly='readonly'style='width:100px'/>" +
+            "</td>" +
+            "<td><input type='text'id='size' name='尺寸' value=''class='form-control' readonly='readonly'style='width:120px'/>" +
+            "</td>" +
+            "<td><input type='text'id='unit' name='单位' value=''class='form-control' readonly='readonly'style='width:80px'/>" +
+            "</td>" +
+            "<td><input type='text' name='数量' value='' class='form-control' style='width:100px'/>" +
+            "</td>" +
+            "<td><input type='text' name='配置' value=''class='form-control'style='width:100px'/>" +
+            "</td>" +
+            "<td  align='center' onclick='deletetr(this)'><button type='button'  class='btn btn-xs btn-link' >" +
+            "删除" + "</button></td></tr>");
+        table.append(tr);
+    }
+    //删除当前行
+
+    function deletetr(otr) {
+        var td = $(otr);
+        var tr = otr.parentNode;
+        var tb = tr.parentNode;
+        tb.removeChild(tr);
+      
+    }
+
+    function selectfunc(otr) {
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex;
+        if (se[0].length > 0) {
+            if (index != null) {
+                otr.getElementsByTagName("input")[0].value = se[0].options[index].value;
+            }
+            else {
+                alert("程序异常！");
+            }
+        }
+    }
+
+    function SetselectClassfiy(otr) {
+
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+     
+        if (se[0].length > 0) {
+            if (index != null) {
+                var text = se[0].options[index].text; // 选中文本
+                var value = se[0].options[index].value; // 选中值
+                var tr = otr.parentNode;
+                var obj = tr.childNodes[5];
+                if (otr.getElementsByTagName("input")[0].value == "") {
+                    otr.getElementsByTagName("input")[0].value = value;
+                    return;
+                }
+               else if (otr.getElementsByTagName("input")[0].value != null &&  otr.getElementsByTagName("input")[0].value == value) {
+                    return;
+                    }
+
+                else if (obj.getElementsByTagName("select")[0].length > 0) {
+                        otr.getElementsByTagName("input")[0].value = value;
+                        refreshSelectNumber(obj);
+                    obj.getElementsByTagName("input")[0].value = "";
+                    tr.getElementsByTagName("input")[6].value = "";
+                    tr.getElementsByTagName("input")[7].value = "";
+                    tr.getElementsByTagName("input")[8].value = "";
+                    }
+                       
+                else {
+                    otr.getElementsByTagName("input")[0].value = value;
+                }
+                   
+                    return;
+                }
+                
+            }
+      
+        else {
+            $.ajax({
+                url: '@Url.Action("GetClassfiySelect", "DesignScheme")',
+                data: {},
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,//异步
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                },
+                error: function (err) {
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+
+                    window.location.reload();
+                },
+            })
+        }
+
+    }
+    function SetselectSeries(otr) {
+
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        if (se[0].length > 0) {
+            if (index != null) {
+                var text = se[0].options[index].text; // 选中文本
+                var value = se[0].options[index].value; // 选中值
+                var tr = otr.parentNode;
+                var obj = tr.childNodes[5];
+                if (otr.getElementsByTagName("input")[0].value == "") {
+                    otr.getElementsByTagName("input")[0].value = value;
+                    return;
+                }
+                else if (otr.getElementsByTagName("input")[0].value != null && otr.getElementsByTagName("input")[0].value == value) {
+                    return;
+                }
+
+                else if (obj.getElementsByTagName("select")[0].length > 0) {
+                    otr.getElementsByTagName("input")[0].value = value;
+                    refreshSelectNumber(obj);
+                    obj.getElementsByTagName("input")[0].value = "";
+                    tr.getElementsByTagName("input")[6].value = "";
+                    tr.getElementsByTagName("input")[7].value = "";
+                    tr.getElementsByTagName("input")[8].value = "";
+                }
+
+                else {
+                    otr.getElementsByTagName("input")[0].value = value;
+                }
+
+                return;
+            }
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("GetSeriesSelect", "DesignScheme")',
+                data: {},
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,//异步
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                },
+                error: function (err) {
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+
+                    window.location.reload();
+                },
+            })
+        }
+
+    }
+    function SetselectBrand(otr) {
+
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        if (se[0].length > 0) {
+            if (index != null) {
+                var text = se[0].options[index].text; // 选中文本
+                var value = se[0].options[index].value; // 选中值
+                var tr = otr.parentNode;
+                var obj = tr.childNodes[5];
+                 if (otr.getElementsByTagName("input")[0].value != null && otr.getElementsByTagName("input")[0].value == value) {
+                    return;
+                }
+                 else if (otr.getElementsByTagName("input")[0].value == "") {
+                     otr.getElementsByTagName("input")[0].value = value;
+                     return;
+                 }
+                else if (obj.getElementsByTagName("select")[0].length > 0) {
+                    otr.getElementsByTagName("input")[0].value = value;
+                    refreshSelectNumber(obj);
+                     obj.getElementsByTagName("input")[0].value = "";
+                     tr.getElementsByTagName("input")[6].value = "";
+                     tr.getElementsByTagName("input")[7].value = "";
+                     tr.getElementsByTagName("input")[8].value = "";
+                }
+                 else {
+                     otr.getElementsByTagName("input")[0].value = value;
+                 }
+
+
+                return;
+            }
+        }
+        else {
+            $.ajax({
+                url: '@Url.Action("GetBrandSelect", "DesignScheme")',
+                data: {},
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,//异步
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                },
+                error: function (err) {
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+
+                    window.location.reload();
+                },
+            })
+        }
+
+    }
+    function SetselectNumber(otr) {
+
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        var rows = otr.parentNode.rowIndex;
+        var tr = otr.parentNode;
+        var cl = tr.getElementsByTagName("input")[0].value;
+        var cla = tr.getElementsByTagName("input")[2].value;
+        var ser = tr.getElementsByTagName("input")[3].value;
+        var bra = tr.getElementsByTagName("input")[4].value;
+        if (cla==""||ser==""||bra=="") {
+            alert("请选择组合！");
+            return;
+        }
+           $.ajax({
+                url: '@Url.Action("GetProductNumber", "DesignScheme")',
+                data: { classfiy:cla, series:ser, brand:bra},
+                cache: false,
+                type: "post",
+                dataType: "json",
+
+                success: function (data) {
+                    if (data=="null") {
+                        alert("该组合无效，请重新输入！");
+                        return;
+                    }
+                    if (se[0].length > 0) {
+                        //for (var i = 0; i < se[0].length; i++) {
+                        se[0].options.length = 0;
+                        //}
+                    }
+                    $.each(data, function (i, item) {
+                       
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                    return;
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+                 
+                    window.location.reload();
+                },
+            })
+        if (se[0].length > 0) {
+            if (index != null&& index >=0) {
+                var text = se[0].options[index].text; // 选中文本
+                var val = se[0].options[index].value; // 选中值
+                if (otr.getElementsByTagName("input")[0].value != null && otr.getElementsByTagName("input")[0].value ==val) {
+                    return;
+                }
+                otr.getElementsByTagName("input")[0].value = val;
+                 $.ajax({
+                        url: '@Url.Action("GetProductOther", "DesignScheme")',
+                     data: { productNum: val },
+                       cache: false,
+                       type: "post",
+                     dataType: "json",
+                     async: true,
+                     success: function (data) {
+                         //alert(data);
+
+                    tr.getElementsByTagName("input")[6].value= data[0];
+                    tr.getElementsByTagName("input")[7].value = data[1];
+                    tr.getElementsByTagName("input")[8].value= data[2];
+
+
+            },
+                     error: function (err) {
+                         alert(JSON.stringify(err));
+                         alert("连接失败，请刷新，或稍后访问，谢谢！");
+
+                         window.location.reload();
+            },
+        })
+                return;
+            }
+
+        }
+       
+         
+       
+
+    }
+
+
+    function refreshSelectNumber(otr) {
+        var se = otr.getElementsByTagName("select");
+        var index = se[0].selectedIndex; // 选中索引
+        var rows = otr.parentNode.rowIndex;
+        var tr = otr.parentNode;
+        var cl = tr.getElementsByTagName("input")[0].value;
+        var cla = tr.getElementsByTagName("input")[2].value;
+        var ser = tr.getElementsByTagName("input")[3].value;
+        var bra = tr.getElementsByTagName("input")[4].value;
+           $.ajax({
+                url: '@Url.Action("GetProductNumber", "DesignScheme")',
+                data: { classfiy:cla, series:ser, brand:bra},
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data=="null") {
+                        alert("该组合无效，请重新输入！");
+                        return;
+                    }
+                    if (se[0].length > 0) {
+                        //for (var i = 0; i < se[0].length; i++) {
+                        se[0].options.length = 0;
+                        //}
+                    }
+                    $.each(data, function (i, item) {
+                       
+                        $("<option></option>").val(item["Value"]).text(item["Text"]).appendTo(se);
+
+                    });
+                    return;
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+                 
+                    window.location.reload();
+                },
+        })
+        
+    }
+
+    function subtt() {
+        var mytable = document.getElementById("tb");
+        var datat = [];
+        for (var i = 1, rows = mytable.rows.length; i < rows; i++)  {
+            //类似存储一个对象,包括了与student对相应的属性
+            let postdata = {
+                "设计提交案": mytable.rows[i].cells[0].getElementsByTagName("input")[0].value,
+                "空间": mytable.rows[i].cells[1].getElementsByTagName("input")[0].value,
+                "分类": mytable.rows[i].cells[2].getElementsByTagName("input")[0].value,
+                "系列": mytable.rows[i].cells[3].getElementsByTagName("input")[0].value,
+                "品牌": mytable.rows[i].cells[4].getElementsByTagName("input")[0].value,
+                "编号": mytable.rows[i].cells[5].getElementsByTagName("input")[0].value,
+                "名称": mytable.rows[i].cells[6].getElementsByTagName("input")[0].value,
+                "尺寸": mytable.rows[i].cells[7].getElementsByTagName("input")[0].value,
+                "单位": mytable.rows[i].cells[8].getElementsByTagName("input")[0].value,
+                "数量": mytable.rows[i].cells[9].getElementsByTagName("input")[0].value,
+                "配置": mytable.rows[i].cells[10].getElementsByTagName("input")[0].value
+            };
+            datat.push(postdata);//添加到数组
+
+        }
+       
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddDesign_ExceptedBuy", "DesignScheme")',
+                data: { design_exceptedBuy: JSON.stringify(datat) },//将对象转化JSON字符串格式并传出
+                dataType: "json",
+                async: true,
+                success: function (data) {
+                    if (data == "failure") {
+                        alert("操作失败！请刷新页面，或重新进入！");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("添加成功");
+                         window.location.href = '@Url.Action("Design_ExceptedBuyIndex",new { id = Model.设计提交案 })';
+                    }
+                },
+                error: function (data) {
+                    alert(JSON.stringify(data));
+                    window.location.reload();
+                //window.history.go(-1);
+                }
+
+            });
+        } 
+
+
+
+</script>
+
+<div id="add" class="table-responsive">
+    <hr />
+    <h1>添加预购</h1>
+    <form method="post">
+        <table  class="table table-hover table-bordered" id="tb">
+            <thead>
+                <tr>
+                    <td style="display:none">提交案ID</td>
+                    <td width="4%">空间</td>
+                    <td width="5%">分类</td>
+                    <td>系列</td>
+                    <td>品牌</td>
+                    <td>编号</td>
+                    <td>产品</td>
+                    <td>尺寸</td>
+                    <td>单位</td>
+                    <td width="5%">数量</td>
+                    <td width="10%">配置</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <hr />
+        <input type="button" onclick="addrow()" class="btn btn-primary btn-lg" style=" background-image:url(../../images/btn-加号02.png); width:55px; height:25px" />
+        <input type="button" name="sub" id="submit1" onclick="subtt()" class="btn btn-primary btn-lg"  style=" background-image:url(../../images/btn-勾01.png); width:55px; height:25px" />
+        
+    </form>
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+
+</div>
