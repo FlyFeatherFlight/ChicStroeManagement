@@ -1,0 +1,220 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+@{
+    ViewBag.Title = "接待详细";
+}
+
+<style>
+ 
+    .tab tbody tr td:nth-child(2n) {
+        width: 42%;
+    }
+</style>
+
+<div class="container table-responsive" style="width:100%;">
+    <h3>@Model.客户姓名 详细信息</h3>
+    @if (Model.是否有意向 != false && Model.是否有意向 != null)
+    {
+        if (Model.跟进人 == null || Model.跟进人 == "")
+        {
+            <label style="font-size:10px;color:red">当前客户无跟进人</label>
+        }
+        else
+        {
+            @Html.ActionLink("直接申请设计案", "DesignSchemeIndex", "DesignScheme", new { id = Model.ID }, new { @style = "font-size:12px" })
+        }
+    }
+    <br />
+            <span>接待序号：@Model.接待序号</span>
+            <table class="table table-bordered tab" style="margin: 10px 0;">
+                <tr>
+                    <td><label>店铺</label></td>
+                    <td>
+                        @Html.DisplayFor(m => Model.店铺)
+                    </td>
+
+                    <td><label>接待人</label></td>
+                    <td>@Html.DisplayFor(m => Model.接待人)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(Model => Model.接待日期)</td>
+                    <td>@Model.接待日期</td>
+                    <td>
+                        @Html.LabelFor(Model => Model.来店次数)
+                    </td>
+
+                    <td>@Model.来店次数</td>
+
+                </tr>
+                <tr>
+                    <td><label>进店时间</label></td>
+                    <td>@Html.DisplayFor(m => Model.进店时间)</td>
+                    <td><label>离店时间</label></td>
+                    <td>@Html.DisplayFor(m => Model.出店时间)</td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.客户姓名)
+                    </td>
+                    <td>
+                        @Model.客户姓名 &nbsp;|
+                        <span id="gender" class="must-fill">@Model.性别</span>
+                    </td>
+                    <td>@Html.LabelFor(Model => Model.年龄段)</td>
+                    <td>@Model.年龄段</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(Model => Model.客户电话)
+                    </td>
+                    <td>@Model.客户电话</td>
+                    <td>@Html.LabelFor(Model => Model.社交软件)</td>
+                    <td>@Model.社交软件</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(Model => Model.客户类型)</td>
+                    <td>@Model.客户类型</td>
+                    <td>
+                        <label>客户类别</label>
+                    </td>
+                    <td>@Model.客户类别</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(Model => Model.客户来源)
+                    </td>
+                    <td>@Model.客户来源</td>
+                    <td><label>客户着装/特征</label></td>
+                    <td>@Model.客户着装</td>
+                </tr>
+
+                <tr>
+                    <td><label>进店时长</label></td>
+                    <td colspan="3">@Html.DisplayFor(m => Model.进店时长)分钟</td>
+
+                </tr>
+                <tr>
+
+                    <td><label>同行人（身份）</label></td>
+                    <td>@Model.同行人</td>
+                    <td><label>家居使用者（使用者）</label></td>
+                    <td id="family">@Model.家居使用者</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(Model => Model.主导者)</td>
+                    <td>@Model.主导者</td>
+                    <td>@Html.LabelFor(Model => Model.主导者喜好风格)</td>
+                    <td>@Model.主导者喜好风格</td>
+                </tr>
+                <tr>
+                    <td><label>楼盘地址</label></td>
+                    <td colspan="3">@Model.安装地址</td>
+                </tr>
+                <tr>
+                    <td><label>今日来店目的</label></td>
+                    <td>@Model.目的</td>
+                    <td><label>销售常规讲解</label></td>
+                    <td>@Model.销售讲解</td>
+                </tr>
+
+                <tr>
+                    <td><label>意向产品（系列/型号）</label></td>
+                    <td>@Model.喜欢产品</td>
+                    <td> @Html.LabelFor(Model => Model.使用空间)</td>
+                    <td>@Model.使用空间</td>
+                </tr>
+                <tr>
+                    <td><label>户型大小</label></td>
+                    <td>@Model.户型大小</td>
+                    <td>
+                        @Html.LabelFor(Model => Model.预计使用时间)
+                    </td>
+                    <td>@Model.预计使用时间</td>
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.LabelFor(Model => Model.装修情况)
+                    </td>
+                    <td>@Model.装修情况</td>
+                    <td>@Html.LabelFor(Model => Model.如何得知品牌)</td>
+                    <td>@Model.如何得知品牌</td>
+                </tr>
+
+                <tr>
+
+                    <td><label>客户预算（金额）</label></td>
+                    <td>@Model.预算金额</td>
+                    <td>
+                        @Html.LabelFor(Model => Model.预报价折扣)
+                    </td>
+                    <td>@Model.预报价折扣</td>
+                </tr>
+                <tr>
+                    <td><label>比较品牌/产品</label></td>
+                    <td colspan="3">@Model.比较品牌产品</td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        <label>携带设计师</label>
+                    </td>
+                    <td>@Model.设计师</td>
+                    <td><label>客户疑义</label></td>
+                    <td>@Model.客户建议</td>
+                </tr>
+                <tr>
+                    <td><label>是否有意向</label></td>
+
+                    @if (Model.是否有意向 == true)
+                    {
+                        <td>是</td>
+
+                    }
+                    else if (Model.是否有意向 == false)
+                    {
+                        <td>否</td>
+
+                    }
+                    else
+                    {
+                        <td>待定</td>
+                    }
+                    <td><label>是否确认此客户</label></td>
+
+                    @if (Model.是否确认 == true)
+                    {
+                        <td>是</td>
+
+                    }
+                    else if (Model.是否确认 == false)
+                    {
+                        <td>否</td>
+
+                    }
+                    else
+                    {
+                        <td>待定</td>
+                    }
+                </tr>
+
+                <tr>
+                    <td><label>最后一次更新人</label></td>
+                    <td>@Html.DisplayFor(m => Model.更新人)</td>
+                    <td><label>更新时间</label></td>
+                    <td>@Html.DisplayFor(m => Model.更新日期)</td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="4">@Html.ActionLink("修改信息", "EditCustomerView", new { id = Model.ID })  </td>
+                </tr>
+            </table>
+
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+    <br />
+
+</div>
+

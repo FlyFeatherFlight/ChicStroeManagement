@@ -1,0 +1,625 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesOrderViewModel
+
+@{
+    ViewBag.Title = "添加销售订单";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<style>
+    .tab tbody tr td:nth-child(2n-1) {
+        text-align:center;
+        width: 11%;
+    }
+    #add-dialog .table > thead > tr > td, #add-dialog .table > tbody > tr > td {
+        color: #333;
+    }
+</style>
+<h3 style="margin-left:2.5%;margin-bottom:10px;">添加销售订单</h3>
+@*主表*@
+<form id="mainForm" style="width:95%;margin:0 auto;">
+    <table class="table table-bordered table-hover table-striped tab">
+        <tr>
+            <td>合同编号</td>
+            <td >
+                <input type="text" name="合同编号" value="" class="form-control" />
+            </td>
+            <td>单据编号</td>
+            <td>
+                <input type="text" name="单据编号" value="" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>订单编号</td>
+            <td colspan="3">
+                <input type="text" name="订单编号" value="" class="form-control" />
+            </td>
+
+        </tr>
+
+        <tr>
+            <td>客户姓名</td>
+            <td>
+                <input type="text" name="客户姓名" value="" class="form-control" />
+            </td>
+            <td>客户联系方式</td>
+            <td>
+                <input type="text" name="客户联系方式" value="" class="form-control" onkeyup="value=value.replace(/[^\d]/g,'')"
+                       onblur="value=value.replace(/[^\d]/g,'')" placeholder="请输入数字"/>
+            </td>
+        </tr>
+        <tr>
+            <td>客户地址</td>
+            <td colspan="3">
+                <input type="text" name="客户地址" value="" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>零售合计</td>
+            <td>
+                <input type="text" name="零售合计" value="0" class="form-control" id="allTotal" autocomplete="off" readonly />
+            </td>
+
+            <td>预付金额</td>
+            <td>
+                <input type="text" name="预付金额_bak" value="" class="form-control" onkeyup="value=value.replace(/[^\d.]/g,'')"
+                       onblur="value=value.replace(/[^\d.]/g,'')" placeholder="请输入数字"/>
+            </td>
+        </tr>
+        <tr>
+            <td>单据备注</td>
+            <td colspan="3">
+                <input type="text" name="单据备注" value="" class="form-control" />
+            </td>
+        </tr>
+        
+        <tr>
+            <td>订货清单</td>
+            <td colspan="3">
+                <input type="button" name="name" value="增加商品" style="color:#333;" id="Addgoods"/>
+            </td>
+            
+        </tr>
+    </table>
+</form>
+@*副表*@
+
+<table id="goodsTab" class="table table-bordered table-hover table-striped text-center" style="width:95%;margin:0 auto;" >
+    <thead>
+        <tr >
+            <td colspan="18" style="color:red;">
+                Tips:同一订单需求日期必须一致<br />
+                如果需求日期低于预计交货日期，可能无法按时发货
+            </td>
+        </tr>
+        <tr>
+            <td>商品编号</td>
+            <td>型号</td>
+            <td>名称</td>
+            <td>规格</td>
+            <td>商品描述</td>
+            <td>计量单</td>
+            <td>标准零售价</td>
+            <td>数量</td>
+            <td>零售单价</td>
+            <td>零售小计</td>
+            <td>需求日期</td>
+            <td>明细备注</td>
+            <td>系列</td>
+            <td>是否进口</td>
+            <td>是否全款</td>
+            <td>交货周期</td>
+            <td>预计交期</td>
+            <td>操作</td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<div class="sub-btns">
+    <input type="button" name="" value="提交" class="btn btn-success " onclick="submitMain()" />&nbsp;&nbsp;
+    <input type="button" name="" value="取消" class="btn btn-danger" />
+</div>
+@*添加商品模态框*@
+<div id="add-dialog">
+    <table class="table table-bordered table-hover table-striped" >
+        <tr>
+            <td>商品分类</td>
+            <td>
+                <select class="form-control" id="classify">
+                    <option value="">-请选择商品分类-</option>
+                </select>
+            </td>
+            <td>商品型号</td>
+            <td>
+                <select class="form-control" id="model">
+                    <option value=''>-请选择商品型号-</option>
+                </select>
+            </td>
+
+            <td>产品列表</td>
+            <td>
+                <select class="form-control" id="productList">
+                    <option value="">-请选择产品-</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>产品参数</td>
+            <td colspan="5" id="SKU" style="font-size:16px;">
+                <span style="color:red;font-size:14px;">Tips:各项请选择参数值，否则无法查找SKU</span>
+                <table class="table table-bordered table-hover table-striped" id="parameter">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>参数名</td>
+                            <td>参数值</td>
+                            <td>可选项</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p></p>
+                <input type="button" onclick="getSKU()" c value="查询SKU" />
+            </td>
+
+        </tr>
+
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    var goods = null;
+    $("#Addgoods").click(function () {
+        getStore();
+        $("#add-dialog").dialog("option", "title", "查找单品").dialog("open");
+    })
+  
+    function getStore() {
+        //获取商品分类
+        $.ajax({
+            url: 'http://api.chiccasa.com.cn/ChicERP.asmx/Get_Category',// api地址/asmx 是WEB服务文件/方法      api地址:47.98.38.206:8089/test.asmx,方法是abc
+            type: 'post',
+            data: {},//传入的参数
+            contentType: "application/json;charset=utf-8",//contentType: 发送信息至服务器时内容编码类型，简单说告诉服务器请求类型的数据
+            dataType: 'json',
+            success: function (data) {
+                var a = JSON.parse(data.d);
+                console.log(a)
+                $(a).each(function (i, m) {
+                    $("#classify").append("<option value='" + m.id + "'>" + m.Name + "</option>")
+                })
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+    //根据商品分类 获取商品型号
+    $("#classify").change(function () {
+        //清空商品型号 产品列表 参数列表
+        $("#model").empty();
+        $("#productList").empty();
+        $("#parameter tbody").empty();
+        $("#SKU p").text("");
+
+        let CaegoryID = $("#classify").val();
+        $.ajax({
+            url: 'http://api.chiccasa.com.cn/ChicERP.asmx/Get_Model',
+            type: 'post',
+            data: "{_CaegoryID:" + CaegoryID + "}",//传入的参数
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                var a = JSON.parse(data.d);
+                //console.log(a)
+                $("#model").append("<option value=''  class='active'>-请选择商品型号-</option>")
+                $(a).each(function (i, m) {
+                    $("#model").append("<option value='" + m.id + "'  >" + m.Model_Name + '-' + m.Series_Name + "</option>");
+                })
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    })
+    //根据商品型号 获取产品列表
+    $("#model").change(function () {
+        activeText($("#model"));
+        var id = $("#model").val();
+        $("#productList").empty();
+        $("#parameter tbody").empty();
+        $.ajax({
+            url: 'http://api.chiccasa.com.cn/ChicERP.asmx/Get_ProductList',
+            type: 'post',
+            data: "{_ModelID:" + id + "}",//传入的参数
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                var a = JSON.parse(data.d);
+                //console.log(a)
+                $("#productList").append("<option value=''>-请选择产品-</option>")
+                $(a).each(function (i, m) {
+                    $("#productList").append("<option value='" + m.id + "'  >" + m.Product_Spec + '-' + m.Product_Name + "</option>")
+                })
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    })
+    //根据商品型号 获取产品参数
+    $("#productList").change(function () {
+       
+        var id = $("#productList").val();
+        $("#parameter tbody").empty();
+        $.ajax({
+            url: 'http://api.chiccasa.com.cn/ChicERP.asmx/Get_Parameters',
+            type: 'post',
+            data: "{_id:" + id + "}",//传入的参数
+            contentType: "application/json;charset=utf-8",
+            dataType: 'json',
+            success: function (data) {
+                var a = JSON.parse(data.d);
+                console.log(a)
+                //分组
+                var map = {},
+                    dest = [];
+                for (var i = 0; i < a.length; i++) {
+                    var ai = a[i];
+
+                    if (!map[ai.Para_Name]) {
+                        dest.push({
+                            Is_MasterPara: ai.Is_MasterPara,
+                            Para_Name: ai.Para_Name,
+                            data: [ai]
+                        });
+                        map[ai.Para_Name] = ai;
+                    } else {
+                        for (var j = 0; j < dest.length; j++) {
+                            var dj = dest[j];
+                            if (dj.Para_Name == ai.Para_Name) {
+                                dj.data.push(ai);
+                                break;
+                            }
+                        }
+                    }
+                }
+                //console.log(dest);
+
+                $(dest).each(function (i, m) {
+                    var sel = ` <tr>
+                                <td>${i + 1}</td>
+                                <td>
+                                    <input type="text" value="${m.Para_Name}" data-istf="${m.Is_MasterPara}" readonly/>
+                                </td>
+                                <td>
+                                    <select  id="name${i}" onchange="chooseFun(this)">
+                                        <option value="" class="active">-请选择参数名-</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="choose${i}">
+                                        <option value="">-请选择可选项-</option>
+                                    </select>
+                                </td>
+                            </tr>`;
+                    $("#parameter tbody").append(sel);
+
+                    $(m.data).each(function (a, b) {
+
+                        $("#name" + i + "").append(" <option value=" + b.Para_Value + ">" + b.Para_Value + "</option>")
+                    })
+
+                })
+
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    })
+
+    //获取可选参数
+    function chooseFun(_this) {
+        //console.log(_this.id);
+        var productID = $("#productList").val(),//商品ID
+            isTF = $.trim($("#" + _this.id + "").parent().prev().find("input").data("istf")),//是否主参数
+            paraName = $.trim($("#" + _this.id + "").parent().prev().find("input").val()),//参数名
+            paraVal = $.trim($("#" + _this.id + "").val());//参数值
+        //console.log(productID,isTF,paraName,paraVal);
+        $("#" + _this.id + "").parent().next().find("select").empty();
+        $.ajax({
+            url: 'http://api.chiccasa.com.cn/ChicERP.asmx/Get_Options',
+            type: 'post',
+            data: JSON.stringify({ _Product_ID: productID, _IsMaster: isTF, _Para_Name: paraName, _Para_Value: paraVal }),//传入的参数
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (data) {
+                var a = JSON.parse(data.d);
+                //console.log(a)
+                $(a).each(function (i, m) {
+                    $("#" + _this.id + "").parent().next().find("select").append("<option value='" + m.options + "'  >" + m.options + "</option>")
+                })
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+    function getSKU() {
+        let productId = $("#productList").val(),//产品id
+            trs = document.getElementById("parameter"),
+            Arr = [],
+            main = '',//主参数
+            assist = '',//辅参数
+            model = null,//型号
+            series = null,//系列
+            modelText = $("#model").find("option.active").text();//产品型号-系列(用于页面展示)
+            modelText = modelText.split("-");
+            model = modelText[0];
+            series = modelText[1];
+
+
+        for (let i = 1; i < trs.rows.length; i++) {
+            var parameter = {
+                "isTF": trs.rows[i].cells[1].getElementsByTagName("input")[0].getAttribute("data-istf"),
+                "name": trs.rows[i].cells[1].getElementsByTagName("input")[0].value + ":" + trs.rows[i].cells[2].getElementsByTagName("select")[0].value + ":" + trs.rows[i].cells[3].getElementsByTagName("select")[0].value
+            }
+            Arr.push(parameter);
+        }
+        //console.log(Arr)
+        $(Arr).each(function (i, m) {
+            if (m.isTF) {
+                main += m.name + "/";
+            } else {
+                assist += m.name + "/";
+            }
+        })
+        main = main.substr(0, main.length - 1);
+        let params = JSON.stringify({ _Product_ID: productId, _MasterPara: main, _SlavePara: assist });
+        console.log(params)
+        $.ajax({
+            url: "http://api.chiccasa.com.cn/ChicERP.asmx/Get_SKU ",
+            type: "post",
+            data: params,
+            dataType: "json",
+            async: true,
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+
+                var a = JSON.parse(data.d);
+                //Delivery: 55
+
+                //Is_Import: false
+
+                //Price_Retail: 22000
+
+                //Price_Selling: 9320
+
+                //Product_Name: "餐边柜"
+
+                //Product_No: "058128000302"
+
+                //Product_Spec: "2000*480*800"
+
+                //Product_Unit: "张"
+
+                //SKU_Description: "主体:黑橡:A16 黑橡/腿架:氟碳金属立腿"
+
+                //SKU_ID: 18675657
+
+                //SKU_No: "058128000302-02-01"
+
+                //SPU_No: "058128000302-02"
+                console.log(a);
+                if (a.length > 0) {
+                    var html = `
+                            
+                            SKU编号:${a[0].SKU_No} 描述：${a[0].SKU_Description}
+                              
+                            `;
+                    $("#SKU p").text(html);
+                    goods = `
+                    <tr>
+                        <td class="hidden">${a[0].SKU_ID}</td>
+                        <td>${a[0].Product_No}</td>
+                        <td>${model}</td>
+                        <td>${a[0].Product_Name}</td>
+                        <td>${a[0].Product_Spec}</td>
+                        <td>${a[0].SKU_Description}</td>
+                        <td>${a[0].Product_Unit}</td>
+                        <td>${a[0].Price_Retail}</td>
+                        <td class="num">
+                            <input class="form-control " type="text" name="name" oninput="totalMoney(this,'.price')" value="1" />
+                        </td>
+                        <td class="price">
+                            <input class="form-control" type="text" oninput="totalMoney(this,'.num')" name="name" value="${a[0].Price_Retail}" />
+                        </td>
+                        <td class="total">
+                            <input class="form-control " type="text" name="name"  value="${a[0].Price_Retail}" readonly/>
+                        </td>
+                        <td>
+                            <input class="form-control dateTime" type="text" name="name" value=" ${addDate(new Date().toLocaleDateString(), a[0].Delivery)}"  placeholder="请选择需求日期"/>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" name="name" value="" />
+                        </td>
+                        <td>${series}</td>
+                        <td>
+                            <input class="form-control" type="checkbox" name="name" value=true />
+                        </td>
+                        <td>${a[0].Is_Import}</td>
+                        <td>${a[0].Delivery}</td>
+                        <td class="predictDate"> ${addDate(new Date().toLocaleDateString(), a[0].Delivery)}</td>
+                   <td><span class="Aspan" onclick="DelStore(this)">删除</span></td>
+                    </tr>
+                    `;
+                   
+                } else {
+                    alert("暂无当前参数配置商品！");
+                }
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+    //配置模态框
+    $("#add-dialog").dialog({
+        autoOpen: false,
+        height: 400,
+        width: 960,
+        modal: true,
+        buttons: {
+
+            "取消": function () { $(this).dialog("close") },
+            "确认": function () {
+               // console.log(goods)
+                $("#goodsTab tbody").append(goods);
+                dateLay();
+                $("#add-dialog").dialog("close");
+                allTatol();
+                alert("添加成功!");
+
+            }
+        }
+        });
+    //计算零售小计
+   function totalMoney(_this, brother) {
+
+        var price = $(_this).val(),
+            num = $(_this).parent().siblings(brother).find("input").val(),
+            total = null;
+            total = price * num;
+            $(_this).parent().siblings(".total").find("input").val(total);
+       allTatol();
+
+    }
+    //商品删除
+    function DelStore(_this) {
+        $(_this).parent().parent().remove();
+        alert("删除成功！");
+    }
+    //获取选择文本
+    function activeText(Jopts) {
+        var value = Jopts.val();//这个值就是你获取的值;
+        if (value != "") {
+            for (var i = 0; i < Jopts.find("option").length; i++) {
+                if (value == Jopts.find("option")[i].value) {
+                    //console.log(Jopts.find("option")[i]);
+                    if ($(Jopts.find("option")[i]).hasClass("active")) {
+                        return;
+                    } else {
+                        $(Jopts.find("option")[i]).siblings().removeClass("active")
+                        $(Jopts.find("option")[i]).addClass("active");
+
+                    }
+
+
+                    break;
+                }
+            }
+        }
+    }
+    //日期计算
+    function addDate(date,days) {
+        var d = new Date(date);
+        d.setDate(d.getDate() + days);
+        var m = d.getMonth() + 1;
+        return d.getFullYear() + '-' + m + '-' + d.getDate();
+    } 
+    function allTatol() {
+        var allTatol = null;
+        $("#goodsTab .total").each(function (i, m) {
+            let p = parseFloat($(m).find("input").val());
+            allTatol += p;
+        })
+        $("#allTotal").val(allTatol);
+        //console.log(allTatol);
+       
+    }
+    //提交主表信息
+    function submitMain() {
+       
+        $.ajax({
+            url: '@Url.Action("SalesOrderAdd", "Customer")',
+            type: 'post',
+            data: $("#mainForm").serialize(),
+            dataType: 'json',
+            success: function (data) {
+   
+                
+                console.log(data);
+                if (data.success) {
+                    alert(data.msg);
+                    submitStore(data.data.ID)
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+            
+        })
+    }
+    //提交副表
+    function submitStore(id) {
+        var trs = document.getElementById("goodsTab"),
+            datas = [];
+        for (var i = 2; i < trs.rows.length; i++) {
+            let skuID = trs.rows[i].cells[0].innerText,
+                number = trs.rows[i].cells[8].getElementsByTagName("input")[0].value,
+                normPrice = trs.rows[i].cells[7].innerText,
+                price = trs.rows[i].cells[9].getElementsByTagName("input")[0].value,
+                saleTatol = trs.rows[i].cells[10].getElementsByTagName("input")[0].value,
+                need = trs.rows[i].cells[11].getElementsByTagName("input")[0].value,
+                notes = trs.rows[i].cells[12].getElementsByTagName("input")[0].value,
+                days = trs.rows[i].cells[16].innerText,
+                predictDate = trs.rows[i].cells[17].innerText;
+                 goodData = {
+                    "序号":i-1,
+                    "单据ID":id,
+                    "SKU_ID": skuID,
+                    "标准零售价": normPrice,
+                     "数量": number,
+                    "零售单价": price,
+                     "零售小计": saleTatol,
+                    "明细备注": notes,
+                    "交货周期": days,
+                    "预计交期":predictDate,
+                    "需求日期":need,
+                
+                };
+            datas.push(goodData);
+        }
+        
+    
+    console.log(datas);
+  
+    $.ajax({
+        url: '@Url.Action("SalesOrderDetailsAdd", "Customer")',
+        type: 'post',
+        data: { lis: JSON.stringify(datas)},
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            if (data.success) {
+                alert(data.msg);
+            } else {
+                alert(data.msg);
+            }
+        },
+        error:function(err) {
+            console.log(err);
+        }
+
+        })
+    }
+</script>

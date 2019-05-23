@@ -1,0 +1,135 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "销售成交记录";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+
+    <h3 style="margin:0 0 10px 0 ;">销售成交记录</h3>
+   
+    @*//组合查询 员工/开始日期/结束日期/是否全款*@
+    @using (Html.BeginForm("SalesRecordsIndex", "ManagerExamine", FormMethod.Post, new { @style = "display:inline-block;" }))
+    {
+        <input type="text" name="id" value="@ViewBag.id" style="display:none;"/>
+        <select name="employeesID" class="form-control width-200" id="storeMan">
+            <option value="" class="active">请选择销售</option>
+        </select>
+        <input type="text" name="startDate" class="form-control dateLay width-200"  placeholder="请选择开始时间" readonly />
+        <span>至</span>
+        <input type="text" name="EndDate" class="form-control dateLay width-200"  placeholder="请选结束时间" readonly />
+
+        <span>全款</span>
+        <input type="checkbox" name="IsDeal" value=true />
+        <input type="submit" value="查询" style="font-size: 14px;color: #333;"  />
+        <input type="button" name="" value="导出本页数据" onclick="btn_export('销售成交记录')" style="font-size: 14px;color: #333;" />
+
+
+    }
+    @*查询全部*@
+    @using (Html.BeginForm("SalesRecordsIndex", "ManagerExamine", FormMethod.Post, new { @style = "display:inline-block;" }))
+    {
+        <p>
+            <input type="text" name="id" value="@ViewBag.id " style="display:none;"/>
+            <input type="submit" value="全部" style="font-size: 14px;color: #333;" />
+
+        </p>
+    }
+    @*//通过销售单号查询*@
+    <div id="searchR">
+        @using (Html.BeginForm("SalesRecordsIndex", "ManagerExamine", FormMethod.Post, new { }))
+        {
+        <p>
+            <input type="text" name="id" value="@ViewBag.id " style="display:none;"/>
+            @Html.TextBox("SearchString", ViewBag.CustomerCurrentFilter as string, new { @class = "form-control width-200", placeholder = "通过合同单号查找" })
+
+            <input type="submit" value="查询" style="font-size: 14px;color: #333;" />
+
+        </p>
+        }
+    </div>
+    <hr />
+    <table class="table table-bordered table-hover" style="text-align:center;" id="Table">
+        <tr>
+
+            <th style="text-align:center;">客户姓名</th>
+            <th style="text-align:center;">客户联系方式</th>
+            <th style="text-align:center;">销售人员</th>
+            <th style="text-align:center;">销售日期</th>
+            <th style="text-align:center;">合同单号</th>
+            <th style="text-align:center;">销售金额</th>
+            <th style="text-align:center;">更新日期</th>
+           
+
+
+        </tr>
+        @if (Model.Count <= 0)
+        {
+            <tr>
+                <td colspan="10">该客户暂无成交数据！</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>
+                        <input type="text" name="" value="@item.接待记录ID" class="recID" style="display:none;" />
+                        @Html.ActionLink(item.客户姓名, "SalesRecordInfoView", "ManagerExamine", new { id = item.ID, isEdit = false }, new { @class = "Name" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.客户联系方式)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.销售人员)
+                    </td>
+                    <td>
+                        @item.销售日期.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.合同单号)
+                    </td>
+                    <td>
+                        @item.销售金额
+                    </td>
+
+                    <td>
+                        @item.更新日期.ToString("yyyy-MM-dd")
+                    </td>
+                   
+                </tr>
+            }
+        }
+    </table>
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("SalesRecordsIndex", new { page, searchString = ViewBag.SearchString, employeesID = ViewBag.EmploeeID, startDate = ViewBag.StartDate, endTime= ViewBag.EndDate }))
+<a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+<script>
+     //加载员工数据
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        data: {},
+        dataType: 'json',
+        cache: false,
+        async: true,
+        success: function (data) {
+            //console.log(data)
+            $(data).each(function (i,m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！")
+            console.log(err)
+        }
+    })
+  
+        
+    
+</script>

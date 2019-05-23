@@ -1,0 +1,124 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel
+
+@if (ViewBag.IsEdit == true)
+{
+    {
+        ViewBag.Title = "销售成交单修改";
+
+    }
+    <h3 style="margin-left:1%;">修改销售成交单</h3>
+    <hr />
+    using (Html.BeginForm("SalesRecordEdit", "Customer", FormMethod.Post, new { @id = "myFormE" }))
+    {
+        <table class="table table-bordered table-striped table-hover" style="width:98%;margin:0 auto;">
+
+            <tr>
+                <td style="display:none;"><input type="text" name="ID" value="@Model.ID" /></td>
+                <td>客户姓名</td>
+                <td>@Model.客户姓名</td>
+                <td>联系方式</td>
+                <td>@Model.客户联系方式</td>
+            </tr>
+            <tr>
+                <td>销售日期</td>
+                <td>
+                    <input type="text" name="销售日期" value="@Model.销售日期.ToString("yyyy-MM-dd")" class="form-control dateLay red" placeholder="请选择日期" readonly />
+                    <label style="color:red;">*</label>
+                </td>
+                <td>合同单号</td>
+                <td>
+                    <input type="text" name="合同单号" value="@Model.合同单号" class="form-control detectionTE red"  />
+                    <label style="color:red;">*</label>
+
+                </td>
+
+            </tr>
+            <tr>
+               
+                <td>销售金额(元)</td>
+                <td>
+                    <input type="text" name="销售金额" value="@Model.销售金额" class="form-control red"
+                           onkeyup="value=value.replace(/[^\d.]/g,'')"
+                           onblur="value=value.replace(/[^\d.]/g,'')" placeholder="请输入数字" />
+                    <label style="color:red;">*</label>
+                </td>
+                <td>折扣</td>
+                <td>
+                    <input type="text" name="折扣" value="@Model.折扣" class="form-control red" />
+                    <label style="color:red;">*</label>
+                </td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td colspan="3"><input type="text" name="备注" value="" class="form-control" /></td>
+            </tr>
+
+        </table>
+        <div class="sub-btns">
+            <input type="button" value="保存" class="btn btn-success width-7" id="subMyFormE">
+            &nbsp;&nbsp;
+            <input type="button" value="取消" class="btn btn-danger width-7" onclick="javascript:history.back(-1);">
+        </div>
+        <script>
+    $("#subMyFormE").click(function () {
+        $("#myFormE .red").each(function (i,m) {
+            if (m.value == "" || m.value == null) {
+                return status = true;
+            }
+        })
+        if (status) {
+            alert("请完善信息！");
+        } else {
+            $("#myFormE").submit();
+        }
+    })
+        </script>
+
+
+    }
+}
+else
+{
+
+    {
+        ViewBag.Title = "销售成交单详情页";
+
+    }
+
+    <h3 style="margin-left:1%;">销售成交单详情页</h3>
+    @Html.ActionLink("修改销售成交单", "SalesRecordInfoView", "Customer", new { id = Model.ID, isEdit = true }, new { @style = "margin-left:1%;" })
+
+    <table class="table table-bordered table-striped table-hover" style="width:98%;margin:10px auto;">
+        <tr>
+            <td>客户姓名</td>
+            <td>@Model.客户姓名</td>
+            <td>联系方式</td>
+            <td>@Model.客户联系方式</td>
+
+        </tr>
+        <tr>
+            <td>销售日期</td>
+            <td>@Model.销售日期</td>
+            <td>合同单号</td>
+            <td>@Model.合同单号</td>
+        </tr>
+        <tr>
+           
+            <td>销售金额(元)</td>
+            <td>@Model.销售金额</td>
+            <td>折扣</td>
+            <td>@Model.折扣</td>
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td colspan="3">@Model.备注</td>
+        </tr>
+        <tr>
+            <td>更新人</td>
+            <td>@Model.更新人</td>
+            <td>更新日期</td>
+            <td>@Model.更新日期</td>
+        </tr>
+    </table>
+}
+@Html.ActionLink("返回销售成交列表", "SalesRecordsIndex", "Customer", new { recID = Model.接待记录ID }, new { @style = "margin-left:1%;" })

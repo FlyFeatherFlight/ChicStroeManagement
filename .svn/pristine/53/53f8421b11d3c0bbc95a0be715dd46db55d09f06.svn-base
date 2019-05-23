@@ -1,0 +1,95 @@
+﻿@model  ChicStoreManagement.WEB.ViewModel.CustomerTrackingModel
+@{
+    ViewBag.Title = "添加客户跟进";
+}
+
+<h2>意向客户追踪日志添加</h2>
+
+<div class="form-group">
+  <br />
+    <form role="form" class="form-horizontal" action="~/CustomerTrackLog/TrackLogAdd" >
+        <table class="table table-hover table-bordered" style="width:60%" align="center">
+            <tr>
+                <td align="center">
+                    <label>当前店铺</label>
+                </td>
+                <td>
+                    <input name="店铺" type="text" value="@Model.店铺" readonly="readonly" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <label>客户姓名</label>
+                </td>
+                <td>
+                    <input type="text" name="客户姓名" value="@Model.客户姓名" readonly="readonly" class="form-control" />
+                    <input type="text" name="接待序号"  value="@Model.接待序号" style="display:none"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <lable>跟进时间</lable>
+                </td>
+                <td>
+                    <input type="date" name="跟进时间" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <lable>跟进方式</lable>
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.跟进方式, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <lable>跟进内容</lable>
+                </td>
+                <td>
+                    <textarea name="跟进内容" class="form-control" rows="3"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <lable>跟进结果</lable>
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(Model => Model.跟进结果)
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <lable>备注</lable>
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.备注, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            @*<lable>店长审核</lable>
+        @Html.EditorFor(Model => Model.店长审核, new { htmlAttributes = new { @class = "form-control" } })*@
+            <tr>
+                <td align="center">
+                    <label>当前跟进人</label>
+                </td>
+                <td>
+                    <input name="跟进人" type="text" value="@Model.跟进人" readonly="readonly" class="form-control" />
+                </td>
+            </tr>
+            
+            <tr>
+                <td align="center" colspan="2">
+                    <lable>是否申请设计师</lable>:&nbsp;
+                    是 @Html.RadioButtonFor(Model => Model.是否申请设计师, "true", new { htmlAttributes = new { @class = "form-control" } }) |否 @Html.RadioButtonFor(Model => Model.是否申请设计师, "false", new { htmlAttributes = new { @class = "form-control" } })
+                  
+                    </td></tr>
+            <tr><td colspan="2" align="center"> <input id="Submit1" type="submit" value="提交" class="btn-default" /></td></tr>
+                   
+
+
+        </table>
+
+    </form>
+    <hr />
+    <input type="button" class="btn" onclick="javascript:window.history.go(-1);" value="返回上一页">
+</div>

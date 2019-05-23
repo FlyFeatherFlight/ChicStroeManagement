@@ -1,0 +1,158 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignSubmitModel
+
+@{
+    ViewBag.Title = "修改设计案申请表";
+}
+<script>
+    function my_func() {
+        var items = document.getElementsByName("HomeSpace");//得到名为HomeSpace的多选框
+        var str = "";
+        for (i = 0; i < items.length; i++) {
+            if (items[i].checked) {
+                str += items[i].value; //获得选中的所有值
+            }
+            document.getElementById("Homespace").value = str;//设置id为Homespace的textbox的值 
+            var s = document.getElementById("Homespace").value;
+            //开始判断textbox中是否含有未选中的值
+            if (items[i].checked != true && s.search(items[i].value)>=0) {
+                s.split(items[i].value);//删除未选中的值
+                var newstr = s.join("&nbsp");//重新聚合
+                document.getElementById("Homespace").value = newstr;//设置id为Homespace的textbox的值 
+            }
+        }      
+        
+    }
+</script>
+<h2>修改设计案申请表</h2>
+<div>
+    <form action="~/DesignScheme/DesignApplyEdit">
+        <div class="table-responsive">
+            <input type="text" name="Id" value="@Model.Id" style="display:none" />
+            <input type="text" name="销售人员" value="@Model.销售人员" style="display:none" />
+            <input type="text"  name="接待记录ID" value="@Model.接待记录ID" style="display:none" />
+            <table  class="table table-hover table-bordered">
+                <tr>
+
+                    <td width="10%">客户名称</td>
+                    <td>
+                        @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                    <td>联系方式</td>
+                    <td>
+                        @Html.EditorFor(Model => Model.联系方式, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>职业</td>
+                    <td>
+                        @Html.EditorFor(Model => Model.职业, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td>家居使用者</td>
+                    <td>
+                        @Html.EditorFor(Model => Model.家居使用者, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>楼盘具体位置</td>
+                    <td colspan="3">
+                        @Html.EditorFor(Model => Model.楼盘具体位置, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>面积大小</td>
+                    <td colspan="3">
+                        @Html.EditorFor(Model => Model.面积大小, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>装修风格</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.装修风格, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span></td>
+                </tr>
+                <tr>
+                    <td>装修进度</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.装修进度, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span></td>
+                </tr>
+                <tr>
+                    <td>预算(可细化到空间)</td>
+                    <td colspan="3">@Html.EditorFor(Model => Model.预算, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td colspan="4">客户喜好或忌讳的颜色，形状，材质等</td>
+                </tr>
+                <tr>
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户喜好, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td colspan="4">客户正在比较的品牌或已经购买的品牌</td>
+                </tr>
+                <tr>
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户在意品牌或已购买品牌, new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td colspan="4">客户问题及特殊要求</td>
+                </tr>
+                <tr>
+                    <td colspan="4">@Html.EditorFor(Model => Model.客户提问与要求, new { htmlAttributes = new { @class = "form-control" } })</td>
+
+                </tr>
+                <tr>
+                    <td colspan="4" align="center">
+                        项目方案要求
+                    </td>
+                    </tr>
+                    @if (Model.整体软装配饰!=null)
+                    {
+                        <tr>
+                    <td >
+                        整体软装配饰
+                    </td>
+                     <td colspan="3" >
+                         <select name="整体软装配饰" class="form-control">
+                             <option value="">-请选择-</option>
+                             <option value=true>是</option>
+                             <option value=false>否</option>
+                         </select>
+                    </td>
+                    </tr>
+                    }
+
+               
+                        <tr>
+                            <td>家具空间：</td> 
+                            <td colspan="3">
+                                <input type="checkbox" name="HomeSpace" value="卧室" onclick="my_func()" />卧室
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="客厅" onclick="my_func()" />客厅
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="餐厅" onclick="my_func()" />餐厅
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="厨房" onclick="my_func()" />厨房
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="卫生间" onclick="my_func()" />卫生间
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="储藏室" onclick="my_func()" />储藏室
+                                &nbsp; <input type="checkbox" name="HomeSpace" value="阳台" onclick="my_func()" />阳台
+                                <input type="text" id="Homespace" name="家具空间" value="" readonly="readonly" class="form-control" />
+                            </td>
+                       
+                </tr>
+                <tr>
+                    <td>项目提交时间</td>
+                    <td colspan="3">
+                        <input type="text" name="项目提交时间" value="@Model.项目提交时间.Date.ToString("yyyy-MM-dd")" readonly="readonly" class="form-control" /><span style="color:red">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目量房时间</td>
+                    <td colspan="3">
+                        <input type="date" name="项目量房时间" value="@Model.项目量房时间.Date.ToString("yyyy-MM-dd")" class="form-control"><span style="color:red">*</span>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>项目预计完成时间</td>
+                    <td colspan="3"><input type="date" name="项目预计完成时间" class="form-control" value="@Model.项目预计完成时间.Date.ToString("yyyy-MM-dd")" /><span style="color:red">*</span></td>
+                </tr>
+                <tr><td colspan="4"><input type="submit" value="提交" /></td></tr>
+            </table>
+
+        </div>
+    </form>
+</div>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页">
+

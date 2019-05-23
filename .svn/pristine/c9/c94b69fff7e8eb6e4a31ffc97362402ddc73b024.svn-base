@@ -1,0 +1,369 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.RecReportModel
+
+@{
+    /**/
+
+    ViewBag.Title = "接待报表";
+
+}
+<style>
+    #Table {
+        width: 100%;
+        color: #848282;
+    }
+
+        #Table tr td,
+        #Table tr th,
+        #Tab tr th {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+            #Table tr td div,
+            #Table tr th div,
+            #Tab tr th div {
+                font-size: 14px;
+            }
+
+    .width-50 {
+        width: 50px;
+    }
+
+    .width-102 {
+        width: 102px;
+    }
+
+    .width-60 {
+        width: 60px;
+    }
+
+    .width-30 {
+        width: 30px;
+    }
+
+    .width-42 {
+        width: 42px;
+    }
+
+    .width-56 {
+        width: 56px;
+    }
+
+    .width-75 {
+        width: 75px;
+    }
+
+    .width-85 {
+        width: 85px;
+    }
+
+    .width-200 {
+        width: 200px;
+    }
+</style>
+<h3>接待报表</h3>
+<form id="DayForm">
+    @if (ViewBag.IsManager == true)
+    {
+
+        <select name="emID" class="form-control width-200" id="storeMan">
+            <option value="value">-请选择员工-</option>
+        </select>
+    }
+    else
+    {
+        <input type="text" name="emID" value="@ViewBag.EmID " class="hidden" id="storeMan" />
+    }
+    
+    <input type="text" name="storeID" value="@Model.店铺ID" class="hidden" />
+    <input type="text" id="startTime" name="endDate" class="form-control dateLay width-200" placeholder="请选择开始日期" readonly /><span>至</span>
+    <input type="text" id="endTime" name="dateTime" class="form-control dateLay width-200" placeholder="请选择结束日期" readonly />
+    <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="recSearch()" />
+    <input type="button" name="" value="导出本页数据" onclick="Excl()" style="font-size: 14px;color: #333;" />
+
+</form>
+<div>
+    接待数：<span class="RecNum">0</span> 意向数：<span class="ExceptedNum">0</span> 确认数：<span class="surNum">0</span> 成交数：<span class="DealNum">0</span>
+    <p style="color:red;">默认显示的是本月接待数据</p>
+</div>
+<div style="width:100%;">
+    @*表头*@
+    <div class="table-responsive hidden Top" style="overflow-x:hidden;width:98%;overflow-y:scroll;">
+        <table id="Tab">
+            <tr>
+                <th><div class="width-102">接待日期</div></th>
+                <th><div class="width-50">店铺</div></th>
+                <th><div class="width-102">进店时间</div></th>
+                <th><div class="width-102">出店时间</div></th>
+                <th><div class="width-102">进店时长</div></th>
+                <th><div class="width-60">客户姓名</div></th>
+                <th><div class="width-30">性别</div></th>
+                <th><div class="width-50">年龄段</div></th>
+                <th><div class="width-30">客户类别</div></th>
+                <th><div class="width-56">客户来源</div></th>
+                <th><div class="width-56">客户类型</div></th>
+                <th><div class="width-200">客户电话</div></th>
+                <th><div class="width-30">来店次数</div></th>
+                <th><div class="width-200">社交软件</div></th>
+                <th><div class="width-50">主导者</div></th>
+                <th><div class="width-102">主导者喜欢的风格</div></th>
+                <th><div class="width-102">今日来店目的</div></th>
+                <th><div class="width-200">销售常规讲解</div></th>
+                <th><div class="width-50">使用空间</div></th>
+                <th><div class="width-50">如何得知品牌</div></th>
+                <th><div class="width-50">报价折扣</div></th>
+                <th><div class="width-50">携带设计师</div></th>
+                <th><div class="width-200">客户疑义</div></th>
+                <th><div class="width-200">意向产品</div></th>
+                <th><div class="width-102">楼盘信息</div></th>
+                <th><div class="width-200">房屋信息</div></th>
+                <th><div class="width-102">预计金额</div></th>
+                <th><div class="width-102">预计使用时间</div></th>
+                <th><div class="width-85">接待人</div></th>
+                <th><div class="width-85">跟进人</div></th>
+                <th><div class="width-30">是否关闭</div></th>
+                <th><div class="width-30">是否成交</div></th>
+                <th><div class="width-50">是否有意向</div></th>
+                <th><div class="width-30">是否确认</div></th>
+                <th><div class="width-50">跟进状态</div></th>
+            </tr>
+        </table>
+    </div>
+    <div class="table-responsive Botoom" style="height:600px;width:98%; overflow-y:scroll;">
+
+        <table id="Table">
+            <thead>
+                <tr>
+                    <th><div class="width-102">接待日期</div></th>
+                    <th><div class="width-50">店铺</div></th>
+                    <th><div class="width-102">进店时间</div></th>
+                    <th><div class="width-102">出店时间</div></th>
+                    <th><div class="width-102">进店时长</div></th>+
+                    <th><div class="width-60">客户姓名</div></th>
+                    <th><div class="width-30">性别</div></th>
+                    <th><div class="width-50">年龄段</div></th>
+                    <th><div class="width-30">客户类别</div></th>
+                    <th><div class="width-56">客户来源</div></th>
+                    <th><div class="width-56">客户类型</div></th>
+                    <th><div class="width-200">客户电话</div></th>
+                    <th><div class="width-30">来店次数</div></th>
+                    <th><div class="width-200">社交软件</div></th>
+                    <th><div class="width-50">主导者</div></th>
+                    <th><div class="width-102">主导者喜欢的风格</div></th>
+                    <th><div class="width-102">今日来店目的</div></th>
+                    <th><div class="width-200">销售常规讲解</div></th>
+                    <th><div class="width-50">使用空间</div></th>
+                    <th><div class="width-50">如何得知品牌</div></th>
+                    <th><div class="width-50">报价折扣</div></th>
+                    <th><div class="width-50">携带设计师</div></th>
+                    <th><div class="width-200">客户疑义</div></th>
+                    <th><div class="width-200">意向产品</div></th>
+                    <th><div class="width-102">楼盘信息</div></th>
+                    <th><div class="width-200">房屋信息</div></th>
+                    <th><div class="width-102">预计金额</div></th>
+                    <th><div class="width-102">预计使用时间</div></th>
+                    <th><div class="width-85">接待人</div></th>
+                    <th><div class="width-85">跟进人</div></th>
+                    <th><div class="width-30">是否关闭</div></th>
+                    <th><div class="width-30">是否成交</div></th>
+                    <th><div class="width-50">是否有意向</div></th>
+                    <th><div class="width-30">是否确认</div></th>
+                    <th><div class="width-50">跟进状态</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="36" style="text-align:left;height:120px;">请查询数据！</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+   
+
+    // 获取当前月的第一天  
+    var start = new Date();
+    start.setDate(1);
+
+    // 获取当前月的最后一天  
+    var date = new Date();
+    var currentMonth = date.getMonth();
+    var nextMonth = ++currentMonth;
+    var nextMonthFirstDay = new Date(date.getFullYear(), nextMonth, 1);
+    var oneDay = 1000 * 60 * 60 * 24;
+    var end = new Date(nextMonthFirstDay - oneDay);
+    var startDate = transferDate(start); // 日期变换  
+    var endDate = transferDate(end); // 日期变换 
+
+
+    function transferDate(date) {
+        // 年  
+        var year = date.getFullYear();
+        // 月  
+        var month = date.getMonth() + 1;
+        // 日  
+        var day = date.getDate();
+
+        if (month >= 1 && month <= 9) {
+
+            month = "0" + month;
+        }
+        if (day >= 0 && day <= 9) {
+
+            day = "0" + day;
+        }
+
+        var dateString = year + '/' + month + '/' + day;
+
+        return dateString;
+    }
+    daySearch(@Model.店铺ID, @ViewBag.EmID, startDate, endDate);
+    //根据是否滚动显示表头
+    var T = document.querySelector(".Top");
+    var B = document.querySelector(".Botoom");
+    B.addEventListener("scroll", function () {
+        if (B.scrollTop >0) {
+            $(".Top").removeClass("hidden");
+            T.scrollLeft = B.scrollLeft;
+        } else {
+            $(".Top").addClass("hidden");
+        }
+
+    })
+    //加载员工数据
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        data: {},
+        dataType: 'json',
+        cache: false,
+        async: true,
+        success: function (data) {
+            //console.log(data)
+            $("#storeMan").append("<option value=''>全部</option>");
+            $(data).each(function (i,m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！")
+            console.log(err)
+        }
+    })
+    //查询条件
+    function recSearch() {
+        var storeID =@Model.店铺ID ,
+            emID = $.trim($("#storeMan").val()),
+            startDate = $.trim($("#startTime").val()),
+            endDate = $.trim($("#endTime").val());
+       daySearch(storeID, emID, startDate, endDate);
+    }
+    //导出表格
+    function Excl() {
+        var str = $(".dateLay").val() +"报表"
+        btn_export(str)
+    }
+    //根据查询加载数据
+    function daySearch(storeID, emID, startDate, endDate) {
+        $("#Table tbody").html(" <tr><td colspan='36' style='text-align: left;height:120px;' class='loading'>正在加载</td></tr>");
+        $.ajax({
+        type: "post",
+        data: { storeID: storeID, emID: emID, startDate: startDate, endDate: endDate },
+        url:"@Url.Action("RecReportJson", "CustomerAnalyze")" ,
+        dataType: "json",
+        cache: false,
+        async: true,
+        success: function (data) {
+            console.log(data)
+            if (data.success) {
+                   
+                $(".RecNum").text(data.recNum);
+                $(".ExceptedNum").text(data.exceptedNum);
+                $(".surNum").text(data.confirmNum);
+                $(".DealNum").text(data.dealNum);
+                var html = '';
+                var d = data.data.CustomerInfoModels;
+                if ($(d).length != 0) {
+                    $(d).each(function (i, m) {
+                        //转换日期
+                        if (m.接待日期 != null) {
+                            m.接待日期 = new Date(parseInt(m.接待日期.substr(6, 19))).toLocaleDateString();
+
+                        }
+                        if (m.预计使用时间 != null) {
+                            m.预计使用时间 = new Date(parseInt(m.预计使用时间.substr(6, 19))).toLocaleDateString();
+                        }
+                        if (m.进店时间 != null) {
+                            m.进店时间 = new Date(parseInt(m.进店时间.substr(6, 19))).toLocaleDateString();
+                        }
+                        if (m.出店时间 != null) {
+                            m.出店时间 = new Date(parseInt(m.出店时间.substr(6, 19))).toLocaleDateString();
+                        }
+                        //转换是否关闭
+                        if (m.是否关闭 == true) {
+                            m.是否关闭 = "是";
+                        } else if (m.是否关闭 == false) {
+                            m.是否关闭 = "否";
+                        } else {
+                            m.是否关闭 = "";
+                        }
+                        //转换是否成交
+                        if (m.是否成交 == true) {
+                            m.是否成交 = "是";
+                        } else if (m.是否成交 == false) {
+                            m.是否成交 = "否";
+                        } else {
+                            m.是否成交 = "";
+                        }
+                        //转换是否有意向
+                        if (m.是否有意向 == true) {
+                            m.是否有意向 = "是";
+                        } else if (m.是否有意向 == false) {
+                            m.是否有意向 = "否";
+                        } else {
+                            m.是否有意向 = "";
+                        }
+                        //转换是否确认
+                        if (m.是否确认 == true) {
+                            m.是否确认 = "是";
+                        } else if (m.是否确认 == false) {
+                            m.是否确认 = "否";
+                        } else {
+                            m.是否确认 = "";
+                        }
+
+                        //转换当前状态
+                        if (m.当前状态 == null) {
+                            m.当前状态 = "";
+                        }
+                        html += `<tr>
+                                 <td>${m.接待日期}</td><td>${m.店铺}</td><td>${m.进店时间}</td><td>${m.出店时间}</td><td>${m.进店时长}</td>
+                               <td>${m.客户姓名}</td><td>${m.性别}</td><td>${m.年龄段}</td>
+                                <td>${m.客户类别}</td><td>${m.客户来源}</td><td>${m.客户类型}</td><td>${m.客户电话}</td>
+                                <td>${m.来店次数}</td><td>${m.社交软件}</td><td>${m.主导者}</td><td>${m.主导者喜好风格}</td>
+                                <td>${m.目的}</td><td>${m.销售讲解}</td><td>${m.使用空间}</td>
+                                <td>${m.如何得知品牌}</td><td>${m.预报价折扣}</td><td>${m.设计师}</td><td>${m.客户建议}</td><td>${m.喜欢产品}</td>
+                                <td>${m.安装地址}</td><td>${m.户型大小}<br />${m.装修情况}</td>
+                                <td>${m.预算金额}</td><td>${m.预计使用时间}</td><td>${m.接待人}</td><td>${m.跟进人}</td>
+                                <td>${m.是否关闭}</td><td>${m.是否成交}</td><td>${m.是否有意向}</td><td>${m.是否确认}</td><td>${m.当前状态}</td>
+                            </tr>`;
+                    })
+                    $("#Table tbody").html(html);
+                } else {
+                    $("#Table tbody").html("<tr><td colspan='15' style='text-align: left;height:120px;' >没有数据！</td></tr>");
+                }
+            } else {
+                $("#Table tbody").html("<tr><td colspan='15' style='text-align: left;height:120px;' >"+data.msg+"</td></tr>");
+            }
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！");
+            console.log(err);
+        }
+        })
+    }
+</script>

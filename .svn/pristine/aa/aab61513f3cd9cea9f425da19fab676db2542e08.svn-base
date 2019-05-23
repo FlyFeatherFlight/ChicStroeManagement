@@ -1,0 +1,104 @@
+﻿
+@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "成交客户列表";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h3 style="margin-left:1%; margin-bottom:10px;">成交客户列表</h3>
+@using (Html.BeginForm("DealCustomerView", "Customer", FormMethod.Get, new { @style = "margin-left:1%;display:inline-block;" }))
+{
+
+
+    <input type="text" name="startDate" class="form-control dateLay width-200" placeholder="请选择开始时间" readonly />
+    <span>至</span>
+    <input type="text" name="EndDate" class="form-control dateLay width-200" placeholder="请选结束时间" readonly />
+
+    <input type="submit" value="查询" style="font-size: 14px;color: #333;" />
+    <input type="button" name="" value="导出本页数据" onclick="btn_export('成交客户数据')" style="font-size: 14px;color: #333;" />
+
+}
+@using (Html.BeginForm("DealCustomerView", "Customer", FormMethod.Post, new { @style = "display:inline-block;" }))
+    {
+       
+        <input type="submit" value="全部" style="font-size: 14px;color: #333;" />
+       
+    }
+<div id="searchR">
+    @using (Html.BeginForm("DealCustomerView", "Customer", FormMethod.Post, new { }))
+    {
+        <p>
+            @Html.TextBox("SearchString", ViewBag.CustomerCurrentFilter as string, new { @class = "form-control width-200", placeholder = "通过电话查找" })
+
+            <input type="submit" value="查询" style="font-size: 14px;color: #333;" />
+
+        </p>
+    }
+</div>
+
+
+<table class="table table-bordered table-hover text-center" style="width:98%; margin:10px auto 0;" id="Table">
+    <tr>
+        <th class="text-center">接待日期 </th>
+        <th class="text-center">客户姓名</th>
+        <th class="text-center">性别</th>
+        <th class="text-center">年龄段</th>
+        <th class="text-center">客户类别</th>
+        <th class="text-center">客户来源</th>
+        <th class="text-center">客户类型</th>
+        <th class="text-center">客户电话</th>
+        <th class="text-center">来店次数</th>
+        <th class="text-center">接待人</th>
+        <th class="text-center">跟进人</th>
+        <th class="text-center">操作</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @item.接待日期.ToString("d")
+            </td>
+
+            <td>
+                @Html.ActionLink(item.客户姓名, "SalesRecordsIndex", "Customer", new { recID = item.ID }, new { })
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.性别)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.年龄段)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.客户类别)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.客户来源)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.客户类型)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.客户电话)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.来店次数)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.接待人)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.跟进人)
+            </td>
+            <td>@Html.ActionLink("添加销售成交单", "SalesRecordAddView", "Customer", new { recId = item.ID }, new { })</td>
+        </tr>
+    }
+
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("CustomerIndex", new { page, sortOrder = ViewBag.CustomerCurrentSort, currentFilter = ViewBag.CustomerCurrentFilter }))
+<a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>

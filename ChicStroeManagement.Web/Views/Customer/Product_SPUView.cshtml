@@ -1,0 +1,142 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.Product_SPUViewModel>
+
+@{
+    ViewBag.Title = "Product_SPUView";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Product_SPUView</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.编号)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.名称1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.规格1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SPU描述)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.计量单位1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.商品ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.型号ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.停用标志)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.交货周期1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.是否进口1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.零售价)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.经销价)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.审核标志)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.审核人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.审核日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.处理标识)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.uid)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.编号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.名称1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.规格1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SPU描述)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.计量单位1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.商品ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.型号ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.停用标志)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.交货周期1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.是否进口1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.零售价)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.经销价)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.审核标志)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.审核人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.审核日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.处理标识)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.uid)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

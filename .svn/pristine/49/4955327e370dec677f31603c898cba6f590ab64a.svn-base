@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.RecAnalyzeViewModel>
+
+@{
+    ViewBag.Title = "AnalyzeIndex";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>AnalyzeIndex</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.店铺ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.店铺)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售姓名)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待人数)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.意向确认人数)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.成交人数)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.成交金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.成交日期)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.店铺ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.店铺)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售姓名)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待人数)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.意向确认人数)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.成交人数)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.成交金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.成交日期)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

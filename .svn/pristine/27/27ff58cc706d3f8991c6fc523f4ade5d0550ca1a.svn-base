@@ -1,0 +1,9 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.RecReport_DayModel
+
+@{
+    ViewBag.Title = "RecDayReportView";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>RecDayReportView</h2>
+

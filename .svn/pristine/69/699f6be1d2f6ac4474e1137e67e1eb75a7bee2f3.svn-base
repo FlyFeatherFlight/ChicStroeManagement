@@ -1,0 +1,789 @@
+﻿using ChicStoreManagement.IBLL;
+using ChicStoreManagement.WEB.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace ChicStoreManagement.WEB.Controllers
+{
+    /// <summary>
+    /// 门店客户数据分析控制器
+    /// </summary>
+    public class CustomerAnalyzeController : Controller
+    {
+        private readonly ICustomerInfoBLL customerInfoBLL;
+        private readonly IExceptedBuyBLL exceptedBuyBLL;
+        private readonly IStoreEmployeesBLL storeEmployeesBLL;
+        private readonly IStoreBLL storeBLL;
+        private readonly IProductCodeBLL productCodeBLL;
+        private readonly ICustomerTrackingBLL customerTrackingBLL;
+        private readonly ITrackGoalBLL trackGoalBLL;
+        private readonly ISalesRecordBLL salesRecordBLL;
+
+        public CustomerAnalyzeController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, ITrackGoalBLL trackGoalBLL, ISalesRecordBLL salesRecordBLL)
+        {
+            this.customerInfoBLL = customerInfoBLL ?? throw new ArgumentNullException(nameof(customerInfoBLL));
+            this.exceptedBuyBLL = exceptedBuyBLL ?? throw new ArgumentNullException(nameof(exceptedBuyBLL));
+            this.storeEmployeesBLL = storeEmployeesBLL ?? throw new ArgumentNullException(nameof(storeEmployeesBLL));
+            this.storeBLL = storeBLL ?? throw new ArgumentNullException(nameof(storeBLL));
+            this.productCodeBLL = productCodeBLL ?? throw new ArgumentNullException(nameof(productCodeBLL));
+            this.customerTrackingBLL = customerTrackingBLL ?? throw new ArgumentNullException(nameof(customerTrackingBLL));
+            this.trackGoalBLL = trackGoalBLL ?? throw new ArgumentNullException(nameof(trackGoalBLL));
+            this.salesRecordBLL = salesRecordBLL ?? throw new ArgumentNullException(nameof(salesRecordBLL));
+        }
+
+
+        /// <summary>
+        /// 门店数据总表
+        /// </summary>
+        /// <returns></returns>
+        // GET: CustomerAnalyze
+        public ActionResult AnalyzeIndex()
+        {
+            var em = SetEmployee();
+            ViewBag.Store = em.店铺ID;
+            ViewBag.Employee = em.姓名;
+
+            ViewBag.IsManager = em.是否店长;
+            ViewBag.IsDesigner = em.是否设计师;
+            ViewBag.IsEmployee = em.是否销售;
+            ViewBag.EmID = em.ID;
+            return View();
+        }
+
+
+        /// <summary>
+        ///总表数据
+        /// </summary>
+        /// <param name="storeID">门店ID</param>
+        /// <param name="emID"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetAnalyzeJson(int? storeID, int? emID, DateTime? startDate, DateTime? endDate)
+        {
+            List<RecAnalyzeViewModel> models = new List<RecAnalyzeViewModel>();
+            try
+            {
+                models = BuildRecAnalyzeViewModels(storeID, emID, startDate, endDate);
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, msg = e.Message });
+            }
+
+            return Json(new { success = true, msg = "查询成功!", data = models });
+        }
+
+        /// <summary>
+        /// 接待报表视图
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RecDayReportView()
+        {
+            var em = SetEmployee();
+            ViewBag.Store = em.店铺ID;
+            ViewBag.Employee = em.姓名;
+
+            ViewBag.IsManager = em.是否店长;
+            ViewBag.IsDesigner = em.是否设计师;
+            ViewBag.IsEmployee = em.是否销售;
+            ViewBag.EmID = em.ID;
+            RecReportModel recReport_Day = new RecReportModel();
+            recReport_Day.店铺ID = em.店铺ID;
+            
+            return View(recReport_Day);
+        }
+        /// <summary>
+        /// 接待表Json
+        /// </summary>
+        /// <param name="dateTime">查询的日期</param>
+        /// <param name="storeID">店铺ID</param>
+        /// <returns></returns>
+        public ActionResult RecReportJson(int storeID, int? emID, DateTime? startDate, DateTime? endDate)
+        {
+            RecReportModel model = new RecReportModel();
+            int RecCount = 0;//接待数
+            int ExceptedNum = 0;//意向数
+            int ConfirmCount = 0;//确认数
+            int DealCount = 0;//成交数
+            try
+            {
+                model = BuilRecReportModel(storeID, emID, startDate, endDate);
+                if (model == null)
+                {
+                    return Json(new { success = false, msg = "查询失败！" });
+                }
+                if (emID > 0)
+                {
+                    RecCount = model.CustomerInfoModels.Count();
+                    var e = model.CustomerInfoModels.Where(p => p.是否有意向 == true);
+                    var c = model.CustomerInfoModels.Where(p => p.是否确认 == true);
+                    var d = model.CustomerInfoModels.Where(p => p.是否成交 == true);
+                    if (e != null)
+                    {
+                        ExceptedNum = e.Count();
+                    }
+                    if (c != null)
+                    {
+                        ConfirmCount = c.Count();
+                    }
+                    if (d != null)
+                    {
+                        DealCount = d.Count();
+                    }
+
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { success = false, msg = e.Message });
+            }
+
+            return Json(new { success = true, msg = "查询成功！", data = model,recNum=RecCount,exceptedNum=ExceptedNum,confirmNum=ConfirmCount,dealNum=DealCount });
+        }
+
+        /// <summary>
+        /// 门店销售月报表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SalesMonthReportView()
+        {
+            var em = SetEmployee();
+            ViewBag.Store = em.店铺ID;
+            ViewBag.Employee = em.姓名;
+
+            ViewBag.IsManager = em.是否店长;
+            ViewBag.IsDesigner = em.是否设计师;
+            ViewBag.IsEmployee = em.是否销售;
+            ViewBag.EmID = em.ID;
+            List<RecAnalyzeViewModel> models = new List<RecAnalyzeViewModel>();
+            return View(models);
+
+        }
+
+        /// <summary>
+        /// 门店销售月报表JSON
+        /// </summary>
+        /// <param name="storeID">店铺ID</param>
+        /// <param name="emID">员工ID</param>
+        /// <param name="MonthNum">月份</param>
+        /// <returns></returns>
+        public ActionResult SalesMonthReportJson(int storeID, int? emID, int MonthNum)
+        {
+            List<RecAnalyzeViewModel> models = new List<RecAnalyzeViewModel>();
+            models = BuildSalesReport_MonthData(storeID, emID, MonthNum);
+            if (models == null)
+            {
+                return Json(new { success = false, msg = "没有数据！" });
+
+            }
+            return Json(new { success = true, msg = "查询成功!", data = models });
+        }
+
+
+
+
+
+
+
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private Employees SetEmployee()
+        {
+            string userName = HttpContext.User.Identity.Name;
+            Employees employees = new Employees();
+            if (userName != null)
+            {
+                employees = HttpContext.Session["Employee"] as Employees;
+
+
+                return employees;
+            }
+            else
+            {
+
+                return null;
+
+            }
+        }
+
+        /// <summary>
+        /// 构建单个销售成交记录实体
+        /// </summary>
+        /// <returns></returns>
+        private SalesRecordsViewModel BuildSalesRecordsModel(销售_接待成交单 model)
+        {
+            SalesRecordsViewModel salesRecords = new SalesRecordsViewModel();
+            salesRecords.ID = model.ID;
+            salesRecords.制单人员ID = model.制单人员ID;
+            salesRecords.制单日期 = model.制单日期;
+            salesRecords.合同单号 = model.合同单号;
+            salesRecords.折扣 = model.折扣;
+            salesRecords.接待记录ID = model.接待记录ID;
+            salesRecords.更新人ID = model.更新人ID;
+            salesRecords.更新日期 = model.更新日期;
+            salesRecords.订库样 = model.订库样;
+            salesRecords.销售人员ID = model.销售人员ID;
+            salesRecords.销售人员 = storeEmployeesBLL.GetModel(p => p.ID == model.销售人员ID).姓名;
+            salesRecords.销售单号 = model.销售单号;
+            salesRecords.销售日期 = model.销售日期;
+            salesRecords.销售金额 = model.销售金额;
+            salesRecords.备注 = model.备注;
+            salesRecords.是否全款 = model.是否全款;
+            salesRecords.更新人 = storeEmployeesBLL.GetModel(p => p.ID == model.更新人ID).姓名;
+            var m = customerInfoBLL.GetModel(p => p.ID == model.接待记录ID);
+            salesRecords.客户姓名 = m.客户姓名;
+            salesRecords.客户联系方式 = "[" + m.客户电话 + " ][" + m.社交软件 + "]";
+            salesRecords.店铺ID = model.店铺ID;
+            salesRecords.是否业务业绩 = model.是否业务业绩;
+            salesRecords.是否自营业绩 = model.是否自营业绩;
+            salesRecords.店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称;
+            return salesRecords;
+        }
+
+        /// <summary>
+        ///构建销售成交实体集 
+        /// </summary>
+        /// <returns></returns>
+        private List<SalesRecordsViewModel> BuildSalesRecordsModels()
+        {
+            var em = SetEmployee();
+            var models = salesRecordBLL.GetModels(p => p.销售人员ID == em.ID);
+            List<SalesRecordsViewModel> lis = new List<SalesRecordsViewModel>();
+            foreach (var item in models)
+            {
+                var m = BuildSalesRecordsModel(item);
+                lis.Add(m);
+            }
+            return lis;
+        }
+
+        /// <summary>
+        /// 构造客户信息单个数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private CustomerInfoModel BuildCustomerInfoModel(销售_接待记录 model)
+        {
+
+            CustomerInfoModel customerInfo = new CustomerInfoModel();
+            try
+            {
+
+
+                customerInfo.ID = model.ID;
+                customerInfo.店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称;
+                customerInfo.店铺ID = model.店铺ID;
+                customerInfo.接待人 = storeEmployeesBLL.GetModel(p => p.ID == model.接待人ID).姓名;
+                customerInfo.接待人ID = model.接待人ID;
+                customerInfo.接待序号 = model.接待序号;
+                customerInfo.接待日期 = model.接待日期;
+                customerInfo.主导者 = model.主导者;
+                customerInfo.主导者喜好风格 = model.主导者喜好风格;
+                customerInfo.使用空间 = model.使用空间;
+                customerInfo.出店时间 = model.出店时间;
+                customerInfo.制单日期 = model.制单日期;
+                customerInfo.同行人 = model.同行人;
+                customerInfo.如何得知品牌 = model.如何得知品牌;
+                customerInfo.安装地址 = model.安装地址;
+                customerInfo.客户姓名 = model.客户姓名;
+                customerInfo.客户建议 = model.客户建议;
+                customerInfo.客户来源 = model.客户来源;
+                customerInfo.客户电话 = model.客户电话;
+                customerInfo.客户着装 = model.客户着装;
+                customerInfo.客户类别 = model.客户类别;
+                customerInfo.客户类型 = model.客户类型;
+                customerInfo.客户职业 = model.客户职业;
+                customerInfo.目的 = model.客户目的;
+                customerInfo.家居使用者 = model.家居使用者;
+                customerInfo.年龄段 = model.年龄段;
+                customerInfo.性别 = model.性别;
+                customerInfo.是否有意向 = model.是否有意向;
+                if (model.更新人 != null)
+                {
+                    customerInfo.更新人ID = model.更新人.Value;
+                    customerInfo.更新人 = storeEmployeesBLL.GetModel(p => p.ID == model.更新人).姓名;
+                }
+
+                customerInfo.更新日期 = model.更新日期;
+                customerInfo.来店次数 = model.来店次数;
+                customerInfo.比较品牌 = model.比较品牌;
+                customerInfo.特征 = model.特征;
+                customerInfo.社交软件 = model.社交软件;
+                customerInfo.装修情况 = model.装修情况;
+                customerInfo.装修进度 = model.装修进度;
+                customerInfo.装修风格 = model.装修风格;
+                customerInfo.设计师 = model.设计师;
+                if (model.跟进人ID != null)
+                {
+                    customerInfo.跟进人ID = model.跟进人ID.Value;
+                    customerInfo.跟进人 = storeEmployeesBLL.GetModel(p => p.ID == model.跟进人ID).姓名;
+                }
+
+                customerInfo.返点 = model.返点;
+                customerInfo.进店时长 = model.进店时长;
+                customerInfo.进店时间 = model.进店时间;
+                customerInfo.预报价折扣 = model.预报价折扣;
+                customerInfo.预算金额 = model.预算金额;
+                customerInfo.预计使用时间 = model.预计使用时间;
+                customerInfo.不喜欢产品 = model.不喜欢产品;
+                customerInfo.不喜欢元素 = model.不喜欢元素;
+                customerInfo.主卧预算备注 = model.卧室预算备注;
+                customerInfo.主卧预算家具 = model.卧室预算家具;
+                customerInfo.主卧预算金额 = model.卧室预算金额;
+                customerInfo.餐厅预算备注 = model.餐厅预算备注;
+                customerInfo.餐厅预算家具 = model.餐厅预算家具;
+                customerInfo.餐厅预算金额 = model.餐厅预算金额;
+                customerInfo.其它空间备注 = model.其它空间备注;
+                customerInfo.其它空间家具 = model.其它空间家具;
+                customerInfo.其它空间预算 = model.其它空间预算;
+                customerInfo.喜欢产品 = model.喜欢产品;
+                customerInfo.喜欢元素 = model.喜欢元素;
+                customerInfo.销售讲解 = model.销售讲解;
+                customerInfo.客厅预算备注 = model.客厅预算备注;
+                customerInfo.客厅预算家具 = model.客厅预算家具;
+                customerInfo.客厅预算金额 = model.客厅预算金额;
+                customerInfo.户型大小 = model.户型大小;
+                customerInfo.比较品牌产品 = model.比较品牌产品;
+                customerInfo.比较品牌产品备注 = model.比较品牌产品备注;
+                customerInfo.是否关闭 = model.是否关闭;
+                customerInfo.是否成交 = model.是否成交;
+                customerInfo.关闭备注 = model.关闭备注;
+                var traklog = customerTrackingBLL.GetModels(p => p.接待记录ID == model.ID);
+                if (traklog.Count() > 0)
+                {
+                    customerInfo.当前状态 = traklog.OrderByDescending(p => p.id).First().跟进结果;
+                }
+                var m = salesRecordBLL.GetModels(p => p.接待记录ID == model.ID);
+                if (m.Count() > 0)
+                {
+                    decimal money = 0;
+                    foreach (var item in m)
+                    {
+                        money = money + item.销售金额;
+                    }
+                    customerInfo.成交金额 = money;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return customerInfo;
+        }
+
+
+
+        /// <summary>
+        /// 初始化客户接待信息
+        /// </summary>
+        private IQueryable<CustomerInfoModel> BuildCustomerInfoModels()
+        {
+            var em = SetEmployee();
+            List<CustomerInfoModel> customerInfoModelsList = new List<CustomerInfoModel>();
+
+
+            List<销售_接待记录> customer = new List<销售_接待记录>();
+            if (em.是否店长 == true)
+            {
+                customer = customerInfoBLL.GetModels(p => p.店铺ID == em.店铺ID).ToList();//查询当前店铺所有顾客接待信息
+
+            }
+            else
+            {
+                customer = customerInfoBLL.GetModels(p => p.接待人ID == em.ID || p.跟进人ID == em.ID).ToList();
+            }
+
+            foreach (var item in customer)
+            {
+                var model = BuildCustomerInfoModel(item);
+
+                customerInfoModelsList.Add(model);
+            }
+            return customerInfoModelsList.AsEnumerable().AsQueryable();
+        }
+
+        /// <summary>
+        /// 接待销售成交数据分析
+        /// </summary>
+        /// <returns></returns>
+        private List<RecAnalyzeViewModel> BuildRecAnalyzeViewModels(int? storeID, int? emID, DateTime? startDate, DateTime? endDate)
+        {
+            List<销售_接待记录> recModels = new List<销售_接待记录>();
+            List<RecAnalyzeViewModel> lis = new List<RecAnalyzeViewModel>();
+            List<销售_店铺员工档案> lisem = new List<销售_店铺员工档案>();
+            if (storeID > 0)
+            {
+                var models = customerInfoBLL.GetModels(p => p.店铺ID == storeID);//查询当前店铺
+                var ems = storeEmployeesBLL.GetModels(p => p.店铺ID == storeID);
+                if (ems != null)
+                {
+                    lisem = ems.ToList();
+                }
+                else
+                {
+                    lisem = null;
+                }
+                if (models.Count() > 0)
+                {
+                    recModels = models.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }//查询指定店铺
+            else
+            {
+                var models = customerInfoBLL.GetModels(p => true);//查询所有店铺
+                if (models.Count() > 0)
+                {
+                    recModels = models.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+                var ems = storeEmployeesBLL.GetModels(p => true);
+                if (ems != null)
+                {
+                    lisem = ems.ToList();
+                }
+                else
+                {
+                    lisem = null;
+                }
+            }
+
+            if (emID > 0)
+            {
+                var m = recModels.Where(p => p.接待人ID == emID);
+                if (m.Count() > 0)
+                {
+                    recModels = m.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            if (startDate != null)
+            {
+                var m = recModels.Where(p => p.接待日期 > startDate);
+                if (m.Count() > 0)
+                {
+                    recModels = m.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            if (endDate != null)
+            {
+                var m = recModels.Where(p => p.接待日期 < endDate);
+                if (m.Count() > 0)
+                {
+                    recModels = m.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            if (recModels != null && lisem != null)//数据合成
+            {
+                foreach (var item in lisem)
+                {
+
+                    var models = recModels.Where(p => p.接待人ID == item.ID);//不同接待人的集合
+                    var modeldate = models.GroupBy(p => p.接待日期);//不同接待人接待数据按日期分组
+                    foreach (var ite in modeldate)
+                    {
+                        RecAnalyzeViewModel model = new RecAnalyzeViewModel();
+                        model.接待日期 = ite.Key;
+                        model.意向确认人数 = ite.Count(p => p.是否确认 == true);
+                        model.成交人数 = ite.Count(p => p.是否成交 == true);
+                        model.接待人数 = ite.Count();
+                        model.销售ID = item.ID;
+                        model.销售姓名 = storeEmployeesBLL.GetModel(p => p.ID == item.ID).姓名;
+                        model.店铺ID = ite.FirstOrDefault().店铺ID;
+                        model.店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称;
+                        List<SalesRecordsViewModel> salesRecordsViewModels = new List<SalesRecordsViewModel>();
+                        foreach (var it in ite)
+                        {
+                            var sales = salesRecordBLL.GetModels(p => p.接待记录ID == it.ID);
+                            foreach (var i in sales)
+                            {
+                                SalesRecordsViewModel salesRecordsView = new SalesRecordsViewModel();
+                                salesRecordsView.销售日期 = i.销售日期;
+                                salesRecordsView.销售金额 = i.销售金额;
+                                salesRecordsView.销售人员ID = i.销售人员ID;
+                                salesRecordsView.销售日期 = i.销售日期;
+
+                                salesRecordsViewModels.Add(salesRecordsView);
+                            }
+                        }
+
+
+                        if (model.接待人数 > 0)
+                        {
+                            if (model.意向确认人数 > 0 && model.接待人数 == 0)
+                            {
+                                model.确认率 = "100.00%";
+                            }
+                            else
+                            {
+
+
+                                model.确认率 = (Convert.ToDouble(model.意向确认人数) / Convert.ToDouble(model.接待人数)).ToString("0.00%");
+                            }
+                        }
+                        if (model.意向确认人数 > 0)
+                        {
+                            if (model.成交人数 > 0 && model.意向确认人数 == 0)
+                            {
+                                model.成交率 = "100.00%";
+                            }
+                            else
+                            {
+                                model.成交率 = (Convert.ToDouble(model.成交人数) / Convert.ToDouble(model.意向确认人数)).ToString("0.00%");
+                            }
+
+                        }
+                        else
+                        {
+                            model.成交率 = "0.00%";
+                        }
+                        model.达成率 = "0.00%";
+                        if (salesRecordsViewModels.Count > 0)
+                        {
+                            model.成交金额 = salesRecordsViewModels.Where(p => p.销售人员ID == model.销售ID).Sum(p => p.销售金额);//指定日期，销售的成交金额
+                            model.最大单值 = salesRecordsViewModels.Max(p => p.销售金额);
+                        }
+                        var employeeSales = salesRecordsViewModels.Where(p => p.是否业务业绩 == true);
+                        var selfSales = salesRecordsViewModels.Where(p => p.是否自营业绩 == true);
+                        if (employeeSales != null)
+                        {
+                            model.门店业务业绩 = employeeSales.Sum(p => p.销售金额);
+                        }
+                        if (employeeSales != null)
+                        {
+                            model.门店自营业绩 = selfSales.Sum(p => p.销售金额);
+                        }
+
+
+                        lis.Add(model);
+                    }
+
+                }
+                return lis;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 门店接待报表
+        /// </summary>
+        /// <param name="storeID">店铺ID</param>
+        ///<param name="emID">销售人员ID（没有则是全店）</param>
+        /// <returns></returns>
+        private RecReportModel BuilRecReportModel(int storeID, int? emID, DateTime? startDate, DateTime? endDate)
+        {
+
+
+            var models = customerInfoBLL.GetModels(p => p.店铺ID == storeID);
+
+            RecReportModel m = new RecReportModel();
+            if (models.Count() > 0)
+            {
+                if (emID > 0)
+                {
+                    models = models.Where(p => p.接待人ID == emID);
+                }
+
+                if (startDate != null)
+                {
+                    models = models.Where(p => p.接待日期 >= startDate);
+                }
+                if (endDate != null)
+                {
+                    models = models.Where(p => p.接待日期 <= endDate);
+                }
+                List<CustomerInfoModel> lis = new List<CustomerInfoModel>();
+                foreach (var item in models)
+                {
+                    var model = BuildCustomerInfoModel(item);
+                    lis.Add(model);
+                }
+                m.CustomerInfoModels = lis;
+
+                m.店铺ID = storeID;
+                m.店铺名字 = storeBLL.GetModel(p => p.ID == storeID).名称;
+                return m;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 销售汇总月报表
+        /// </summary>
+        /// <param name="storeID"></param>
+        /// <param name="MonthNum"></param>
+        /// <returns></returns>
+        private List<RecAnalyzeViewModel> BuildSalesReport_MonthData(int storeID, int? emID, int MonthNum)
+        {
+
+            List<销售_接待记录> recModels = new List<销售_接待记录>();
+            List<RecAnalyzeViewModel> lis = new List<RecAnalyzeViewModel>();
+            List<销售_店铺员工档案> lisem = new List<销售_店铺员工档案>();
+            if (storeID > 0)//查询指定店铺
+            {
+                var models = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.接待日期.Month == MonthNum);//查询当前店铺，某月分数据
+                var ems = storeEmployeesBLL.GetModels(p => p.店铺ID == storeID);
+                if (ems != null)
+                {
+                    lisem = ems.ToList();
+                }
+                else
+                {
+                    lisem = null;
+                }
+                if (models.Count() > 0)
+                {
+                    recModels = models.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                var models = customerInfoBLL.GetModels(p => true);//查询所有店铺
+                if (models.Count() > 0)
+                {
+                    recModels = models.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+                var ems = storeEmployeesBLL.GetModels(p => true);
+                if (ems != null)
+                {
+                    lisem = ems.ToList();
+                }
+                else
+                {
+                    lisem = null;
+                }
+            }
+
+            if (emID > 0 && storeID > 0)
+            {
+                var m = recModels.Where(p => p.接待人ID == emID);
+                if (m.Count() > 0)
+                {
+                    recModels = m.ToList();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            var modeldate = recModels.GroupBy(p => p.店铺ID);//不同接待人接待数据按店铺分组
+            foreach (var item in modeldate)
+            {
+                RecAnalyzeViewModel storeAnalyzeModel = new RecAnalyzeViewModel();
+                storeAnalyzeModel.成交月份 = MonthNum;
+                storeAnalyzeModel.接待人数 = item.Count();
+                storeAnalyzeModel.店铺ID = item.Key;
+                storeAnalyzeModel.意向确认人数 = item.Count(p => p.是否确认 == true);
+                storeAnalyzeModel.成交人数 = item.Count(p => p.是否成交 == true);
+                storeAnalyzeModel.店铺 = storeBLL.GetModel(p => p.ID == item.Key).名称;
+                if (storeAnalyzeModel.接待人数 > 0)
+                {
+                    if (storeAnalyzeModel.意向确认人数 > 0 && storeAnalyzeModel.接待人数 == 0)
+                    {
+                        storeAnalyzeModel.成交率 = "100.00%";
+                    }
+                    else
+                    {
+                        storeAnalyzeModel.确认率 = (Convert.ToDouble(storeAnalyzeModel.意向确认人数) / Convert.ToDouble(storeAnalyzeModel.接待人数)).ToString("0.00%");
+                    }
+
+
+                }
+                if (storeAnalyzeModel.意向确认人数 > 0)
+                {
+                    if (storeAnalyzeModel.成交人数 > 0 && storeAnalyzeModel.意向确认人数 == 0)
+                    {
+                        storeAnalyzeModel.成交率 = "100%.00";
+                    }
+                    else
+                    {
+                        storeAnalyzeModel.成交率 = (Convert.ToDouble(storeAnalyzeModel.成交人数) / Convert.ToDouble(storeAnalyzeModel.意向确认人数)).ToString("0.00%");
+                    }
+
+                }
+                else
+                {
+                    storeAnalyzeModel.成交率 = "0.00%";
+                }
+                storeAnalyzeModel.达成率 = "0.00%";
+                List<SalesRecordsViewModel> salesRecordsViewModels = new List<SalesRecordsViewModel>();
+                foreach (var it in item)
+                {
+                    var sales = salesRecordBLL.GetModels(p => p.接待记录ID == it.ID);
+                    foreach (var i in sales)
+                    {
+                        SalesRecordsViewModel salesRecordsView = new SalesRecordsViewModel();
+                        salesRecordsView.销售日期 = i.销售日期;
+                        salesRecordsView.销售金额 = i.销售金额;
+                        salesRecordsView.销售人员ID = i.销售人员ID;
+                        salesRecordsView.销售日期 = i.销售日期;
+                        salesRecordsView.店铺ID = i.店铺ID;
+                        salesRecordsViewModels.Add(salesRecordsView);
+                    }
+                }
+                if (salesRecordsViewModels.Count() > 0)
+                {
+                    storeAnalyzeModel.成交金额 = salesRecordsViewModels.Sum(p => p.销售金额);//指定月份，销售的成交金额
+                    storeAnalyzeModel.最大单值 = salesRecordsViewModels.Max(p => p.销售金额);//指定月份，销售的成交最大金额
+                }
+                var employeeSales = salesRecordsViewModels.Where(p => p.是否业务业绩 == true);
+                var selfSales = salesRecordsViewModels.Where(p => p.是否自营业绩 == true);
+                if (employeeSales != null)
+                {
+                    storeAnalyzeModel.门店业务业绩 = employeeSales.Sum(p => p.销售金额);
+                }
+                if (employeeSales != null)
+                {
+                    storeAnalyzeModel.门店自营业绩 = selfSales.Sum(p => p.销售金额);
+                }
+                lis.Add(storeAnalyzeModel);
+
+            }
+            return lis;
+
+        }
+    }
+}

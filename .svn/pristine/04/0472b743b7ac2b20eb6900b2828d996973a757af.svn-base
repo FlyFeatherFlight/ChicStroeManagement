@@ -1,0 +1,502 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
+
+@{
+    ViewBag.Title = "DealCustomerView";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>DealCustomerView</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.店铺)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待序号)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户来源)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户姓名)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.性别)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.年龄段)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户类别)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户电话)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户类型)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.社交软件)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.来店次数)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.跟进人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.跟进人ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.进店时间)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.出店时间)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.进店时长)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户职业)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户着装)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.同行人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.主导者)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.主导者喜好风格)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.特征)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.设计师)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.家庭成员)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.使用空间)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.装修风格)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.装修情况)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.装修进度)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.预计使用时间)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.如何得知品牌)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.比较品牌)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.预报价折扣)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.返点)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.安装地址)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客户建议)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.是否有意向)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.制单日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新人)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新人ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.更新日期)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.比较品牌产品)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.比较品牌产品备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.喜欢产品)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.喜欢元素)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.不喜欢产品)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.不喜欢元素)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.目的)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.户型大小)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.销售讲解)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客厅预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客厅预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.客厅预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.餐厅预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.餐厅预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.餐厅预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.主卧预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.主卧预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.主卧预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.次卧预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.次卧预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.次卧预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.婴儿或儿童房预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.婴儿或儿童房预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.婴儿或儿童房预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.书房预算家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.书房预算金额)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.书房预算备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.其它空间家具)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.其它空间预算)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.其它空间备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.是否成交)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.是否关闭)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.关闭备注)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.当前状态)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.接待人ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.店铺ID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.店铺)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待序号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户来源)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户姓名)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.性别)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.年龄段)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户类别)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户电话)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户类型)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.社交软件)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.来店次数)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.跟进人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.跟进人ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.进店时间)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.出店时间)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.进店时长)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户职业)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户着装)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.同行人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.主导者)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.主导者喜好风格)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.特征)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.设计师)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.家庭成员)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.使用空间)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.装修风格)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.装修情况)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.装修进度)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.预计使用时间)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.如何得知品牌)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.比较品牌)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.预报价折扣)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.返点)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.安装地址)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户建议)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.是否有意向)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新人)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新人ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.更新日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.比较品牌产品)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.比较品牌产品备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.喜欢产品)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.喜欢元素)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.不喜欢产品)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.不喜欢元素)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.目的)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.户型大小)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.销售讲解)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客厅预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客厅预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客厅预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.餐厅预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.餐厅预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.餐厅预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.主卧预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.主卧预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.主卧预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.次卧预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.次卧预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.次卧预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.婴儿或儿童房预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.婴儿或儿童房预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.婴儿或儿童房预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.书房预算家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.书房预算金额)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.书房预算备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.其它空间家具)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.其它空间预算)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.其它空间备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.是否成交)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.是否关闭)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.关闭备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.当前状态)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.接待人ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.店铺ID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

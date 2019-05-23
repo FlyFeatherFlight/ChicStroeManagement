@@ -1,0 +1,283 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.RecAnalyzeViewModel>
+
+@{
+    ViewBag.Title = "门店数据总表";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h3>门店数据总表</h3>
+@Html.ActionLink("查看日报表", "RecDayReportView", "CustomerAnalyze", new { @class = "form-control", @Style = "font-size:12px" }, new { })
+
+<form>
+    <select class="form-control width-200" id="storeMan">
+        <option value="" class="active">请选择销售</option>
+    </select>
+    <input type="text"  id="StartDate" class="form-control dateLay width-200" placeholder="请选择开始时间" readonly />
+    <span>至</span>
+    <input type="text"  id="endDate" class="form-control dateLay width-200" placeholder="请选结束时间" readonly />
+    <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="storeSearch()" />
+    <input type="button"  value="导出本页数据" onclick="Excel_export()" style="font-size: 14px;color: #333;" />
+</form>
+
+
+<table class="table table-bordered table-hover text-center " id="Table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.接待日期)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.销售姓名)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.接待人数)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.意向确认人数)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.确认率)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.成交人数)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.成交率)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.成交金额)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.成交日期)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.达成率)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.坪效)
+            </th>
+            <th>
+                本月销售目标（元）
+            </th>
+            <th>
+                本月CHIC门店自营业绩
+            </th>
+            <th>
+                本月CHIC业务业绩
+            </th>
+            <th>
+                最大单值（元）
+            </th>
+
+
+
+
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+
+
+            foreach (var item in Model)
+            {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.接待日期)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.销售姓名)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.接待人数)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.意向确认人数)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.确认率)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.成交人数)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.成交率)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.成交金额)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.成交日期)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.达成率)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.坪效)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.店铺销售目标)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.门店业务业绩)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.门店自营业绩)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.最大单值)
+            </td>
+
+
+
+
+        </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="18" class="text-center">暂无数据!</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+     //加载员工数据
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        data: {},
+        dataType: 'json',
+        cache: false,
+        async: true,
+        success: function (data) {
+            //console.log(data)
+            $("#storeMan").append("<option value=''>全部</option>");
+            $(data).each(function (i,m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！")
+            console.log(err)
+        }
+    })
+    //获取选中的文本
+    $("#storeMan").change(function () {
+        var Jopts = $("#storeMan");
+        var value = Jopts.val();//这个值就是你获取的值;
+        if (value != "") {
+            for (var i = 0; i < Jopts.find("option").length; i++) {
+                if (value == Jopts.find("option")[i].value) {
+                    console.log(Jopts.find("option")[i]);
+                    if ($(Jopts.find("option")[i]).hasClass("active")) {
+                        return;
+                    } else {
+                        $(Jopts.find("option")[i]).siblings().removeClass("active")
+                        $(Jopts.find("option")[i]).addClass("active");
+
+                    }
+                    break;
+                }
+            }
+        }
+    })
+    //导出表格
+    function Excel_export() {
+        var str = '';
+
+        if ($("#storeMan").val() != "" && $("#StartDate").val() != "" && $("#endDate").val() != "" && $("#StartDate").val() != null && $("#endDate").val() != null) {
+            str = $("#storeMan").find(".active").text() + "-" + $("#StartDate").val() + "至" + $("#endDate").val() + "接待客户信息表";
+            btn_export(str);
+            return;
+        }
+        if ($("#StartDate").val() != "" && $("#endDate").val() != "" && $("#StartDate").val() != null && $("#endDate").val() != null) {
+            str = $("#StartDate").val() + "至" + $("#endDate").val() + "接待客户信息表";
+            btn_export(str);
+            return;
+        }
+        if ($("#storeMan").val() != "") {
+            str = "销售-" + $("#storeMan").find(".active").text() + "接待客户信息表";
+            btn_export(str);
+            return;
+        }
+        btn_export("门店接待客户信息表");
+    }
+    //组合查询
+    function storeSearch() {
+        var storeID = @ViewBag.Store,
+            emID = $("#storeMan").val(),
+            startDate = $("#StartDate").val(),
+            endDate = $("#endDate").val()
+        getTab(storeID, emID, startDate, endDate);
+    }
+
+
+
+    //获取门店数据
+    getTab(@ViewBag.Store,"","","")
+     
+    function getTab(storeID, emID, startDate, endDate) {
+
+         $("#Table tbody").html(" <tr><td colspan='18' style='text-align: center;height:120px;' class='loading'>正在加载</td></tr>");
+        $.ajax({
+
+            url: '@Url.Action("GetAnalyzeJson", "CustomerAnalyze")',
+            type: "post",
+            data: { storeID: storeID, emID: emID, startDate: startDate, endDate: endDate},
+            dataType: "json",
+            cache: false,
+            async: true,
+            success: function (data) {
+                console.log(data)
+                if (data.success) {
+
+                    var html = '';
+                    var d = data.data
+                    if (d != null) {
+                        $(d).each(function (i, m) {
+                            if (m.城市 != null) {
+                               
+                            } else {
+                                m.城市 = "";
+                            }
+                            //转换日期
+                            if (m.接待日期 != null) {
+                                m.接待日期 = new Date(parseInt(m.接待日期.substr(6, 19))).toLocaleDateString();
+                            } else {
+                                m.接待日期 = "";
+                            }
+                            if (m.成交日期 != null) {
+                                m.成交日期 = new Date(parseInt(m.成交日期.substr(6, 19))).toLocaleDateString();
+                            } else {
+                                m.成交日期 = "";    
+                            }
+                            html += `<tr><td>${m.接待日期}</td><td>${m.销售姓名}</td><td>${m.接待人数}
+                        </td><td>${m.意向确认人数}</td><td>${m.确认率}</td><td>${m.成交人数}</td><td>${m.成交率}</td><td>${m.成交金额}</td><td>${m.成交日期}
+                        </td><td>${m.达成率}</td><td>${m.坪效}</td><td>${m.店铺销售目标}</td><td>${m.门店自营业绩}</td><td>${m.门店业务业绩}</td><td>${m.最大单值}
+                        </td></tr>`;
+                        })
+                        $("#Table tbody").html(html)
+                    } else {
+                        $("#Table tbody").html("<tr><td colspan='18' style='text-align: center;height:120px;' >暂无数据！</td></tr>");
+                    }
+                } else {
+                    alert(data.msg);
+                }
+
+            },
+            error: function (err) {
+                alert("点击过快或网络异常,请稍后重试！");
+                console.log(err);
+            }
+        })
+    }
+
+
+</script>

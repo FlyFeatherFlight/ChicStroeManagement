@@ -1,0 +1,241 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignSubmitModel
+@{
+    ViewBag.Title = "软装服务设计案提交表";
+}
+<style>
+
+    .table > tbody > tr > td:nth-child(2n-1) {
+        width:auto;
+    }
+</style>
+<script>
+    function my_func() {
+        var items = document.getElementsByName("HomeSpace");//得到名为HomeSpace的多选框
+        var str = "";
+        for (i = 0; i < items.length; i++) {
+            if (items[i].checked) {
+                str += items[i].value; //获得选中的所有值
+            }
+            document.getElementById("Homespace").value = str;//设置id为Homespace的textbox的值
+            var s = document.getElementById("Homespace").value;
+            //开始判断textbox中是否含有未选中的值
+            if (items[i].checked != true && s.search(items[i].value) >= 0) {
+                s.split(items[i].value);//删除未选中的值
+                var newstr = s.join("&nbsp");//重新聚合
+                document.getElementById("Homespace").value = newstr;//设置id为Homespace的textbox的值
+            }
+        }
+
+    }
+</script>
+<h3>软装服务设计案提交表</h3>
+<hr />
+<div>
+    <form action="~/DesignScheme/DesignApply" method="post">
+
+        <div class="table-responsive">
+            @Html.ValidationSummary(true)
+            当填表前销售人员：@ViewBag.EmployeeName<input type="text" name="销售人员" value="@ViewBag.EmployeeName" style="display:none" />
+             <table class="table table-hover table-bordered table-striped">
+                <tr>
+                    <td width="7%">客户名称</td>
+                    <td colspan="4">
+                        @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control" } })
+                        <span style="color:red">*</span>
+                        @Html.ValidationMessageFor(Model => Model.客户姓名)
+                    </td>
+                    <td>联系方式</td>
+                    <td colspan="4">
+                           @Html.EditorFor(Model => Model.联系方式, new { htmlAttributes = new { @class = "form-control" } })
+
+                        <span style="color:red">*</span>
+                    </td>
+                </tr>
+                  <tr>
+                    <td>楼盘地址</td>
+                    <td colspan="4">
+                        @Html.EditorFor(Model => Model.楼盘具体位置, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                                           
+                    <td>面积大小</td>
+                    <td colspan="4">
+                        @Html.EditorFor(Model => Model.面积大小, new { htmlAttributes = new { @class = "form-control" } })<span style="color:red">*</span>
+                    </td>
+                </tr>
+                 <tr>
+                     <td><label>设计师</label></td>
+                     <td colspan="9">
+                         <input type="text" name="" value="" class="form-control"/>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>项目提交时间</td>
+                     <td colspan="2">
+                         <input type="text" name="项目提交时间" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly="readonly" class="form-control" /><span style="color:red">*</span>
+                     </td>
+                     <td>项目量房时间</td>
+                     <td colspan="2">
+                         <input type="text" name="项目量房时间" value="@DateTime.Now.Date" class="form-control dateLay"><span style="color:red">*</span>
+                     </td>
+                     <td>项目预计完成时间</td>
+                     <td colspan="3"><input type="text" name="项目预计完成时间" value="@DateTime.Now.Date" class="form-control dateLay" /><span style="color:red">*</span></td>
+
+                 </tr>
+                 <tr>
+                     <td>图纸</td>
+                     <td colspan="9">
+                         <input type="text" name="name" value="" />
+                     </td>
+                 </tr>
+                  <tr>
+                     <td>软装方案</td>
+                     <td colspan="9">
+                         <input type="text" name="name" value="" />
+                     </td>
+                 </tr>
+                  <tr>
+                      <td rowspan="5"><label>软装清单</label></td>
+                      <td>空间</td>
+                      <td>系列</td>
+                      <td>名称</td>
+                      <td>编号</td>
+                      <td>尺寸</td>
+                      <td>颜色</td>
+                      <td>数量</td>
+                      <td>单价</td>
+                      <td>金额</td>
+                  </tr>
+                  <tr>
+                      <td>客厅</td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>餐厅</td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>卧室</td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                  </tr>
+                  <tr>
+                      <td>其他</td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                          
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                       
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                      <td>
+                         
+                      </td>
+                  </tr>
+                 <tr>
+                     <td>销售人员</td>
+                     <td colspan="4">
+                         <input type="text" name="" value="" class="form-control" />
+                     </td>
+                     <td>店长审核</td>
+                     <td colspan="4">
+                         <input type="text" name="" value="" class="form-control" />
+                     </td>
+                 </tr>
+                    <tr>
+                     <td>最后一次更新人</td>
+                     <td colspan="4">
+                         <input type="text" name="" value="" class="form-control" />
+                     </td>
+                     <td>更新日期</td>
+                     <td colspan="4">
+                         <input type="text" name="" value="" class="form-control dateLay" readonly placeholder="请选择日期" />
+                     </td>
+                 </tr>
+                <tr><td colspan="10" align="center"><input type="submit" value="提交" class="btn btn-success" /></td></tr>
+            </table>
+        </div>
+    </form>
+</div>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn btn-primary" style="margin-top:10px;">

@@ -1,0 +1,347 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesOrderViewModel
+
+@{
+    ViewBag.Title = "SalesOrderInfoView";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>SalesOrderInfoView</h2>
+
+<div>
+    <h4>SalesOrderViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.单据类别ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.单据类别ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.合同编号)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.合同编号)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.单据编号)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.单据编号)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.订单编号)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.订单编号)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.单据日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.单据日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.店铺ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.店铺ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.店铺)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.店铺)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.员工ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.员工ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.员工)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.员工)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.客户姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客户姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.客户联系方式)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客户联系方式)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.客户地址)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客户地址)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.零售合计)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.零售合计)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.预付金额_bak)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.预付金额_bak)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.单据备注)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.单据备注)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单人姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单人姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.确认标志)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.确认标志)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.确认人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.确认人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.确认人姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.确认人姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.确认日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.确认日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.审核标志)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.审核标志)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.审核人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.审核人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.审核人姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.审核人姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.审核日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.审核日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.复核标志)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.复核标志)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.复核人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.复核人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.复核人姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.复核人姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.复核日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.复核日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.批准标志1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.批准标志1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.批准人1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.批准人1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.批准人1姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.批准人1姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.批准日期1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.批准日期1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.收货人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.收货人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.收货地址)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.收货地址)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.收货人联系方式)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.收货人联系方式)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rid)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rid)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单销售人ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单销售人ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单销售人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单销售人)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

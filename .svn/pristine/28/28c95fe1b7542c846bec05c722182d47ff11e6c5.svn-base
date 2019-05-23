@@ -1,0 +1,151 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel
+
+@if (ViewBag.IsEdit == true)
+{
+    {
+        ViewBag.Title = "销售成交单修改";
+
+    }
+    <h3 style="margin-left:1%;">修改销售成交单</h3>
+    <hr />
+    using (Html.BeginForm("SalesRecordEdit", "Customer", FormMethod.Post))
+    {
+        <table class="table table-bordered table-striped table-hover" style="width:98%;margin:0 auto;">
+
+            <tr>
+                <td style="display:none;"><input type="text" name="ID" value="@Model.ID" /></td>
+                <td>客户姓名</td>
+                <td>@Model.客户姓名</td>
+                <td>联系方式</td>
+                <td>@Model.客户联系方式</td>
+
+            </tr>
+            <tr>
+
+                <td>销售日期</td>
+                <td>
+                    <input type="text" name="销售日期" value="@Model.销售日期.ToString("yyyy-MM-dd")" class="form-control dateLay" placeholder="请选择日期" readonly />
+                </td>
+                <td>销售单号</td>
+                <td>
+                    <input type="text" name="销售单号" value="@Model.销售单号" class="form-control " />
+                </td>
+
+            </tr>
+            <tr>
+                <td>合同单号</td>
+                <td><input type="text" name="合同单号" value="@Model.合同单号" class="form-control" /></td>
+                <td>销售金额(元)</td>
+                <td>
+                    <input type="text" name="销售金额" value="@Model.销售金额" class="form-control"
+                           onkeyup="value=value.replace(/[^\d.]/g,'')"
+                           onblur="value=value.replace(/[^\d.]/g,'')" placeholder="请输入数字" />
+                </td>
+            </tr>
+            <tr>
+                <td>折扣</td>
+                <td>
+                    <input type="text" name="折扣" value="@Model.折扣" class="form-control" />
+                </td>
+                <td>订库样</td>
+                <td>
+                    <select name="订库样" class="form-control">
+                        <option value="@Model.订库样">@Model.订库样</option>
+                        <option value="订">订</option>
+                        <option value="库">库</option>
+                        <option value="样">样</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+
+                <td>是否全款</td>
+                <td colspan="3">
+                    @if (Model.是否全款 == true)
+                    {
+                        <span>是</span>
+                        <input type="radio" name="是否全款" value=true style="display:none;" />
+                    }
+                    else
+                    {
+                        <input type="radio" name="是否全款" value=true /> <span>是</span>
+                        <input type="radio" name="是否全款" value=false checked /> <span>否</span>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td colspan="3"><input type="text" name="备注" value="" class="form-control" /></td>
+            </tr>
+
+        </table>
+        <div class="sub-btns">
+            <input type="submit" value="保存" class="btn btn-success width-7">
+            &nbsp;&nbsp;
+            <input type="button" value="取消" class="btn btn-danger width-7" onclick="javascript:history.back(-1);">
+        </div>
+    }
+}
+else
+{
+
+    {
+        ViewBag.Title = "销售成交单详情页";
+
+    }
+
+    <h3 style="margin-left:1%;">销售成交单详情页</h3>
+    @Html.ActionLink("修改销售成交单", "SalesRecordInfoView", "Customer", new { id = Model.ID, isEdit = true }, new { @style = "margin-left:1%;" })
+    <hr />
+    <table class="table table-bordered table-striped table-hover" style="width:98%;margin:0 auto;">
+        <tr>
+            <td>客户姓名</td>
+            <td>@Model.客户姓名</td>
+            <td>联系方式</td>
+            <td>@Model.客户联系方式</td>
+
+        </tr>
+        <tr>
+            <td>销售日期</td>
+            <td>@Model.销售日期</td>
+            <td>销售单号</td>
+            <td>@Model.销售单号</td>
+
+        </tr>
+        <tr>
+            <td>合同单号</td>
+            <td>@Model.合同单号</td>
+            <td>销售金额(元)</td>
+            <td>@Model.销售金额</td>
+        </tr>
+        <tr>
+            <td>折扣</td>
+            <td>@Model.折扣</td>
+            <td>订库样</td>
+            <td>@Model.订库样</td>
+        </tr>
+        <tr>
+
+            <td>是否全款</td>
+            @if (Model.是否全款 == true)
+            {
+                <td colspan="3">是</td>
+            }
+            else
+            {
+                <td colspan="3">否</td>
+            }
+
+        </tr>
+        <tr>
+            <td>备注</td>
+            <td colspan="3">@Model.备注</td>
+        </tr>
+        <tr>
+            <td>更新人</td>
+            <td>@Model.更新人</td>
+            <td>更新日期</td>
+            <td>@Model.更新日期</td>
+        </tr>
+    </table>
+}

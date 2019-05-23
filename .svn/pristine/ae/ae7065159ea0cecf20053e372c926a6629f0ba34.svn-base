@@ -1,0 +1,175 @@
+﻿using ChicStoreManagement.BLL;
+using ChicStoreManagement.Model;
+using System.Web.Mvc;
+using System.Web.Security;
+using ChicStoreManagement.CustomAttributes;
+using ChicStoreManagement.WEB.ViewModel;
+using DotNet.Highcharts.Options;
+using DotNet.Highcharts;
+using DotNet.Highcharts.Enums;
+using DotNet.Highcharts.Helpers;
+using System.Collections.Generic;
+using System;
+using ChicStoreManagement.IBLL;
+using System.Linq;
+
+namespace ChicStoreManagement.Controllers
+{
+
+    public class HomeController : Controller
+    {
+
+        private IStoreEmployeesBLL storeEmployeesBLL;
+        private ICustomerInfoBLL customerInfoBLL;
+        private ICustomerTrackingBLL CustomerTrackingBLL;
+        private IDesignSubmitBLL DesignSubmitBLL;
+        private IDesignTrackingLogBLL DesignTrackingLogBLL;
+        private IDesignResultBLL DesignResultBLL;
+        private IStoreBLL storeBLL;
+
+
+        public HomeController(IStoreEmployeesBLL storeEmployeesBLL, ICustomerInfoBLL customerInfoBLL, ICustomerTrackingBLL customerTrackingBLL, IDesignSubmitBLL designSubmitBLL, IDesignTrackingLogBLL designTrackingLogBLL, IDesignResultBLL designResultBLL, IStoreBLL storeBLL)
+        {
+            this.storeEmployeesBLL = storeEmployeesBLL;
+            this.customerInfoBLL = customerInfoBLL;
+            CustomerTrackingBLL = customerTrackingBLL;
+            DesignSubmitBLL = designSubmitBLL;
+            DesignTrackingLogBLL = designTrackingLogBLL;
+            DesignResultBLL = designResultBLL;
+            this.storeBLL = storeBLL;
+        }
+
+
+        /// <summary>
+        /// 门店管理首页
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
+        {
+
+
+            var em = SetEmployee();//获取当前人员信息
+            ViewBag.storeName = em.店铺;
+            ViewBag.Employee = em.姓名;
+            ViewBag.IsManager = em.是否店长;
+            ViewBag.IsDesigner = em.是否设计师;
+            ViewBag.IsEmployee = em.是否销售;
+            var month = DateTime.Now.Month;
+            ViewBag.Month = month;
+            var models = customerInfoBLL.GetModels(p => p.店铺ID == em.店铺ID&p.接待日期.Month== month);
+            ViewBag.CustomerCount = "" + models.Count();
+            ViewBag.ExceptedCustomer = "" + models.Where(p => p.是否有意向 == true).Count();
+            ViewBag.ConfirmCustomer = "" + models.Where(p => p.是否确认 == true).Count();
+            ViewBag.DealCustomer="" + models.Where(p => p.是否成交 == true).Count();
+            return View();
+
+        }
+        [HttpPost]
+        public  ActionResult GetStoreJson() {
+            var em = SetEmployee();//获取当前人员信息
+            ViewBag.storeName = em.店铺;
+            ViewBag.Employee = em.姓名;
+            ViewBag.IsManager = em.是否店长;
+            ViewBag.IsDesigner = em.是否设计师;
+            ViewBag.IsEmployee = em.是否销售;
+            var series1Points = new StoreRec[12];
+            for (int i = 1; i < 13; i++)
+            {
+                var n = customerInfoBLL.GetModels(p => p.店铺ID == em.店铺ID && p.接待日期.Month == i).Count();
+                series1Points[i - 1] = new StoreRec { CountNum = n, MonthNum = i };
+            }
+            return Json(series1Points);
+        }
+        private class StoreRec{
+            public   int CountNum;
+            public   int MonthNum;
+}
+        /// <summary>
+        /// 公司简介
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        /// <summary>
+        /// 公司联系方式
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        /// <summary>
+        /// 获取数据接口
+        /// </summary>
+        /// <param name="BeformDays">前多少天</param>
+        /// <param name="Type">请求类型</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetDataList(int BeformDays, int Type,string DataType)
+        {
+            //时间当然大家可以根据自己需要统计的数据进行整合我这里是用来演示就没有用数据库了
+              var Time = new List<String>();
+            //数量
+            var Count = new List<int>();
+            var PieData = new List<ReportDatas>();
+            //Type为1表示曲线和柱状数据
+            if (Type == 1)
+            {
+                for (int i = 0; i < BeformDays; i++)
+                {
+                    Time.Add(DateTime.Now.AddDays(-
+                    BeformDays).ToShortDateString());
+                    Count.Add(i + 1);
+                }
+            }
+            else//饼状图
+            {
+                for (int i = 0; i < BeformDays; i++)
+                {
+                    var my = new ReportDatas();
+                    my.Count = i + 1;
+                    my.Time = DateTime.Now.AddDays(-
+                    BeformDays).ToShortDateString();
+                    PieData.Add(my);
+                }
+            }
+
+
+            var Obj = new
+            {
+                Times = Time,
+                Counts = Count,
+                PieDatas = PieData
+            };
+
+            return Json(Obj, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 设置当前操作人员及店铺信息
+        /// </summary>
+        private Employees SetEmployee()
+        {
+
+            string userName = HttpContext.User.Identity.Name;
+            if (userName != null)
+            {
+                var employees = HttpContext.Session["Employee"] as Employees;
+                return employees;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+}

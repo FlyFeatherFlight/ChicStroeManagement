@@ -1,0 +1,239 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerInfoModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+<script>
+    function applyGoal() {
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("ApplyGoals", "Customer")',
+            data: {},
+            datatype: "json",
+            async: true,//异步
+                success: function (data) {
+                    //alert("申请已提交！");
+                    alert(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.responseText);
+            }
+
+        })
+    }
+    $(function () {
+        $("#startDate").datetimepicker({
+
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            showClose: true
+
+        });
+        $("#endTime").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-cn'),
+            showClose: true
+        });
+    })
+</script>
+@{
+    ViewBag.Title = "客户接待信息";
+}
+<h3 style="margin:10px 0;">客户信息管理</h3>
+<p>
+    @Html.ActionLink("添加客户接待信息", "AddCustomerView", new { @class = "form-control", @Style = "font-size:12px" })
+   
+</p>
+
+
+@using (Html.BeginForm("CustomerIndex", "Customer", FormMethod.Get, new { @style = "display:inline-block;" }))
+{
+
+
+    <input type="text" name="startDate" class="form-control dateLay width-200" placeholder="请选择开始时间" readonly/>
+    <span>至</span>
+    <input type="text" name="EndDate" class="form-control dateLay width-200" placeholder="请选结束时间" readonly/>
+          
+    <span>有意向</span>
+    <input type="checkbox" name="IsExcept" value=true />
+    <span>已成交</span>
+    <input type="checkbox" name="IsDeal" value=true />
+    <input type="submit" value="查询" style="font-size: 14px;color: #333;" />
+    <input type="button" name="" value="导出本页数据" onclick="btn_export('客户信息')" style="font-size: 14px;color: #333;" />
+          
+}
+
+@using (Html.BeginForm("CustomerIndex", "Customer", FormMethod.Get, new { @style = "display:inline-block;" }))
+{
+    
+
+        <input type="text" name="" value="" class="hidden" />
+        <input type="submit" value="全部" style="font-size: 14px;color: #333;" />
+      
+    
+}
+
+<div id="searchR">
+    @using (Html.BeginForm("CustomerIndex", "Customer", FormMethod.Get, new { @style = "display:inline-block;" }))
+    {
+        <p >
+            @Html.TextBox("SearchString", ViewBag.CustomerCurrentFilter as string, new { @class = "form-control width-200", placeholder = "通过客户电话查找" })
+
+            <input type="submit" value="查询" style="font-size: 14px;color: #333;" />
+
+        </p>
+    }
+</div>
+        <p style="color:red;border:0;background-color:transparent; font-size:12px;">如果当前客户为意向客户，无人跟进则为红色。无权限，显示为灰色。正常为黑色。</p>
+
+        <p style="font-size:14px;">当前操作人:@ViewBag.employeeName 总共跟进数:@ViewBag.Goals 剩余跟进数:@ViewBag.AvailableGoals <a onclick="applyGoal()" style="cursor:pointer;">申请跟进数</a></p>
+        @{
+            if (Model == null)
+            {
+                <div class="table-responsive">
+                    暂无当前店铺接待或跟进的相关数据！
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered" id="Table">
+                        <tr>
+                            <th style="display:none">ID</th>
+                            <th>@Html.ActionLink("接待日期", "CustomerIndex", new { sortOrder = ViewBag.CustomerID })</th>
+                            <th>客户姓名</th>
+                            <th>性别</th>
+                            <th>年龄段</th>
+                            <th>客户类别</th>
+                            <th>客户来源</th>
+                            <th>客户类型</th>
+                            <th>客户电话</th>
+                            <th>来店次数</th>
+                            <th>接待人</th>
+                            <th>跟进人</th>
+                            <th>是否关闭</th>
+                            <th>是否成交</th>
+                            <th>销售成交记录</th>
+                            <th>是否有意向</th>
+                            <th>跟进状态</th>
+                            <th width="10%">操作</th>
+
+                        </tr>
+                        @if (Model.Count() <= 0)
+                        {
+                            <tr><td colspan="18" style="text-align:center">暂无数据！</td></tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
+
+
+                                string fontColor = "";
+
+                                if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName || ViewBag.IsManager == true)
+                                {
+                                    fontColor = "color:black";
+                                }
+                                else
+                                {
+                                    fontColor = "color:gray";
+                                }
+                                if (item.跟进人 == null)
+                                {
+                                    fontColor = "color:red";
+                                }
+
+                            <tr style="color:@fontColor;">
+                                <td style="display:none"> @Html.DisplayFor(modelItem => item.ID)</td>
+
+                                <td> @item.接待日期.ToLongDateString().ToString()</td>
+
+                                <td>@Html.ActionLink(item.客户姓名, "ShowVisitInfo", new { id = item.ID })</td>
+                                <td> @Html.DisplayFor(modelItem => item.性别)</td>
+                                <td> @Html.DisplayFor(modelItem => item.年龄段)</td>
+                                <td> @Html.DisplayFor(modelItem => item.客户类别)</td>
+                                <td> @Html.DisplayFor(modelItem => item.客户来源)</td>
+
+                                <td> @Html.DisplayFor(modelItem => item.客户类型)</td>
+                                <td> @Html.DisplayFor(modelItem => item.客户电话)</td>
+                                <td> @Html.DisplayFor(modelItem => item.来店次数)</td>
+                                <td> @Html.DisplayFor(modelItem => item.接待人)</td>
+                                <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                                @if (item.是否关闭 == true)
+                                {
+                                    <td>是</td>
+                                }
+                                else if (item.是否关闭 == false)
+                                {
+                                    <td>否</td>
+                                }
+                                else
+                                {
+                                    <td>待定</td>
+                                }
+
+                                @if (item.是否成交 == true)
+                                {
+                                    <td>是</td>
+
+                                }
+                                else if (item.是否成交 == false)
+                                {
+                                    <td>否</td>
+                                }
+                                else
+                                {
+                                    <td>待定</td>
+                                }
+                                <td>@Html.ActionLink("销售成交记录", "SalesRecordsIndex", "Customer", new { recId = item.ID }, new { })</td>
+                                @if (item.是否有意向 == true)
+                                {
+
+                                    <td>是</td>
+                                    <td>@item.当前状态</td>
+
+                                    if (item.接待人 == ViewBag.employeeName || item.跟进人 == ViewBag.employeeName)
+                                    {
+
+                                        <td>
+                                            @Html.ActionLink("预购", "ExceptedBuyIndex", new { id = item.ID, @class = "form-control", @Style = "font-size:12px" })
+                                            @if (item.跟进人 == ViewBag.employeeName)
+                                            {
+                                                <b>|</b> @Html.ActionLink("跟进", "TrackLogIndex", "CustomerTrackLog", new { id = item.ID }, new { @Style = "font-size:12px" })
+                                            }
+                                        </td>
+                                    }
+
+                                    else
+                                    {
+                                        <td>
+                                            无权限!
+                                        </td>
+                                    }
+
+                                }
+                                else if (item.是否有意向 == false)
+                                {
+
+                                    <td>否</td>
+                                    <td>该客户无意向</td>
+                                    <td>该客户无意向</td>
+                                }
+                                else
+                                {
+                                    <td>待定</td>
+                                    <td>该客户无意向</td>
+                                    <td>该客户无意向</td>
+                                }
+
+                            </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                
+            }
+        } Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("CustomerIndex", new { page, sortOrder = ViewBag.CustomerCurrentSort, currentFilter = ViewBag.CustomerCurrentFilter }))
+        <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>

@@ -1,0 +1,117 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.RecReport_DayModel
+
+@{
+    ViewBag.Title = "接待报表";
+   
+}
+<h3>接待日报表</h3>
+@using (Html.BeginForm("RecDayReportJson", "CustomerAnalyze", FormMethod.Get, new { @id="DayForm",@style="margin: 10px 0;"}))
+{
+
+    <input type="text" name="storeID" value="@Model.店铺ID" class="hidden"/>
+    <input type="text" name="dateTime" class="form-control dateLay width-200" placeholder="请选择日期" readonly />
+   
+
+   
+    <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="daySearch()"/>
+    <input type="button" name="" value="导出本页数据" onclick="Excl()" style="font-size: 14px;color: #333;" />
+
+}
+
+<table class="table table-bordered table-striped" id="Table" >
+    <thead>
+        <tr>
+            <th>接待日期</th>
+            <th>客户姓名</th>
+            <th>性别</th>
+            <th>年龄段</th>
+            <th>客户类别</th>
+            <th>客户来源</th>
+            <th>客户类型</th>
+            <th>客户电话</th>
+            <th>来店次数</th>
+            <th>接待人</th>
+            <th>跟进人</th>
+            <th>是否关闭</th>
+            <th>是否成交</th>
+            <th>是否有意向</th>
+            <th>跟进状态</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="15" style='text-align: center;height:120px;'>请查询数据！</td>
+        </tr>
+    </tbody>
+</table>
+<script>
+    function Excl() {
+        var str = $(".dateLay").val() +"报表"
+        btn_export(str)
+    }
+    function daySearch() {
+        $("#Table tbody").html(" <tr><td colspan='15' style='text-align: center;height:120px;' class='loading'>正在加载</td></tr>");
+    $.ajax({
+        type: "post",
+        data: $("#DayForm").serialize(),
+        url: '@Url.Action("RecDayReportJson", "CustomerAnalyze")',
+        dataType: "json",
+        cache: false,
+        async: true,
+        success: function (data) {
+            console.log(data)
+            if (data.success) {
+               
+                var html = '';
+                var d = data.data.CustomerInfoModels
+                $(d).each(function (i, m) {
+                    //转换日期
+                    if (m.接待日期 != null) {
+                        m.接待日期 = new Date(parseInt(m.接待日期.substr(6, 19))).toLocaleDateString();
+                    }
+                    //转换是否关闭
+                    if (m.是否关闭 == true) {
+                        m.是否关闭 = "是";
+                    } else if (m.是否关闭 == false) {
+                        m.是否关闭 = "否";
+                    } else {
+                        m.是否关闭 = "";
+                    }
+                    //转换是否成交
+                    if (m.是否成交 == true) {
+                        m.是否成交 = "是";
+                    } else if (m.是否成交 == false) {
+                        m.是否成交 = "否";
+                    } else {
+                        m.是否成交 = "";
+                    }
+                    //转换是否有意向
+                    if (m.是否有意向 == true) {
+                        m.是否有意向 = "是";
+                    } else if (m.是否有意向 == false) {
+                        m.是否有意向 = "否";
+                    } else {
+                        m.是否有意向 = "";
+                    }
+                    //转换当前状态
+                    if (m.当前状态 == null) {
+                        m.当前状态 = "";
+                    }
+                    html += `<tr><td>${m.接待日期}</td><td>${m.客户姓名}</td><td>${m.性别}</td><td>${m.年龄段}
+                        </td><td>${m.客户类别}</td><td>${m.客户来源}</td><td>${m.客户类型}</td><td>${m.客户电话}
+                        </td><td>${m.来店次数}</td><td>${m.接待人}</td><td>${m.跟进人}</td><td>${m.是否关闭}
+                        </td><td>${m.是否成交}</td><td>${m.是否有意向}</td><td>${m.当前状态}</td></tr>`;
+                })
+                $("#Table tbody").html(html)
+            } else {
+                $("#Table tbody").html("<tr><td colspan='15' style='text-align: center;height:120px;' >该时间没有数据！</td></tr>");
+            }
+            
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！");
+            console.log(err);
+        }
+        })
+    }
+</script>

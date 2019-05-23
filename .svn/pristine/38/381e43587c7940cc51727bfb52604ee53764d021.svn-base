@@ -1,0 +1,196 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+
+@{
+    ViewBag.Title = "成交客户列表";
+}
+<style>
+    .spanA {
+        color: #337ab7;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+        .spanA:hover {
+            color: #23527c;
+        }
+</style>
+<h3 style="margin-left:1%; margin-bottom:10px;">成交客户列表</h3>
+
+@using (Html.BeginForm("DealCustomerView", "ManagerExamine", FormMethod.Get, new { @style = "margin-left:1%;display:inline-block;", @id = "searchTab" }))
+{
+
+    <select name="EmployeeID" class="form-control width-200" id="storeMan">
+        <option value="" class="active">请选择接待人</option>
+    </select>
+    <input type="text" name="startDate" id="StartDate" class="form-control dateLay width-200" placeholder="请选择开始时间" readonly />
+    <span>至</span>
+    <input type="text" name="EndDate" id="endDate" class="form-control dateLay width-200" placeholder="请选结束时间" readonly />
+
+    <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="searchTab()" />
+    <input type="button" name="" value="导出本页数据" onclick="Excel_export()" style="font-size: 14px;color: #333;" />
+
+}
+@using (Html.BeginForm("DealCustomerView", "ManagerExamine", FormMethod.Post, new { @style = "display:inline-block;" }))
+{
+
+    <input type="submit" value="全部" style="font-size: 14px;color: #333;" />
+
+}
+<div id="searchR">
+    @using (Html.BeginForm("DealCustomerView", "ManagerExamine", FormMethod.Post, new { @id = "searchPhone" }))
+    {
+        <p>
+            @Html.TextBox("SearchString", ViewBag.CustomerCurrentFilter as string, new { @class = "form-control width-200", placeholder = "通过电话查找" })
+
+            <input type="button" value="查询" style="font-size: 14px;color: #333;" onclick="searchP()" />
+
+        </p>
+    }
+</div>
+
+
+<table class="table table-bordered table-hover text-center" style="width:98%; margin:10px auto 0;" id="Table">
+    <thead>
+        <tr>
+            <th class="text-center">接待日期 </th>
+            <th class="text-center">客户姓名</th>
+            <th class="text-center">性别</th>
+            <th class="text-center">客户电话</th>
+            <th class="text-center">年龄段</th>
+            <th class="text-center">客户类别</th>
+            <th class="text-center">客户来源</th>
+            <th class="text-center">客户类型</th>
+            <th class="text-center">来店次数</th>
+            <th class="text-center">接待人</th>
+            <th class="text-center">跟进人</th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        <tr><td colspan="12" style="height:120px; text-align:center;" class='loading'>正在加载</td></tr>
+    </tbody>
+
+
+</table>
+<div style="margin-left:1%;">
+    <a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+</div>
+<script>
+    loadTable("");
+    //组合查询
+    function searchTab() {
+        $("#Table tbody").empty();
+        $("#Table tbody").append(" <tr><td colspan='12' style='text-align: center;height:120px;' class='loading'>正在加载</td></tr>");
+
+        loadTable($("#searchTab").serialize());
+    }
+    //电话查询
+    function searchP() {
+        $("#Table tbody").empty();
+        $("#Table tbody").append(" <tr><td colspan='12' style='text-align: center;height:120px;' class='loading'>正在加载</td></tr>");
+
+        loadTable($("#searchPhone").serialize());
+    }
+
+
+    //加载页面数据
+    function loadTable(formData) {
+      //$("#Table").empty();
+     $.ajax({
+        url: '@Url.Action("DealCustomerDate", "ManagerExamine")',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        cache: false,
+        async: true,
+         success: function (data) {
+             console.log(data)
+             $("#Table tbody").empty();
+             if (data.length != 0) {
+
+                 $(data).each(function (i, m) {
+                     m.接待日期 = new Date(parseInt(m.接待日期.substr(6, 13))).toLocaleDateString();
+                     $("#Table tbody").append("<tr><td>" + m.接待日期 + "</td><td><span class='spanA' onclick='detailList(" + m.ID + ")'>"+m.客户姓名+"</span></td><td>" + m.性别 + "</td><td>"+ m.客户电话 + "</td><td>"
+                                             + m.年龄段 + "</td><td>" + m.客户类别 + "</td><td>" + m.客户来源 + "</td><td>" + m.客户类型 + "</td><td>"
+                                             + m.来店次数 + "</td><td>" + m.接待人 + "</td><td>" + m.跟进人 +"</td></tr>")
+                 })
+             } else {
+                 $("#Table tbody").append(" <tr><td colspan='12' style='text-align: center;height:120px;color:red;'>暂无数据！</td></tr>")
+             }
+
+         },
+
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！")
+            console.log(err)
+        }
+        })
+    }
+     //加载员工数据
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        data: {},
+        dataType: 'json',
+        cache: false,
+        async: true,
+        success: function (data) {
+            //console.log(data)
+            $(data).each(function (i,m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+
+        },
+        error: function (err) {
+            alert("点击过快或网络异常,请稍后重试！")
+            console.log(err)
+        }
+    })
+    //获取选中的文本
+    $("#storeMan").change(function () {
+        var Jopts = $("#storeMan");
+        var value = Jopts.val();//这个值就是你获取的值;
+        if (value != "") {
+            for (var i = 0; i < Jopts.find("option").length; i++) {
+                if (value == Jopts.find("option")[i].value) {
+                    console.log(Jopts.find("option")[i]);
+                    if ($(Jopts.find("option")[i]).hasClass("active")) {
+                        return;
+                    } else {
+                        $(Jopts.find("option")[i]).siblings().removeClass("active")
+                        $(Jopts.find("option")[i]).addClass("active");
+
+                    }
+                    break;
+                }
+            }
+        }
+    })
+    //导出表格
+
+    function Excel_export() {
+        var str = '';
+
+        if ($("#storeMan").val() != "" && $("#StartDate").val() != "" && $("#endDate").val() != "" && $("#StartDate").val() != null && $("#endDate").val() != null) {
+            str = $("#storeMan").find(".active").text() + "-" + $("#StartDate").val() + "至" + $("#endDate").val() + "成交客户信息表";
+            btn_export(str);
+            return;
+        }
+        if ($("#StartDate").val() != "" && $("#endDate").val() != "" && $("#StartDate").val() != null && $("#endDate").val() != null) {
+            str = $("#StartDate").val() + "至" + $("#endDate").val() + "成交客户信息表";
+            btn_export(str);
+            return;
+        }
+        if ($("#storeMan").val() != "") {
+            str = "销售-" + $("#storeMan").find(".active").text() + "成交客户信息表";
+            btn_export(str);
+            return;
+        }
+        btn_export("成交客户信息表");
+    }
+    //根据姓名跳转到销售成交列表
+    function detailList(id) {
+         window.location.href = "@Url.Action("SalesRecordsIndex", "ManagerExamine")?id=" + id;
+    }
+</script>

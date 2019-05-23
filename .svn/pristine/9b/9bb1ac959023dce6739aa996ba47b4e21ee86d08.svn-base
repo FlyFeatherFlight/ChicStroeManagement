@@ -1,0 +1,349 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+@{
+    ViewBag.Title = "添加接待客户";
+
+}
+<style>
+    .tab tbody tr td:nth-child(2n) {
+        width: 42%;
+    }
+</style>
+<script type="text/javascript">
+
+
+    function submit1(obj) {
+        var starTime = $("#startTime").val();
+        var endTime = $("#EndTime").val();
+        if (endTime != "" && starTime !="") {
+            if (endTime < starTime) {
+                alert("进店时间小于出店时间！，请重新选择")
+            } else { document.getElementById("form1").submit()}
+
+        } ;
+            
+        
+    }
+
+   
+</script>
+<div class="table-responsive">
+    <h3 style="margin-bottom:5px;">添加客户信息</h3>
+
+    <form id="form1" action="~/Customer/CustomerAdd" method="post">
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true)
+
+        <table class="table table-hover  table-condensed table-bordered tab">
+            <tr>
+                <td>@Html.LabelFor(Model => Model.店铺)</td>
+                <td  colspan="3">
+                    <input type="text" name="店铺" value="@Html.DisplayFor(Model => Model.店铺)" readonly="readonly" class="form-control" /> 
+                    <input type="text" name="接待序号" value="@Html.DisplayFor(Model => Model.接待序号)" readonly="readonly" class="hidden" />
+                </td>
+              
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.接待人)</td>
+
+                <td>
+                    <input type="text" name="接待人" value="@Html.DisplayFor(Model => Model.接待人)" readonly="readonly" class="form-control " />
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.接待日期)
+                </td>
+
+                <td>
+                    <input type="text" name="接待日期" class="form-control dateLay red" placeholder="请选择日期" readonly />
+                    <label style="color:red">*</label>
+                </td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(Model => Model.进店时间)</td>
+                <td>
+
+                    <input type="text" name="进店时间" class=" form-control timeLay  red " id="startTime" placeholder="请选择时间" readonly />
+                    <label style="color:red">*</label>
+
+                </td>
+
+                <td>@Html.LabelFor(Model => Model.出店时间)</td>
+                <td>
+                    <input type="text" name="出店时间" class="form-control timeLay  red" id="EndTime" placeholder="请选择时间" readonly />
+                    <label style="color:red">*</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(Model => Model.客户姓名)
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.客户姓名, new { htmlAttributes = new { @class = "form-control red" } })
+                    @Html.ValidationMessageFor(Model => Model.客户姓名)
+
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.客户电话)
+                </td>
+                <td>
+
+                    <input type="text" name="客户电话" class="form-control" onkeyup="value=value.replace(/[^\d.]/g,'')"
+                           onblur="value=value.replace(/[^\d.]/g,'')" placeholder="请输入数字" />
+                    @Html.ValidationMessageFor(Model => Model.客户电话)
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>性别</label></td>
+                <td>
+                    <input name="性别" type="radio" value="男" checked>先生 &nbsp;<input name="性别" type="radio" value="女" />女士
+                    <label style="color:red">*</label>
+                </td>
+                <td>@Html.LabelFor(Model => Model.社交软件)</td>
+                <td>@Html.EditorFor(Model => Model.社交软件, new { htmlAttributes = new { @class = "form-control" } }) </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.客户类型)</td>
+                <td>
+                    <input name="客户类型" type="radio" value="企业高管" />企业高管 &nbsp;
+                    <input name="客户类型" type="radio" value="时尚达人" />时尚达人 &nbsp;
+                    <input name="客户类型" type="radio" value="成功商人" />成功商人 &nbsp;
+                    <input name="客户类型" type="radio" value="暴躁" />事业单位 &nbsp;
+
+                    <label style="color:red">*</label>
+                </td>
+                <td>@Html.LabelFor(Model => Model.年龄段)</td>
+                <td>
+                    @Html.DropDownListFor(Model => Model.年龄段, ViewBag.AgeOptions as IEnumerable<SelectListItem>, new { @class = "form-control red" })
+                    <label style="color:red">*</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(Model => Model.来店次数)
+                </td>
+                <td>
+                    <input type="text" name="来店次数" value="1" class=" form-control red" />
+                    <label style="color:red">*</label>
+                </td>
+                <td><label>同行人（身份）</label></td>
+                <td>
+                    <input type="radio" name="name" value="家人" />家人&nbsp;&nbsp;
+                    <input type="radio" name="name" value="设计师" />设计师&nbsp;&nbsp;
+                    <input type="radio" name="name" value="朋友" />朋友
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>客户着装/特征</label></td>
+                <td>
+                    <input type="text" name="" value="" class = "form-control" />
+                </td>
+                <td><label>家庭成员（使用者）</label></td>
+                <td>
+
+                    <input type="radio" name="name" value="父母" />父母&nbsp;&nbsp;
+                    <input type="radio" name="name" value="子女" />子女&nbsp;&nbsp;
+                    <input type="radio" name="name" value="夫妻" />夫妻&nbsp;&nbsp;
+                    <input type="radio" name="name" value="单身" />单身
+
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(Model => Model.主导者)</td>
+                <td>
+                    
+                    <input name="主导者" type="radio" value="自己" />自己 &nbsp;
+                    <input name="主导者" type="radio" value="父母" />父母&nbsp;
+                    <input name="主导者" type="radio" value="伴侣" />伴侣&nbsp;
+                    <input name="主导者" type="radio" value="儿女" />儿女&nbsp;
+                   
+                </td>
+                <td>@Html.LabelFor(Model => Model.主导者喜好风格)</td>
+                <td>
+
+                    <input name="主导者" type="radio" value="现代" />现代 &nbsp;
+                    <input name="主导者" type="radio" value="美式" />美式&nbsp;
+                    <input name="主导者" type="radio" value="欧式" />欧式&nbsp;
+                    <input name="主导者" type="radio" value="中式" />中式&nbsp;
+                    <input name="主导者" type="radio" value="混搭" />混搭
+
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>楼盘地址</label></td>
+                <td  colspan="3">
+                    @Html.EditorFor(Model => Model.安装地址, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+
+                <td><label>今日来店目的</label></td>
+                <td >
+                    @Html.EditorFor(Model=>Model.目的,new { htmlAttributes =new { @class="form-control" }
+            })
+                </td>
+                <td><label>销售常规讲解</label></td>
+                <td>@Html.TextAreaFor(Model => Model.销售讲解, new { @class = "form-control" })</td>
+
+            </tr>
+
+            <tr>
+
+                <td>
+                    <label>客户类别</label>
+                </td>
+                <td>
+                    <input type="radio" name="客户类别" value="A 80%以上意向，购买时间：0.5个月内" />A 80%以上意向，购买时间：0.5个月内
+                    <br />
+                    <input type="radio" name="客户类别" value="B  50%以上意向，购买时间：1-3个月内" /> B 50%以上意向，购买时间：1-3个月内
+                    <br />
+                    <input type="radio" name="客户类别" value="C 有意向，购买时间：3个月以" /> C 有意向，购买时间：3个月以上
+                    <br />
+                    <input type="radio" name="客户类别" value="D 完全无意向" />D 完全无意向
+                    <label style="color:red">*</label>
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.客户来源)
+                </td>
+                <td>
+
+                    <input name="客户来源" type="radio" value="直客" />直客 &nbsp;
+                    <input name="客户来源" type="radio" value="老客户" />老客户 &nbsp;
+                    <input name="客户来源" type="radio" value="设计师" />设计师 &nbsp;
+                    <input name="客户来源" type="radio" value="楼盘异业" />楼盘异业 
+
+                </td>
+            </tr>
+
+
+            <tr>
+                <td><label>意向产品（系列/型号）</label></td>
+                <td>@Html.EditorFor(Model => Model.喜欢产品, new { htmlAttributes = new { @class = "form-control" } })</td>
+                <td> @Html.LabelFor(Model => Model.使用空间)</td>
+                <td>
+                    
+                    <input name="使用空间" type="radio" value="新房" />新房 &nbsp;
+                    <input name="使用空间" type="radio" value="商用" />商用 &nbsp;
+                    <input name="使用空间" type="radio" value="以旧换新" />以旧换新 &nbsp;
+                    <input name="使用空间" type="radio" value="样版间" />样版间  &nbsp;
+                    <input name="使用空间" type="radio" value="其他" />其他 &nbsp;
+
+                </td>
+            </tr>
+            <tr>
+                <td><label>户型大小</label></td>
+                <td>
+                    <input name="" type="radio" value="90平以下" />90平以下 &nbsp;
+                    <input name="" type="radio" value="90-120平 " />90-120平  &nbsp;
+                    <input name="" type="radio" value="120-160平" />120-160平 &nbsp;
+                    <input name="" type="radio" value="160-250平 " />160-250平   &nbsp;
+                    <input name="" type="radio" value="250平以上" />250平以上 &nbsp;
+
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.预计使用时间)
+                </td>
+                <td>
+                    <input type="text" name="预计使用时间" class="form-control dateLay" placeholder="请选择时间" readonly />
+
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.LabelFor(Model => Model.装修情况)
+                </td>
+                <td>
+                    
+                    <input name="装修情况" type="radio" value="待交房" />待交房 &nbsp;
+                    <input name="装修情况" type="radio" value="已交房（清水）" />已交房（清水） &nbsp;
+                    <br />
+                    <input name="装修情况" type="radio" value="已交房（精装房）" />已交房（精装房） &nbsp;
+                    <input name="装修情况" type="radio" value="正在装修" />正在装修 &nbsp;
+
+                </td>
+                <td>@Html.LabelFor(Model => Model.如何得知品牌)</td>
+                <td>
+
+                    <input name="" type="radio" value="逛商场" />逛商场 &nbsp;
+                    <input name="" type="radio" value="朋友推荐" />朋友推荐 &nbsp;
+                    <input name="" type="radio" value="设计师推荐" />设计师推荐 &nbsp;
+                    <br />
+                    <input name="" type="radio" value="官网" />官网 &nbsp;
+                    <input name="" type="radio" value="其他" />其他
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>客户预算（金额）</td>
+                <td>
+                    @Html.EditorFor(Model => Model.预算金额, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td>
+                    @Html.LabelFor(Model => Model.预报价折扣)
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.预报价折扣, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+            <tr>
+                <td><label>比较品牌/产品</label></td>
+                <td  colspan="3">@Html.EditorFor(Model => Model.比较品牌产品, new { htmlAttributes = new { @class = "form-control" } })</td>
+
+            </tr>
+           
+            <tr>
+                <td>
+                    <label>携带设计师</label>
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.设计师, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td>客户疑义</td>
+                <td >
+                    @Html.EditorFor(Model => Model.客户建议, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+            </tr>
+           
+            <tr></tr>
+            <tr>
+                <td>此客户是否有意向</td>
+                <td>
+                    <input type="radio" name="是否有意向" value="true" />是
+                    <input type="radio" name="是否有意向" value="false" checked />否
+
+                </td> 
+                <td>是否确认此客户</td>
+                <td>
+                    <input type="radio" name="" value="true" />是
+                    <input type="radio" name="" value="false" checked />否
+
+                </td>
+            </tr>
+        </table>
+</form>
+    <div class="submit-btn-warpper">
+        <input type="button" value="提交" onclick="submit1(this.form)" class="btn bg-green" />
+        <input type="button" onclick="javascript:window.history.go(-1);" value="取消" class="btn bg-write" />
+    </div>
+</div>
+
+
+
+@*<div id="dialog-form" title="预购产品">
+        <p class="validateTips">所有字段非空</p>
+        <form action="@Url.Action("Add", "Home")" method="POST">
+            商品型号:<input name="型号" />
+            备注:<input name="备注" />
+            接待序号：<input name="接待" readonly="readonly" value="@Model.接待序号" />
+            <button type="submit">提交</button>
+        </form>
+
+    </div>*@

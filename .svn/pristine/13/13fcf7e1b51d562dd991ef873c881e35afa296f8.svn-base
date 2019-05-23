@@ -1,0 +1,98 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.DesignFileViewModel>
+@{
+    ViewBag.Title = "设计案申请";
+}
+
+<script>
+    function downloadFile(otr) {
+        var rows = otr.parentNode.parentNode.rowIndex;
+        var fileName = $("#table1 tr:eq(" + rows + ") td:eq(3)").html();
+        var path = $("#table1 tr:eq(" + rows + ") td:eq(8)").html();   //定义一个form表单,通过form表单来发送请求
+        var form = $("<form>");
+        //设置表单状态为不显示
+        form.attr("style", "display:none");
+        // method属性设置请求类型为post
+        form.attr("method", "post");
+        //action属性设置请求路径,
+        //请求类型是post时,路径后面跟参数的方式不可用
+        //可以通过表单中的input来传递参数
+        form.attr("action", "@Url.Action("DownloadFiletest", "DesignFile")"); $("body").append(form);
+        //将表单放置在web中
+        //在表单中添加input标签来传递参数
+        //如有多个参数可添加多个input标签
+        var input1 = $("<input>");
+        input1.attr("type", "hidden");//设置为隐藏域
+        input1.attr("name", "path");//设置参数名称
+        input1.attr("value", path); //设置参数值
+        var input2 = $("<input>");
+        input2.attr("type", "hidden");//设置为隐藏域
+        input2.attr("name", "fileName");//设置参数名称
+        input2.attr("value", fileName); //设置参数值
+        form.append(input1);//添加到表单中
+        form.submit();//表单提交
+    }
+
+</script>
+<h2>设计申请相关图纸</h2>
+<div>
+    @*@Html.ActionLink("上传", "FileUpload", new { id = ViewBag.DesignID, fileType = "null" }, new { @Style = "font-size:12px", @align = "right" })*@
+    <input type="button" name="" value="上传" class="btn btn-primary" onclick="avascrtpt:window.location.href='@Url.Action("FileUpload","DesignFile")?id= @ViewBag.DesignID&fileType= null'" style="margin: 5px 0;" />
+</div>
+<table class="table table-bordered" id="table1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>申请序号</th>
+            <th>文件类型</th>
+            <th>文件名</th>
+            <th>提交人</th>
+            <th>提交时间</th>
+            <th>更新人</th>
+            <th>更新日期</th>
+            <th>操作</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.备注 == "false")
+            {
+        <tr style="color:red">
+            <td>@item.Id</td>
+            <td>@item.设计案提交表序号</td>
+            <td>@item.文件类型</td>
+            <td>@item.文件名</td>
+            <td>@item.提交人</td>
+            <td>@item.提交时间</td>
+            <td>@item.更新人</td>
+            <td>@item.更新日期</td>
+            <td>文件已删除</td>
+            <td></td>
+        </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.设计案提交表序号</td>
+                    <td>@item.文件类型</td>
+                    <td>@item.文件名</td>
+                    <td>@item.提交人</td>
+                    <td>@item.提交时间</td>
+                    <td>@item.更新人</td>
+                    <td>@item.更新日期</td>
+                    <td>@Html.ActionLink("下载", "DownLoadFile", new { path = item.Path, fileName = item.文件名 })</td>
+                  
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.DesignFileCurrentSort, currentFilter = ViewBag.DesignFileCurrentFilter }))
+<a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>
+
+

@@ -1,0 +1,61 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel
+@{
+    ViewBag.Title = "销售成交单详情页";
+
+}
+
+<h3 style="margin-left:1%;">销售成交单详情页</h3>
+<table class="table table-bordered table-striped table-hover" style="width:98%;margin:10px auto;">
+    <tr>
+        <td>客户姓名</td>
+        <td>@Model.客户姓名</td>
+        <td>联系方式</td>
+        <td>@Model.客户联系方式</td>
+
+    </tr>
+    <tr>
+        <td>销售日期</td>
+        <td>@Model.销售日期</td>
+        <td>合同单号</td>
+        <td>@Model.合同单号</td>
+
+    </tr>
+    <tr>
+        <td>销售单号</td>
+        <td>@Model.销售单号</td>
+       
+        <td>销售金额(元)</td>
+        <td>@Model.销售金额</td>
+    </tr>
+    <tr>
+        <td>折扣</td>
+        <td>@Model.折扣</td>
+        <td>订库样</td>
+        <td>@Model.订库样</td>
+    </tr>
+    <tr>
+
+        <td>是否全款</td>
+        @if (Model.是否全款 == true)
+        {
+            <td colspan="3">是</td>
+        }
+        else
+        {
+            <td colspan="3">否</td>
+        }
+
+    </tr>
+    <tr>
+        <td>备注</td>
+        <td colspan="3">@Model.备注</td>
+    </tr>
+    <tr>
+        <td>更新人</td>
+        <td>@Model.更新人</td>
+        <td>更新日期</td>
+        <td>@Model.更新日期</td>
+    </tr>
+</table>
+
+@Html.ActionLink("返回销售成交记录", "SalesRecordsIndex", "ManagerExamine",new {id = Model.接待记录ID}, new { @style = "margin-left:1%;" })

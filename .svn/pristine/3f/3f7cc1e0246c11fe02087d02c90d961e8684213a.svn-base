@@ -1,0 +1,164 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using ChicStoreManagement.WEB.ViewModel;
+using ChicStoreManagement.IBLL;
+using EncryptionHelper;
+
+namespace ChicStoreManagement.Controllers
+{
+    [AllowAnonymous]
+    public class LogInController : Controller
+    {
+
+        private readonly IStoreEmployeesBLL storeEmployeesBLL;
+        private readonly IStoreBLL storeBLL;
+        private readonly IPositionBLL positionBLL;
+       
+
+        public LogInController(IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IPositionBLL positionBLL)
+        {
+            this.storeEmployeesBLL = storeEmployeesBLL;
+            this.storeBLL = storeBLL;
+            this.positionBLL = positionBLL;
+           
+        }
+
+
+        // GET: Account
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SignIn()
+        {
+
+            ViewBag.Message = "Your contact page.";
+            return View();
+        }
+
+
+
+
+        public ActionResult Viewtest()
+        {
+            return View();
+        }
+
+        
+
+
+        /// <summary>
+        /// 登录操作
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="password">用户密码</param>
+        /// <returns></returns>
+        [HttpPost]
+ 
+        public ActionResult Login(Employees employees)
+        {
+            
+           //var pw = MD5Helper.MD5Encrypt(employees.密码);
+          
+            var model=BuildEmploess(employees.编号,employees.密码);
+            if (model!=null)
+
+            {
+                if (model.停用标志==true)
+                {
+                    TempData["msg"] = "该账号已经停用！";
+                    return RedirectToAction("SignIn", "LogIn");
+                }
+                //Session["CurrentUser"] = Database.Users.Find(u => u.Name == user);
+                FormsAuthentication.SetAuthCookie(employees.编号, false);
+                HttpCookie aCookie = new HttpCookie("userName")
+                {
+                    Value = employees.编号,
+                    Expires = DateTime.Now.AddDays(1)
+                };
+                Response.Cookies.Add(aCookie);
+                model.密码 = null;//密码不存入Session
+                Session["Employee"] = model;
+                return RedirectToAction("Index", "Home");
+
+            }
+            else
+            {
+
+                TempData["msg"] = "用户名或密码错误！";
+
+                return RedirectToAction("SignIn", "LogIn");
+            }
+        }
+
+
+
+
+      
+         /// <summary>
+         /// 注销
+         /// </summary>
+        public void  SignOut()
+        {
+            FormsAuthentication.SignOut();
+
+            FormsAuthentication.RedirectToLoginPage();
+
+           
+        }
+
+
+        /// <summary>
+        /// 将员工数据优化
+        /// </summary>
+        public Employees BuildEmploess(string code,string pw)
+        {
+            var model = storeEmployeesBLL.GetModel(p => p.编号 == code);
+          var strpw = MD5Helper.MD5Encrypt(pw);
+          // var strpw = pw;
+            if (model == null)
+            {
+                return null;
+            }
+            if (model.密码!= strpw)
+            {
+                return null;
+            }
+           
+            else
+            {
+                Employees employees = new Employees
+                {
+                    ID = model.ID,
+                    停用标志 = model.停用标志,
+                    姓名 = model.姓名,
+                    性别 = model.性别,
+                    编号 = model.编号,
+                    跟进目标计划数 = model.跟进目标计划数.Value,
+                    职务ID = model.职务ID,
+                    店铺ID = model.店铺ID,
+                    职务 = positionBLL.GetModel(p => p.ID == model.职务ID).职务,
+                    店铺 = storeBLL.GetModel(p => p.ID == model.店铺ID).名称,
+                    联系方式 = model.联系方式,
+                    跟进目标数 = model.跟进目标计划数,
+                    是否销售 = model.是否销售,
+                    是否店长 = model.是否店长,
+                    是否设计师 = model.是否设计师
+
+                };
+                return employees;  
+            }
+            
+        }
+
+
+    }
+
+
+}

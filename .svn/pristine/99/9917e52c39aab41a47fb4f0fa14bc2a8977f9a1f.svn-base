@@ -1,0 +1,153 @@
+﻿@model PagedList.IPagedList<ChicStoreManagement.WEB.ViewModel.CustomerTrackingModel>
+@using PagedList.Mvc;
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "跟进日志";
+}
+
+<hr />
+@if (ViewBag.Reception!=null)
+{
+<p>
+
+    @Html.ActionLink("添加跟进日志", "AddTrackLogView", new { ViewBag.Reception, @class = "form-control", @Style = "font-size:12px" })
+</p>
+}
+
+@using (Html.BeginForm("TrackLogIndex", "CustomerTrackLog", FormMethod.Get))
+{
+    <p>
+        通过客户电话查找: @Html.TextBox("searchString", ViewBag.TrackingCurrentFilter as string, new { @class = "form-control width-200", @Style = "display:inline" })
+        <input id="Submit1" type="submit" value="查询" class="btn" />
+    </p> 
+}
+<hr />
+<label style="font-size:smaller">当前店铺：@ViewBag.storeName</label>
+@{ if (Model != null)
+    {
+        <div class="table-responsive">
+            <table  class="table table-hover table-bordered">
+                <tr>
+
+                    
+                    <th>客户姓名</th>
+                    <th>客户电话</th>
+                    <th>@Html.ActionLink("跟进时间", "TrackLogIndex", new { sortOrder = ViewBag.TrackingDate })</th>
+                    
+                    <th>跟进方式</th>
+                    <th>跟进内容/反馈</th>
+                    <th>@Html.ActionLink("跟进结果", "TrackLogIndex", new { sortOrder = ViewBag.TrackingResult })</th>
+                    <th>店长审核</th>
+                    <th>备注</th>
+                    <th>跟进人</th>
+                    <th>是否申请设计师</th>
+                    
+                    <th width="10%">操作</th>
+
+                </tr>
+                 @foreach (var item in Model)
+                {
+
+                    if (item.跟进结果.ToString() == "放弃" || item.跟进结果.ToString() == "成交")
+                    {
+                       
+                <tr style="color:darkgrey ">
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.Id)</td>
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.店铺)</td>
+                    <td>@Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })</td>
+                    <td>@Html.DisplayFor(Model => item.客户电话)</td>
+                    <td>@item.跟进时间.ToShortDateString().ToString()</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进方式)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进内容)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进结果)</td>
+                    <td> @Html.DisplayFor(modelItem => item.店长审核)</td>
+                    <td> @Html.DisplayFor(modelItem => item.备注)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                    @{
+
+                        if (item.是否申请设计师 == true)
+                        {
+
+                            <td>是</td>
+                            
+                            <td>
+                                @Html.ActionLink("编辑", "EditTrackLog", new { id = item.Id })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })
+                            </td>
+                        }
+                        else if (item.是否申请设计师 == false)
+                        {
+
+                            <td>否</td>
+                        }
+                        else
+                        {
+                            <td>待定</td>
+                        }
+
+                    }
+                    <td>不可操作</td>
+                </tr>
+                       
+                    }
+
+                    else
+                    {
+                        
+                <tr style="background-color:whitesmoke">
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.Id)</td>
+                    <td style="display:none"> @Html.DisplayFor(modelItem => item.店铺)</td>
+                    <td> @Html.ActionLink(item.客户姓名, "ShowVisitInfo", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })</td>
+                    <td>@Html.DisplayFor(Model => item.客户电话)</td>
+                    <td> @item.跟进时间.ToShortDateString().ToString()</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进方式)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进内容)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进结果)</td>
+                    <td> @Html.DisplayFor(modelItem => item.店长审核)</td>
+                    <td> @Html.DisplayFor(modelItem => item.备注)</td>
+                    <td> @Html.DisplayFor(modelItem => item.跟进人)</td>
+
+                    @{
+                        if (item.是否申请设计师 == true)
+                        {
+
+                            <td>是</td>
+
+                            <td>
+                                @Html.ActionLink("编辑", "EditTrackLogView", new { id = item.Id })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })|@Html.ActionLink("申请设计", "ApplyDesignView", "DesignScheme", new { recepitonID = item.接待ID }, new { @Style = "font-size:12px" })
+                            </td>
+                        }
+                        else if (item.是否申请设计师 == false)
+                        {
+
+                            <td>否</td>
+                           
+                            <td>
+                                @Html.ActionLink("编辑", "EditTrackLogView", new { id = item.Id })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })
+                            </td>
+                        }
+                        else
+                        {
+                            <td>待定</td>
+                           
+                            <td>
+                                @Html.ActionLink("编辑", "EditTrackLogView", new { id = item.Id })|@Html.ActionLink("预购", "ExceptedBuyIndex", "Customer", new { id = item.接待ID }, new { @Style = "font-size:12px" })
+                            </td>
+                        }
+
+                    }
+
+                </tr>
+                   
+                    }
+
+                }
+            </table>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("TrackLogIndex", new { page, sortOrder = ViewBag.TrackingCurrentSort, currentFilter = ViewBag.TrackingCurrentFilter }))
+
+        </div>
+    }
+}
+<a onclick="javascript:window.history.go(-1);" value="返回上一页">返回上一页</a>

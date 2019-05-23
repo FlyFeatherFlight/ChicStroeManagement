@@ -1,0 +1,171 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.SalesRecordsViewModel
+
+@{
+    ViewBag.Title = "SalesRecordInfoView";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>SalesRecordInfoView</h2>
+
+<div>
+    <h4>SalesRecordsViewModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.销售日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.销售日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.销售单号)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.销售单号)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.合同单号)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.合同单号)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.销售金额)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.销售金额)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.折扣)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.折扣)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.订库样)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.订库样)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.销售人员ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.销售人员ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.销售人员)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.销售人员)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单人员ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单人员ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.制单人员)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.制单人员)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.更新日期)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.更新日期)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.更新人ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.更新人ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.更新人)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.更新人)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.接待记录ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.接待记录ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.是否全款)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.是否全款)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.备注)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.备注)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.客户姓名)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客户姓名)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.客户联系方式)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.客户联系方式)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

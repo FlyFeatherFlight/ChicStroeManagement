@@ -1,0 +1,249 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.DesignSubmitModel
+
+@{
+    ViewBag.Title = "设计案申请信息";
+}
+
+<script>
+    function my_func() {
+        var items = document.getElementsByName("HomeSpace");//得到名为HomeSpace的多选框
+        var str = "";
+        for (i = 0; i < items.length; i++) {
+            if (items[i].checked) {
+                str += items[i].value; //获得选中的所有值
+            }
+           $.ajax({
+               url: '@Url.Action("DesignerApplyExamine", "DesignerExamine")',
+               data: { id:@Model.Id, examine: JSON.stringify(str) },
+                cache: false,
+                type: "post",
+                dataType: "json",
+                async: true,//异步
+               success: function (data) {
+                       alert(data);
+                       window.history.go(-1);
+
+                },
+                error: function (err) {
+                    alert("连接失败，请刷新，或稍后访问，谢谢！");
+                    window.history.go(-1);
+                },
+            })
+        }
+
+    }
+</script>
+
+<h2>@Html.DisplayFor(Model => Model.客户姓名)</h2>
+@*@Html.ActionLink("图纸", "Index", "DesignFile", new { id = Model.Id }, new { @Style = "font-size:12px" })|@Html.ActionLink("软装服务预购", "Design_ExceptedBuyIndex", "DesignScheme", new { id = Model.Id }, new { @Style = "font-size:12px" })*@
+<input type="button" name="" value="图纸" class="btn btn-primary" onclick="javascrtpt:window.location.href='@Url.Action("Index","DesignFile")?id= @Model.Id'" />
+<input type="button" name="" value="软装服务预购" class="btn btn-primary" onclick="javascrtpt:window.location.href='@Url.Action("Design_ExceptedBuyIndex","DesignScheme")?id= @Model.Id'" style = "margin: 5px 0;"/>
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr><td colspan="4" align="center"><b style="font-size:large">软装服务设计案提交表-@Model.客户姓名</b></td></tr>
+    </thead>
+    <tr>
+        <td width="15%">客户姓名</td>
+        <td>@Html.DisplayFor(Model => Model.客户姓名)</td>
+        <td>联系方式</td>
+        <td>@Html.DisplayFor(Model => Model.联系方式)</td>
+    </tr>
+    <tr>
+        <td>家居使用者</td>
+        <td>@Html.DisplayFor(Model => Model.家居使用者)</td>
+   
+        <td>楼盘具体位置</td>
+        <td >@Html.DisplayFor(Model => Model.楼盘具体位置)</td>
+    </tr>
+    <tr>
+        <td>面积大小</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.面积大小)</td>
+    </tr>
+    <tr>
+        <td>装修风格</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.装修风格)</td>
+    </tr>
+    <tr>
+        <td>装修进度</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.装修进度)</td>
+    </tr>
+    <tr>
+        <td>预算(可细化到空间)</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.预算)</td>
+    </tr>
+    <tr>
+        <td>客户喜欢或忌讳</td>
+
+        <td colspan="3">@Html.DisplayFor(Model => Model.客户喜好)</td>
+    </tr>
+    <tr>
+        <td>客户正在比较的品牌或者已经购买的品牌:</td>
+
+        <td colspan="3">@Html.DisplayFor(Model => Model.客户在意品牌或已购买品牌)</td>
+    </tr>
+    <tr>
+        <td>客户的问题及特殊要求</td>
+
+        <td colspan="3">@Html.DisplayFor(Model => Model.客户提问与要求)</td>
+    </tr>
+    <tr>
+        <td colspan="4" align="center">项目方案要求</td>
+    </tr>
+
+
+    @if (Model.整体软装配饰.Value)
+    {
+        <tr>
+            <td colspan="4"> 整套软装配饰（家具、窗帘、地毯、灯、挂画等）</td>
+        </tr>
+    }
+
+
+    <tr>
+        <td>家具空间</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.家具空间)</td>
+    </tr>
+    <tr>
+        <td>
+            客户意向产品明细
+        </td>
+
+        <td colspan="3">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                        <td>空间</td>
+                        <td>系列</td>
+                        <td>产品名称</td>
+                        <td>编号</td>
+                        <td>单位</td>
+                        <td>尺寸</td>
+                        <td>数量</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Design_CustomerExceptedBuyViewModel != null)
+                    {
+                        foreach (var item in Model.Design_CustomerExceptedBuyViewModel)
+                        {
+                            <tr>
+                                <td>@item.空间</td>
+                                <td>@item.系列</td>
+                                <td>@item.名称</td>
+                                <td>@item.编号</td>
+                                <td>@item.单位</td>
+                                <td>@item.尺寸</td>
+                                <td>@item.数量</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>项目提交时间</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.项目提交时间)</td>
+    </tr>
+    <tr>
+        <td>项目量房时间</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.项目量房时间)</td>
+    </tr>
+    <tr>
+        <td>项目预计完成时间</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.项目预计完成时间)</td>
+    </tr>
+    <tr>
+        <td>销售人员</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.销售人员)</td>
+    </tr>
+    <tr>
+        <td rowspan="3">软装设计师</td>
+    </tr>
+    @if (ViewBag.IsManager == true)
+    {
+        <tr>
+            <td colspan="3">@Html.ActionLink("指定设计师", "ChangeApplyDesignerView", "ManagerExamine", new { id = Model.Id }, new { }) </td>
+        </tr>
+    }
+    @if (Model.设计人员审核 == true)
+    {
+        <tr>
+            <td colspan="3">  @Html.DisplayFor(Model => Model.设计人员) |已确认</td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td colspan="3">
+                @if (Model.设计人员 != null)
+                {
+                    @Html.DisplayFor(Model => Model.设计人员)/**/
+                                        /**/
+                                        /**/
+                                        /**/
+                                        /**/
+
+                                    }
+                                    else
+                                    {
+                                        <b>无设计师</b>
+                                    }
+                |未确认
+            </td>
+        </tr>
+
+
+    }
+
+    <tr>
+        <td>店长</td>
+        @if (Model.店长审核 == true)
+        {
+            <td colspan="3">@Html.DisplayFor(Model => Model.店长)|已确认</td>
+        }
+        else
+        {
+            <td colspan="3">@Html.DisplayFor(Model => Model.店长)|未确认</td>
+        }
+    </tr>
+    <tr>
+        <td>审批状态</td>
+        <td colspan="3">@Html.DisplayFor(Model => Model.审批状态)</td>
+    </tr>
+    <tr>
+        <td>最后一次更新人</td>
+        <td>@Html.DisplayFor(Model => Model.更新人)</td>
+        <td>更新日期</td>
+        <td>@Html.DisplayFor(Model => Model.更新日期)</td>
+    </tr>
+    @if (ViewBag.IsDesigner == true)
+    {
+        <tr>
+            <td colspan="4" align="center">
+                设计师审批:
+                <input type="radio" name="HomeSpace" value="false" onclick="my_func()" />驳回|
+                <input type="radio" name="HomeSpace" value="true" onclick="my_func()" />通过
+            </td>
+        </tr>
+    }
+  @if (ViewBag.IsEmployee == true)
+   {
+        <tr>
+            <td colspan="4" align="center">
+                @*@Html.ActionLink("修改信息", "EditDesignApply", new { id = Model.Id })*@ @*|@Html.ActionLink("修改客户意向产品", "ExceptedBuyIndex", "Customer",new { id = Model.接待记录ID },new { @Style = "font-size:12px" }) </td>*@
+                <input type="button" name="" value="修改信息" class="btn btn-primary" onclick="javascrtpt:window.location.href='@Url.Action("EditDesignApply","DesignScheme")?id= @Model.Id'" style="margin: 5px 0;" />
+                </tr>
+    }
+    @if (ViewBag.IsEmployee == true)
+    {
+        <tr>
+            <td colspan="4" align="center">
+                @*@Html.ActionLink("完结该设计", "AddDesignResultView", "DesignResult", new { subid = Model.Id }, new { })*@
+                <input type="button" name="" value="完结该设计" class="btn btn-success" onclick="javascrtpt:window.location.href='@Url.Action("AddDesignResultView","DesignResult")?subid= @Model.Id'" style="margin: 5px 0;" />
+            </td>
+        </tr>
+    }
+
+</table>
+<input type="button" onclick="javascript:window.history.go(-1);" value="返回上一页" class="btn" />

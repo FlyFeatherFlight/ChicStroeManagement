@@ -1,0 +1,512 @@
+﻿@model ChicStoreManagement.WEB.ViewModel.CustomerInfoModel
+@{
+    ViewBag.Title = "修改客户信息";
+}
+<style>
+    .tab tbody tr td:nth-child(2n) {
+        width: 42%;
+    }
+    td span {
+        font-size: 14px;
+    }
+</style>
+
+<h3 style="margin-bottom:10px;">修改客户信息</h3>
+
+@using (Html.BeginForm("CustomerEdit", "Customer", FormMethod.Post,new { @id="MyForm"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.ID)
+<div class="table-responsive ">
+    <table class="table table-hover  table-condensed table-bordered tab">
+        <tr>
+            <td>@Html.LabelFor(Model => Model.店铺)</td>
+            <td colspan="3">
+                <input type="text" name="店铺" value="@Model.店铺" readonly="readonly" class="form-control" />
+                <input type="text" name="接待序号" value="@Model.接待序号" readonly="readonly" class="hidden" />
+            </td>
+
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(Model => Model.接待人)</td>
+
+            <td>
+                <input type="text" name="接待人" value="@Model.接待人" readonly="readonly" class="form-control " />
+            </td>
+            <td>
+                @Html.LabelFor(Model => Model.接待日期)
+            </td>
+
+            <td>
+                <input type="text" name="接待日期" value="" class="form-control dateLay red recDate" placeholder="请选择日期" readonly />
+                <label style="color:red">*</label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>@Html.LabelFor(Model => Model.进店时间)</td>
+            <td>
+
+                <input type="text" name="进店时间" value="" class=" form-control timeLay  red " id="startTime" placeholder="请选择时间" readonly />
+                <label style="color:red">*</label>
+
+            </td>
+
+            <td>@Html.LabelFor(Model => Model.出店时间)</td>
+            <td>
+                <input type="text" name="出店时间" value="" class="form-control timeLay  red " id="EndTime" placeholder="请选择时间" readonly />
+                <label style="color:red">*</label>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(Model => Model.客户姓名)
+            </td>
+            <td>
+                <input type="text" name="客户姓名" value="@Model.客户姓名" class="form-control Name" />
+
+            </td>
+            <td>
+                @Html.LabelFor(Model => Model.客户电话)
+            </td>
+            <td>
+
+                <input type="text" name="客户电话" value="@Model.客户电话" class="form-control Phone" onkeyup="value=value.replace(/[^\d.]/g,'')"
+                       onblur="value=value.replace(/[^\d.]/g,'')" placeholder="请输入数字" />
+                @Html.ValidationMessageFor(Model => Model.客户电话)
+
+            </td>
+        </tr>
+        <tr>
+            <td><label>性别</label></td>
+            <td id="gender" class="must-fill">
+
+                <input name="性别" type="radio" value="男" onclick="checkedAdd(this)"><span>先生&nbsp;</span>
+                <input name="性别" type="radio" value="女" onclick="checkedAdd(this)"/><span>女士</span>
+                <label style="color:red"> *</label>
+
+            </td>
+            <td>@Html.LabelFor(Model => Model.社交软件)</td>
+            <td>@Html.EditorFor(Model => Model.社交软件, new { htmlAttributes = new { @class = "form-control" } }) </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(Model => Model.客户类型)</td>
+            <td id="Type" class="must-fill">
+                <input name="客户类型" type="radio" value="企业高管" onclick="checkedAdd(this)" autocomplete="off"/>企业高管 &nbsp;
+                <input name="客户类型" type="radio" value="时尚达人" onclick="checkedAdd(this)" autocomplete="off"/>时尚达人 &nbsp;
+                <input name="客户类型" type="radio" value="成功商人" onclick="checkedAdd(this)" autocomplete="off"/>成功商人 &nbsp;
+                <input name="客户类型" type="radio" value="事业单位" onclick="checkedAdd(this)" autocomplete="off"/>事业单位 &nbsp;
+
+                <label style="color:red">*</label>
+            </td>
+            <td>@Html.LabelFor(Model => Model.年龄段)</td>
+            <td>
+                <select name="年龄段" class="form-control red">
+                    <option value="@Model.年龄段">@Model.年龄段</option>
+                    <option value="90后">90后</option>
+                    <option value="85-90年代">85-90年代</option>
+                    <option value="80-85年代">80-85年代</option>
+                    <option value="70后">70后</option>
+                    <option value="70前">70前</option>
+                </select>
+                <label style="color:red">*</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(Model => Model.来店次数)
+            </td>
+            <td>
+                <input type="text" name="来店次数" value="@Model.来店次数" class=" form-control red" />
+                <label style="color:red">*</label>
+            </td>
+            <td><label>同行人（身份）</label></td>
+            <td id="withPerson">
+
+                <input type="radio" name="同行人" value="家人" onclick="checkedAdd(this)"/><span>家人 &nbsp; &nbsp;</span>
+                <input type="radio" name="同行人" value="设计师" onclick="checkedAdd(this)"/><span>设计师 &nbsp; &nbsp;</span>
+                <input type="radio" name="同行人" value="朋友" onclick="checkedAdd(this)"/><span>朋友</span>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>客户着装/特征</label></td>
+            <td>
+                <input type="text" name="客户着装" value="@Model.客户着装" class="form-control" />
+            </td>
+            <td><label>家居使用者</label></td>
+            <td id="family">
+
+                <input type="radio" name="家居使用者" value="父母" onclick="checkedAdd(this)"/><span>父母 &nbsp; &nbsp;</span>
+                <input type="radio" name="家居使用者" value="子女" onclick="checkedAdd(this)"/><span>子女 &nbsp; &nbsp;</span>
+                <input type="radio" name="家居使用者" value="夫妻" onclick="checkedAdd(this)"/><span>夫妻俩 &nbsp; &nbsp;</span>
+                <input type="radio" name="家居使用者" value="单身" onclick="checkedAdd(this)"/><span>自己</span>
+
+            </td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(Model => Model.主导者)</td>
+            <td id="power">
+
+                <input name="主导者" type="radio" value="自己" onclick="checkedAdd(this)"/>自己 &nbsp;
+                <input name="主导者" type="radio" value="父母" onclick="checkedAdd(this)"/>父母&nbsp;
+                <input name="主导者" type="radio" value="伴侣" onclick="checkedAdd(this)"/>伴侣&nbsp;
+                <input name="主导者" type="radio" value="儿女" onclick="checkedAdd(this)"/>子女&nbsp;
+
+            </td>
+            <td>@Html.LabelFor(Model => Model.主导者喜好风格)</td>
+            <td class="checkboxS">
+
+                <input name="" type="checkbox" value="现代" onclick="checkboxAdd(this)" autocomplete="off"/><span>现代 &nbsp;</span>
+                <input name="" type="checkbox" value="美式" onclick="checkboxAdd(this)" autocomplete="off"/><span>美式 &nbsp;</span>
+                <input name="" type="checkbox" value="欧式" onclick="checkboxAdd(this)" autocomplete="off"/><span>欧式 &nbsp;</span>
+                <input name="" type="checkbox" value="中式" onclick="checkboxAdd(this)" autocomplete="off"/><span>中式 &nbsp;</span>
+                <input name="" type="checkbox" value="混搭" onclick="checkboxAdd(this)" autocomplete="off"/><span>混搭</span>
+                <input name="主导者喜好风格" type="text" value="@Model.主导者喜好风格" autocomplete="off" id="Like" class="" />
+
+            </td>
+        </tr>
+
+        <tr>
+            <td><label>楼盘地址</label></td>
+            <td colspan="3">
+                <input type="text" name="安装地址" value="@Model.安装地址" class="form-control Site" />
+            </td>
+        </tr>
+        <tr>
+
+            <td><label>今日来店目的</label></td>
+            <td>
+                <input type="text" name="目的" value="@Model.目的" class="form-control" />
+            </td>
+            <td><label>销售常规讲解</label></td>
+            <td>
+                <input type="text" name="销售讲解" value="@Model.销售讲解" class="form-control" />
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                <label>客户类别</label>
+            </td>
+            <td id="sort" class="must-fill category">
+
+
+                <input type="radio" name="客户类别" value="A" onclick="checkedAdd(this)"/><span>A 80 % 以上意向，购买时间：0.5个月内</span>
+                <br />
+
+                <input type="radio" name="客户类别" value="B" onclick="checkedAdd(this)"/> <span>B 50%以上意向，购买时间：1-3个月内</span>
+                <br />
+
+                <input type="radio" name="客户类别" value="C" onclick="checkedAdd(this)"/> <span>C 有意向，购买时间：3个月以上</span>
+                <br />
+
+                <input type="radio" name="客户类别" value="D" onclick="checkedAdd(this)"/> <span>D 完全无意向</span>
+                <label style="color:red"> *</label>
+
+            </td>
+            <td>
+                @Html.LabelFor(Model => Model.客户来源)
+            </td>
+            <td id="source">
+
+                <input name="客户来源" type="radio" value="直客" onclick="checkedAdd(this)"/><span>直客 &nbsp;</span>
+                <input name="客户来源" type="radio" value="老客户" onclick="checkedAdd(this)"/><span>老客户 &nbsp;</span>
+                <input name="客户来源" type="radio" value="设计师" onclick="checkedAdd(this)"/><span>设计师 &nbsp;</span>
+                <input name="客户来源" type="radio" value="楼盘异业" onclick="checkedAdd(this)"/><span>楼盘异业</span>
+
+            </td>
+        </tr>
+
+
+        <tr>
+            <td><label>意向产品（系列/型号）</label></td>
+            <td>
+                <input type="text" name="喜欢产品" value="@Model.喜欢产品" class="form-control Intention" />
+            </td>
+            <td> @Html.LabelFor(Model => Model.使用空间)</td>
+            <td id="space">
+
+                <input name="使用空间" type="radio" value="新房" onclick="checkedAdd(this)"/><span>新房 &nbsp;</span>
+                <input name="使用空间" type="radio" value="商用" onclick="checkedAdd(this)"/><span>商用 &nbsp;</span>
+                <input name="使用空间" type="radio" value="以旧换新" onclick="checkedAdd(this)"/><span>以旧换新 &nbsp;</span>
+                <input name="使用空间" type="radio" value="样版间" onclick="checkedAdd(this)"/><span>样版间  &nbsp;</span>
+                <input name="使用空间" type="radio" value="其他" onclick="checkedAdd(this)"/><span>其他 &nbsp;</span>
+
+            </td>
+        </tr>
+        <tr>
+            <td><label>户型大小</label></td>
+            <td id="Size">
+ 
+                <input name="户型大小" type="radio" value="90平以下" onclick="checkedAdd(this)"/><span>90平以下 &nbsp;</span>
+                <input name="户型大小" type="radio" value="90-120平 " onclick="checkedAdd(this)"/><span>90-120平  &nbsp;</span>
+                <input name="户型大小" type="radio" value="120-160平" onclick="checkedAdd(this)"/><span>120-160平 &nbsp;</span>
+                <input name="户型大小" type="radio" value="160-250平 " onclick="checkedAdd(this)"/><span>160-250平   &nbsp;</span>
+                <input name="户型大小" type="radio" value="250平以上" onclick="checkedAdd(this)"/><span>250平以上 &nbsp;</span>
+
+            </td>
+            <td>
+                @Html.LabelFor(Model => Model.预计使用时间)
+            </td>
+            <td>
+                <input type="text" name="预计使用时间" value="" class="form-control dateLay predict" placeholder="请选择时间" readonly />
+
+            </td>
+        </tr>
+        <tr>
+
+            <td>
+                @Html.LabelFor(Model => Model.装修情况)
+            </td>
+            <td id="case">
+
+                <input name="装修情况" type="radio" value="待交房" onclick="checkedAdd(this)"/><span>待交房 &nbsp;</span>
+                <input name="装修情况" type="radio" value="已交房（清水）" onclick="checkedAdd(this)"/><span>已交房（清水） &nbsp;</span>
+                <br />
+                <input name="装修情况" type="radio" value="已交房（精装房）" onclick="checkedAdd(this)"/><span>已交房（精装房） &nbsp;</span>
+                <input name="装修情况" type="radio" value="正在装修" onclick="checkedAdd(this)"/><span>正在装修 &nbsp;</span>
+
+            </td>
+            <td>@Html.LabelFor(Model => Model.如何得知品牌)</td>
+            <td id="know">
+
+                <input name="如何得知品牌" type="radio" value="逛商场" onclick="checkedAdd(this)"/><span>逛商场 &nbsp;</span>
+                <input name="如何得知品牌" type="radio" value="朋友推荐" onclick="checkedAdd(this)"/><span>朋友推荐 &nbsp;</span>
+                <input name="如何得知品牌" type="radio" value="设计师推荐" onclick="checkedAdd(this)"/><span>设计师推荐 &nbsp;</span>
+                <br />
+                <input name="如何得知品牌" type="radio" value="官网" onclick="checkedAdd(this)"/><span>官网 &nbsp;</span>
+                <input name="如何得知品牌" type="radio" value="其他" onclick="checkedAdd(this)"/><span>其他</span>
+
+
+
+
+            </td>
+        </tr>
+
+        <tr>
+
+            <td><label>客户预算（金额）</label></td>
+            <td>
+                <input type="text" name="预算金额" value="@Model.预算金额" class="form-control " placeholder="请选择时间" />
+            </td>
+            <td>
+                @Html.LabelFor(Model => Model.预报价折扣)
+            </td>
+            <td>
+                <input type="text" name="预报价折扣" value="@Model.预报价折扣" class="form-control " />
+            </td>
+        </tr>
+        <tr>
+            <td><label>比较品牌/产品</label></td>
+            <td colspan="3"><input type="text" name="比较品牌产品" value="@Model.比较品牌产品" class="form-control " /></td>
+
+        </tr>
+
+        <tr>
+            <td>
+                <label>携带设计师</label>
+            </td>
+            <td>
+                <input type="text" name="设计师" value="@Model.设计师" class="form-control " />
+            </td>
+            <td><label>客户疑义</label></td>
+            <td>
+                <input type="text" name="客户建议" value="@Model.客户建议" class="form-control " />
+            </td>
+        </tr>
+
+        <tr></tr>
+        <tr>
+            <td><label>此客户是否有意向</label></td>
+            <td id="mindCur">
+                <input type="radio" name="是否有意向" value="true" onclick="checkedAdd(this)"/><span>是</span>
+                <input type="radio" name="是否有意向" value="false"  onclick="checkedAdd(this)"/><span>否</span>
+
+            </td>
+            <td><label>是否确认此客户</label></td>
+            <td id="sureCur">
+                <input type="radio" name="是否确认" value="true" onclick="checkedAdd(this)"/><span>是</span>
+                <input type="radio" name="是否确认" value="false" onclick="checkedAdd(this)" /><span>否</span>
+
+            </td>
+        </tr>
+    </table>
+   
+    <div class="submit-btns" style="margin-top:10px;">
+        <input type="button" value="确认修改" class="btn btn-success width-7" onclick="submit1()" />
+        &nbsp;&nbsp;
+        <input type="button" value="取消" class="btn btn-danger width-7" onclick="javascript:history.back(-1);" />
+    </div>
+</div>
+      
+    <script type="text/javascript">
+        //修改页面显示的时间
+        var recDate = "@Model.接待日期",
+            startDate = "@Model.进店时间",
+            endDate = "@Model.出店时间",
+            predict = "@Model.预计使用时间",
+            mindCur = "@Model.是否有意向",
+            sureCur = "@Model.是否确认",
+            Like = "@Model.主导者喜好风格";
+        Like = Like.split("/");
+        mindCur = mindCur.toLowerCase();
+        sureCur = sureCur.toLowerCase();
+        recDate = recDate.split("/周")[0];
+        predict=predict.split("/周")[0];
+        startDate= startDate.split(" ")[1]
+        endDate=endDate.split(" ")[1]
+        $(".recDate").val(recDate);
+        $(".predict").val(predict);
+        $("#startTime").val(startDate);
+        $("#EndTime").val(endDate);
+        //console.log(recDate, predict, startDate, endDate)
+        //根据数据设置单选框选中
+        //性别
+        modelCheck($("#gender input"), "@Model.性别");
+        //客户类型
+        modelCheck($("#Type input"), "@Model.客户类型");
+        //同行人
+        modelCheck($("#withPerson input"), "@Model.同行人");
+        //家居使用者
+        modelCheck($("#family input"), "@Model.家居使用者");
+        //主导者
+        modelCheck($("#power input"), "@Model.主导者");
+        //客户类别
+        modelCheck($("#sort  input"), "@Model.客户类别");
+         //客户来源
+        modelCheck($("#source input"), "@Model.客户来源");
+        //使用空间
+        modelCheck($("#space input"), "@Model.使用空间");
+         //户型大小
+          modelCheck($("#Size input"), "@Model.户型大小");
+         //如何得知品牌
+          modelCheck($("#know input"), "@Model.如何得知品牌");
+        //装修情况
+        modelCheck($("#case input"), "@Model.装修情况");
+          //是否有意向
+        modelCheck($("#mindCur input"), mindCur );
+          //是否确认
+        modelCheck($("#sureCur input"),sureCur);
+        //多选框默认选中
+        //根据model的值显示选中
+        //主导者喜好风格
+        $(Like).each(function (i, m) {
+            modelCheck($(".checkboxS input[type='checkbox']"), m);
+        })
+       
+        function modelCheck(input,Model) {
+
+             if (Model != null) {
+                 input.each(function (i,m) {
+                    if (m.value == Model) {
+                        $(m).attr("checked", "checked");
+                        $(m).addClass("active");
+                    }
+
+                })
+            }
+        }
+        
+        //主表提交修改
+        function submit1() {
+
+            sureCurFun();//是否确认客户
+            //进店时间判断（出店时间不能大于进店时间）
+            var starTime = $("#startTime").val();
+            var endTime = $("#EndTime").val();
+            var must = $(".must-fill");//单选选中
+            var mustStatus = false;
+            var redStatus = false;
+            if (endTime != "" && starTime != "") {
+                if (endTime < starTime) {
+                    return alert("进店时间小于出店时间！，请重新选择");
+                }
+
+            };
+            //判断必选的是否选中
+            $("#MyForm .red").each(function (i, m) {
+                if (m.value == "" || m.value == null) {
+                    return redStatus = true;
+                }
+            })
+            $(must).each(function (i, m) {
+                var N = $(m).find("input[checked]").val();
+                if (N == undefined) {
+                    return mustStatus = true;
+                }
+            })
+            if (redStatus || mustStatus) {
+                alert("必填项不能为空！")
+
+            } else {
+               $("#MyForm").submit()
+            }
+
+
+
+        }
+        //添加选中属性 -单选
+        function checkedAdd(m) {
+            $(m).attr("checked", "checked");
+            $(m).siblings().removeAttr("checked");
+            category();
+        }
+        function checkboxAdd(m) {
+            if ($(m).hasClass("active")) {
+                $(m).removeClass("active");
+                checkboxText()
+            } else {
+                $(m).addClass("active");
+                checkboxText()
+            }
+
+        }
+        function checkboxText() {
+            //多选框值
+            var checkboxS = $(".checkboxS").find("input.active");
+            var htmlStr = '';
+            $(checkboxS).each(function (i, m) {
+                console.log(m.value)
+                if (m.value != null) {
+                    htmlStr += m.value + '/';
+                }
+
+            })
+
+            $("#Like").val(htmlStr);
+        }
+        //客户类别 选中A、B、C、限定是否为意向客户单选按钮
+        function category() {
+            var category = $(".category").find("input[checked]").val()
+            if (category != "D") {
+                $("#mindCur").html(" <input type='radio' name='是否有意向' value='true' readonly checked/>是")
+            } else {
+                $("#mindCur").html(" <input type='radio' name='是否有意向' value='true' />是<input type = 'radio' name = '是否有意向' value = 'false' checked /> 否")
+            }
+        }
+        //根据姓名、电话、楼盘地址、意向产品是否填写确认是否为确认客户
+        function sureCurFun() {
+            var Intention = $.trim($(".Intention").val()),
+                Name = $.trim($(".Name").val()),
+                Phone = $.trim($(".Phone").val()),
+                Site = $.trim($(".Site").val());
+
+            if (Intention != "" && Name != "" && Phone != "" && Site != "" && Intention != null && Name != null && Phone != null && Site != null) {
+                $("#sureCur").html(" <input type='radio' name='是否确认' value='true' readonly checked/>是")
+            } else {
+                $("#sureCur").html(" <input type='radio' name='是否确认' value='true' />是<input type = 'radio' name = '是否确认' value = 'false' checked /> 否")
+            }
+        }
+    </script>
+
+
+}
+   
+
+

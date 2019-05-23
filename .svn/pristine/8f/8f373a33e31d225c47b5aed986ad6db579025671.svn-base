@@ -1,0 +1,146 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.SalesOrderViewModel>
+
+@{
+    ViewBag.Title = "销售订单列表";
+}
+
+<h3>销售订单列表</h3>
+<form action="@Url.Action("SalesOrdersView","Customer",new { role = ViewBag.IsManager})" method="post" style="display:inline-block;margin: 5px 0;">
+    查询条件：
+    <select class="form-control width-200" id="storeMan">
+        <option value="">-请选择销售-</option>
+    </select>
+    <input type="text" name="startDate" value="" class="form-control width-200 dateLay " placeholder="请选择开始日期" readonly/>至
+    <input type="text" name="endDate" value="" class="form-control width-200 dateLay" placeholder="请选择结束日期" readonly/>
+   
+    <input type="submit" name="name" value="查询" style="color:#333;font-size:14px;"/>
+</form>
+<form action="@Url.Action("SalesOrdersView","Customer",new { role = ViewBag.IsManager})" method="post" id="searchR" style="display:inline-block">
+   
+    <input type="text" name="str" value="" class="form-control width-200" placeholder="根据客户联系方式查询" />
+    <input type="submit" name="name" value="查询" style="color:#333;font-size:14px;" />
+</form>
+<p style="color:red;">默认显示的是本月报表数据</p>
+<table class="table table-bordered table-hover table-striped text-center">
+    <tr>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.合同编号)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.单据编号)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.订单编号)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.单据日期)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.店铺)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.员工)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.客户姓名)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.客户联系方式)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.客户地址)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.零售合计)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.预付金额_bak)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.单据备注)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.制单人姓名)
+        </th>
+        <th class="text-center">
+            @Html.DisplayNameFor(model => model.制单日期)
+        </th>
+     
+    </tr>
+
+@if (Model.Count() > 0)
+{
+
+
+    foreach (var item in Model)
+    {
+    <tr>
+   
+        <td>
+            @Html.DisplayFor(modelItem => item.合同编号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.单据编号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.订单编号)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.单据日期)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.店铺)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.员工)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户姓名)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户联系方式)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.客户地址)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.零售合计)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.预付金额_bak)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.单据备注)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单人姓名)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.制单日期)
+        </td>
+       
+    </tr>
+    }
+}
+else {
+<tr>
+    <td class="text-center" style="height:120px;" colspan="15">暂无数据！</td>
+</tr>
+}
+</table>
+<script>
+    $.ajax({
+        url: '@Url.Action("GetEmployees", "ManagerExamine")',
+        type: 'post',
+        dataType: 'json',
+        data: {},
+        success: function (data) {
+            $(data).each(function (i, m) {
+                $("#storeMan").append("<option value=" + m[0] + ">" + m[1] + "</option>");
+            })
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    })
+</script>
