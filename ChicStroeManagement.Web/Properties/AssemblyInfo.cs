@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("ChicStoreManagement")]
-[assembly: AssemblyDescription("测试版")]
+[assembly: AssemblyDescription("正式版")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CHIC.ChengDu")]
 [assembly: AssemblyProduct("ChicStoreManagement")]
@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 //
 // 你可以指定所有值，也可以让修订版本和内部版本号采用默认值，
 // 方法是按如下所示使用 "*":
-[assembly: AssemblyVersion("2019.03.21.01")]
-[assembly: AssemblyFileVersion("2019.03.21.01")]
+[assembly: AssemblyVersion("2019.05.24.01")]
+[assembly: AssemblyFileVersion("2019.05.24.01")]
 //异常记录
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = @"Config\Log4Net.config", Watch = true)]

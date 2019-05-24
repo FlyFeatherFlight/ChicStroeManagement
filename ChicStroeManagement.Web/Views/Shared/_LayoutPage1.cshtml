@@ -233,14 +233,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </li>
 
                             }
-                            <li>
+                            @*<li>
                                 <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cubes nav_icon"></i> <span class="nav-label">销售订单</span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
-                                    <li><a href="@Url.Action("SalesOrdersView", "Customer",new { role=ViewBag.IsManager})" class=" hvr-bounce-to-right"> <i class="fa fa-info-circle nav_icon"></i>销售订单列表</a></li>
-                                    <li><a href="@Url.Action("SalesOrdersAddView", "Customer")" class=" hvr-bounce-to-right"><i class="fa fa-question-circle nav_icon"></i>添加销售订单</a></li>
+                                    <li><a href="@Url.Action("SalesOrdersView", "Customer",new { role=ViewBag.IsManager,emid=ViewBag.emID})" class=" hvr-bounce-to-right"> <i class="fa fa-info-circle nav_icon"></i>销售订单列表</a></li>
+                                   
 
                                 </ul>
-                            </li>
+                            </li>*@
                             <li>
                                 <a href="#" class=" hvr-bounce-to-right"><i class="fa fa-cog nav_icon"></i> <span class="nav-label">系统设置</span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">

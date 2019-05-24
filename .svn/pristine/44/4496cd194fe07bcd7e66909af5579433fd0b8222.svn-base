@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ChicStoreManagement.WEB.ViewModel.SalesOrdersDetailsViewModel>
+
+@{
+    Layout = null;
+}
+<table class="table table-bordered table-striped text-center" id="goodsTab">
+    <thead>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.序号)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.单据ID)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.SKU_ID)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.数量)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.标准零售价)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.零售单价)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.零售小计)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.需求日期)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.预计交期)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.明细备注)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.交货周期)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.默认交期)
+            </td>
+
+            <td>操作</td>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="Number">
+                    @Html.DisplayFor(modelItem => item.序号)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.单据ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SKU_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.数量)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.标准零售价)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.零售单价)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.零售小计)
+                </td>
+                <td class="date">
+                    @Html.DisplayFor(modelItem => item.需求日期)
+                </td>
+                <td class="date">
+                    @Html.DisplayFor(modelItem => item.预计交期)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.明细备注)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.交货周期)
+                </td>
+                <td class="date">
+                    @Html.DisplayFor(modelItem => item.默认交期)
+                </td>
+
+                <td>
+                    <span class="Aspan">修改</span>
+                    <span class="Aspan" onclick="DelGood('@Url.Action("SalesOrderDetailsDel","Customer")',@item.ID)">删除</span>
+
+                </td>
+            </tr>
+        }
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+

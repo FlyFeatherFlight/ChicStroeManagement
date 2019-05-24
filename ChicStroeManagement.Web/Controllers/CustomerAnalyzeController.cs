@@ -21,18 +21,24 @@ namespace ChicStoreManagement.WEB.Controllers
         private readonly ICustomerTrackingBLL customerTrackingBLL;
         private readonly ITrackGoalBLL trackGoalBLL;
         private readonly ISalesRecordBLL salesRecordBLL;
+        private readonly ISalesOrderBLL salesOrderBLL;
+        private readonly ISalesOrder_detailsBLL salesOrder_DetailsBLL;
 
-        public CustomerAnalyzeController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, ITrackGoalBLL trackGoalBLL, ISalesRecordBLL salesRecordBLL)
+        public CustomerAnalyzeController(ICustomerInfoBLL customerInfoBLL, IExceptedBuyBLL exceptedBuyBLL, IStoreEmployeesBLL storeEmployeesBLL, IStoreBLL storeBLL, IProductCodeBLL productCodeBLL, ICustomerTrackingBLL customerTrackingBLL, ITrackGoalBLL trackGoalBLL, ISalesRecordBLL salesRecordBLL, ISalesOrderBLL salesOrderBLL, ISalesOrder_detailsBLL salesOrder_DetailsBLL)
         {
-            this.customerInfoBLL = customerInfoBLL ?? throw new ArgumentNullException(nameof(customerInfoBLL));
-            this.exceptedBuyBLL = exceptedBuyBLL ?? throw new ArgumentNullException(nameof(exceptedBuyBLL));
-            this.storeEmployeesBLL = storeEmployeesBLL ?? throw new ArgumentNullException(nameof(storeEmployeesBLL));
-            this.storeBLL = storeBLL ?? throw new ArgumentNullException(nameof(storeBLL));
-            this.productCodeBLL = productCodeBLL ?? throw new ArgumentNullException(nameof(productCodeBLL));
-            this.customerTrackingBLL = customerTrackingBLL ?? throw new ArgumentNullException(nameof(customerTrackingBLL));
-            this.trackGoalBLL = trackGoalBLL ?? throw new ArgumentNullException(nameof(trackGoalBLL));
-            this.salesRecordBLL = salesRecordBLL ?? throw new ArgumentNullException(nameof(salesRecordBLL));
+            this.customerInfoBLL = customerInfoBLL;
+            this.exceptedBuyBLL = exceptedBuyBLL;
+            this.storeEmployeesBLL = storeEmployeesBLL;
+            this.storeBLL = storeBLL;
+            this.productCodeBLL = productCodeBLL;
+            this.customerTrackingBLL = customerTrackingBLL;
+            this.trackGoalBLL = trackGoalBLL;
+            this.salesRecordBLL = salesRecordBLL;
+            this.salesOrderBLL = salesOrderBLL;
+            this.salesOrder_DetailsBLL = salesOrder_DetailsBLL;
         }
+
+
 
 
         /// <summary>
@@ -655,7 +661,7 @@ namespace ChicStoreManagement.WEB.Controllers
             List<销售_接待记录> recModels = new List<销售_接待记录>();
             List<RecAnalyzeViewModel> lis = new List<RecAnalyzeViewModel>();
             List<销售_店铺员工档案> lisem = new List<销售_店铺员工档案>();
-            if (storeID > 0)//查询指定店铺
+            if (storeID > 0)//查询指定店铺接待记录
             {
                 var models = customerInfoBLL.GetModels(p => p.店铺ID == storeID && p.接待日期.Month == MonthNum);//查询当前店铺，某月分数据
                 var ems = storeEmployeesBLL.GetModels(p => p.店铺ID == storeID);
@@ -677,8 +683,8 @@ namespace ChicStoreManagement.WEB.Controllers
                 }
             }
             else
-            {
-                var models = customerInfoBLL.GetModels(p => true);//查询所有店铺
+            {   //查询所有店铺接待记录
+                var models = customerInfoBLL.GetModels(p => true);
                 if (models.Count() > 0)
                 {
                     recModels = models.ToList();
@@ -754,9 +760,7 @@ namespace ChicStoreManagement.WEB.Controllers
                 }
                 storeAnalyzeModel.达成率 = "0.00%";
                 List<SalesRecordsViewModel> salesRecordsViewModels = new List<SalesRecordsViewModel>();
-                foreach (var it in recModels)
-                {
-                    var sales = salesRecordBLL.GetModels(p => p.销售人员ID == item.Key&&p.销售日期.Month==MonthNum);
+                      var sales = salesRecordBLL.GetModels(p => p.销售人员ID == item.Key && p.销售日期.Month == MonthNum);
                     foreach (var i in sales)
                     {
                         SalesRecordsViewModel salesRecordsView = new SalesRecordsViewModel();
@@ -767,7 +771,7 @@ namespace ChicStoreManagement.WEB.Controllers
                         salesRecordsView.店铺ID = i.店铺ID;
                         salesRecordsViewModels.Add(salesRecordsView);
                     }
-                }
+                
                 if (salesRecordsViewModels.Count() > 0)
                 {
                     storeAnalyzeModel.成交金额 = salesRecordsViewModels.Sum(p => p.销售金额);//指定月份，销售的成交金额
@@ -788,6 +792,78 @@ namespace ChicStoreManagement.WEB.Controllers
             }
             return lis;
 
+        }
+
+        /// <summary>
+        /// 订单数据实体
+        /// </summary>
+        /// <param name="id">订单ID</param>
+        /// <returns></returns>
+        private SalesOrderAnalyzeModel BuildSalesAnalyzeViewModel(销售_订单 model) {
+           
+           
+            var models = salesOrder_DetailsBLL.GetModels(p => p.单据ID == model.ID);
+            if (models==null)
+            {
+                return null;
+            }
+           
+                SalesOrderAnalyzeModel sales = new SalesOrderAnalyzeModel();
+                sales.店铺ID = model.店铺ID;
+                sales.店铺 = storeBLL.GetModel(p => p.ID == sales.店铺ID).名称;
+                sales.销售ID = model.员工ID;
+                sales.销售姓名 = storeEmployeesBLL.GetModel(p => p.ID == sales.销售ID).姓名;
+                sales.下单日期 = model.单据日期;
+                sales.下单金额 = models.Sum(p => p.零售小计);
+                sales.接待ID = model.接待ID;
+                return sales;
+        }
+
+        /// <summary>
+        /// 订单数据实体集
+        /// </summary>
+        /// <param name="storeid">店铺ID</param>
+        /// <param name="emid">销售ID</param>
+        /// <param name="startDate">开始日期</param>
+        /// <param name="endDate">截止日期</param>
+        /// <returns></returns>
+        private List<SalesOrderAnalyzeModel> BuildSalesAnalyzeViewModels(int storeid,int? emid,DateTime? startDate,DateTime? endDate) {
+            var models = salesOrderBLL.GetModels(p =>p.店铺ID==storeid);
+            if (models==null)
+            {
+                return null;
+            }
+            if (emid!=null)
+            {
+                models = models.Where(p => p.员工ID == emid);
+            }
+            if (startDate!=null)
+            {
+                if (models == null)
+                {
+                    return null;
+                }
+                models = models.Where(p => p.单据日期 >= startDate);
+            }
+            if (endDate!=null)
+            {
+                if (models == null)
+                {
+                    return null;
+                }
+                models = models.Where(p => p.单据日期 <= endDate);
+            }
+            if (models == null)
+            {
+                return null;
+            }
+            List<SalesOrderAnalyzeModel> lis = new List<SalesOrderAnalyzeModel>();
+            foreach (var item in models)
+            {
+                var model = BuildSalesAnalyzeViewModel(item);
+                lis.Add(model);
+            }
+            return lis;
         }
     }
 }
